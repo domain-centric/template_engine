@@ -24,6 +24,7 @@ class VariableNode extends RenderNode {
   @override
   String render(RenderContext context) {
     var value = findVariableValue(context.variables, namePath);
+   ///FIXME: add error handling and add errors to the context.errors
     return value.toString();
   }
   
