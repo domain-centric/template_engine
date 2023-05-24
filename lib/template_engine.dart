@@ -1,7 +1,7 @@
 library template_engine;
 
-/// A Calculator.
-class Calculator {
-  /// Returns [value] plus 1.
-  int addOne(int value) => value + 1;
-}
+export 'src/template_engine.dart';
+export 'src/template.dart';
+export 'src/parser.dart';
+export 'src/render.dart';
+export 'src/tag/tag.dart';
