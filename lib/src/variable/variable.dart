@@ -1,6 +1,7 @@
 import 'package:template_engine/template_engine.dart';
 
-/// TODO
+/// TODO explain what it is (google)
+/// TODO add types (see TemplateEngine constuctor parameter variables)
 abstract class Variable {
   /// for documentation only
 }
@@ -23,20 +24,26 @@ class VariableNode extends RenderNode {
 
   @override
   String render(RenderContext context) {
-    var value = findVariableValue(context.variables, namePath);
-   ///FIXME: add error handling and add errors to the context.errors
-    return value.toString();
+    try {
+  var value = findVariableValue(context.variables, namePath);
+  return value.toString();
+} on ArgumentError catch (e) {
+  context.logger.warning(ParserWarning(templateSection, e.message));
+  return '';
+}
+   
   }
   
-  Object? findVariableValue(Map<String, Object> variables, List<String> namePath) {
-    if (variables.containsKey(namePath.first)) {
-      if (namePath.length==1) {
+  Object? findVariableValue(Map<String, Object> variables, List<String> namePath, [namePathIndex=0]) {
+    if (variables.containsKey(namePath[namePathIndex])) {
+      if (namePath.length==namePathIndex+1) {
         return variables[namePath.first];
       } else {
-        return findVariableValue(variables, namePath.sublist(1));
+        // recursive call
+        return findVariableValue(variables, namePath, namePathIndex+1);
       }
     } else {
-      throw ArgumentError('The variable name path could not be found');
+      throw ArgumentError('Variable name path could not be found: ${namePath.sublist(0,namePathIndex+1).join('.')}');
     }
 
   }

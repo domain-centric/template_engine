@@ -1,5 +1,6 @@
 import 'dart:collection';
 
+import 'package:logging/logging.dart';
 import 'package:template_engine/src/parser.dart';
 import 'package:template_engine/src/render.dart';
 import 'package:template_engine/src/tag/group.dart';
@@ -29,6 +30,8 @@ import 'package:template_engine/src/template.dart';
 /// TODO add link to examples on pub.dev
 class TemplateEngine {
   final ParserContext parserContext;
+  final Logger logger;
+  static final defaultLogger = Logger('TemplateEngine');
 
   /// Read only variables, to be cloned to a mutable [Map] when rendered.
   final UnmodifiableMapView<String, Object> variables;
@@ -39,7 +42,7 @@ class TemplateEngine {
     TagGroups? tagGroups,
 
     /// The variables to be used for parsing.
-    /// Note that all variables that are used need to be declared here so that 
+    /// Note that all variables that are used need to be declared here so that
     /// the parser can recognize them.
     /// Variable  can get a different value during rendering.
     Map<String, Object> variables = const {},
@@ -65,13 +68,27 @@ class TemplateEngine {
     /// * PHP uses <? ?>
     /// * JSP and ASP uses <% %>
     String tagEnd = '}}',
+
+    /// Allows you to plug in your custom [Logger]
+    Logger? logger,
   })  : parserContext = ParserContext(
-          tagGroups: tagGroups?? StandardTagGroups(),
+          tagGroups: tagGroups ?? StandardTagGroups(),
           variables: variables,
           tagStart: tagStart,
           tagEnd: tagEnd,
+          logger: logger ?? defaultLogger,
         ),
-        variables = UnmodifiableMapView(variables);
+        variables = UnmodifiableMapView(variables),
+        logger = logger ?? defaultLogger {
+    _initLogger();
+  }
+
+  void _initLogger() {
+    Logger.root.level = Level.ALL; // defaults to Level.INFO
+    Logger.root.onRecord.listen((record) {
+      print('${record.level.name}: ${record.time}: ${record.message}');
+    });
+  }
 
   /// Parse the [Template] text into a
   /// [parser tree](https://en.wikipedia.org/wiki/Parse_tree).
@@ -82,7 +99,7 @@ class TemplateEngine {
   /// Render the [parser tree](https://en.wikipedia.org/wiki/Parse_tree)
   /// to a string (and write it as files when needed)
   String render(ParentNode model) {
-    var context = RenderContext(variables);
+    var context = RenderContext(variables, logger);
     return model.render(context);
   }
 }
@@ -100,10 +117,14 @@ class ParserContext {
   /// See [tagEnd] doc in [TemplateEngine] constructor
   final String tagEnd;
 
+  /// for logging parsing errors or warnings.
+  final Logger logger;
+
   ParserContext({
     required this.tagGroups,
     this.variables = const {},
     this.tagStart = '{{',
     this.tagEnd = '}}',
+    required this.logger,
   });
 }

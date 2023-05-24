@@ -16,8 +16,26 @@ class Parser {
       templateSection: TemplateSection(
           template: template, row: 1, column: 4, text: '{{name}}'),
       namePath: 'name',
-    )); 
+    ));
     root.children.add(TextNode('.'));
     return root;
   }
+}
+
+class ParserWarning {
+  final TemplateSection templateSection;
+  final String message;
+
+  ParserWarning(
+    this.templateSection,
+    this.message,
+  );
+
+  @override
+  String toString() => 'Parser warning: $message\n'
+  'Template source: ${templateSection.template.source}\n'
+  'Template location: ${templateSection.row}:${templateSection.column}\n'
+  'Template section: ${templateSection.text}\n';
+
+
 }

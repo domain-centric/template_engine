@@ -1,5 +1,7 @@
 import 'dart:collection';
 
+import 'package:logging/logging.dart';
+
 /// Renders some text depending on the implementation of the [RenderNode]
 abstract class RenderNode {
   String render(RenderContext context);
@@ -23,14 +25,13 @@ class ParentNode extends RenderNode {
       children.map((node) => node.render(context)).join();
 }
 
-
-
-
-
 class RenderContext {
   final Map<String, Object> variables;
-  RenderContext(UnmodifiableMapView<String, Object> variables)
-      : variables = _createMapClone(variables);
+  final Logger logger;
+  RenderContext(
+    UnmodifiableMapView<String, Object> variables,
+    this.logger,
+  ) : variables = _createMapClone(variables);
 
   static _createMapClone(UnmodifiableMapView variables) =>
       Map<String, Object>.from(variables);

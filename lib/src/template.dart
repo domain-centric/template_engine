@@ -45,7 +45,7 @@ class TemplateSection {
 class TextTemplate extends Template {
   TextTemplate(String text)
       : super(
-          source: 'Dart code',
+          source: 'Text',
           text: text,
         );
 }
