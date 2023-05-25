@@ -33,9 +33,7 @@ class ParserWarning {
 
   @override
   String toString() => 'Parser warning: $message\n'
-  'Template source: ${templateSection.template.source}\n'
-  'Template location: ${templateSection.row}:${templateSection.column}\n'
-  'Template section: ${templateSection.text}\n';
-
-
+      'Template source: ${templateSection.template.source}\n'
+      'Template location: ${templateSection.row}:${templateSection.column}\n'
+      'Template section: ${templateSection.text}\n';
 }

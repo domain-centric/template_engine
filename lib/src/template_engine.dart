@@ -44,7 +44,7 @@ class TemplateEngine {
     /// The variables to be used for parsing.
     /// Note that all variables that are used need to be declared here so that
     /// the parser can recognize them.
-    /// Variable  can get a different value during rendering.
+    /// [Variable]s can get a different value during rendering.
     Map<String, Object> variables = const {},
 
     /// The tag starts with given prefix.
@@ -86,6 +86,7 @@ class TemplateEngine {
   void _initLogger() {
     Logger.root.level = Level.ALL; // defaults to Level.INFO
     Logger.root.onRecord.listen((record) {
+      // ignore: avoid_print
       print('${record.level.name}: ${record.time}: ${record.message}');
     });
   }
@@ -99,7 +100,10 @@ class TemplateEngine {
   /// Render the [parser tree](https://en.wikipedia.org/wiki/Parse_tree)
   /// to a string (and write it as files when needed)
   String render(ParentNode model) {
-    var context = RenderContext(variables, logger);
+    var context = RenderContext(
+      variables: variables,
+      logger: logger,
+    );
     return model.render(context);
   }
 }

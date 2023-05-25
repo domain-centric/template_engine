@@ -1,24 +1,27 @@
-
 import 'package:template_engine/template_engine.dart';
 
-/// [Tag]s are specific texts in [Template]s that are replaced by the 
+/// [Tag]s are specific texts in [Template]s that are replaced by the
 /// [TemplateEngine] with other information.
-/// 
+///
 /// [Tag]s:
 /// * Are surrounded with symbols like {{  }}
-/// * Start with a name
-/// * Can have [Attribute]s
-
+/// * Start with [TagName]
+/// * Can be followed by [Attribute]s
 abstract class Tag {
   /// For documentation only
 }
 
+/// A [TagName]:
+/// * may not be empty
+/// * is case un-sensitive
+/// * may contain letters, numbers and dots. e.g.: 'project.path'
+/// * must be unique
+abstract class TagName {
+  /// For documentation only
+}
 
 abstract class TagDefinition {
-  /// The name of the Tag. The name is:
-  /// * may not be empty
-  /// * is case un-sensitive
-  /// * may contain letters, numbers and dots. e.g.: 'project.path'
+  /// See [TagName]
   final String name;
 
   /// An general explanation on what the tag does.
@@ -45,7 +48,7 @@ abstract class TagDefinition {
 
 /// A [Tag] can have 0 or more attributes.
 /// An [Attribute]:
-/// * Has a name 
+/// * Has a name
 /// * Has a value of one of the following types:
 ///   * bool
 ///   * String
@@ -55,10 +58,10 @@ abstract class TagDefinition {
 ///   * list where the elements are one of the types above
 ///   * map where the keys are a string and the values are one of the types above
 ///   * a [Tag] that is converted to a [RenderNode]
-///  * Can be optional 
+///  * Can be optional
 ///  * Can have an default value when the attribute is optional
 abstract class Attribute {
-   /// for documentation only
+  /// for documentation only
 }
 
 class AttributeDefinition {
