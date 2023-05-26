@@ -14,6 +14,7 @@ Parser<List<RenderNode>> templateParser(ParserContext context) =>
     delegatingParser([variableParser(context)]);
 
 /// A [delegatingParser] delegates to work to other parsers.
+/// Text that is not handled by the delegates will also be collected
 Parser<List<RenderNode>> delegatingParser(List<Parser<RenderNode>> delegates) {
   if (delegates.isEmpty) {
     return any().star().flatten().map((value) => [TextNode(value)]);
