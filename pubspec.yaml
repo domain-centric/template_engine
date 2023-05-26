@@ -10,6 +10,7 @@ dependencies:
   collection: ^1.17.2
   given_when_then_unit_test: ^0.2.0
   logging: ^1.2.0
+  petitparser: ^5.4.0
   shouldly: ^0.5.0+1
 
 dev_dependencies:

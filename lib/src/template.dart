@@ -18,7 +18,7 @@ abstract class Template {
   });
 }
 
-/// A part of a template that was identified by the [Parser].
+/// A part of a template that was identified by the [TemplateParserOld].
 /// A [TemplateSection] is used for [Error]s
 /// to identify which template has an error and where.
 class TemplateSection {
@@ -31,7 +31,7 @@ class TemplateSection {
   ///  The [column] for the start position within the template
   final int column;
 
-  /// A part of a template text that was identified by the [Parser].
+  /// A part of a template text that was identified by the [TemplateParserOld].
   final String text;
 
   TemplateSection({

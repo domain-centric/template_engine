@@ -1,7 +1,7 @@
 import 'dart:collection';
 
 import 'package:logging/logging.dart';
-import 'package:template_engine/src/parser.dart';
+import 'package:template_engine/src/parser/parser.dart';
 import 'package:template_engine/src/render.dart';
 import 'package:template_engine/src/tag/group.dart';
 import 'package:template_engine/src/tag/tag.dart';
@@ -94,8 +94,15 @@ class TemplateEngine {
   /// Parse the [Template] text into a
   /// [parser tree](https://en.wikipedia.org/wiki/Parse_tree).
   /// See [RenderNode]
-  ParentNode parse(Template template) =>
-      Parser().parse(template, parserContext);
+  ParserTree parse(Template template) {
+    var parser = templateParser(parserContext);
+    var result = parser.parse(template.text);
+    if (result.isFailure) {
+      throw ParseException(result.message);
+    } else {
+      return ParserTree(result.value as List);
+    }
+  }
 
   /// Render the [parser tree](https://en.wikipedia.org/wiki/Parse_tree)
   /// to a string (and write it as files when needed)
@@ -108,27 +115,3 @@ class TemplateEngine {
   }
 }
 
-class ParserContext {
-  /// See [tagGroups] doc in [TemplateEngine] constructor
-  final TagGroups tagGroups;
-
-  /// See [variables] doc in [TemplateEngine] constructor
-  final Map<String, Object> variables;
-
-  /// See [tagStart] doc in [TemplateEngine] constructor
-  final String tagStart;
-
-  /// See [tagEnd] doc in [TemplateEngine] constructor
-  final String tagEnd;
-
-  /// for logging parsing errors or warnings.
-  final Logger logger;
-
-  ParserContext({
-    required this.tagGroups,
-    this.variables = const {},
-    this.tagStart = '{{',
-    this.tagEnd = '}}',
-    required this.logger,
-  });
-}

@@ -7,7 +7,7 @@ abstract class RenderNode {
 
 /// A [RenderNode] that is a placeholder for normal text
 class TextNode implements RenderNode {
-  final String text;
+   String text;
 
   TextNode(this.text);
 
@@ -21,6 +21,28 @@ class ParentNode extends RenderNode {
   @override
   String render(RenderContext context) =>
       children.map((node) => node.render(context)).join();
+}
+
+
+
+/// Creates a [parser tree](https://en.wikipedia.org/wiki/Parse_tree)
+/// from the parse result.
+class ParserTree extends ParentNode {
+  ParserTree(List parseResult) {
+    _populateChildren(parseResult);
+  }
+
+  void _populateChildren(List<dynamic> parseResult) {
+    for (var value in parseResult) {
+      if (value is RenderNode) {
+        children.add(value);
+      } else if (children.isNotEmpty && children.last is TextNode) {
+        ((children.last) as TextNode).text += value.toString();
+      } else {
+        children.add(TextNode(value.toString()));
+      }
+    }
+  }
 }
 
 class RenderContext {
