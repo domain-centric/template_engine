@@ -9,45 +9,32 @@ import 'package:template_engine/src/variable/variable.dart';
 
 /// Creates a parser that can convert a [Template] text to a
 /// [parse tree](https://en.wikipedia.org/wiki/Parse_tree)
-/// containing [String]s and [RenderNode]s.
-///
-/// It does this by combining multiple on a OR chain,
-/// that could be repeated zero or more times.
-Parser templateParser(ParserContext context) =>
-    delegatingParser([variableParser(context) ]);
-
+/// containing [RenderNode]s.
+Parser<List<RenderNode>> templateParser(ParserContext context) =>
+    delegatingParser([variableParser(context)]);
 
 /// A [delegatingParser] delegates to work to other parsers.
-Parser delegatingParser(List<Parser> delegates) {
+Parser<List<RenderNode>> delegatingParser(List<Parser<RenderNode>> delegates) {
   if (delegates.isEmpty) {
     return any().star().flatten().map((value) => [TextNode(value)]);
   }
-  Parser parser = delegates.first;
-  for (var delegate in delegates.sublist(1)) {
-    parser = (parser |delegate) ;
-  }
-  // add a parser that takes what the other parsers could not get
-  parser=parser | untilParser(parser);
-   // add parser that takes what the other parsers could not get
-  parser=parser | untilEndParser();
-  // repeat all previous parsers as many times as possible
-  parser=parser.star();
- 
-  return parser ;
+  var parser = ChoiceParser<RenderNode>(delegates);
+  parser = ChoiceParser<RenderNode>([
+    parser,
+    untilParser(parser),
+    untilEndParser(),
+  ]);
+  return parser.star();
 }
 
-Parser untilParser(Parser limit) => any().plusLazy(limit).flatten().map((value) => TextNode(value));
+Parser<RenderNode> untilParser(Parser limit) =>
+    any().plusLazy(limit).flatten().map((value) => TextNode(value));
 
-Parser untilEndParser() => any().plus().flatten().map((value) => TextNode(value));
+Parser<RenderNode> untilEndParser() =>
+    any().plus().flatten().map((value) => TextNode(value));
 
-/// You can make a [Parser] that combines other [Parser]s in a OR chain.
-/// Add a [remainingCharParser] at the end so that any characters that are not
-/// processed by other [Parser]s is collected as a [String].
-/// It is collected as a single character to implement a lazy parser.
-@Deprecated('See restParser')
-Parser<String> remainingCharParser() => any();
-
-Parser variableParser(ParserContext context) => (string(context.tagStart) &
+Parser<RenderNode> variableParser(ParserContext context) => (string(
+            context.tagStart) &
         whiteSpaceParser().optional() &
         variableNamePathParser() &
         whiteSpaceParser().optional() &

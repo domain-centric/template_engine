@@ -100,7 +100,7 @@ class TemplateEngine {
     if (result.isFailure) {
       throw ParseException(result.message);
     } else {
-      return ParentNode((result.value as List<dynamic>).whereType<RenderNode>().toList());
+      return ParentNode(result.value);
     }
   }
 
