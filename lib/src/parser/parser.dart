@@ -7,29 +7,6 @@ import 'package:template_engine/src/template.dart';
 import 'package:template_engine/src/template_engine.dart';
 import 'package:template_engine/src/variable/variable.dart';
 
-
-/// The parser converts texts into a
-/// [parse tree](https://en.wikipedia.org/wiki/Parse_tree)
-/// See [petitparser](https://pub.dev/packages/petitparser)
-///
-/// This class is a wrapper class so we can create [PetiteParser] classes
-/// instead of functions.
-abstract class PetiteParser extends Parser {
-  final Parser _parser;
-
-  PetiteParser(Parser parser) : _parser = parser;
-
-  @override
-  Parser copy() {
-    return _parser.copy();
-  }
-
-  @override
-  Result parseOn(Context context) {
-    return _parser.parseOn(context);
-  }
-}
-
 /// Creates a parser that can convert a [Template] text to a
 /// [parse tree](https://en.wikipedia.org/wiki/Parse_tree)
 /// containing [String]s and [RenderNode]s.
