@@ -36,7 +36,7 @@ Parser delegatingParser(List<Parser> delegates) {
   return parser ;
 }
 
-Parser untilParser(Parser limit) => any().plusGreedy(limit).flatten().map((value) => TextNode(value));
+Parser untilParser(Parser limit) => any().plusLazy(limit).flatten().map((value) => TextNode(value));
 
 Parser untilEndParser() => any().plus().flatten().map((value) => TextNode(value));
 
