@@ -94,13 +94,13 @@ class TemplateEngine {
   /// Parse the [Template] text into a
   /// [parser tree](https://en.wikipedia.org/wiki/Parse_tree).
   /// See [RenderNode]
-  ParserTree parse(Template template) {
+  ParentNode parse(Template template) {
     var parser = templateParser(parserContext);
     var result = parser.parse(template.text);
     if (result.isFailure) {
       throw ParseException(result.message);
     } else {
-      return ParserTree(result.value as List);
+      return ParentNode((result.value as List<dynamic>).whereType<RenderNode>().toList());
     }
   }
 

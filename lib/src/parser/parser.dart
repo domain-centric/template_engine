@@ -14,12 +14,37 @@ import 'package:template_engine/src/variable/variable.dart';
 /// It does this by combining multiple on a OR chain,
 /// that could be repeated zero or more times.
 Parser templateParser(ParserContext context) =>
-    (variableParser(context) | remainingCharParser()).star();
+    delegatingParser([variableParser(context) ]);
+
+
+/// A [delegatingParser] delegates to work to other parsers.
+Parser delegatingParser(List<Parser> delegates) {
+  if (delegates.isEmpty) {
+    return any().star().flatten().map((value) => [TextNode(value)]);
+  }
+  Parser parser = delegates.first;
+  for (var delegate in delegates.sublist(1)) {
+    parser = (parser |delegate) ;
+  }
+  // add a parser that takes what the other parsers could not get
+  parser=parser | untilParser(parser);
+   // add parser that takes what the other parsers could not get
+  parser=parser | untilEndParser();
+  // repeat all previous parsers as many times as possible
+  parser=parser.star();
+ 
+  return parser ;
+}
+
+Parser untilParser(Parser limit) => any().plusGreedy(limit).flatten().map((value) => TextNode(value));
+
+Parser untilEndParser() => any().plus().flatten().map((value) => TextNode(value));
 
 /// You can make a [Parser] that combines other [Parser]s in a OR chain.
 /// Add a [remainingCharParser] at the end so that any characters that are not
 /// processed by other [Parser]s is collected as a [String].
 /// It is collected as a single character to implement a lazy parser.
+@Deprecated('See restParser')
 Parser<String> remainingCharParser() => any();
 
 Parser variableParser(ParserContext context) => (string(context.tagStart) &
@@ -58,7 +83,7 @@ class ParserWarning {
       'Template section: ${templateSection.text}\n';
 }
 
-class ParseException  implements Exception {
+class ParseException implements Exception {
   final String message;
   ParseException(this.message);
 }
@@ -68,7 +93,7 @@ class ParserContext {
   final TagGroups tagGroups;
 
   /// See [variables] doc in [TemplateEngine] constructor
-  final Map<String, Object> variables;//T
+  final Map<String, Object> variables; //T
 
   /// See [tagStart] doc in [TemplateEngine] constructor
   final String tagStart;
