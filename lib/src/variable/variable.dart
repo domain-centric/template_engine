@@ -1,3 +1,4 @@
+import 'package:template_engine/src/event.dart';
 import 'package:template_engine/template_engine.dart';
 
 /// You can use [Variables](https://en.wikipedia.org/wiki/Variable_(computer_science))
@@ -59,10 +60,10 @@ abstract class VariableValue {
 /// A [RenderNode] to render a [VariableValue]
 class VariableNode extends RenderNode {
   final List<String> namePath;
-  final TemplateSection templateSection;
+  final TemplateSection source;
 
   VariableNode({
-    required this.templateSection,
+    required this.source,
 
     /// See [VariableName]
     required String namePath,
@@ -73,8 +74,8 @@ class VariableNode extends RenderNode {
     try {
       var value = findVariableValue(context.variables, namePath);
       return value.toString();
-    } on ArgumentError catch (e) {
-      context.logger.warning(ParserWarning(templateSection, e.message));
+    } on VariableException catch (e) {
+      context.events.add(Event.renderError(e.message, source));
       return '';
     }
   }
@@ -91,7 +92,13 @@ class VariableNode extends RenderNode {
         return findVariableValue(value, namePath, namePathIndex + 1);
       }
     }
-    throw ArgumentError('Variable name path could not be found: '
+    throw VariableException('Variable name path could not be found: '
         '${namePath.sublist(0, namePathIndex + 1).join('.')}');
   }
+}
+
+class VariableException implements Exception {
+  final String message;
+
+  VariableException(this.message);
 }

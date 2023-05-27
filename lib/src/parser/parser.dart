@@ -1,5 +1,5 @@
-import 'package:logging/logging.dart';
 import 'package:petitparser/petitparser.dart';
+import 'package:template_engine/src/event.dart';
 import 'package:template_engine/src/parser/map2_parser_extension.dart';
 import 'package:template_engine/src/parser/generic_parsers.dart';
 import 'package:template_engine/src/render.dart';
@@ -42,7 +42,7 @@ Parser<RenderNode> variableParser(ParserContext context) =>
             whiteSpaceParser().optional() &
             string(context.tagEnd))
         .map2((values, position) => VariableNode(
-            templateSection: TemplateSection(
+            source: TemplateSection(
               template: context.template,
               parserPosition: position,
             ),
@@ -53,26 +53,6 @@ Parser variableNameParser() => (letter() | digit()).plus().flatten();
 Parser variableNamePathParser() =>
     (variableNameParser() & (char('.') & variableNameParser()).star())
         .flatten();
-
-class ParserWarning {
-  final TemplateSection templateSection;
-  final String message;
-
-  ParserWarning(
-    this.templateSection,
-    this.message,
-  );
-
-  @override
-  String toString() => 'Parser warning: $message\n'
-      'Template source: ${templateSection.template.source}\n'
-      'Template location: ${templateSection.parserPosition}\n';
-}
-
-class ParseException implements Exception {
-  final String message;
-  ParseException(this.message);
-}
 
 class ParserContext {
   /// The template being parsed (for error or warning logging)
@@ -90,8 +70,7 @@ class ParserContext {
   /// See [tagEnd] doc in [TemplateEngine] constructor
   final String tagEnd;
 
-  /// for logging parsing errors or warnings.
-  final Logger logger;
+  final List<Event> events;
 
   ParserContext({
     required this.template,
@@ -99,6 +78,16 @@ class ParserContext {
     this.variables = const {},
     this.tagStart = '{{',
     this.tagEnd = '}}',
-    required this.logger,
-  });
+  }) : events = [];
+}
+
+class ParseException implements Exception {
+  final List<Event> events;
+  final String message;
+
+  ParseException(this.events)
+      : message = events.map((event) => event.toString()).join('\n\n');
+
+  @override
+  String toString() => message;
 }

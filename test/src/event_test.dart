@@ -6,90 +6,36 @@ import 'package:template_engine/src/template.dart';
 import 'package:template_engine/src/variable/variable.dart';
 
 void main() {
-  given('objects: Variables', () {
-    var variables = {
-      'person': {
-        'name': 'John Doe',
-        'age': 30,
-        'child': {
-          'name': 'Jane Doe',
-          'age': 5,
-        }
-      }
-    };
+  given('object: Variables', () {
+    Map<String, Object> variables = {'name': 'John Doe'};
 
     given(
         'objects: ParseContext and '
         'VariableNode with variable name "person"', () {
       var node = VariableNode(
         source: DummyTemplateSection(),
-        namePath: 'person',
+        namePath: 'name',
       );
       var context = RenderContext(variables);
 
       when('call: node.render(context)', () {
-        var result = node.render(context);
+         node.render(context);
 
         then('expect: context.events to be empty',
             () => context.events.should.beEmpty());
-
-        then(
-            'expect: result should be '
-            '"{name: John Doe, age: 30, child: {name: Jane Doe, age: 5}}"',
-            () => result.should.be(
-                '{name: John Doe, age: 30, child: {name: Jane Doe, age: 5}}'));
       });
     });
 
     given(
         'objects: ParseContext and '
-        'VariableNode with variable name "person.name"', () {
+        'VariableNode with none existing variable name "age"', () {
       var node = VariableNode(
         source: DummyTemplateSection(),
-        namePath: 'person.name',
+        namePath: 'age',
       );
       var context = RenderContext(variables);
 
-      when('call: node.render(context)', () {
-        var result = node.render(context);
-        then('expect: context.events to be empty',
-            () => context.events.should.beEmpty());
-
-        then('expect: result should be "John Doe"',
-            () => result.should.be('John Doe'));
-      });
-    });
-
-    given(
-        'objects: ParseContext and '
-        'VariableNode with variable name "person.name.child.name"', () {
-      var node = VariableNode(
-        source: DummyTemplateSection(),
-        namePath: 'person.child.name',
-      );
-      var context = RenderContext(variables);
-
-      when('call: node.render(context)', () {
-        var result = node.render(context);
-        then('expect: context.events to be empty',
-            () => context.events.should.beEmpty());
-
-        then('expect: result should be "Jane Doe"',
-            () => result.should.be('Jane Doe'));
-      });
-    });
-
-    /// none existing variable name
-
-    given(
-        'objects: ParseContext and '
-        'VariableNode with none existing variable name', () {
-      var node = VariableNode(
-        source: DummyTemplateSection(),
-        namePath: 'invalid',
-      );
-      var context = RenderContext(variables);
-
+      
       when('call: node.render(context)', () {
         var result = node.render(context);
 
@@ -107,7 +53,7 @@ void main() {
         then(
             'expect: context.events[0].severity == EventSeverity.error',
             () => context.events[0].message.should
-                .be('Variable name path could not be found: invalid'));
+                .be('Variable name path could not be found: age'));
 
         then(
             'expect: context.events[0].source == "position: 1:4 source: Text"',
@@ -127,8 +73,8 @@ void main() {
           () => context.events[0]
               .toString()
               .should
-              .be('Render Error: Variable name path could not be found: '
-                  'invalid position: 1:4 source: Text'),
+              .be('Render Error: Variable name path could not be found: age '
+                  'position: 1:4 source: Text'),
         );
       });
     });

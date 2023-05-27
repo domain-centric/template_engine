@@ -30,6 +30,9 @@ class TemplateSection {
   final String parserPosition;
 
   TemplateSection({required this.template, required this.parserPosition});
+
+  @override
+  String toString() => 'position: $parserPosition source: ${template.source}';
 }
 
 class TextTemplate extends Template {

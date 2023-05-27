@@ -1,4 +1,4 @@
-import 'package:logging/logging.dart';
+import 'package:template_engine/src/event.dart';
 
 /// Renders some text depending on the implementation of the [RenderNode]
 abstract class RenderNode {
@@ -17,7 +17,7 @@ class TextNode implements RenderNode {
 
 class ParentNode extends RenderNode {
   List<RenderNode> children;
-  
+
   ParentNode([this.children = const []]);
 
   @override
@@ -27,13 +27,24 @@ class ParentNode extends RenderNode {
 
 class RenderContext {
   final Map<String, Object> variables;
-  final Logger logger;
+  final List<Event> events;
 
-  RenderContext({
-    required Map<String, Object> variables,
-    required this.logger,
-  }) : variables = _createMapClone(variables);
+  RenderContext(
+    Map<String, Object> variables,
+  )   : variables = _createMapClone(variables),
+        events = [];
 
   static _createMapClone(Map<String, Object> variables) =>
       Map<String, Object>.from(variables);
+}
+
+class RenderException implements Exception {
+  final List<Event> events;
+  final String message;
+
+  RenderException(this.events)
+      : message = events.map((event) => event.toString()).join('\n\n');
+
+  @override
+  String toString() => message;
 }
