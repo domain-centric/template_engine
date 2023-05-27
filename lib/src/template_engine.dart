@@ -1,4 +1,3 @@
-import 'dart:collection';
 
 import 'package:logging/logging.dart';
 import 'package:template_engine/src/parser/parser.dart';

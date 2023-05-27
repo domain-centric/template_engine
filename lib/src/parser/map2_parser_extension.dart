@@ -1,5 +1,4 @@
 import 'package:petitparser/petitparser.dart';
-import 'package:template_engine/src/render.dart';
 
 extension Map2ParserExtension<R> on Parser<R> {
   /// Inspired by [MapParserExtension]: with te addition that [Callback2]

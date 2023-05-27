@@ -1,6 +1,6 @@
 import 'package:logging/logging.dart';
 import 'package:petitparser/petitparser.dart';
-import 'package:template_engine/src/parser/masp2_parser_extension.dart';
+import 'package:template_engine/src/parser/map2_parser_extension.dart';
 import 'package:template_engine/src/parser/generic_parsers.dart';
 import 'package:template_engine/src/render.dart';
 import 'package:template_engine/src/tag/group.dart';
