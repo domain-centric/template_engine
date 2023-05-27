@@ -19,7 +19,7 @@ abstract class Template {
   });
 }
 
-/// A [TemplateSection] to identify where a [Parser] error or warning 
+/// A [TemplateSection] to identify where a [Parser] error or warning
 /// has occurred.
 class TemplateSection {
   /// The source of the text

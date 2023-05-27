@@ -1,5 +1,6 @@
 import 'package:shouldly/shouldly.dart';
 import 'package:given_when_then_unit_test/given_when_then_unit_test.dart';
+import 'package:template_engine/src/parser/parser.dart';
 import 'package:template_engine/src/render.dart';
 import 'package:template_engine/src/template.dart';
 import 'package:template_engine/src/template_engine.dart';
@@ -43,6 +44,27 @@ void main() {
       var model = engine.parse(template);
       var result = engine.render(model);
       then('return: "Hello world."', () => result.should.be('Hello world.'));
+    });
+  });
+
+  given('object: TemplateEngine with EMPTY variables and a template', () {
+    var template = TextTemplate('Hello {{name}}.');
+    var engine = TemplateEngine(variables: {});
+
+    when('call: parse(template)', () {
+      engine.parse(template);
+
+//TODO
+      // then('expect: a  thrown',
+      //     () => Should.throwException<ParseException>(() => {engine.parse(template)}));
+    });
+
+    when('call: render(model)', () {
+      var model = engine.parse(template);
+      then(
+          'expect: an error is thrown',
+          () => Should.throwException<RenderException>(
+              () => {engine.render(model)}));
     });
   });
 }

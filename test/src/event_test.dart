@@ -19,7 +19,7 @@ void main() {
       var context = RenderContext(variables);
 
       when('call: node.render(context)', () {
-         node.render(context);
+        node.render(context);
 
         then('expect: context.events to be empty',
             () => context.events.should.beEmpty());
@@ -35,7 +35,6 @@ void main() {
       );
       var context = RenderContext(variables);
 
-      
       when('call: node.render(context)', () {
         var result = node.render(context);
 
