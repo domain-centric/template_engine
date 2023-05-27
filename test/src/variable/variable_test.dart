@@ -109,8 +109,7 @@ void main() {
             () => logger.logs.last.should.be(
                 '\nParser warning: Variable name path could not be found: invalid\n'
                 'Template source: Text\n'
-                'Template location: 1:4\n'
-                'Template section: {{name}}\n'));
+                'Template location: 1:4\n'));
 
         then('expect: result should be ""', () => result.should.be(''));
       });
@@ -122,7 +121,5 @@ class DummyTemplateSection extends TemplateSection {
   DummyTemplateSection()
       : super(
             template: TextTemplate('Hello {{name}}.'),
-            row: 1,
-            column: 4,
-            text: '{{name}}');
+            parserPosition: '1:4');
 }

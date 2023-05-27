@@ -1,4 +1,5 @@
 import 'package:template_engine/template_engine.dart';
+import 'package:petitparser/petitparser.dart';
 
 /// A template is a text that can contain [Tag]s.
 /// This text is parsed by the [TemplateEngine] into [RenderNode]s.
@@ -18,28 +19,17 @@ abstract class Template {
   });
 }
 
-/// A part of a template that was identified by the [TemplateParserOld].
-/// A [TemplateSection] is used for [Error]s
-/// to identify which template has an error and where.
+/// A [TemplateSection] to identify where a [Parser] error or warning 
+/// has occurred.
 class TemplateSection {
   /// The source of the text
   final Template template;
 
-  ///  The [row] for the start position within the template
-  final int row;
+  /// The current [Parser] position within the [Template].
+  /// Format: {row}:{column}
+  final String parserPosition;
 
-  ///  The [column] for the start position within the template
-  final int column;
-
-  /// A part of a template text that was identified by the [TemplateParserOld].
-  final String text;
-
-  TemplateSection({
-    required this.template,
-    required this.row,
-    required this.column,
-    required this.text,
-  });
+  TemplateSection({required this.template, required this.parserPosition});
 }
 
 class TextTemplate extends Template {

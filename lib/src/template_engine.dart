@@ -29,23 +29,15 @@ import 'package:template_engine/src/template.dart';
 ///
 /// TODO add link to examples on pub.dev
 class TemplateEngine {
-  final ParserContext parserContext;
-  final Logger logger;
-  static final defaultLogger = Logger('TemplateEngine');
-
-  /// Read only variables, to be cloned to a mutable [Map] when rendered.
-  final UnmodifiableMapView<String, Object> variables;
-
-  TemplateEngine({
-    /// The [TagDefinition]s to be used for parsing.
+   /// The [TagDefinition]s to be used for parsing.
     /// If null it will use [StandardTagGroups]
-    TagGroups? tagGroups,
+    final TagGroups tagGroups;
 
     /// The variables to be used for parsing.
     /// Note that all variables that are used need to be declared here so that
     /// the parser can recognize them.
     /// [Variable]s can get a different value during rendering.
-    Map<String, Object> variables = const {},
+    final Map<String, Object> variables;
 
     /// The tag starts with given prefix.
     /// Use a prefix combination that is not used elsewhere in your templates.
@@ -56,7 +48,7 @@ class TemplateEngine {
     /// * JSON uses { }
     /// * PHP uses <? ?>
     /// * JSP and ASP uses <% %>
-    String tagStart = '{{',
+    final String tagStart ;
 
     /// The tag ends with given suffix.
     /// Use a suffix combination that is not used elsewhere in your templates.
@@ -67,18 +59,21 @@ class TemplateEngine {
     /// * JSON uses { }
     /// * PHP uses <? ?>
     /// * JSP and ASP uses <% %>
-    String tagEnd = '}}',
+    String tagEnd = '}}';
+  final Logger logger;
+  static final defaultLogger = Logger('TemplateEngine');
+/// Read only variables, to be cloned to a mutable [Map] when rendered.
+  
 
-    /// Allows you to plug in your custom [Logger]
+  
+  TemplateEngine({
+    TagGroups? tagGroups,
+this.variables = const {},
+    this.tagStart = '{{',
+    this.tagEnd = '}}',
     Logger? logger,
-  })  : parserContext = ParserContext(
-          tagGroups: tagGroups ?? StandardTagGroups(),
-          variables: variables,
-          tagStart: tagStart,
-          tagEnd: tagEnd,
-          logger: logger ?? defaultLogger,
-        ),
-        variables = UnmodifiableMapView(variables),
+  })  :
+        tagGroups=tagGroups??StandardTagGroups(),
         logger = logger ?? defaultLogger {
     _initLogger();
   }
@@ -94,9 +89,20 @@ class TemplateEngine {
   /// Parse the [Template] text into a
   /// [parser tree](https://en.wikipedia.org/wiki/Parse_tree).
   /// See [RenderNode]
-  ParentNode parse(Template template) {
+  ParentNode parse(
+    Template template
+  ) {
+     var parserContext = ParserContext(
+          tagGroups: tagGroups,
+          variables: variables,
+          tagStart: tagStart,
+          tagEnd: tagEnd,
+          logger: logger ,
+          template: template
+        );
     var parser = templateParser(parserContext);
     var result = parser.parse(template.text);
+    /// todo if logger has errors, throw them
     if (result.isFailure) {
       throw ParseException(result.message);
     } else {

@@ -1,5 +1,6 @@
 import 'package:logging/logging.dart';
 import 'package:petitparser/petitparser.dart';
+import 'package:template_engine/src/parser/masp2_parser_extension.dart';
 import 'package:template_engine/src/parser/generic_parsers.dart';
 import 'package:template_engine/src/render.dart';
 import 'package:template_engine/src/tag/group.dart';
@@ -34,20 +35,18 @@ Parser<RenderNode> untilParser(Parser limit) =>
 Parser<RenderNode> untilEndParser() =>
     any().plus().flatten().map((value) => TextNode(value));
 
-Parser<RenderNode> variableParser(ParserContext context) => (string(
-            context.tagStart) &
-        whiteSpaceParser().optional() &
-        variableNamePathParser() &
-        whiteSpaceParser().optional() &
-        string(context.tagEnd))
-    .map((values) => VariableNode(
-        templateSection: TemplateSection(
-            //TODO experiment: Can VariableNode throw an error here, hoping that PetiteParser will continue and collect errors. If so remove TemplateSection
-            text: values[2],
-            row: -1,
-            column: -1,
-            template: TextTemplate('dummy')),
-        namePath: values[2]));
+Parser<RenderNode> variableParser(ParserContext context) =>
+    (string(context.tagStart) &
+            whiteSpaceParser().optional() &
+            variableNamePathParser() &
+            whiteSpaceParser().optional() &
+            string(context.tagEnd))
+        .map2((values, position) => VariableNode(
+            templateSection: TemplateSection(
+              template: context.template,
+              parserPosition: position,
+            ),
+            namePath: values[2]));
 
 Parser variableNameParser() => (letter() | digit()).plus().flatten();
 
@@ -67,8 +66,7 @@ class ParserWarning {
   @override
   String toString() => 'Parser warning: $message\n'
       'Template source: ${templateSection.template.source}\n'
-      'Template location: ${templateSection.row}:${templateSection.column}\n'
-      'Template section: ${templateSection.text}\n';
+      'Template location: ${templateSection.parserPosition}\n';
 }
 
 class ParseException implements Exception {
@@ -77,6 +75,9 @@ class ParseException implements Exception {
 }
 
 class ParserContext {
+  /// The template being parsed (for error or warning logging)
+  final Template template;
+
   /// See [tagGroups] doc in [TemplateEngine] constructor
   final TagGroups tagGroups;
 
@@ -93,6 +94,7 @@ class ParserContext {
   final Logger logger;
 
   ParserContext({
+    required this.template,
     required this.tagGroups,
     this.variables = const {},
     this.tagStart = '{{',
