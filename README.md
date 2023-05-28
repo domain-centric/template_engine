@@ -1,25 +1,25 @@
 A Dart library to parse and render templates.
 
 ## Features
-
-TODO: List what your package can do. Maybe include images, gifs, or videos.
+- Use variables and nested variables
 
 ## Getting started
 
-TODO: List prerequisites and provide or point to information on how to
-start using the package.
+See: [Installing](https://github.com/domain-centric/template_engine/install)
 
 ## Usage
 
-TODO: Include short and useful examples for package users. Add longer examples
-to `/example` folder.
-
 ```dart
-const like = 'sample';
+import 'package:template_engine/template_engine.dart';
+
+void main() {
+  var template = TextTemplate('Hello {{name}}.');
+  // See also FileTemplate and WebTemplate
+  var engine = TemplateEngine(variables: {'name': 'world'});
+  var model = engine.parse(template);
+  // Here you could additionally mutate or validate the model if needed.
+  print(engine.render(model)); // should print 'Hello world.';
+}
 ```
 
-## Additional information
-
-TODO: Tell users more about the package: where to find more information, how to
-contribute to the package, how to file issues, what response they can expect
-from the package authors, and more.
+For more see: [Examples](https://github.com/domain-centric/template_engine/example)
