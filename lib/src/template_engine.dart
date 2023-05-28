@@ -1,9 +1,11 @@
 import 'package:template_engine/src/event.dart';
-import 'package:template_engine/src/parser/parser.dart';
+import 'package:template_engine/src/generic_parser/parser.dart';
 import 'package:template_engine/src/render.dart';
 import 'package:template_engine/src/tag/group.dart';
-import 'package:template_engine/src/tag/tag.dart';
+import 'package:template_engine/src/tag/tag_renderer.dart';
 import 'package:template_engine/src/template.dart';
+
+import 'generic_parser/parser.dart';
 
 /// The [TemplateEngine] does the following:
 /// * get the [Template]

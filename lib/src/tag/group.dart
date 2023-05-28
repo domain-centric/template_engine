@@ -1,6 +1,6 @@
 import 'dart:collection';
 
-import 'package:template_engine/src/tag/tag.dart';
+import 'package:template_engine/src/tag/tag_renderer.dart';
 
 class TagGroups extends UnmodifiableListView<TagGroup> {
   TagGroups(super.source);
@@ -17,8 +17,9 @@ class TagGroup extends UnmodifiableListView<TagDefinition> {
 }
 
 class StandardTagGroups extends TagGroups {
-  StandardTagGroups()
-      : super([
-//TODO
-        ]);
+  StandardTagGroups() : super([]);
+}
+
+class CoreTagGroup extends TagGroup {
+  CoreTagGroup() : super('Core', []);
 }
