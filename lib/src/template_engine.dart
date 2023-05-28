@@ -5,8 +5,6 @@ import 'package:template_engine/src/tag/group.dart';
 import 'package:template_engine/src/tag/tag_renderer.dart';
 import 'package:template_engine/src/template.dart';
 
-import 'generic_parser/parser.dart';
-
 /// The [TemplateEngine] does the following:
 /// * get the [Template]
 /// * parse the [Template] text into a

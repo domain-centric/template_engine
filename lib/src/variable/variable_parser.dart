@@ -3,8 +3,6 @@ import 'package:template_engine/src/generic_parser/map2_parser_extension.dart';
 import 'package:template_engine/src/variable/variable_renderer.dart';
 import 'package:template_engine/template_engine.dart';
 
-import '../generic_parser/parser.dart';
-
 Parser<RenderNode> variableParser(ParserContext context) =>
     (string(context.tagStart) &
             whiteSpaceParser().optional() &
