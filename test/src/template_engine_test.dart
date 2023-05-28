@@ -1,10 +1,13 @@
 import 'package:shouldly/shouldly.dart';
 import 'package:given_when_then_unit_test/given_when_then_unit_test.dart';
+import 'package:template_engine/src/event.dart';
 import 'package:template_engine/src/parser/parser.dart';
 import 'package:template_engine/src/render.dart';
 import 'package:template_engine/src/template.dart';
 import 'package:template_engine/src/template_engine.dart';
 import 'package:template_engine/src/variable/variable.dart';
+
+import 'event_test.dart';
 
 void main() {
   given('object: TemplateEngine with variable and a template', () {
@@ -52,19 +55,31 @@ void main() {
     var engine = TemplateEngine(variables: {});
 
     when('call: parse(template)', () {
-      engine.parse(template);
-
-//TODO
-      // then('expect: a  thrown',
-      //     () => Should.throwException<ParseException>(() => {engine.parse(template)}));
-    });
-
-    when('call: render(model)', () {
-      var model = engine.parse(template);
       then(
-          'expect: an error is thrown',
+          'expect: a  thrown',
+          () => Should.throwException<ParseException>(
+              () => {engine.parse(template)}));
+    });
+  });
+
+  given('object: TemplateEngine with EMPTY variables and a RenderNodeThatRegistersError', () {
+    var model=RenderNodeThatRegistersError();
+    var engine = TemplateEngine(variables: {});
+  
+
+    when('call: parse(template)', () {
+      then(
+          'expect: a  thrown',
           () => Should.throwException<RenderException>(
               () => {engine.render(model)}));
     });
   });
+}
+
+class RenderNodeThatRegistersError extends ParentNode {
+  @override
+  String render(RenderContext context) {
+    context.events.add(Event.renderError('Something went wrong.', DummyTemplateSection()));
+    return "";
+  }
 }
