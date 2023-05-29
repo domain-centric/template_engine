@@ -13,7 +13,7 @@ A flexible Dart library to parse templates and render output such as:
 
 ## Getting started
 
-See: [Installing](https://github.com/domain-centric/template_engine/install)
+See: [Installing](https://pub.dev/packages/template_engine/install)
 
 ## Usage
 
@@ -30,4 +30,4 @@ void main() {
 }
 ```
 
-For more see: [Examples](https://github.com/domain-centric/template_engine/example)
+For more see: [Examples](https://pub.dev/packages/template_engine/example)
