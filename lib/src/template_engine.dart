@@ -6,11 +6,17 @@ import 'package:template_engine/src/tag/tag_renderer.dart';
 import 'package:template_engine/src/template.dart';
 
 /// The [TemplateEngine] does the following:
-/// * get the [Template]
-/// * parse the [Template] text into a
+/// * Parse the [Template] text into a
 ///   [parser tree](https://en.wikipedia.org/wiki/Parse_tree), see [RenderNode]
-/// * render the [parser tree](https://en.wikipedia.org/wiki/Parse_tree)
-///   to a string (and write it as files when needed)
+/// * Render the [parser tree](https://en.wikipedia.org/wiki/Parse_tree)
+///   to a output such as:
+///   * [Html](https://en.wikipedia.org/wiki/HTML)
+///   * [Programming code](https://en.wikipedia.org/wiki/Programming_language)
+///   * [Markdown](https://en.wikipedia.org/wiki/Markdown)
+///   * [Xml](https://en.wikipedia.org/wiki/XML), 
+///     [Json](https://en.wikipedia.org/wiki/JSON), 
+///     [Yaml](https://en.wikipedia.org/wiki/YAML)
+///   * Etc...
 ///
 /// ```dart
 /// TODO add link to an example file
