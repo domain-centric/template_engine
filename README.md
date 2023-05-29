@@ -1,5 +1,5 @@
 
-![](https://github.com/domain-centric/template_engine/doc/template/temlate_engine_with_text.png)
+![](https://raw.githubusercontent.com/domain-centric/template_engine/main/doc/template/temlate_engine_with_text.png)
 
 A flexible Dart library to parse templates and render output such as:
 * [Html](https://en.wikipedia.org/wiki/HTML)
