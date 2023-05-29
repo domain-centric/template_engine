@@ -13,8 +13,8 @@ import 'package:template_engine/src/template.dart';
 ///   * [Html](https://en.wikipedia.org/wiki/HTML)
 ///   * [Programming code](https://en.wikipedia.org/wiki/Programming_language)
 ///   * [Markdown](https://en.wikipedia.org/wiki/Markdown)
-///   * [Xml](https://en.wikipedia.org/wiki/XML), 
-///     [Json](https://en.wikipedia.org/wiki/JSON), 
+///   * [Xml](https://en.wikipedia.org/wiki/XML),
+///     [Json](https://en.wikipedia.org/wiki/JSON),
 ///     [Yaml](https://en.wikipedia.org/wiki/YAML)
 ///   * Etc...
 ///
