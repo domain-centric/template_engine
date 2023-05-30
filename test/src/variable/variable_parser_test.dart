@@ -6,7 +6,6 @@ import 'package:template_engine/src/template.dart';
 import 'package:template_engine/src/template_engine.dart';
 import 'package:template_engine/src/variable/variable_renderer.dart';
 
-
 void main() {
   given('object: TemplateEngine with variable and a template', () {
     var template = TextTemplate('Hello {{name}}.');
@@ -48,9 +47,9 @@ void main() {
     });
   });
 
-
-given('object: TemplateEngine with variable and a '
-'template with spaces before variable name', () {
+  given(
+      'object: TemplateEngine with variable and a '
+      'template with spaces before variable name', () {
     var template = TextTemplate('Hello {{  \t name}}.');
     var engine = TemplateEngine(variables: {'name': 'world'});
 
@@ -90,10 +89,9 @@ given('object: TemplateEngine with variable and a '
     });
   });
 
-
-
-given('object: TemplateEngine with variable and a '
-'template with spaces after variable name', () {
+  given(
+      'object: TemplateEngine with variable and a '
+      'template with spaces after variable name', () {
     var template = TextTemplate('Hello {{name  \t }}.');
     var engine = TemplateEngine(variables: {'name': 'world'});
 
@@ -133,11 +131,9 @@ given('object: TemplateEngine with variable and a '
     });
   });
 
-
-
-
-given('object: TemplateEngine with variable and a '
-'template with spaces after variable name', () {
+  given(
+      'object: TemplateEngine with variable and a '
+      'template with spaces after variable name', () {
     var template = TextTemplate('Hello {{\t\tname  \t }}.');
     var engine = TemplateEngine(variables: {'name': 'world'});
 
@@ -177,18 +173,15 @@ given('object: TemplateEngine with variable and a '
     });
   });
 
-
   given('object: TemplateEngine with EMPTY variables and a template', () {
     var template = TextTemplate('Hello {{name}}.');
     var engine = TemplateEngine(variables: {});
 
     when('call: parse(template)', () {
       then(
-          'expect: a  thrown',
+          'expect: a ParseException thrown',
           () => Should.throwException<ParseException>(
               () => {engine.parse(template)}));
     });
   });
-
- 
 }

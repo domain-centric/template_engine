@@ -1,4 +1,3 @@
-import 'package:template_engine/src/event.dart';
 import 'package:template_engine/src/generic_parser/parser.dart';
 import 'package:template_engine/src/render.dart';
 import 'package:template_engine/src/tag/group.dart';
@@ -85,14 +84,14 @@ class TemplateEngine {
     var parser = templateParser(context);
     var result = parser.parse(template.text);
 
-    if (result.isFailure) {
-      context.events.add(Event.parseError(
-          result.message,
-          TemplateSection(
-            template: template,
-            parserPosition: result.toPositionString(),
-          )));
-    }
+    // if (result.isFailure) {
+    //   context.events.add(Event.parseError(
+    //       result.message,
+    //       TemplateSection(
+    //         template: template,
+    //         parserPosition: result.toPositionString(),
+    //       )));
+    // }
     if (context.events.isEmpty) {
       return ParentNode(result.value);
     } else {

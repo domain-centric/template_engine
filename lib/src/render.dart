@@ -43,7 +43,7 @@ class RenderException implements Exception {
   final String message;
 
   RenderException(this.events)
-      : message = events.map((event) => event.toString()).join('\n\n');
+      : message = events.map((event) => event.toString()).toSet().join('\n');
 
   @override
   String toString() => message;
