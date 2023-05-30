@@ -37,6 +37,8 @@ abstract class TagDefinition {
     required this.attributeDefinitions,
   });
 
+  TagNode tagNodeFactory();
+
   @override
   String toString() {
     return 'TagDefinition{'
@@ -74,7 +76,7 @@ class AttributeDefinition {
   /// A function to validate the value of an [Attribute]
   /// It returns an empty list when ok.
   /// It returns a list or error messages when not ok.
-  final List<String> Function(Object value) validator;
+  final List<String> Function(Object value) validateValue;
 
   /// optional=true: the attribute is mandatory
   /// optional=false: the attribute may be omitted
@@ -82,7 +84,7 @@ class AttributeDefinition {
 
   AttributeDefinition({
     required this.name,
-    required this.validator,
+    required this.validateValue,
     required this.optional,
   });
 }
