@@ -1,4 +1,3 @@
-import 'dart:js_interop';
 
 import 'package:shouldly/shouldly.dart';
 import 'package:given_when_then_unit_test/given_when_then_unit_test.dart';
