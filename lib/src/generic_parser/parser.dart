@@ -1,5 +1,5 @@
 import 'package:petitparser/parser.dart';
-import 'package:template_engine/src/event.dart';
+import 'package:template_engine/src/error.dart';
 import 'package:template_engine/src/generic_parser/map2_parser_extension.dart';
 import 'package:template_engine/src/tag/group.dart';
 import 'package:template_engine/src/variable/variable_renderer.dart';
@@ -17,7 +17,7 @@ Parser intParser() => digit().plus().flatten().map(int.parse);
 /// containing [RenderNode]s.
 ///
 /// Note that:
-/// * Errors or warnings are stored in [ParserContext.events]
+/// * Errors or warnings are stored in [ParserContext.errors]
 ///   and are later thrown by the [TemplateEngine.parse] method.
 /// * The start en end of a [Tag] or [Variable] can be escaped so that you
 ///   can use them in a [Template] without being parsed as [Tag] or [Variable].
@@ -49,10 +49,11 @@ Parser<TextNode> escapedTagEndParser(ParserContext context) =>
 Parser<TextNode> missingTagEndParser(ParserContext context) =>
     (string(context.tagStart) & any().star() & string(context.tagEnd).not())
         .map2((values, parsePosition) {
-      context.events.add(Event.parseError(
-          'Found tag start: ${context.tagStart}, '
-          'but it was not followed with a tag end: ${context.tagEnd}',
-          TemplateSection(
+      context.errors.add(Error(
+          stage: ErrorStage.parse,
+          message: 'Found tag start: ${context.tagStart}, '
+              'but it was not followed with a tag end: ${context.tagEnd}',
+          source: ErrorSource(
               template: context.template, parserPosition: parsePosition)));
       return TextNode(values.first.toString());
     });
@@ -62,10 +63,11 @@ Parser<TextNode> missingTagEndParser(ParserContext context) =>
 /// It replaces the [Tag] end to a [TextNode] e.g. containing: }}
 Parser<TextNode> missingTagStartParser(ParserContext context) =>
     string(context.tagEnd).map2((value, parsePosition) {
-      context.events.add(Event.parseError(
-          'Found tag end: ${context.tagEnd}, '
-          'but it was not preceded with a tag start: ${context.tagStart}',
-          TemplateSection(
+      context.errors.add(Error(
+          stage: ErrorStage.parse,
+          message: 'Found tag end: ${context.tagEnd}, '
+              'but it was not preceded with a tag start: ${context.tagStart}',
+          source: ErrorSource(
               template: context.template, parserPosition: parsePosition)));
       return TextNode(value.toString());
     });
@@ -107,7 +109,7 @@ class ParserContext {
   /// See [tagEnd] doc in [TemplateEngine] constructor
   final String tagEnd;
 
-  final List<Event> events;
+  final List<Error> errors;
 
   ParserContext({
     required this.template,
@@ -115,11 +117,11 @@ class ParserContext {
     this.variables = const {},
     this.tagStart = '{{',
     this.tagEnd = '}}',
-  }) : events = [];
+  }) : errors = [];
 }
 
 class ParseException implements Exception {
-  final List<Event> events;
+  final List<Error> events;
   final String message;
 
   ParseException(this.events)

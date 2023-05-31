@@ -1,4 +1,4 @@
-import 'package:template_engine/src/event.dart';
+import 'package:template_engine/src/error.dart';
 import 'package:template_engine/template_engine.dart';
 
 /// You can use [Variables](https://en.wikipedia.org/wiki/Variable_(computer_science))
@@ -60,7 +60,7 @@ abstract class VariableValue {
 /// A [RenderNode] to render a [VariableValue]
 class VariableNode extends RenderNode {
   final List<String> namePath;
-  final TemplateSection source;
+  final ErrorSource source;
 
   VariableNode({
     required this.source,
@@ -75,7 +75,8 @@ class VariableNode extends RenderNode {
       var value = findVariableValue(context.variables, namePath);
       return value.toString();
     } on VariableException catch (e) {
-      context.events.add(Event.renderError(e.message, source));
+      context.errors.add(
+          Error(stage: ErrorStage.render, message: e.message, source: source));
       return '';
     }
   }

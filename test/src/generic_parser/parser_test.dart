@@ -1,4 +1,3 @@
-
 import 'package:shouldly/shouldly.dart';
 import 'package:given_when_then_unit_test/given_when_then_unit_test.dart';
 import 'package:template_engine/src/generic_parser/parser.dart';
@@ -107,7 +106,8 @@ void main() {
                 .be('{{'));
 
         then(
-            'expect: second child node to be a TextNode with text " this is not a tag or variable "',
+            'expect: second child node to be a TextNode '
+            'with text " this is not a tag or variable "',
             () => model.children[1].should
                 .beOfType<TextNode>()!
                 .text
@@ -143,7 +143,7 @@ void main() {
         } on Exception catch (e) {
           then('expect: e is  ParseException',
               () => e.should.beOfType<ParseException>());
-          var expected = 'Parse Warning: Unknown tag or variable. '
+          var expected = 'Parse Error: Unknown tag or variable. '
               'position: 1:7 source: Text';
           then('expect: e message to be "$expected"',
               () => e.toString().should.be(expected));

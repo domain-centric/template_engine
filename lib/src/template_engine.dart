@@ -92,10 +92,10 @@ class TemplateEngine {
     //         parserPosition: result.toPositionString(),
     //       )));
     // }
-    if (context.events.isEmpty) {
+    if (context.errors.isEmpty) {
       return ParentNode(result.value);
     } else {
-      throw ParseException(context.events);
+      throw ParseException(context.errors);
     }
   }
 
@@ -104,10 +104,10 @@ class TemplateEngine {
   String render(ParentNode model) {
     var context = RenderContext(variables);
     var result = model.render(context);
-    if (context.events.isEmpty) {
+    if (context.errors.isEmpty) {
       return result;
     } else {
-      throw RenderException(context.events);
+      throw RenderException(context.errors);
     }
   }
 }

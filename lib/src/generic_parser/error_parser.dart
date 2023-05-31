@@ -1,5 +1,5 @@
 import 'package:petitparser/petitparser.dart';
-import 'package:template_engine/src/event.dart';
+import 'package:template_engine/src/error.dart';
 import 'package:template_engine/src/generic_parser/map2_parser_extension.dart';
 import 'package:template_engine/template_engine.dart';
 
@@ -11,9 +11,10 @@ Parser<RenderNode> unknownTagOrVariableParser(ParserContext context) =>
             whiteSpaceParser().optional() &
             string(context.tagEnd))
         .map2((values, parserPosition) {
-      context.events.add(Event.parseWarning(
-          'Unknown tag or variable.',
-          TemplateSection(
+      context.errors.add(Error(
+          stage: ErrorStage.parse,
+          message: 'Unknown tag or variable.',
+          source: ErrorSource(
             template: context.template,
             parserPosition: parserPosition,
           )));

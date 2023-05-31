@@ -1,4 +1,4 @@
-import 'package:template_engine/src/event.dart';
+import 'package:template_engine/src/error.dart';
 
 /// Renders some text depending on the implementation of the [RenderNode]
 abstract class RenderNode {
@@ -27,19 +27,19 @@ class ParentNode extends RenderNode {
 
 class RenderContext {
   final Map<String, Object> variables;
-  final List<Event> events;
+  final List<Error> errors;
 
   RenderContext(
     Map<String, Object> variables,
   )   : variables = _createMapClone(variables),
-        events = [];
+        errors = [];
 
   static _createMapClone(Map<String, Object> variables) =>
       Map<String, Object>.from(variables);
 }
 
 class RenderException implements Exception {
-  final List<Event> events;
+  final List<Error> events;
   final String message;
 
   RenderException(this.events)

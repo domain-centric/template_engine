@@ -1,13 +1,13 @@
 import 'package:shouldly/shouldly.dart';
 import 'package:given_when_then_unit_test/given_when_then_unit_test.dart';
-import 'package:template_engine/src/event.dart';
+import 'package:template_engine/src/error.dart';
 import 'package:template_engine/src/generic_parser/parser.dart';
 import 'package:template_engine/src/render.dart';
 import 'package:template_engine/src/template.dart';
 import 'package:template_engine/src/template_engine.dart';
 import 'package:template_engine/src/variable/variable_renderer.dart';
 
-import 'event_test.dart';
+import 'error_test.dart';
 
 void main() {
   given('object: TemplateEngine with variable and a template', () {
@@ -80,8 +80,10 @@ void main() {
 class RenderNodeThatRegistersError extends ParentNode {
   @override
   String render(RenderContext context) {
-    context.events.add(
-        Event.renderError('Something went wrong.', DummyTemplateSection()));
+    context.errors.add(Error(
+        stage: ErrorStage.render,
+        message: 'Something went wrong.',
+        source: DummySource()));
     return "";
   }
 }
