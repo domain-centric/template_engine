@@ -128,7 +128,6 @@ class ParseResult extends ParentNode {
     this.errors = const [],
   }) : super(children);
 
-  String? get errorMessage => errors.isEmpty
-      ? null
-      : errors.map((event) => event.toString()).toSet().join('\n');
+  String get errorMessage =>
+      errors.map((event) => event.toString()).toSet().join('\n');
 }
