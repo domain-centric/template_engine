@@ -7,7 +7,7 @@ Parser<RenderNode> unknownTagOrVariableParser(ParserContext context) =>
     (string(context.tagStart) &
             whiteSpaceParser().optional() &
             // any text up unit the Tag end
-            any().starLazy(string(context.tagEnd)) &
+            any().starLazy(string(context.tagEnd)).flatten() &
             whiteSpaceParser().optional() &
             string(context.tagEnd))
         .map2((values, parserPosition) {

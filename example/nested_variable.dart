@@ -15,7 +15,7 @@ void main() {
     }
   };
   var engine = TemplateEngine(variables: variables);
-  var model = engine.parse(template);
-  // Here you could additionally mutate or validate the model if needed.
-  print(engine.render(model)); // should print 'Hello Jane Doe.';
+  var parseResult = engine.parse(template);
+  // Here you could additionally mutate or validate the parseResult if needed.
+  print(engine.render(parseResult)); // should print 'Hello Jane Doe.';
 }

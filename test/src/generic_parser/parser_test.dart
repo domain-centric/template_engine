@@ -12,12 +12,13 @@ void main() {
       var engine = TemplateEngine(variables: {});
 
       when('call: parse(template)', () {
-        var model = engine.parse(template);
+        var parseResult = engine.parse(template);
 
-        then('expect: 3 child nodes', () => model.children.length.should.be(3));
+        then('expect: 3 child nodes',
+            () => parseResult.children.length.should.be(3));
         then(
             'expect: first child node to be a TextNode with text "Hallo "',
-            () => model.children.first.should
+            () => parseResult.children.first.should
                 .beOfType<TextNode>()!
                 .text
                 .should
@@ -25,7 +26,7 @@ void main() {
 
         then(
             'expect: second child node to be a TextNode with text "{{"',
-            () => model.children[1].should
+            () => parseResult.children[1].should
                 .beOfType<TextNode>()!
                 .text
                 .should
@@ -33,16 +34,16 @@ void main() {
 
         then(
             'expect: last child node to be a TextNode with text " world."',
-            () => model.children.last.should
+            () => parseResult.children.last.should
                 .beOfType<TextNode>()!
                 .text
                 .should
                 .be(' world.'));
       });
 
-      when('call: render(model)', () {
-        var model = engine.parse(template);
-        var result = engine.render(model);
+      when('call: render(parseResult)', () {
+        var parseResult = engine.parse(template);
+        var result = engine.render(parseResult);
         then('return: "Hello {{ world."',
             () => result.should.be('Hello {{ world.'));
       });
@@ -53,12 +54,13 @@ void main() {
       var engine = TemplateEngine(variables: {});
 
       when('call: parse(template)', () {
-        var model = engine.parse(template);
+        var parseResult = engine.parse(template);
 
-        then('expect: 3 child nodes', () => model.children.length.should.be(3));
+        then('expect: 3 child nodes',
+            () => parseResult.children.length.should.be(3));
         then(
             'expect: first child node to be a TextNode with text "Hallo "',
-            () => model.children.first.should
+            () => parseResult.children.first.should
                 .beOfType<TextNode>()!
                 .text
                 .should
@@ -66,7 +68,7 @@ void main() {
 
         then(
             'expect: second child node to be a TextNode with text "}}"',
-            () => model.children[1].should
+            () => parseResult.children[1].should
                 .beOfType<TextNode>()!
                 .text
                 .should
@@ -74,16 +76,16 @@ void main() {
 
         then(
             'expect: last child node to be a TextNode with text " world. "',
-            () => model.children.last.should
+            () => parseResult.children.last.should
                 .beOfType<TextNode>()!
                 .text
                 .should
                 .be(' world.'));
       });
 
-      when('call: render(model)', () {
-        var model = engine.parse(template);
-        var result = engine.render(model);
+      when('call: render(parseResult)', () {
+        var parseResult = engine.parse(template);
+        var result = engine.render(parseResult);
         then('return: "Hello }} world."',
             () => result.should.be('Hello }} world.'));
       });
@@ -94,12 +96,13 @@ void main() {
       var engine = TemplateEngine(variables: {});
 
       when('call: parse(template)', () {
-        var model = engine.parse(template);
+        var parseResult = engine.parse(template);
 
-        then('expect: 3 child nodes', () => model.children.length.should.be(3));
+        then('expect: 3 child nodes',
+            () => parseResult.children.length.should.be(3));
         then(
             'expect: first child node to be a TextNode with text "{{"',
-            () => model.children.first.should
+            () => parseResult.children.first.should
                 .beOfType<TextNode>()!
                 .text
                 .should
@@ -108,7 +111,7 @@ void main() {
         then(
             'expect: second child node to be a TextNode '
             'with text " this is not a tag or variable "',
-            () => model.children[1].should
+            () => parseResult.children[1].should
                 .beOfType<TextNode>()!
                 .text
                 .should
@@ -116,16 +119,16 @@ void main() {
 
         then(
             'expect: last child node to be a TextNode with text "}}"',
-            () => model.children.last.should
+            () => parseResult.children.last.should
                 .beOfType<TextNode>()!
                 .text
                 .should
                 .be('}}'));
       });
 
-      when('call: render(model)', () {
-        var model = engine.parse(template);
-        var result = engine.render(model);
+      when('call: render(parseResult)', () {
+        var parseResult = engine.parse(template);
+        var result = engine.render(parseResult);
         then('return: "{{ this is not a tag or variable }}"',
             () => result.should.be('{{ this is not a tag or variable }}'));
       });
@@ -142,7 +145,7 @@ void main() {
           engine.parse(template);
         } on Exception catch (e) {
           then('expect: e is  ParseException',
-              () => e.should.beOfType<ParseException>());
+              () => e.should.beOfType<ParseResult>());
           var expected = 'Parse Error: Unknown tag or variable. '
               'position: 1:7 source: Text';
           then('expect: e message to be "$expected"',
@@ -162,7 +165,7 @@ void main() {
           engine.parse(template);
         } on Exception catch (e) {
           then('expect: e is  ParseException',
-              () => e.should.beOfType<ParseException>());
+              () => e.should.beOfType<ParseResult>());
 
           var expected = 'Parse Error: Found tag start: {{, '
               'but it was not followed '
@@ -183,7 +186,7 @@ void main() {
           engine.parse(template);
         } on Exception catch (e) {
           then('expect: e is  ParseException',
-              () => e.should.beOfType<ParseException>());
+              () => e.should.beOfType<ParseResult>());
 
           var expected =
               'Parse Error: Found tag start: {{, but it was not followed '
@@ -204,7 +207,7 @@ void main() {
           engine.parse(template);
         } on Exception catch (e) {
           then('expect: e is  ParseException',
-              () => e.should.beOfType<ParseException>());
+              () => e.should.beOfType<ParseResult>());
 
           var expected =
               'Parse Error: Found tag start: {{, but it was not followed '
@@ -227,7 +230,7 @@ void main() {
           engine.parse(template);
         } on Exception catch (e) {
           then('expect: e is  ParseException',
-              () => e.should.beOfType<ParseException>());
+              () => e.should.beOfType<ParseResult>());
 
           var expected =
               'Parse Error: Found tag end: }}, but it was not preceded '
@@ -248,7 +251,7 @@ void main() {
           engine.parse(template);
         } on Exception catch (e) {
           then('expect: e is  ParseException',
-              () => e.should.beOfType<ParseException>());
+              () => e.should.beOfType<ParseResult>());
 
           var expected =
               'Parse Error: Found tag end: }}, but it was not preceded '
@@ -269,7 +272,7 @@ void main() {
           engine.parse(template);
         } on Exception catch (e) {
           then('expect: e is  ParseException',
-              () => e.should.beOfType<ParseException>());
+              () => e.should.beOfType<ParseResult>());
 
           var expected =
               'Parse Error: Found tag end: }}, but it was not preceded '

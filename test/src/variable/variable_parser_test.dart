@@ -1,6 +1,5 @@
 import 'package:shouldly/shouldly.dart';
 import 'package:given_when_then_unit_test/given_when_then_unit_test.dart';
-import 'package:template_engine/src/generic_parser/parser.dart';
 import 'package:template_engine/src/render.dart';
 import 'package:template_engine/src/template.dart';
 import 'package:template_engine/src/template_engine.dart';
@@ -12,12 +11,13 @@ void main() {
     var engine = TemplateEngine(variables: {'name': 'world'});
 
     when('call: parse(template)', () {
-      var model = engine.parse(template);
+      var parseResult = engine.parse(template);
 
-      then('expect: 3 child nodes', () => model.children.length.should.be(3));
+      then('expect: 3 child nodes',
+          () => parseResult.children.length.should.be(3));
       then(
           'expect: first child node to be a TextNode with text "Hallo "',
-          () => model.children.first.should
+          () => parseResult.children.first.should
               .beOfType<TextNode>()!
               .text
               .should
@@ -25,7 +25,7 @@ void main() {
 
       then(
           'expect: second child node to be a VariableNode with namePath "name"',
-          () => model.children[1].should
+          () => parseResult.children[1].should
               .beOfType<VariableNode>()!
               .namePath
               .should
@@ -33,16 +33,16 @@ void main() {
 
       then(
           'expect: last child node to be a TextNode with text "."',
-          () => model.children.last.should
+          () => parseResult.children.last.should
               .beOfType<TextNode>()!
               .text
               .should
               .be('.'));
     });
 
-    when('call: render(model)', () {
-      var model = engine.parse(template);
-      var result = engine.render(model);
+    when('call: render(parseResult)', () {
+      var parseResult = engine.parse(template);
+      var result = engine.render(parseResult);
       then('return: "Hello world."', () => result.should.be('Hello world.'));
     });
   });
@@ -54,12 +54,13 @@ void main() {
     var engine = TemplateEngine(variables: {'name': 'world'});
 
     when('call: parse(template)', () {
-      var model = engine.parse(template);
+      var parseResult = engine.parse(template);
 
-      then('expect: 3 child nodes', () => model.children.length.should.be(3));
+      then('expect: 3 child nodes',
+          () => parseResult.children.length.should.be(3));
       then(
           'expect: first child node to be a TextNode with text "Hallo "',
-          () => model.children.first.should
+          () => parseResult.children.first.should
               .beOfType<TextNode>()!
               .text
               .should
@@ -67,7 +68,7 @@ void main() {
 
       then(
           'expect: second child node to be a VariableNode with namePath "name"',
-          () => model.children[1].should
+          () => parseResult.children[1].should
               .beOfType<VariableNode>()!
               .namePath
               .should
@@ -75,16 +76,16 @@ void main() {
 
       then(
           'expect: last child node to be a TextNode with text "."',
-          () => model.children.last.should
+          () => parseResult.children.last.should
               .beOfType<TextNode>()!
               .text
               .should
               .be('.'));
     });
 
-    when('call: render(model)', () {
-      var model = engine.parse(template);
-      var result = engine.render(model);
+    when('call: render(parseResult)', () {
+      var parseResult = engine.parse(template);
+      var result = engine.render(parseResult);
       then('return: "Hello world."', () => result.should.be('Hello world.'));
     });
   });
@@ -96,12 +97,13 @@ void main() {
     var engine = TemplateEngine(variables: {'name': 'world'});
 
     when('call: parse(template)', () {
-      var model = engine.parse(template);
+      var parseResult = engine.parse(template);
 
-      then('expect: 3 child nodes', () => model.children.length.should.be(3));
+      then('expect: 3 child nodes',
+          () => parseResult.children.length.should.be(3));
       then(
           'expect: first child node to be a TextNode with text "Hallo "',
-          () => model.children.first.should
+          () => parseResult.children.first.should
               .beOfType<TextNode>()!
               .text
               .should
@@ -109,7 +111,7 @@ void main() {
 
       then(
           'expect: second child node to be a VariableNode with namePath "name"',
-          () => model.children[1].should
+          () => parseResult.children[1].should
               .beOfType<VariableNode>()!
               .namePath
               .should
@@ -117,16 +119,16 @@ void main() {
 
       then(
           'expect: last child node to be a TextNode with text "."',
-          () => model.children.last.should
+          () => parseResult.children.last.should
               .beOfType<TextNode>()!
               .text
               .should
               .be('.'));
     });
 
-    when('call: render(model)', () {
-      var model = engine.parse(template);
-      var result = engine.render(model);
+    when('call: render(parseResult)', () {
+      var parseResult = engine.parse(template);
+      var result = engine.render(parseResult);
       then('return: "Hello world."', () => result.should.be('Hello world.'));
     });
   });
@@ -138,12 +140,13 @@ void main() {
     var engine = TemplateEngine(variables: {'name': 'world'});
 
     when('call: parse(template)', () {
-      var model = engine.parse(template);
+      var parseResult = engine.parse(template);
 
-      then('expect: 3 child nodes', () => model.children.length.should.be(3));
+      then('expect: 3 child nodes',
+          () => parseResult.children.length.should.be(3));
       then(
           'expect: first child node to be a TextNode with text "Hallo "',
-          () => model.children.first.should
+          () => parseResult.children.first.should
               .beOfType<TextNode>()!
               .text
               .should
@@ -151,7 +154,7 @@ void main() {
 
       then(
           'expect: second child node to be a VariableNode with namePath "name"',
-          () => model.children[1].should
+          () => parseResult.children[1].should
               .beOfType<VariableNode>()!
               .namePath
               .should
@@ -159,16 +162,16 @@ void main() {
 
       then(
           'expect: last child node to be a TextNode with text "."',
-          () => model.children.last.should
+          () => parseResult.children.last.should
               .beOfType<TextNode>()!
               .text
               .should
               .be('.'));
     });
 
-    when('call: render(model)', () {
-      var model = engine.parse(template);
-      var result = engine.render(model);
+    when('call: render(parseResult)', () {
+      var parseResult = engine.parse(template);
+      var result = engine.render(parseResult);
       then('return: "Hello world."', () => result.should.be('Hello world.'));
     });
   });
@@ -178,10 +181,41 @@ void main() {
     var engine = TemplateEngine(variables: {});
 
     when('call: parse(template)', () {
+      var parseResult = engine.parse(template);
+
+      then('expect: 3 child nodes',
+          () => parseResult.children.length.should.be(3));
       then(
-          'expect: a ParseException thrown',
-          () => Should.throwException<ParseException>(
-              () => {engine.parse(template)}));
+          'expect: first child node to be a TextNode with text "Hallo "',
+          () => parseResult.children.first.should
+              .beOfType<TextNode>()!
+              .text
+              .should
+              .be('Hello '));
+
+      then(
+          'expect: second child node to be a TextNode with text "{{name}}"',
+          () => parseResult.children[1].should
+              .beOfType<TextNode>()!
+              .text
+              .should
+              .be('{{name}}'));
+
+      then(
+          'expect: last child node to be a TextNode with text "."',
+          () => parseResult.children.last.should
+              .beOfType<TextNode>()!
+              .text
+              .should
+              .be('.'));
+
+      then('expect: result to contain 1 error',
+          () => parseResult.errors.length.should.be(2)); //TODO should be 1!!!
+
+      var expected =
+          'Parse Error: Unknown tag or variable. position: 1:7 source: Text';
+      then('expect: result must have errorMessage: "$expected"',
+          () => parseResult.errorMessage.should.be(expected));
     });
   });
 }

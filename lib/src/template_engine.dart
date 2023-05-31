@@ -1,3 +1,4 @@
+import 'package:template_engine/src/error.dart';
 import 'package:template_engine/src/generic_parser/parser.dart';
 import 'package:template_engine/src/render.dart';
 import 'package:template_engine/src/tag/group.dart';
@@ -17,20 +18,8 @@ import 'package:template_engine/src/template.dart';
 ///     [Yaml](https://en.wikipedia.org/wiki/YAML)
 ///   * Etc...
 ///
-/// ```dart
-/// TODO add link to an example file
-/// main () {
-///  var template=TextTemplate('Hello {{name}}.');
-///  // See also FileTemplate and WebTemplate
-///  var engine=TemplateEngine(variables={'name':'world'});
-///  var model=engine.parse(template);
-///  // Here you could manipulate the model
-///  // or do additional model validations if needed.
-///  assert(engine.render(model),'Hello world.')
-/// }
-/// ```
-///
-/// TODO add link to examples on pub.dev
+/// See the [examples](https://pub.dev/packages/template_engine/example)
+
 class TemplateEngine {
   /// The [TagDefinition]s to be used for parsing.
   /// If null it will use [StandardTagGroups]
@@ -74,7 +63,7 @@ class TemplateEngine {
   /// Parse the [Template] text into a
   /// [parser tree](https://en.wikipedia.org/wiki/Parse_tree).
   /// See [RenderNode]
-  ParentNode parse(Template template) {
+  ParseResult parse(Template template) {
     var context = ParserContext(
         tagGroups: tagGroups,
         variables: variables,
@@ -84,26 +73,23 @@ class TemplateEngine {
     var parser = templateParser(context);
     var result = parser.parse(template.text);
 
-    // if (result.isFailure) {
-    //   context.events.add(Event.parseError(
-    //       result.message,
-    //       TemplateSection(
-    //         template: template,
-    //         parserPosition: result.toPositionString(),
-    //       )));
-    // }
-    if (context.errors.isEmpty) {
-      return ParentNode(result.value);
-    } else {
-      throw ParseException(context.errors);
+    if (result.isFailure) {
+      context.errors.add(Error(
+          stage: ErrorStage.parse,
+          message: result.message,
+          source: ErrorSource(
+            template: template,
+            parserPosition: result.toPositionString(),
+          )));
     }
+    return ParseResult(children: result.value, errors: context.errors);
   }
 
   /// Render the [parser tree](https://en.wikipedia.org/wiki/Parse_tree)
   /// to a string (and write it as files when needed)
-  String render(ParentNode model) {
+  String render(ParentNode renderResult) {
     var context = RenderContext(variables);
-    var result = model.render(context);
+    var result = renderResult.render(context);
     if (context.errors.isEmpty) {
       return result;
     } else {

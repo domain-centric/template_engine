@@ -24,9 +24,9 @@ void main() {
   var template = TextTemplate('Hello {{name}}.');
   // See also FileTemplate and WebTemplate
   var engine = TemplateEngine(variables: {'name': 'world'});
-  var model = engine.parse(template);
-  // Here you could additionally mutate or validate the model if needed.
-  print(engine.render(model)); // should print 'Hello world.';
+  var parseResult = engine.parse(template);
+  // Here you could additionally mutate or validate the parseResult if needed.
+  print(engine.render(parseResult)); // should print 'Hello world.';
 }
 ```
 

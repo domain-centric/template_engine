@@ -120,13 +120,15 @@ class ParserContext {
   }) : errors = [];
 }
 
-class ParseException implements Exception {
-  final List<Error> events;
-  final String message;
+class ParseResult extends ParentNode {
+  final List<Error> errors;
 
-  ParseException(this.events)
-      : message = events.map((event) => event.toString()).toSet().join('\n');
+  ParseResult({
+    required List<RenderNode> children,
+    this.errors = const [],
+  }) : super(children);
 
-  @override
-  String toString() => message;
+  String? get errorMessage => errors.isEmpty
+      ? null
+      : errors.map((event) => event.toString()).toSet().join('\n');
 }
