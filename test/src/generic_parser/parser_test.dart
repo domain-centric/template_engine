@@ -45,7 +45,7 @@ void main() {
         var parseResult = engine.parse(template);
         var result = engine.render(parseResult);
         then('return: "Hello {{ world."',
-            () => result.should.be('Hello {{ world.'));
+            () => result.text.should.be('Hello {{ world.'));
       });
     });
 
@@ -86,8 +86,8 @@ void main() {
       when('call: render(parseResult)', () {
         var parseResult = engine.parse(template);
         var result = engine.render(parseResult);
-        then('return: "Hello }} world."',
-            () => result.should.be('Hello }} world.'));
+        then('return text: "Hello }} world."',
+            () => result.text.should.be('Hello }} world.'));
       });
     });
 
@@ -129,8 +129,8 @@ void main() {
       when('call: render(parseResult)', () {
         var parseResult = engine.parse(template);
         var result = engine.render(parseResult);
-        then('return: "{{ this is not a tag or variable }}"',
-            () => result.should.be('{{ this is not a tag or variable }}'));
+        then('expect: result.text "{{ this is not a tag or variable }}"',
+            () => result.text.should.be('{{ this is not a tag or variable }}'));
       });
     });
   });

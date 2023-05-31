@@ -43,7 +43,8 @@ void main() {
     when('call: render(parseResult)', () {
       var parseResult = engine.parse(template);
       var result = engine.render(parseResult);
-      then('return: "Hello world."', () => result.should.be('Hello world.'));
+      then('return text: "Hello world."',
+          () => result.text.should.be('Hello world.'));
     });
   });
 
@@ -86,7 +87,8 @@ void main() {
     when('call: render(parseResult)', () {
       var parseResult = engine.parse(template);
       var result = engine.render(parseResult);
-      then('return: "Hello world."', () => result.should.be('Hello world.'));
+      then('expect: result.text "Hello world."',
+          () => result.text.should.be('Hello world.'));
     });
   });
 
@@ -129,7 +131,8 @@ void main() {
     when('call: render(parseResult)', () {
       var parseResult = engine.parse(template);
       var result = engine.render(parseResult);
-      then('return: "Hello world."', () => result.should.be('Hello world.'));
+      then('expect: result.text "Hello world."',
+          () => result.text.should.be('Hello world.'));
     });
   });
 
@@ -172,7 +175,8 @@ void main() {
     when('call: render(parseResult)', () {
       var parseResult = engine.parse(template);
       var result = engine.render(parseResult);
-      then('return: "Hello world."', () => result.should.be('Hello world.'));
+      then('expect: result.text "Hello world."',
+          () => result.text.should.be('Hello world.'));
     });
   });
 

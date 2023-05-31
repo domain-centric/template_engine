@@ -87,13 +87,12 @@ class TemplateEngine {
 
   /// Render the [parser tree](https://en.wikipedia.org/wiki/Parse_tree)
   /// to a string (and write it as files when needed)
-  String render(ParentNode renderResult) {
+  RenderResult render(ParentNode renderResult) {
     var context = RenderContext(variables);
-    var result = renderResult.render(context);
-    if (context.errors.isEmpty) {
-      return result;
-    } else {
-      throw RenderException(context.errors);
-    }
+    var text = renderResult.render(context);
+    return RenderResult(
+      text: text,
+      errors: context.errors,
+    );
   }
 }

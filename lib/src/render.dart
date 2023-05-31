@@ -22,7 +22,7 @@ class ParentNode extends RenderNode {
 
   @override
   String render(RenderContext context) =>
-      children.map((node) => node.render(context)).join();
+      children.map((child) => child.render(context)).join();
 }
 
 class RenderContext {
@@ -38,13 +38,18 @@ class RenderContext {
       Map<String, Object>.from(variables);
 }
 
-class RenderException implements Exception {
-  final List<Error> events;
-  final String message;
+class RenderResult implements Exception {
+  final List<Error> errors;
+  final String text;
 
-  RenderException(this.events)
-      : message = events.map((event) => event.toString()).toSet().join('\n');
+  RenderResult({
+    required this.text,
+    this.errors = const [],
+  });
+
+  String get errorMessage =>
+      errors.map((event) => event.toString()).toSet().join('\n');
 
   @override
-  String toString() => message;
+  String toString() => text;
 }

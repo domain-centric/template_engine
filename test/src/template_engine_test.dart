@@ -14,10 +14,13 @@ void main() {
     var engine = TemplateEngine(variables: {});
 
     when('call: render(parseResult)', () {
-      then(
-          'expect: a  thrown',
-          () => Should.throwException<RenderException>(
-              () => {engine.render(parseResult)}));
+      var result = engine.render(parseResult);
+
+      var expected = 'Render Error: Something went wrong. '
+          'position: 1:4 source: Text';
+      then('expect: an errorMessage: "$expected"', () {
+        return result.errorMessage.should.be(expected);
+      });
     });
   });
 }
