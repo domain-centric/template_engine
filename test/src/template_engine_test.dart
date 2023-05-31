@@ -15,9 +15,13 @@ void main() {
 
     when('call: render(parseResult)', () {
       var result = engine.render(parseResult);
+      then('expect: 1 error', () {
+        return result.errors.length.should.be(1);
+      });
 
       var expected = 'Render Error: Something went wrong. '
           'position: 1:4 source: Text';
+
       then('expect: an errorMessage: "$expected"', () {
         return result.errorMessage.should.be(expected);
       });
