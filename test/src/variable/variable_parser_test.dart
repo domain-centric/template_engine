@@ -214,7 +214,7 @@ void main() {
               .be('.'));
 
       then('expect: result to contain 1 error',
-          () => parseResult.errors.length.should.be(2)); //TODO should be 1!!!
+          () => parseResult.errors.length.should.be(1));
 
       var expected =
           'Parse Error: Unknown tag or variable. position: 1:7 source: Text';

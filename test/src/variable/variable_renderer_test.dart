@@ -30,7 +30,7 @@ void main() {
       when('call: node.render(context)', () {
         var result = node.render(context);
 
-        then('expect: context.events to be empty',
+        then('expect: context.errors to be empty',
             () => context.errors.should.beEmpty());
 
         then(
@@ -52,7 +52,7 @@ void main() {
 
       when('call: node.render(context)', () {
         var result = node.render(context);
-        then('expect: context.events to be empty',
+        then('expect: context.errors to be empty',
             () => context.errors.should.beEmpty());
 
         then('expect: result should be "John Doe"',
@@ -71,7 +71,7 @@ void main() {
 
       when('call: node.render(context)', () {
         var result = node.render(context);
-        then('expect: context.events to be empty',
+        then('expect: context.errors to be empty',
             () => context.errors.should.beEmpty());
 
         then('expect: result should be "Jane Doe"',
@@ -95,32 +95,32 @@ void main() {
 
         then('expect: empty result', () => result.should.be(''));
 
-        then('expect: context.events to contain 1 event',
+        then('expect: context.errors to contain 1 error',
             () => context.errors.length.should.be(1));
 
-        then('expect: context.events[0].stage == EventStage.render',
+        then('expect: context.errors[0].stage == errorStage.render',
             () => context.errors[0].stage.should.be(ErrorStage.render));
 
         then(
-            'expect: context.events[0].severity == EventSeverity.error',
+            'expect: context.errors[0].severity == errorSeverity.error',
             () => context.errors[0].message.should
                 .be('Variable name path could not be found: invalid'));
 
         then(
-            'expect: context.events[0].source == "position: 1:4 source: Text"',
+            'expect: context.errors[0].source == "position: 1:4 source: Text"',
             () => context.errors[0].source
                 .toString()
                 .should
                 .be('position: 1:4 source: Text'));
 
         then(
-          'expect: context.events[0].occurrence == no older than 1 minute',
+          'expect: context.errors[0].occurrence == no older than 1 minute',
           () => context.errors[0].occurrence.should
               .beCloseTo(DateTime.now(), delta: const Duration(minutes: 1)),
         );
 
         then(
-          'expect: context.events[0].toString is correct',
+          'expect: context.errors[0].toString is correct',
           () => context.errors[0]
               .toString()
               .should

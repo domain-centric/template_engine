@@ -47,8 +47,7 @@ class RenderResult implements Exception {
     this.errors = const [],
   });
 
-  String get errorMessage =>
-      errors.map((event) => event.toString()).toSet().join('\n');
+  String get errorMessage => errors.map((error) => error.toString()).join('\n');
 
   @override
   String toString() => text;
