@@ -29,7 +29,7 @@ void main() {
               .beOfType<VariableNode>()!
               .namePath
               .should
-              .be(['name']));
+              .be('name'));
 
       then(
           'expect: last child node to be a TextNode with text "."',
@@ -73,7 +73,7 @@ void main() {
               .beOfType<VariableNode>()!
               .namePath
               .should
-              .be(['name']));
+              .be('name'));
 
       then(
           'expect: last child node to be a TextNode with text "."',
@@ -117,7 +117,7 @@ void main() {
               .beOfType<VariableNode>()!
               .namePath
               .should
-              .be(['name']));
+              .be('name'));
 
       then(
           'expect: last child node to be a TextNode with text "."',
@@ -161,7 +161,7 @@ void main() {
               .beOfType<VariableNode>()!
               .namePath
               .should
-              .be(['name']));
+              .be('name'));
 
       then(
           'expect: last child node to be a TextNode with text "."',

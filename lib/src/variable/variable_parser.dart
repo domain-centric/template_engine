@@ -1,6 +1,7 @@
 import 'package:petitparser/petitparser.dart';
 import 'package:template_engine/src/error.dart';
 import 'package:template_engine/src/generic_parser/map2_parser_extension.dart';
+import 'package:template_engine/src/variable/variable.dart';
 import 'package:template_engine/src/variable/variable_renderer.dart';
 import 'package:template_engine/template_engine.dart';
 
@@ -34,34 +35,13 @@ class VariableNamePathParser extends Parser<String> {
   static Parser<String> _createParser(ParserContext context) {
     var variables = context.variables;
     if (variables.isEmpty) {
-      return string('Never supposed to find this when there are no variables');
+      return string('dummy parser that is never going to '
+          'replace any variables because there are none');
     } else {}
     return ChoiceParser<String>(_createNamePathParsers(variables));
   }
 
-  static List<Parser<String>> _createNamePathParsers(
-      Map<String, Object> variables,
-      [String parentPath = '']) {
-    List<Parser<String>> namePathParsers = [];
-    for (String name in variables.keys) {
-      //TODO validate name
-      String namePath = _createNamePath(parentPath, name);
-      namePathParsers.add(string(namePath));
-      var value = variables[name];
-      if (value is Map<String, Object>) {
-        // recursive call
-        // TODO do we need to add something to prevent endless round trips?
-        namePathParsers.addAll(_createNamePathParsers(value, namePath));
-      }
-    }
-    return namePathParsers;
-  }
-
-  static String _createNamePath(String parentPath, String name) {
-    if (parentPath.isEmpty) {
-      return name;
-    } else {
-      return '$parentPath.$name';
-    }
-  }
+  static List<Parser<String>> _createNamePathParsers(Variables variables) =>
+      variables.namePaths.map((namePath) => string(namePath)).toList();
+  
 }

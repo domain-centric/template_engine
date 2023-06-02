@@ -4,6 +4,7 @@ import 'package:template_engine/src/render.dart';
 import 'package:template_engine/src/tag/group.dart';
 import 'package:template_engine/src/tag/tag_renderer.dart';
 import 'package:template_engine/src/template.dart';
+import 'package:template_engine/src/variable/variable.dart';
 
 /// The [TemplateEngine] does the following:
 /// * Parse the [Template] text into a
@@ -25,11 +26,11 @@ class TemplateEngine {
   /// If null it will use [StandardTagGroups]
   final TagGroups tagGroups;
 
-  /// The variables to be used for parsing.
-  /// Note that all variables that are used need to be declared here so that
+  /// The [Variables] to be used for parsing.
+  /// Note that all [Variables] that are used need to be declared here so that
   /// the parser can recognize them.
   /// [Variable]s can get a different value during rendering.
-  final Map<String, Object> variables;
+  final Variables variables;
 
   /// The tag starts with given prefix.
   /// Use a prefix combination that is not used elsewhere in your templates.
@@ -55,10 +56,10 @@ class TemplateEngine {
 
   TemplateEngine({
     TagGroups? tagGroups,
-    this.variables = const {},
+    var variables = const <String,Object>{},
     this.tagStart = '{{',
     this.tagEnd = '}}',
-  }) : tagGroups = tagGroups ?? StandardTagGroups();
+  }) : tagGroups = tagGroups ?? StandardTagGroups(), variables=Variables(variables);
 
   /// Parse the [Template] text into a
   /// [parser tree](https://en.wikipedia.org/wiki/Parse_tree).

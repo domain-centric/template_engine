@@ -1,7 +1,7 @@
 import 'package:petitparser/parser.dart';
 import 'package:template_engine/src/error.dart';
 import 'package:template_engine/src/tag/group.dart';
-import 'package:template_engine/src/variable/variable_renderer.dart';
+import 'package:template_engine/src/variable/variable.dart';
 import 'package:template_engine/template_engine.dart';
 
 import '../variable/variable_parser.dart';
@@ -21,8 +21,9 @@ Parser intParser() => digit().plus().flatten().map(int.parse);
 /// * The start en end of a [Tag] or [Variable] can be escaped so that you
 ///   can use them in a [Template] without being parsed as [Tag] or [Variable].
 ///   e.g. \{{ this is not a tag or variable and does not throw errors \}}
-Parser<List<RenderNode>> templateParser(ParserContext context) =>
-    delegatingParser(
+Parser<List<RenderNode>> templateParser(ParserContext context) {
+  validateVariableNames(context);
+  return delegatingParser(
       delegates: [
         escapedTagStartParser(context),
         escapedTagEndParser(context),
@@ -34,6 +35,10 @@ Parser<List<RenderNode>> templateParser(ParserContext context) =>
       tagStart: context.tagStart,
       tagEnd: context.tagEnd,
     );
+}
+
+void validateVariableNames(ParserContext context) {
+}
 
 /// A [delegatingParser] delegates to work to other parsers.
 /// Text that is not handled by the delegates will also be collected
@@ -87,7 +92,7 @@ class ParserContext {
   final TagGroups tagGroups;
 
   /// See [variables] doc in [TemplateEngine] constructor
-  final Map<String, Object> variables; //T
+  final Variables variables; 
 
   /// See [tagStart] doc in [TemplateEngine] constructor
   final String tagStart;
@@ -100,7 +105,7 @@ class ParserContext {
   ParserContext({
     required this.template,
     required this.tagGroups,
-    this.variables = const {},
+    this.variables = const Variables({}),
     this.tagStart = '{{',
     this.tagEnd = '}}',
   }) : errors = [];

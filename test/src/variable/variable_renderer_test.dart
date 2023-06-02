@@ -3,11 +3,12 @@ import 'package:given_when_then_unit_test/given_when_then_unit_test.dart';
 import 'package:template_engine/src/error.dart';
 import 'package:template_engine/src/render.dart';
 import 'package:template_engine/src/template.dart';
+import 'package:template_engine/src/variable/variable.dart';
 import 'package:template_engine/src/variable/variable_renderer.dart';
 
 void main() {
   given('objects: Variables', () {
-    var variables = {
+    var variables = const Variables({
       'person': {
         'name': 'John Doe',
         'age': 30,
@@ -16,7 +17,7 @@ void main() {
           'age': 5,
         }
       }
-    };
+    });
 
     given(
         'objects: ParseContext and '

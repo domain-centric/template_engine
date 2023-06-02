@@ -21,8 +21,7 @@ Parser<RenderNode> unknownTagOrVariableParser(ParserContext context) =>
       return TextNode(values.join());
     });
 
-/// Adds an error if a [Tag] end is found but no [Tag] start because if
-/// they are both present they would have been parsed already.
+/// Adds an error if a [Tag] end is found but not a  [Tag] start.
 /// It replaces the [Tag] end to a [TextNode] e.g. containing: }}
 Parser<RenderNode> missingTagStartParser(ParserContext context) =>
     string(context.tagEnd).map2((value, parsePosition) {

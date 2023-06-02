@@ -1,4 +1,5 @@
 import 'package:template_engine/src/error.dart';
+import 'package:template_engine/src/variable/variable.dart';
 
 /// Renders some text depending on the implementation of the [RenderNode]
 abstract class RenderNode {
@@ -26,16 +27,13 @@ class ParentNode extends RenderNode {
 }
 
 class RenderContext {
-  final Map<String, Object> variables;
+  final Variables variables;
   final List<Error> errors;
 
   RenderContext(
-    Map<String, Object> variables,
-  )   : variables = _createMapClone(variables),
+    Variables variables,
+  )   : variables = variables.clone(),
         errors = [];
-
-  static _createMapClone(Map<String, Object> variables) =>
-      Map<String, Object>.from(variables);
 }
 
 class RenderResult implements Exception {
