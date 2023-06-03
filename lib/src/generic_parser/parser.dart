@@ -22,7 +22,7 @@ Parser intParser() => digit().plus().flatten().map(int.parse);
 ///   can use them in a [Template] without being parsed as [Tag] or [Variable].
 ///   e.g. \{{ this is not a tag or variable and does not throw errors \}}
 Parser<List<RenderNode>> templateParser(ParserContext context) {
-  validateVariableNames(context);
+  context.variables.validateNames();
   return delegatingParser(
     delegates: [
       escapedTagStartParser(context),
@@ -36,8 +36,6 @@ Parser<List<RenderNode>> templateParser(ParserContext context) {
     tagEnd: context.tagEnd,
   );
 }
-
-void validateVariableNames(ParserContext context) {}
 
 /// A [delegatingParser] delegates to work to other parsers.
 /// Text that is not handled by the delegates will also be collected
