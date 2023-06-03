@@ -68,10 +68,19 @@ class Variables extends DelegatingMap<String, Object> {
 
   Variables clone() => Variables(Map<String, Object>.from(this));
 
+  /// Throws an [VariableException] when there are invalid namePath(s)
   void validateNames() {
     var variableName = VariableName();
+    List<String> errors = [];
     for (var namePath in namePaths) {
-      variableName.validate(namePath);
+      try {
+        variableName.validate(namePath);
+      } on VariableException catch (e) {
+        errors.add(e.message);
+      }
+    }
+    if (errors.isNotEmpty) {
+      throw VariableException(errors.join('\n'));
     }
   }
 }
@@ -105,7 +114,7 @@ class VariableName {
     var result = namePathParser.parse(namePath);
     if (result.isFailure) {
       throw VariableException(
-          'Variable name: $namePath is invalid: ${result.message} at position: ${result.position}');
+          'Variable name: "$namePath" is invalid: ${result.message} at position: ${result.position}');
     }
   }
 }

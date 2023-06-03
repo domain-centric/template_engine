@@ -117,7 +117,7 @@ void main() {
                 () => variableName.validate('1'))!
             .message
             .should
-            .be('Variable name: 1 is invalid: letter expected at position: 0');
+            .be('Variable name: "1" is invalid: letter expected at position: 0');
       });
     });
 
@@ -127,7 +127,7 @@ void main() {
                 () => variableName.validate('@'))!
             .message
             .should
-            .be('Variable name: @ is invalid: letter expected at position: 0');
+            .be('Variable name: "@" is invalid: letter expected at position: 0');
       });
     });
 
@@ -137,7 +137,7 @@ void main() {
                 () => variableName.validate('1'))!
             .message
             .should
-            .be('Variable name: 1 is invalid: letter expected at position: 0');
+            .be('Variable name: "1" is invalid: letter expected at position: 0');
       });
     });
 
@@ -147,7 +147,7 @@ void main() {
                 () => variableName.validate('ab@'))!
             .message
             .should
-            .be('Variable name: ab@ is invalid: '
+            .be('Variable name: "ab@" is invalid: '
                 'end of input expected at position: 2');
       });
     });
@@ -158,8 +158,70 @@ void main() {
                 () => variableName.validate('ab1.@'))!
             .message
             .should
-            .be('Variable name: ab1.@ is invalid: '
+            .be('Variable name: "ab1.@" is invalid: '
                 'end of input expected at position: 3');
+      });
+    });
+  });
+
+  given('Variables with correct names', () {
+    var variable = const Variables({'name': 'John Doe', 'age': 30});
+    when('calling validateNames()', () {
+      then('should not throw Exception', () {
+        Should.notThrowException(() => variable.validateNames());
+      });
+    });
+  });
+
+  given('Variables with correct and incorrect name', () {
+    var variable = const Variables({'name': 'John Doe', 'age:': 30});
+    when('calling validateNames()', () {
+      then('should throw a correct exception', () {
+        Should.throwException<VariableException>(
+                () => variable.validateNames())!
+            .message
+            .should
+            .be('Variable name: "age:" is invalid: '
+                'end of input expected at position: 3');
+      });
+    });
+  });
+
+  given('Variables with correct and incorrect name', () {
+    var variable = const Variables({
+      'child': {'n@me': 'Jane Doe'}
+    });
+    when('calling validateNames()', () {
+      then('should throw a correct exception', () {
+        Should.throwException<VariableException>(
+                () => variable.validateNames())!
+            .message
+            .should
+            .be('Variable name: "child.n@me" is invalid: '
+                'end of input expected at position: 7');
+      });
+    });
+  });
+
+  given('Variables with correct and incorrect names', () {
+    var variable = const Variables({
+      'name': 'John Doe',
+      '@ge': 30,
+      'child': {
+        'n@me': 'Jane Doe',
+        'age': 5,
+      }
+    });
+    when('calling validateNames()', () {
+      then('should throw a correct exception', () {
+        Should.throwException<VariableException>(
+                () => variable.validateNames())!
+            .message
+            .should
+            .be('Variable name: "@ge" is invalid: '
+                'letter expected at position: 0\n'
+                'Variable name: "child.n@me" is invalid: '
+                'end of input expected at position: 7');
       });
     });
   });
