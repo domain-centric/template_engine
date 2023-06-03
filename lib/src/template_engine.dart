@@ -56,10 +56,11 @@ class TemplateEngine {
 
   TemplateEngine({
     TagGroups? tagGroups,
-    var variables = const <String,Object>{},
+    var variables = const <String, Object>{},
     this.tagStart = '{{',
     this.tagEnd = '}}',
-  }) : tagGroups = tagGroups ?? StandardTagGroups(), variables=Variables(variables);
+  })  : tagGroups = tagGroups ?? StandardTagGroups(),
+        variables = Variables(variables);
 
   /// Parse the [Template] text into a
   /// [parser tree](https://en.wikipedia.org/wiki/Parse_tree).

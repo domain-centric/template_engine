@@ -182,7 +182,7 @@ void main() {
 
   given('object: TemplateEngine with EMPTY variables and a template', () {
     var template = TextTemplate('Hello {{name}}.');
-    var engine = TemplateEngine(variables: {});
+    var engine = TemplateEngine(variables: <String, Object>{});
 
     when('call: parse(template)', () {
       var parseResult = engine.parse(template);

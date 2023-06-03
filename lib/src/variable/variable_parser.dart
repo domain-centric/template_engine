@@ -43,5 +43,4 @@ class VariableNamePathParser extends Parser<String> {
 
   static List<Parser<String>> _createNamePathParsers(Variables variables) =>
       variables.namePaths.map((namePath) => string(namePath)).toList();
-  
 }

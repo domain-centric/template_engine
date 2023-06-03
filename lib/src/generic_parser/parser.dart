@@ -24,21 +24,20 @@ Parser intParser() => digit().plus().flatten().map(int.parse);
 Parser<List<RenderNode>> templateParser(ParserContext context) {
   validateVariableNames(context);
   return delegatingParser(
-      delegates: [
-        escapedTagStartParser(context),
-        escapedTagEndParser(context),
-        variableParser(context),
-        unknownTagOrVariableParser(context),
-        missingTagStartParser(context),
-        missingTagEndParser(context),
-      ],
-      tagStart: context.tagStart,
-      tagEnd: context.tagEnd,
-    );
+    delegates: [
+      escapedTagStartParser(context),
+      escapedTagEndParser(context),
+      variableParser(context),
+      unknownTagOrVariableParser(context),
+      missingTagStartParser(context),
+      missingTagEndParser(context),
+    ],
+    tagStart: context.tagStart,
+    tagEnd: context.tagEnd,
+  );
 }
 
-void validateVariableNames(ParserContext context) {
-}
+void validateVariableNames(ParserContext context) {}
 
 /// A [delegatingParser] delegates to work to other parsers.
 /// Text that is not handled by the delegates will also be collected
@@ -92,7 +91,7 @@ class ParserContext {
   final TagGroups tagGroups;
 
   /// See [variables] doc in [TemplateEngine] constructor
-  final Variables variables; 
+  final Variables variables;
 
   /// See [tagStart] doc in [TemplateEngine] constructor
   final String tagStart;

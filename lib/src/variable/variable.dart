@@ -1,4 +1,5 @@
 import 'package:collection/collection.dart';
+import 'package:petitparser/petitparser.dart';
 
 /// You can use [Variables](https://en.wikipedia.org/wiki/Variable_(computer_science))
 /// in your [Template]s.
@@ -66,6 +67,13 @@ class Variables extends DelegatingMap<String, Object> {
   }
 
   Variables clone() => Variables(Map<String, Object>.from(this));
+
+  void validateNames() {
+    var variableName = VariableName();
+    for (var namePath in namePaths) {
+      variableName.validate(namePath);
+    }
+  }
 }
 
 class VariableException implements Exception {
@@ -77,10 +85,10 @@ class VariableException implements Exception {
 /// The [VariableName] identifies the [Variable] and corresponds with the keys
 /// in the [Variables] map.
 ///
-/// The [VariableName] may only contain letters or numbers and
-/// is case sensitive.
-///
-/// Make sure that the variable name is unique and does not match a [TagName]
+/// The [VariableName]:
+/// * must be unique and does not match a [TagName]
+/// * must start with a letter, optionally followed by letters and or digits.
+/// * is case sensitive.
 ///
 /// Variables can be nested. Concatenate [VariableName]s separated with dot's
 /// to get the [VariableValue] of a nested [Variable].
@@ -88,8 +96,18 @@ class VariableException implements Exception {
 /// E.g.:
 /// [Variables] map: {'person': {'name': 'John Doe', 'age',30}}
 /// [VariableName] person.name: refers to the [VariableValue] of 'John Doe'
-abstract class VariableName {
-  /// for documentation only
+class VariableName {
+  static final nameParser = (letter().plus() & digit().star()).plus();
+  static final namePathParser =
+      (nameParser & (char('.') & nameParser).star()).end();
+
+  validate(String namePath) {
+    var result = namePathParser.parse(namePath);
+    if (result.isFailure) {
+      throw VariableException(
+          'Variable name: $namePath is invalid: ${result.message} at position: ${result.position}');
+    }
+  }
 }
 
 /// The [VariableValue]s are initialized when the [Variables] are given

@@ -9,6 +9,12 @@
             "type": "dart",
             "request": "launch",
             "program": "example\\example.dart"
+        },
+        {
+            "name": "Dart (test\\src\\variable\\variable_test.dart)",
+            "type": "dart",
+            "request": "launch",
+            "program": "test\\src\\variable\\variable_test.dart"
         }
     ]
 }
