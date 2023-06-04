@@ -1,5 +1,6 @@
 import 'dart:collection';
 
+import 'package:template_engine/src/tag/tag.dart';
 import 'package:template_engine/src/tag/tag_renderer.dart';
 
 class TagGroups extends UnmodifiableListView<TagGroup> {
