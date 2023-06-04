@@ -2,7 +2,6 @@ import 'package:template_engine/src/error.dart';
 import 'package:template_engine/src/generic_parser/parser.dart';
 import 'package:template_engine/src/render.dart';
 import 'package:template_engine/src/tag/group.dart';
-import 'package:template_engine/src/tag/tag_renderer.dart';
 import 'package:template_engine/src/template.dart';
 import 'package:template_engine/src/variable/variable.dart';
 
@@ -79,7 +78,7 @@ class TemplateEngine {
       context.errors.add(Error(
           stage: ErrorStage.parse,
           message: result.message,
-          source: ErrorSource(
+          source: TemplateSource(
             template: template,
             parserPosition: result.toPositionString(),
           )));

@@ -11,7 +11,7 @@ class Error {
   final DateTime occurrence;
   final ErrorStage stage;
   final String message;
-  final ErrorSource source;
+  final TemplateSource source;
 
   Error({
     required this.stage,
@@ -28,9 +28,9 @@ enum ErrorStage {
   render,
 }
 
-/// A [ErrorSource] to identify where a [Parser] error or warning
+/// A [TemplateSource] to identify where a [Parser] error or warning
 /// has occurred.
-class ErrorSource {
+class TemplateSource {
   /// The source of the text
   final Template template;
 
@@ -38,7 +38,7 @@ class ErrorSource {
   /// Format: {row}:{column}
   final String parserPosition;
 
-  ErrorSource({required this.template, required this.parserPosition});
+  TemplateSource({required this.template, required this.parserPosition});
 
   @override
   String toString() => 'position: $parserPosition source: ${template.source}';

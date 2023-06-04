@@ -5,20 +5,23 @@ import 'package:template_engine/src/variable/variable.dart';
 import 'package:template_engine/src/variable/variable_renderer.dart';
 import 'package:template_engine/template_engine.dart';
 
-Parser<RenderNode> variableParser(ParserContext context) =>
-    (string(context.tagStart) &
-            whiteSpaceParser().optional() &
-            VariableNamePathParser(context) &
-            whiteSpaceParser().optional() &
-            string(context.tagEnd))
-        .map2((values, position) => VariableNode(
-            source: ErrorSource(
-              template: context.template,
-              parserPosition: position,
-            ),
-            namePath: values[2]));
-
-Parser variableNameParser() => (letter() | digit()).plus().flatten();
+Parser<RenderNode>? createVariableParser(ParserContext context) {
+  var variables = context.variables;
+  if (variables.isEmpty) {
+    return null;
+  }
+  return (string(context.tagStart) &
+          whiteSpaceParser().optional() &
+          VariableNamePathParser(context) &
+          whiteSpaceParser().optional() &
+          string(context.tagEnd))
+      .map2((values, position) => VariableNode(
+          source: TemplateSource(
+            template: context.template,
+            parserPosition: position,
+          ),
+          namePath: values[2]));
+}
 
 class VariableNamePathParser extends Parser<String> {
   VariableNamePathParser(ParserContext context)
@@ -34,10 +37,6 @@ class VariableNamePathParser extends Parser<String> {
 
   static Parser<String> _createParser(ParserContext context) {
     var variables = context.variables;
-    if (variables.isEmpty) {
-      return string('dummy parser that is never going to '
-          'replace any variables because there are none');
-    } else {}
     return ChoiceParser<String>(_createNamePathParsers(variables));
   }
 

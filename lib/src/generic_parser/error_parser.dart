@@ -14,7 +14,7 @@ Parser<RenderNode> unknownTagOrVariableParser(ParserContext context) =>
       context.errors.add(Error(
           stage: ErrorStage.parse,
           message: 'Unknown tag or variable.',
-          source: ErrorSource(
+          source: TemplateSource(
             template: context.template,
             parserPosition: parserPosition,
           )));
@@ -29,7 +29,7 @@ Parser<RenderNode> missingTagStartParser(ParserContext context) =>
           stage: ErrorStage.parse,
           message: 'Found tag end: ${context.tagEnd}, '
               'but it was not preceded with a tag start: ${context.tagStart}',
-          source: ErrorSource(
+          source: TemplateSource(
               template: context.template, parserPosition: parsePosition)));
       return TextNode(value.toString());
     });
@@ -44,7 +44,7 @@ Parser<RenderNode> missingTagEndParser(ParserContext context) =>
           stage: ErrorStage.parse,
           message: 'Found tag start: ${context.tagStart}, '
               'but it was not followed with a tag end: ${context.tagEnd}',
-          source: ErrorSource(
+          source: TemplateSource(
               template: context.template, parserPosition: parsePosition)));
       return TextNode(values.first.toString());
     });

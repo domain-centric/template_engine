@@ -133,7 +133,7 @@ void main() {
   });
 }
 
-class DummyTemplateSection extends ErrorSource {
+class DummyTemplateSection extends TemplateSource {
   DummyTemplateSection()
       : super(template: TextTemplate('Hello {{name}}.'), parserPosition: '1:4');
 }

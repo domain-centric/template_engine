@@ -6,7 +6,7 @@ void main() {
   given('unknownTagOrVariableParser', () {
     given('object: Template("Hello {{world}}.")', () {
       var template = TextTemplate('Hello {{world}}.');
-      var engine = TemplateEngine(variables: <String, Object>{});
+      var engine = TemplateEngine();
 
       when('call: parse(template)', () {
         var result = engine.parse(template);
@@ -23,7 +23,7 @@ void main() {
   given('missingTagStartParser', () {
     given('object: Template("Hello {{ world.")', () {
       var template = TextTemplate('Hello {{ world.');
-      var engine = TemplateEngine(variables: <String, Object>{});
+      var engine = TemplateEngine();
 
       when('call: parse(template)', () {
         var result = engine.parse(template);
@@ -41,7 +41,7 @@ void main() {
 
     given('object: Template("Hello \\{{ {{ world.")', () {
       var template = TextTemplate('Hello \\{{ {{ world.');
-      var engine = TemplateEngine(variables: <String, Object>{});
+      var engine = TemplateEngine();
 
       when('call: parse(template)', () {
         var result = engine.parse(template);
@@ -80,7 +80,7 @@ void main() {
   given('missingTagEndParser', () {
     given('object: Template("Hello }} world.")', () {
       var template = TextTemplate('Hello }} world.');
-      var engine = TemplateEngine(variables: <String, Object>{});
+      var engine = TemplateEngine();
 
       when('call: parse(template)', () {
         var result = engine.parse(template);
@@ -98,7 +98,7 @@ void main() {
 
     given('object: Template("Hello \\}} }} world.")', () {
       var template = TextTemplate('Hello \\}} }} world.');
-      var engine = TemplateEngine(variables: <String, Object>{});
+      var engine = TemplateEngine();
 
       when('call: parse(template)', () {
         var result = engine.parse(template);

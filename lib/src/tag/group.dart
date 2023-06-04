@@ -1,10 +1,16 @@
-import 'dart:collection';
-
+import 'package:collection/collection.dart';
 import 'package:template_engine/src/tag/tag.dart';
-import 'package:template_engine/src/tag/tag_renderer.dart';
 
-class TagGroups extends UnmodifiableListView<TagGroup> {
+class TagGroups extends DelegatingList<TagGroup> {
   TagGroups(super.source);
+
+  List<TagDefinition> get tags {
+    var tags = <TagDefinition>[];
+    for (var tagGroup in this) {
+      tags.addAll(tagGroup);
+    }
+    return tags;
+  }
 }
 
 /// [TagDefinition]s are grouped in [TagGroup]s
@@ -13,14 +19,19 @@ class TagGroups extends UnmodifiableListView<TagGroup> {
 /// containing a paragraph for each [TagDefinition]
 class TagGroup extends UnmodifiableListView<TagDefinition> {
   final String name;
+  final String? description;
 
-  TagGroup(this.name, super.source);
+  TagGroup(
+      {required this.name,
+      this.description,
+      required List<TagDefinition> tagDefinitions})
+      : super(tagDefinitions);
 }
 
 class StandardTagGroups extends TagGroups {
-  StandardTagGroups() : super([]);
+  StandardTagGroups() : super([CoreTagGroup()]);
 }
 
 class CoreTagGroup extends TagGroup {
-  CoreTagGroup() : super('Core', []);
+  CoreTagGroup() : super(name: 'Core', tagDefinitions: []);
 }

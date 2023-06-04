@@ -78,7 +78,7 @@ void main() {
   });
 }
 
-class DummySource extends ErrorSource {
+class DummySource extends TemplateSource {
   DummySource()
       : super(template: TextTemplate('Hello {{name}}.'), parserPosition: '1:4');
 }

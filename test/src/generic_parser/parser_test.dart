@@ -9,7 +9,7 @@ void main() {
   given('escapedTagStartParser and escapedTagEndParser', () {
     given('object: Template("Hello \\{{ world.")', () {
       var template = TextTemplate('Hello \\{{ world.');
-      var engine = TemplateEngine(variables: <String, Object>{});
+      var engine = TemplateEngine();
 
       when('call: parse(template)', () {
         var parseResult = engine.parse(template);
@@ -51,7 +51,7 @@ void main() {
 
     given('object: Template("Hello \\}} world.")', () {
       var template = TextTemplate('Hello \\}} world.');
-      var engine = TemplateEngine(variables: <String, Object>{});
+      var engine = TemplateEngine();
 
       when('call: parse(template)', () {
         var parseResult = engine.parse(template);
@@ -93,7 +93,7 @@ void main() {
 
     given('object: Template("\\{{ this is not a tag or variable \\}}")', () {
       var template = TextTemplate('\\{{ this is not a tag or variable \\}}');
-      var engine = TemplateEngine(variables: <String, Object>{});
+      var engine = TemplateEngine();
 
       when('call: parse(template)', () {
         var parseResult = engine.parse(template);

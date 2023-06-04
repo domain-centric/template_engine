@@ -1,6 +1,7 @@
 import 'package:petitparser/parser.dart';
 import 'package:template_engine/src/error.dart';
 import 'package:template_engine/src/tag/group.dart';
+import 'package:template_engine/src/tag/tag_parser.dart';
 import 'package:template_engine/src/variable/variable.dart';
 import 'package:template_engine/template_engine.dart';
 
@@ -23,11 +24,14 @@ Parser intParser() => digit().plus().flatten().map(int.parse);
 ///   e.g. \{{ this is not a tag or variable and does not throw errors \}}
 Parser<List<RenderNode>> templateParser(ParserContext context) {
   context.variables.validateNames();
+  var tagParser = createTagParser(context);
+  var variableParser = createVariableParser(context);
   return delegatingParser(
     delegates: [
       escapedTagStartParser(context),
       escapedTagEndParser(context),
-      variableParser(context),
+      if (tagParser != null) tagParser,
+      if (variableParser != null) variableParser,
       unknownTagOrVariableParser(context),
       missingTagStartParser(context),
       missingTagEndParser(context),

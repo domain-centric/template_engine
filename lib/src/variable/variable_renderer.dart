@@ -5,7 +5,7 @@ import 'package:template_engine/template_engine.dart';
 /// A [RenderNode] to render a [VariableValue]
 class VariableNode extends RenderNode {
   final String namePath;
-  final ErrorSource source;
+  final TemplateSource source;
 
   VariableNode({
     required this.source,

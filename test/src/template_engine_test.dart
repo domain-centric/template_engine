@@ -11,7 +11,7 @@ void main() {
 
   given('object: A RenderNodeThatRegistersError and a TemplateEngine', () {
     var parseResult = RenderNodeThatRegistersError();
-    var engine = TemplateEngine(variables: <String, Object>{});
+    var engine = TemplateEngine();
 
     when('call: render(parseResult)', () {
       var result = engine.render(parseResult);

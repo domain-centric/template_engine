@@ -1,4 +1,5 @@
 import 'package:petitparser/parser.dart';
+import 'package:template_engine/src/error.dart';
 import 'package:template_engine/template_engine.dart';
 
 /// [Tag]s are specific texts in [Template]s that are replaced by the
@@ -31,7 +32,11 @@ class TagName {
   }
 }
 
-abstract class TagDefinition {
+// typedef TagNodeFactory = TagNode Function(
+//   TemplateSource source,
+// );
+
+class TagDefinition {
   /// See [TagName]
   final String name;
 
@@ -42,13 +47,16 @@ abstract class TagDefinition {
   /// A tag may have 0 or more [Attribute]s
   final List<AttributeDefinition> attributeDefinitions;
 
+  final TagNode Function(
+    TemplateSource source,
+  ) tagNodeFactory;
+
   TagDefinition({
     required this.name,
     required this.description,
     required this.attributeDefinitions,
+    required this.tagNodeFactory,
   });
-
-  TagNode tagNodeFactory();
 
   @override
   String toString() {
