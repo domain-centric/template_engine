@@ -26,7 +26,7 @@ void main() {
       then(
           'expect: second child node to be a VariableNode with namePath "name"',
           () => parseResult.children[1].should
-              .beOfType<VariableNode>()!
+              .beOfType<VariableRenderer>()!
               .namePath
               .should
               .be('name'));
@@ -70,7 +70,7 @@ void main() {
       then(
           'expect: second child node to be a VariableNode with namePath "name"',
           () => parseResult.children[1].should
-              .beOfType<VariableNode>()!
+              .beOfType<VariableRenderer>()!
               .namePath
               .should
               .be('name'));
@@ -114,7 +114,7 @@ void main() {
       then(
           'expect: second child node to be a VariableNode with namePath "name"',
           () => parseResult.children[1].should
-              .beOfType<VariableNode>()!
+              .beOfType<VariableRenderer>()!
               .namePath
               .should
               .be('name'));
@@ -158,7 +158,7 @@ void main() {
       then(
           'expect: second child node to be a VariableNode with namePath "name"',
           () => parseResult.children[1].should
-              .beOfType<VariableNode>()!
+              .beOfType<VariableRenderer>()!
               .namePath
               .should
               .be('name'));

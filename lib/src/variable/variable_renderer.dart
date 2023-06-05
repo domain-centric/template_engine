@@ -3,11 +3,11 @@ import 'package:template_engine/src/variable/variable.dart';
 import 'package:template_engine/template_engine.dart';
 
 /// A [RenderNode] to render a [VariableValue]
-class VariableNode extends RenderNode {
+class VariableRenderer extends RenderNode {
   final String namePath;
   final TemplateSource source;
 
-  VariableNode({
+  VariableRenderer({
     required this.source,
 
     /// See [VariableName]

@@ -22,7 +22,7 @@ void main() {
     given(
         'objects: ParseContext and '
         'VariableNode with variable name "person"', () {
-      var node = VariableNode(
+      var node = VariableRenderer(
         source: DummyTemplateSection(),
         namePath: 'person',
       );
@@ -45,7 +45,7 @@ void main() {
     given(
         'objects: ParseContext and '
         'VariableNode with variable name "person.name"', () {
-      var node = VariableNode(
+      var node = VariableRenderer(
         source: DummyTemplateSection(),
         namePath: 'person.name',
       );
@@ -64,7 +64,7 @@ void main() {
     given(
         'objects: ParseContext and '
         'VariableNode with variable name "person.name.child.name"', () {
-      var node = VariableNode(
+      var node = VariableRenderer(
         source: DummyTemplateSection(),
         namePath: 'person.child.name',
       );
@@ -85,7 +85,7 @@ void main() {
     given(
         'objects: ParseContext and '
         'VariableNode with none existing variable name', () {
-      var node = VariableNode(
+      var node = VariableRenderer(
         source: DummyTemplateSection(),
         namePath: 'invalid',
       );

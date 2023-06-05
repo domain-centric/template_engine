@@ -15,7 +15,7 @@ Parser<RenderNode>? createVariableParser(ParserContext context) {
           VariableNamePathParser(context) &
           whiteSpaceParser().optional() &
           string(context.tagEnd))
-      .map2((values, position) => VariableNode(
+      .map2((values, position) => VariableRenderer(
           source: TemplateSource(
             template: context.template,
             parserPosition: position,
