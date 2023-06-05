@@ -16,14 +16,22 @@ class TextNode implements RenderNode {
   String render(RenderContext context) => text;
 }
 
-class ParentNode extends RenderNode {
-  List<RenderNode> children;
+class ParentRenderer extends RenderNode {
+  List<Object> children;
 
-  ParentNode([this.children = const []]);
+  ParentRenderer([this.children = const []]);
 
   @override
   String render(RenderContext context) =>
-      children.map((child) => child.render(context)).join();
+      children.map((child) => renderChild(context, child)).join();
+
+  String renderChild(RenderContext context, Object child) {
+    if (child is RenderNode) {
+      return child.render(context);
+    } else {
+      return child.toString();
+    }
+  }
 }
 
 class RenderContext {

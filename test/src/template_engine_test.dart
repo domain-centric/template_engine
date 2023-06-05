@@ -29,7 +29,7 @@ void main() {
   });
 }
 
-class RenderNodeThatRegistersError extends ParentNode {
+class RenderNodeThatRegistersError extends ParentRenderer {
   @override
   String render(RenderContext context) {
     context.errors.add(Error(
