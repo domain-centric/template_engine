@@ -12,7 +12,7 @@ void main() {
 
     given(
         'objects: ParseContext and '
-        'VariableNode with variable name "person"', () {
+        'VariableRenderer with variable name "person"', () {
       var node = VariableRenderer(
         source: DummySource(),
         namePath: 'name',
@@ -29,7 +29,7 @@ void main() {
 
     given(
         'objects: ParseContext and '
-        'VariableNode with none existing variable name "age"', () {
+        'VariableRenderer with none existing variable name "age"', () {
       var node = VariableRenderer(
         source: DummySource(),
         namePath: 'age',
