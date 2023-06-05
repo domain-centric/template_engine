@@ -22,7 +22,7 @@ Parser intParser() => digit().plus().flatten().map(int.parse);
 /// * The start en end of a [Tag] or [Variable] can be escaped so that you
 ///   can use them in a [Template] without being parsed as [Tag] or [Variable].
 ///   e.g. \{{ this is not a tag or variable and does not throw errors \}}
-Parser<List<RenderNode>> templateParser(ParserContext context) {
+Parser<List<Object>> templateParser(ParserContext context) {
   context.variables.validateNames();
   var tagParser = createTagParser(context);
   var variableParser = createVariableParser(context);
@@ -43,24 +43,24 @@ Parser<List<RenderNode>> templateParser(ParserContext context) {
 
 /// A [delegatingParser] delegates to work to other parsers.
 /// Text that is not handled by the delegates will also be collected
-Parser<List<RenderNode>> delegatingParser({
-  required List<Parser<RenderNode>> delegates,
+Parser<List<Object>> delegatingParser({
+  required List<Parser<Object>> delegates,
   required String tagStart,
   required String tagEnd,
 }) {
   if (delegates.isEmpty) {
-    return any().star().flatten().map((value) => [TextNode(value)]);
+    return any().star().flatten().map((value) => [value]);
   }
-  var parser = ChoiceParser<RenderNode>(delegates);
-  parser = ChoiceParser<RenderNode>([
-    parser,
+
+  var parser = ChoiceParser<Object>([
+    ChoiceParser<Object>(delegates),
     untilParser(tagStart, tagEnd),
     untilEndParser(),
   ]);
   return parser.plus();
 }
 
-Parser<RenderNode> untilParser(String tagStart, String tagEnd) => any()
+Parser<String> untilParser(String tagStart, String tagEnd) => any()
     .plusLazy(ChoiceParser([
       string('\\$tagStart'),
       string('\\$tagEnd'),
@@ -68,22 +68,21 @@ Parser<RenderNode> untilParser(String tagStart, String tagEnd) => any()
       string(tagEnd),
     ]))
     .flatten()
-    .map((value) => TextNode(value));
+    .map((value) => value);
 
-Parser<RenderNode> untilEndParser() =>
-    any().plus().flatten().map((value) => TextNode(value));
+Parser<String> untilEndParser() => any().plus().flatten().map((value) => value);
 
 /// Replaces an escaped [Tag] start (e.g. : /{{ )
-/// to a [TextNode] e.g. containing:  {{ (without escape)
+/// to a [String] e.g. containing:  {{ (without escape)
 /// so that it is not parsed as a [Tag] or [Variable]
-Parser<TextNode> escapedTagStartParser(ParserContext context) =>
-    string('\\${context.tagStart}').map((value) => TextNode(context.tagStart));
+Parser<String> escapedTagStartParser(ParserContext context) =>
+    string('\\${context.tagStart}').map((value) => context.tagStart);
 
 /// Replaces an escaped [Tag] end (e.g. : /}} )
-/// to a [TextNode] e.g. containing: }} (without escape)
+/// to a [String] e.g. containing: }} (without escape)
 /// so that it is not parsed as a [Tag] or [Variable]
-Parser<TextNode> escapedTagEndParser(ParserContext context) =>
-    string('\\${context.tagEnd}').map((value) => TextNode(context.tagEnd));
+Parser<String> escapedTagEndParser(ParserContext context) =>
+    string('\\${context.tagEnd}').map((value) => context.tagEnd);
 
 class ParserContext {
   /// The template being parsed (for error or warning logging)
@@ -116,7 +115,7 @@ class ParseResult extends ParentRenderer {
   final List<Error> errors;
 
   ParseResult({
-    required List<RenderNode> children,
+    required List<Object> children,
     this.errors = const [],
   }) : super(children);
 

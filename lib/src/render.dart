@@ -6,16 +6,6 @@ abstract class RenderNode {
   String render(RenderContext context);
 }
 
-/// A [RenderNode] that is a placeholder for normal text
-class TextNode implements RenderNode {
-  String text;
-
-  TextNode(this.text);
-
-  @override
-  String render(RenderContext context) => text;
-}
-
 class ParentRenderer extends RenderNode {
   List<Object> children;
 

@@ -1,6 +1,5 @@
 import 'package:shouldly/shouldly.dart';
 import 'package:given_when_then_unit_test/given_when_then_unit_test.dart';
-import 'package:template_engine/src/render.dart';
 import 'package:template_engine/src/template.dart';
 import 'package:template_engine/src/template_engine.dart';
 import 'package:template_engine/src/variable/variable_renderer.dart';
@@ -16,10 +15,9 @@ void main() {
       then('expect: 3 child nodes',
           () => parseResult.children.length.should.be(3));
       then(
-          'expect: first child node to be a TextNode with text "Hallo "',
+          'expect: first child node to be a String with text "Hallo "',
           () => parseResult.children.first.should
-              .beOfType<TextNode>()!
-              .text
+              .beOfType<String>()!
               .should
               .be('Hello '));
 
@@ -32,10 +30,9 @@ void main() {
               .be('name'));
 
       then(
-          'expect: last child node to be a TextNode with text "."',
+          'expect: last child node to be a String with text "."',
           () => parseResult.children.last.should
-              .beOfType<TextNode>()!
-              .text
+              .beOfType<String>()!
               .should
               .be('.'));
     });
@@ -60,10 +57,9 @@ void main() {
       then('expect: 3 child nodes',
           () => parseResult.children.length.should.be(3));
       then(
-          'expect: first child node to be a TextNode with text "Hallo "',
+          'expect: first child node to be a String with text "Hallo "',
           () => parseResult.children.first.should
-              .beOfType<TextNode>()!
-              .text
+              .beOfType<String>()!
               .should
               .be('Hello '));
 
@@ -76,10 +72,9 @@ void main() {
               .be('name'));
 
       then(
-          'expect: last child node to be a TextNode with text "."',
+          'expect: last child node to be a String with text "."',
           () => parseResult.children.last.should
-              .beOfType<TextNode>()!
-              .text
+              .beOfType<String>()!
               .should
               .be('.'));
     });
@@ -104,10 +99,9 @@ void main() {
       then('expect: 3 child nodes',
           () => parseResult.children.length.should.be(3));
       then(
-          'expect: first child node to be a TextNode with text "Hallo "',
+          'expect: first child node to be a String with text "Hallo "',
           () => parseResult.children.first.should
-              .beOfType<TextNode>()!
-              .text
+              .beOfType<String>()!
               .should
               .be('Hello '));
 
@@ -120,10 +114,9 @@ void main() {
               .be('name'));
 
       then(
-          'expect: last child node to be a TextNode with text "."',
+          'expect: last child node to be a String with text "."',
           () => parseResult.children.last.should
-              .beOfType<TextNode>()!
-              .text
+              .beOfType<String>()!
               .should
               .be('.'));
     });
@@ -148,10 +141,9 @@ void main() {
       then('expect: 3 child nodes',
           () => parseResult.children.length.should.be(3));
       then(
-          'expect: first child node to be a TextNode with text "Hallo "',
+          'expect: first child node to be a String with text "Hallo "',
           () => parseResult.children.first.should
-              .beOfType<TextNode>()!
-              .text
+              .beOfType<String>()!
               .should
               .be('Hello '));
 
@@ -164,10 +156,9 @@ void main() {
               .be('name'));
 
       then(
-          'expect: last child node to be a TextNode with text "."',
+          'expect: last child node to be a String with text "."',
           () => parseResult.children.last.should
-              .beOfType<TextNode>()!
-              .text
+              .beOfType<String>()!
               .should
               .be('.'));
     });
@@ -190,26 +181,23 @@ void main() {
       then('expect: 3 child nodes',
           () => parseResult.children.length.should.be(3));
       then(
-          'expect: first child node to be a TextNode with text "Hallo "',
+          'expect: first child node to be a String with text "Hallo "',
           () => parseResult.children.first.should
-              .beOfType<TextNode>()!
-              .text
+              .beOfType<String>()!
               .should
               .be('Hello '));
 
       then(
-          'expect: second child node to be a TextNode with text "{{name}}"',
+          'expect: second child node to be a String with text "{{name}}"',
           () => parseResult.children[1].should
-              .beOfType<TextNode>()!
-              .text
+              .beOfType<String>()!
               .should
               .be('{{name}}'));
 
       then(
-          'expect: last child node to be a TextNode with text "."',
+          'expect: last child node to be a String with text "."',
           () => parseResult.children.last.should
-              .beOfType<TextNode>()!
-              .text
+              .beOfType<String>()!
               .should
               .be('.'));
 

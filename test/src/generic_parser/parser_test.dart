@@ -1,6 +1,5 @@
 import 'package:shouldly/shouldly.dart';
 import 'package:given_when_then_unit_test/given_when_then_unit_test.dart';
-import 'package:template_engine/src/render.dart';
 import 'package:template_engine/src/template.dart';
 import 'package:template_engine/src/template_engine.dart';
 import 'package:template_engine/src/variable/variable.dart';
@@ -17,26 +16,23 @@ void main() {
         then('expect: 3 child nodes',
             () => parseResult.children.length.should.be(3));
         then(
-            'expect: first child node to be a TextNode with text "Hallo "',
+            'expect: first child node to be a String with text "Hallo "',
             () => parseResult.children.first.should
-                .beOfType<TextNode>()!
-                .text
+                .beOfType<String>()!
                 .should
                 .be('Hello '));
 
         then(
-            'expect: second child node to be a TextNode with text "{{"',
+            'expect: second child node to be a String with text "{{"',
             () => parseResult.children[1].should
-                .beOfType<TextNode>()!
-                .text
+                .beOfType<String>()!
                 .should
                 .be('{{'));
 
         then(
-            'expect: last child node to be a TextNode with text " world."',
+            'expect: last child node to be a String with text " world."',
             () => parseResult.children.last.should
-                .beOfType<TextNode>()!
-                .text
+                .beOfType<String>()!
                 .should
                 .be(' world.'));
       });
@@ -59,26 +55,23 @@ void main() {
         then('expect: 3 child nodes',
             () => parseResult.children.length.should.be(3));
         then(
-            'expect: first child node to be a TextNode with text "Hallo "',
+            'expect: first child node to be a String with text "Hallo "',
             () => parseResult.children.first.should
-                .beOfType<TextNode>()!
-                .text
+                .beOfType<String>()!
                 .should
                 .be('Hello '));
 
         then(
-            'expect: second child node to be a TextNode with text "}}"',
+            'expect: second child node to be a String with text "}}"',
             () => parseResult.children[1].should
-                .beOfType<TextNode>()!
-                .text
+                .beOfType<String>()!
                 .should
                 .be('}}'));
 
         then(
-            'expect: last child node to be a TextNode with text " world. "',
+            'expect: last child node to be a String with text " world. "',
             () => parseResult.children.last.should
-                .beOfType<TextNode>()!
-                .text
+                .beOfType<String>()!
                 .should
                 .be(' world.'));
       });
@@ -101,27 +94,24 @@ void main() {
         then('expect: 3 child nodes',
             () => parseResult.children.length.should.be(3));
         then(
-            'expect: first child node to be a TextNode with text "{{"',
+            'expect: first child node to be a String with text "{{"',
             () => parseResult.children.first.should
-                .beOfType<TextNode>()!
-                .text
+                .beOfType<String>()!
                 .should
                 .be('{{'));
 
         then(
-            'expect: second child node to be a TextNode '
+            'expect: second child node to be a String '
             'with text " this is not a tag or variable "',
             () => parseResult.children[1].should
-                .beOfType<TextNode>()!
-                .text
+                .beOfType<String>()!
                 .should
                 .be(' this is not a tag or variable '));
 
         then(
-            'expect: last child node to be a TextNode with text "}}"',
+            'expect: last child node to be a String with text "}}"',
             () => parseResult.children.last.should
-                .beOfType<TextNode>()!
-                .text
+                .beOfType<String>()!
                 .should
                 .be('}}'));
       });
