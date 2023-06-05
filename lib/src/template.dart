@@ -3,8 +3,8 @@ import 'package:template_engine/template_engine.dart';
 /// A template is a text that can contain [Tag]s.
 /// This text is parsed by the [TemplateEngine] into [RenderNode]s.
 /// These [RenderNode]s render a new text.
-/// [TagNode]s are replaced with some other text, depending on the
-/// implementation of the [TagNode]
+/// [TagRenderer]s are replaced with some other text, depending on the
+/// implementation of the [TagRenderer]
 abstract class Template {
   /// Explains where the template text came form.
   String source;

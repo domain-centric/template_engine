@@ -33,7 +33,7 @@ void main() {
   });
 }
 
-class GreetingRenderer extends TagNode {
+class GreetingRenderer extends TagRenderer {
   GreetingRenderer(super.source);
 
   static String greeting = 'Hello world.';

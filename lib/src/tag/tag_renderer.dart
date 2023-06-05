@@ -1,10 +1,10 @@
 import 'package:template_engine/src/error.dart';
 import 'package:template_engine/template_engine.dart';
 
-abstract class TagNode extends RenderNode {
+abstract class TagRenderer extends RenderNode {
   final TemplateSource source;
 
-  TagNode(
+  TagRenderer(
     this.source,
 
     /// See [TagName]

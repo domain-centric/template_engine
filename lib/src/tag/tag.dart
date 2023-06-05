@@ -47,7 +47,7 @@ class TagDefinition {
   /// A tag may have 0 or more [Attribute]s
   final List<AttributeDefinition> attributeDefinitions;
 
-  final TagNode Function(
+  final TagRenderer Function(
     TemplateSource source,
   ) tagNodeFactory;
 
