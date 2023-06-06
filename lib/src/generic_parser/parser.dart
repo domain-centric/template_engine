@@ -14,7 +14,7 @@ Parser intParser() => digit().plus().flatten().map(int.parse);
 
 /// Creates a parser that can convert a [Template] text to a
 /// [parse tree](https://en.wikipedia.org/wiki/Parse_tree)
-/// containing [RenderNode]s.
+/// containing [Renderer]s.
 ///
 /// Note that:
 /// * Errors or warnings are stored in [ParserContext.errors]

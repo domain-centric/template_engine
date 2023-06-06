@@ -1,12 +1,26 @@
 import 'package:template_engine/src/error.dart';
 import 'package:template_engine/src/variable/variable.dart';
 
-/// Renders some text depending on the implementation of the [RenderNode]
-abstract class RenderNode {
-  String render(RenderContext context);
+/// Renders some value depending on the implementation of the [Renderer]
+/// 
+/// Values can be:
+/// * String
+/// * int
+/// * double
+/// * bool
+/// * DateTime
+/// * Some other object
+/// * Renderer<Generic type is on of the above>
+/// * List<Generic type is on of the above>
+/// 
+// TODO consider rename the class name  that does not end with -er (see) debates on internet
+
+
+abstract class Renderer<T> {
+  T render(RenderContext context);
 }
 
-class ParentRenderer extends RenderNode {
+class ParentRenderer extends Renderer {
   List<Object> children;
 
   ParentRenderer([this.children = const []]);
@@ -16,7 +30,7 @@ class ParentRenderer extends RenderNode {
       children.map((child) => renderChild(context, child)).join();
 
   String renderChild(RenderContext context, Object child) {
-    if (child is RenderNode) {
+    if (child is Renderer) {
       return child.render(context);
     } else {
       return child.toString();

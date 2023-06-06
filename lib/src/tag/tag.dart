@@ -78,7 +78,7 @@ class TagDefinition {
 ///   * date
 ///   * list where the elements are one of the types above
 ///   * map where the keys are a string and the values are one of the types above
-///   * a [Tag] that is converted to a [RenderNode]
+///   * a [Tag] that is converted to a [Renderer]
 ///  * Can be optional
 ///  * Can have an default value when the attribute is optional
 abstract class Attribute {

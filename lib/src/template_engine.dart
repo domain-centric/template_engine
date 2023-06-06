@@ -7,7 +7,7 @@ import 'package:template_engine/src/variable/variable.dart';
 
 /// The [TemplateEngine] does the following:
 /// * Parse the [Template] text into a
-///   [parser tree](https://en.wikipedia.org/wiki/Parse_tree), see [RenderNode]
+///   [parser tree](https://en.wikipedia.org/wiki/Parse_tree), see [Renderer]
 /// * Render the [parser tree](https://en.wikipedia.org/wiki/Parse_tree)
 ///   to a output such as:
 ///   * [Html](https://en.wikipedia.org/wiki/HTML)
@@ -63,7 +63,7 @@ class TemplateEngine {
 
   /// Parse the [Template] text into a
   /// [parser tree](https://en.wikipedia.org/wiki/Parse_tree).
-  /// See [RenderNode]
+  /// See [Renderer]
   ParseResult parse(Template template) {
     var context = ParserContext(
         tagGroups: tagGroups,

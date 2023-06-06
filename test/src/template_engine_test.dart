@@ -9,7 +9,7 @@ import 'error_test.dart';
 void main() {
   // See also other .._parser_test_files
 
-  given('object: A RenderNodeThatRegistersError and a TemplateEngine', () {
+  given('object: A RendererThatRegistersError and a TemplateEngine', () {
     var parseResult = RendererThatRegistersError();
     var engine = TemplateEngine();
 

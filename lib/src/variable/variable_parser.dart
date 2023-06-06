@@ -5,7 +5,7 @@ import 'package:template_engine/src/variable/variable.dart';
 import 'package:template_engine/src/variable/variable_renderer.dart';
 import 'package:template_engine/template_engine.dart';
 
-Parser<RenderNode>? createVariableParser(ParserContext context) {
+Parser<Renderer>? createVariableParser(ParserContext context) {
   var variables = context.variables;
   if (variables.isEmpty) {
     return null;

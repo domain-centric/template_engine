@@ -29,7 +29,7 @@ void main() {
       var context = RenderContext(variables);
 
       when('call: node.render(context)', () {
-        var result = node.render(context);
+        var result = node.render(context).toString();
 
         then('expect: context.errors to be empty',
             () => context.errors.should.beEmpty());

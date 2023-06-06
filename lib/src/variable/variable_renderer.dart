@@ -2,8 +2,8 @@ import 'package:template_engine/src/error.dart';
 import 'package:template_engine/src/variable/variable.dart';
 import 'package:template_engine/template_engine.dart';
 
-/// A [RenderNode] to render a [VariableValue]
-class VariableRenderer extends RenderNode {
+/// A [Renderer] to render a [VariableValue]
+class VariableRenderer extends Renderer<Object?> {
   final String namePath;
   final TemplateSource source;
 
@@ -15,10 +15,9 @@ class VariableRenderer extends RenderNode {
   });
 
   @override
-  String render(RenderContext context) {
+  Object? render(RenderContext context) {
     try {
-      var value = context.variables.value(namePath);
-      return value.toString();
+      return context.variables.value(namePath);
     } on VariableException catch (e) {
       context.errors.add(
           Error(stage: ErrorStage.render, message: e.message, source: source));
