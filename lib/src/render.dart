@@ -2,39 +2,50 @@ import 'package:template_engine/src/error.dart';
 import 'package:template_engine/src/variable/variable.dart';
 
 /// Renders some value depending on the implementation of the [Renderer]
-/// 
-/// Values can be:
+///
+/// For [T] see [RenderType]
+///
+// TODO consider rename the class name  that does not end with -er (see) debates on internet
+
+abstract class Renderer<T> {
+  T render(RenderContext context);
+}
+
+/// Types returned by the [Renderer.render] method or
+/// the Type of [ParserTree.nodes] are normally one of the following:
 /// * String
 /// * int
 /// * double
 /// * bool
 /// * DateTime
 /// * Some other object
-/// * Renderer<Generic type is on of the above>
+/// * [Renderer]<Generic type is on of the above>
 /// * List<Generic type is on of the above>
-/// 
-// TODO consider rename the class name  that does not end with -er (see) debates on internet
 
-
-abstract class Renderer<T> {
-  T render(RenderContext context);
+abstract class RenderType {
+  /// Documentation only
 }
 
-class ParentRenderer extends Renderer {
-  List<Object> children;
+/// The [ParserTree](https://en.wikipedia.org/wiki/Parse_tree) contains
+/// parsed nodes that can be rendered to a [String].
+class ParserTree extends Renderer<String> {
+  /// The nodes that where parsed and can be rendered to a [String].
+  /// The nodes are of type [RenderType]
+  List<Object> nodes;
 
-  ParentRenderer([this.children = const []]);
+  ParserTree([this.nodes = const []]);
 
   @override
   String render(RenderContext context) =>
-      children.map((child) => renderChild(context, child)).join();
+      nodes.map((node) => renderNode(context, node)).join();
 
-  String renderChild(RenderContext context, Object child) {
-    if (child is Renderer) {
-      return child.render(context);
-    } else {
-      return child.toString();
-    }
+  String renderNode(RenderContext context, Object node) {
+    if (node is Renderer) {
+      return node.render(context).toString();
+    } else if (node is List) {
+      return node.map((n) => renderNode(context, n)).join();
+    } else {}
+    return node.toString();
   }
 }
 
@@ -48,7 +59,7 @@ class RenderContext {
         errors = [];
 }
 
-class RenderResult implements Exception {
+class RenderResult {
   final List<Error> errors;
   final String text;
 

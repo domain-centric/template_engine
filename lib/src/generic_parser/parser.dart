@@ -111,7 +111,7 @@ class ParserContext {
   }) : errors = [];
 }
 
-class ParseResult extends ParentRenderer {
+class ParseResult extends ParserTree {
   final List<Error> errors;
 
   ParseResult({

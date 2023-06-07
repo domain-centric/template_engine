@@ -14,24 +14,24 @@ void main() {
         var parseResult = engine.parse(template);
 
         then('expect: 3 child nodes',
-            () => parseResult.children.length.should.be(3));
+            () => parseResult.nodes.length.should.be(3));
         then(
             'expect: first child node to be a String with text "Hallo "',
-            () => parseResult.children.first.should
+            () => parseResult.nodes.first.should
                 .beOfType<String>()!
                 .should
                 .be('Hello '));
 
         then(
             'expect: second child node to be a String with text "{{"',
-            () => parseResult.children[1].should
+            () => parseResult.nodes[1].should
                 .beOfType<String>()!
                 .should
                 .be('{{'));
 
         then(
             'expect: last child node to be a String with text " world."',
-            () => parseResult.children.last.should
+            () => parseResult.nodes.last.should
                 .beOfType<String>()!
                 .should
                 .be(' world.'));
@@ -53,24 +53,24 @@ void main() {
         var parseResult = engine.parse(template);
 
         then('expect: 3 child nodes',
-            () => parseResult.children.length.should.be(3));
+            () => parseResult.nodes.length.should.be(3));
         then(
             'expect: first child node to be a String with text "Hallo "',
-            () => parseResult.children.first.should
+            () => parseResult.nodes.first.should
                 .beOfType<String>()!
                 .should
                 .be('Hello '));
 
         then(
             'expect: second child node to be a String with text "}}"',
-            () => parseResult.children[1].should
+            () => parseResult.nodes[1].should
                 .beOfType<String>()!
                 .should
                 .be('}}'));
 
         then(
             'expect: last child node to be a String with text " world. "',
-            () => parseResult.children.last.should
+            () => parseResult.nodes.last.should
                 .beOfType<String>()!
                 .should
                 .be(' world.'));
@@ -92,10 +92,10 @@ void main() {
         var parseResult = engine.parse(template);
 
         then('expect: 3 child nodes',
-            () => parseResult.children.length.should.be(3));
+            () => parseResult.nodes.length.should.be(3));
         then(
             'expect: first child node to be a String with text "{{"',
-            () => parseResult.children.first.should
+            () => parseResult.nodes.first.should
                 .beOfType<String>()!
                 .should
                 .be('{{'));
@@ -103,14 +103,14 @@ void main() {
         then(
             'expect: second child node to be a String '
             'with text " this is not a tag or variable "',
-            () => parseResult.children[1].should
+            () => parseResult.nodes[1].should
                 .beOfType<String>()!
                 .should
                 .be(' this is not a tag or variable '));
 
         then(
             'expect: last child node to be a String with text "}}"',
-            () => parseResult.children.last.should
+            () => parseResult.nodes.last.should
                 .beOfType<String>()!
                 .should
                 .be('}}'));

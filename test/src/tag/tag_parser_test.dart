@@ -24,10 +24,10 @@ void main() {
     when('calling engine.parse()', () {
       var result = engine.parse(template);
       then('return 1 child"', () {
-        result.children.length.should.be(1);
+        result.nodes.length.should.be(1);
       });
       then('return 1 child of type GreetingRenderer"', () {
-        result.children.first.should.beOfType<GreetingRenderer>();
+        result.nodes.first.should.beOfType<GreetingRenderer>();
       });
     });
   });

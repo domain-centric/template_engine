@@ -10,7 +10,7 @@ void main() {
   // See also other .._parser_test_files
 
   given('object: A RendererThatRegistersError and a TemplateEngine', () {
-    var parseResult = RendererThatRegistersError();
+    var parseResult = ParserTreeThatRegistersError();
     var engine = TemplateEngine();
 
     when('call: render(parseResult)', () {
@@ -29,7 +29,7 @@ void main() {
   });
 }
 
-class RendererThatRegistersError extends ParentRenderer {
+class ParserTreeThatRegistersError extends ParserTree {
   @override
   String render(RenderContext context) {
     context.errors.add(Error(
