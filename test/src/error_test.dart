@@ -3,8 +3,7 @@ import 'package:given_when_then_unit_test/given_when_then_unit_test.dart';
 import 'package:template_engine/src/error.dart';
 import 'package:template_engine/src/render.dart';
 import 'package:template_engine/src/template.dart';
-import 'package:template_engine/src/variable/variable.dart';
-import 'package:template_engine/src/variable/variable_renderer.dart';
+import 'package:template_engine/src/tag/tag_variable.dart';
 
 void main() {
   given('object: Variables', () {

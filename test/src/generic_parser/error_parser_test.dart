@@ -4,16 +4,34 @@ import 'package:template_engine/template_engine.dart';
 
 void main() {
   given('unknownTagOrVariableParser', () {
-    given('object: Template("Hello {{world}}.")', () {
-      var template = TextTemplate('Hello {{world}}.');
+    given('object: Template with none defined tag', () {
+      var template = TextTemplate('Hello {{notDefined attribute="1"}}.');
       var engine = TemplateEngine();
 
       when('call: parse(template)', () {
         var result = engine.parse(template);
 
-        then('expect: 1 error', () => result.errors.length.should.be(1));
+        then('expect: no 1 error', () => result.errors.length.should.be(1));
         var expected = 'Parse Error: Unknown tag or variable. '
             'position: 1:7 source: Text';
+        then('expect: errorMessage to be "$expected"',
+            () => result.errorMessage.should.be(expected));
+      });
+    });
+
+    given('object: Template with 2 none defined tags', () {
+      var template = TextTemplate(
+          'Hello {{notDefined1 attribute="1"}} {{notDefined2 attribute="1"}}.');
+      var engine = TemplateEngine();
+
+      when('call: parse(template)', () {
+        var result = engine.parse(template);
+
+        then('expect: no 2 error', () => result.errors.length.should.be(2));
+        var expected = 'Parse Error: Unknown tag or variable. '
+            'position: 1:7 source: Text\n'
+            'Parse Error: Unknown tag or variable. '
+            'position: 1:37 source: Text';
         then('expect: errorMessage to be "$expected"',
             () => result.errorMessage.should.be(expected));
       });
@@ -60,7 +78,7 @@ void main() {
 
     given('object: Template("Hello {{name}} {{.")', () {
       var template = TextTemplate('Hello {{name}} {{.');
-      var engine = TemplateEngine(variables: {'name': 'world'});
+      var engine = TemplateEngine();
 
       when('call: parse(template)', () {
         var result = engine.parse(template);
@@ -115,7 +133,7 @@ void main() {
 
     given('object: Template("Hello {{name}} }}.")', () {
       var template = TextTemplate('Hello {{name}} }}.');
-      var engine = TemplateEngine(variables: {'name': 'world'});
+      var engine = TemplateEngine();
 
       when('call: parse(template)', () {
         var result = engine.parse(template);

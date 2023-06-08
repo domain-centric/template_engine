@@ -1,5 +1,31 @@
 import 'package:collection/collection.dart';
 import 'package:petitparser/petitparser.dart';
+import 'package:template_engine/src/error.dart';
+import 'package:template_engine/src/generic_parser/map2_parser_extension.dart';
+import 'package:template_engine/src/tag/tag.dart';
+import 'package:template_engine/template_engine.dart';
+
+class TagVariable extends Tag<VariableRenderer> {
+  TagVariable()
+      : super(
+          name: 'variable',
+          description: 'TODO see dartdoc',
+        );
+
+  @override
+  Parser<VariableRenderer> createTagParser(ParserContext context) =>
+      (string(context.tagStart) &
+              whiteSpaceParser() &
+              TagName.namePathParser.flatten() &
+              whiteSpaceParser() & //TODO add attributes
+              string(context.tagEnd))
+          .map2((values, parsePosition) => VariableRenderer(
+              source: TemplateSource(
+                template: context.template,
+                parserPosition: parsePosition,
+              ),
+              namePath: values[2]));
+}
 
 /// You can use [Variables](https://en.wikipedia.org/wiki/Variable_(computer_science))
 /// in your [Template]s.
@@ -135,4 +161,28 @@ class VariableName {
 ///   one of the types above
 abstract class VariableValue {
   /// for documentation only
+}
+
+/// A [Renderer] to render a [VariableValue]
+class VariableRenderer extends Renderer<Object?> {
+  final String namePath;
+  final TemplateSource source;
+
+  VariableRenderer({
+    required this.source,
+
+    /// See [VariableName]
+    required this.namePath,
+  });
+
+  @override
+  Object? render(RenderContext context) {
+    try {
+      return context.variables.value(namePath);
+    } on VariableException catch (e) {
+      context.errors.add(
+          Error(stage: ErrorStage.render, message: e.message, source: source));
+      return '';
+    }
+  }
 }

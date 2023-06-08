@@ -3,7 +3,7 @@ import 'package:template_engine/template_engine.dart';
 
 void main() {
   var template = TextTemplate('Hello {{world}}.');
-  var engine = TemplateEngine(variables: {});
+  var engine = TemplateEngine();
 
   var result = engine.parse(template);
 

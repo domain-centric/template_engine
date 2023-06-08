@@ -1,11 +1,9 @@
 import 'package:petitparser/parser.dart';
 import 'package:template_engine/src/error.dart';
-import 'package:template_engine/src/tag/group.dart';
-import 'package:template_engine/src/tag/tag_parser.dart';
-import 'package:template_engine/src/variable/variable.dart';
+import 'package:template_engine/src/tag/tag.dart';
+import 'package:template_engine/src/tag/tag_variable.dart';
 import 'package:template_engine/template_engine.dart';
 
-import '../variable/variable_parser.dart';
 import 'error_parser.dart';
 
 Parser whiteSpaceParser() => whitespace().star().flatten();
@@ -18,21 +16,19 @@ Parser intParser() => digit().plus().flatten().map(int.parse);
 ///
 /// Note that:
 /// * Errors or warnings are stored in [ParserContext.errors]
-///   and are later thrown by the [TemplateEngine.parse] method.
+///   and are can be later accessed in the [ParseResult].
 /// * The start en end of a [Tag] or [Variable] can be escaped so that you
 ///   can use them in a [Template] without being parsed as [Tag] or [Variable].
 ///   e.g. \{{ this is not a tag or variable and does not throw errors \}}
 Parser<List<Object>> templateParser(ParserContext context) {
-  context.variables.validateNames();
-  var tagParser = createTagParser(context);
-  var variableParser = createVariableParser(context);
+  //context.variables.validateNames();
   return delegatingParser(
     delegates: [
       escapedTagStartParser(context),
       escapedTagEndParser(context),
-      if (tagParser != null) tagParser,
-      if (variableParser != null) variableParser,
-      unknownTagOrVariableParser(context),
+      ...context.tags.map((tag) => tag.createTagParser(context)),
+      unknownTagOrVariableParser(
+          context), //TODO to be handled in the variable parser/ renderer????
       missingTagStartParser(context),
       missingTagEndParser(context),
     ],
@@ -88,11 +84,7 @@ class ParserContext {
   /// The template being parsed (for error or warning logging)
   final Template template;
 
-  /// See [tagGroups] doc in [TemplateEngine] constructor
-  final TagGroups tagGroups;
-
-  /// See [variables] doc in [TemplateEngine] constructor
-  final Variables variables;
+  final List<Tag> tags;
 
   /// See [tagStart] doc in [TemplateEngine] constructor
   final String tagStart;
@@ -104,8 +96,7 @@ class ParserContext {
 
   ParserContext({
     required this.template,
-    required this.tagGroups,
-    this.variables = const Variables({}),
+    required this.tags,
     this.tagStart = '{{',
     this.tagEnd = '}}',
   }) : errors = [];

@@ -1,5 +1,5 @@
 import 'package:template_engine/src/error.dart';
-import 'package:template_engine/src/variable/variable.dart';
+import 'package:template_engine/src/tag/tag_variable.dart';
 
 /// Renders some value depending on the implementation of the [Renderer]
 ///
@@ -54,8 +54,8 @@ class RenderContext {
   final List<Error> errors;
 
   RenderContext(
-    Variables variables,
-  )   : variables = variables.clone(),
+    Map<String, Object> variables,
+  )   : variables = Variables(variables),
         errors = [];
 }
 

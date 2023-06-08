@@ -2,8 +2,8 @@ import 'package:template_engine/src/error.dart';
 import 'package:template_engine/src/generic_parser/parser.dart';
 import 'package:template_engine/src/render.dart';
 import 'package:template_engine/src/tag/group.dart';
+import 'package:template_engine/src/tag/tag.dart';
 import 'package:template_engine/src/template.dart';
-import 'package:template_engine/src/variable/variable.dart';
 
 /// The [TemplateEngine] does the following:
 /// * Parse the [Template] text into a
@@ -21,15 +21,8 @@ import 'package:template_engine/src/variable/variable.dart';
 /// See the [examples](https://pub.dev/packages/template_engine/example)
 
 class TemplateEngine {
-  /// The [TagDefinition]s to be used for parsing.
-  /// If null it will use [StandardTagGroups]
-  final TagGroups tagGroups;
-
-  /// The [Variables] to be used for parsing.
-  /// Note that all [Variables] that are used need to be declared here so that
-  /// the parser can recognize them.
-  /// [Variable]s can get a different value during rendering.
-  final Variables variables;
+  /// If null it will use [StandardTagParsers]
+  final List<Tag> tags;
 
   /// The tag starts with given prefix.
   /// Use a prefix combination that is not used elsewhere in your templates.
@@ -54,23 +47,17 @@ class TemplateEngine {
   String tagEnd = '}}';
 
   TemplateEngine({
-    TagGroups? tagGroups,
-    var variables = const <String, Object>{},
+    List<Tag>? tags,
     this.tagStart = '{{',
     this.tagEnd = '}}',
-  })  : tagGroups = tagGroups ?? StandardTagGroups(),
-        variables = Variables(variables);
+  }) : tags = tags ?? StandardTags();
 
   /// Parse the [Template] text into a
   /// [parser tree](https://en.wikipedia.org/wiki/Parse_tree).
   /// See [Renderer]
   ParseResult parse(Template template) {
     var context = ParserContext(
-        tagGroups: tagGroups,
-        variables: variables,
-        tagStart: tagStart,
-        tagEnd: tagEnd,
-        template: template);
+        tags: tags, tagStart: tagStart, tagEnd: tagEnd, template: template);
     var parser = templateParser(context);
     var result = parser.parse(template.text);
 
@@ -88,7 +75,8 @@ class TemplateEngine {
 
   /// Render the [parser tree](https://en.wikipedia.org/wiki/Parse_tree)
   /// to a string (and write it as files when needed)
-  RenderResult render(ParserTree renderResult) {
+  RenderResult render(ParserTree renderResult,
+      [Map<String, Object> variables = const {}]) {
     var context = RenderContext(variables);
     var text = renderResult.render(context);
     return RenderResult(

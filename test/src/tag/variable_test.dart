@@ -1,6 +1,6 @@
 import 'package:shouldly/shouldly.dart';
 import 'package:given_when_then_unit_test/given_when_then_unit_test.dart';
-import 'package:template_engine/src/variable/variable.dart';
+import 'package:template_engine/src/tag/tag_variable.dart';
 
 void main() {
   given('Variables', () {
@@ -14,11 +14,6 @@ void main() {
         }
       }
     });
-
-    // var context = ParserContext(
-    //     template: TextTemplate('test'),
-    //     tagGroups: StandardTagGroups(),
-    //     variables: variables);
 
     when('getting variable name paths', () {
       var variableNamePaths = variables.namePaths;
