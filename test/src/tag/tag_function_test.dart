@@ -24,6 +24,75 @@ void main() {
       });
     });
   });
+
+  given('AttributeValue parser', () {
+    var parser = attributeValueParser();
+    var input = '-123e-1';
+    when('calling parser.parse("$input")', () {
+      var result = parser.parse(input);
+      var expected = -12.3;
+
+      then('result should have no failures',
+          () => result.isFailure.should.beFalse());
+      then('result.value should be: $expected',
+          () => result.value.should.be(expected));
+    });
+
+    input = 'true';
+    when('calling parser.parse("$input")', () {
+      var result = parser.parse(input);
+      var expected = true;
+
+      then('result should have no failures',
+          () => result.isFailure.should.beFalse());
+      then('result.value should be: $expected',
+          () => result.value.should.be(expected));
+    });
+
+    input = 'FALse';
+    when('calling parser.parse("$input")', () {
+      var result = parser.parse(input);
+      var expected = false;
+
+      then('result should have no failures',
+          () => result.isFailure.should.beFalse());
+      then('result.value should be: $expected',
+          () => result.value.should.be(expected));
+    });
+
+    input = '"Hello"';
+    when('calling parser.parse("$input")', () {
+      var result = parser.parse(input);
+      var expected = 'Hello';
+
+      then('result should have no failures',
+          () => result.isFailure.should.beFalse());
+      then('result.value should be: $expected',
+          () => result.value.should.be(expected));
+    });
+
+    input = "'Hello'";
+    when('calling parser.parse("$input")', () {
+      var result = parser.parse(input);
+      var expected = 'Hello';
+
+      then('result should have no failures',
+          () => result.isFailure.should.beFalse());
+      then('result.value should be: $expected',
+          () => result.value.should.be(expected));
+    });
+
+    input = "bogus";
+    when('calling parser.parse("$input")', () {
+      var result = parser.parse(input);
+      var expected = '"\\"" expected';
+
+      then('result should have failures',
+          () => result.isFailure.should.beTrue());
+      then('result.message should be: $expected',
+          () => result.message.should.be(expected));
+    });
+  });
 }
 
 class GreetingTag extends TagFunction<String> {
