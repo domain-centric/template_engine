@@ -18,6 +18,11 @@ Parser<bool> boolean() => (stringIgnoreCase('true') | stringIgnoreCase('false'))
     .flatten('boolean expected')
     .map((value) => value.toLowerCase() == 'true');
 
+Parser<String> quotedString() =>
+    ((char("'") & any().starGreedy(char("'")).flatten() & char("'")) |
+            (char('"') & any().starGreedy(char('"')).flatten() & char('"')))
+        .map((values) => values[1]);
+
 /// Creates a parser that can convert a [Template] text to a
 /// [parse tree](https://en.wikipedia.org/wiki/Parse_tree)
 /// containing [Renderer]s.

@@ -85,3 +85,6 @@ class Attribute {
 /// TODO tagValues may contain tags, we therefor need change the parser
 Parser<String> rawAttributeParser(ParserContext context) =>
     (any().starLazy(string(context.tagEnd))).flatten();
+
+Parser<Object> attributeValueParser() =>
+    ChoiceParser([number(), boolean(), quotedString()]); //TODO add tagParsers

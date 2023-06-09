@@ -158,6 +158,54 @@ void main() {
     });
   });
 
+  given('quotedString Parser', () {
+    var parser = quotedString();
+
+    var input = '"Hello"';
+    when('calling parser.parse("$input")', () {
+      var parseResult = parser.parse(input);
+      then('parseResult value should be: Hello ', () {
+        parseResult.value.should.be('Hello');
+      });
+    });
+
+    input = "'Hello'";
+    when('calling parser.parse("$input")', () {
+      var parseResult = parser.parse(input);
+      then('parseResult value should be: Hello ', () {
+        parseResult.value.should.be('Hello');
+      });
+    });
+
+    input = '"Hello" world';
+    when('calling parser.parse("$input")', () {
+      var parseResult = parser.parse(input);
+      then('parseResult value should be: Hello ', () {
+        parseResult.value.should.be('Hello');
+      });
+    });
+
+    input = "'Hello' world";
+    when('calling parser.parse("$input")', () {
+      var parseResult = parser.parse(input);
+      then('parseResult value should be: Hello ', () {
+        parseResult.value.should.be('Hello');
+      });
+    });
+
+    input = 'Hello "World"';
+    when('calling parser.parse("$input")', () {
+      var parseResult = parser.parse(input);
+      then('parseResult should be a failure', () {
+        parseResult.isFailure.should.beTrue();
+      });
+      var expected = '"\\"" expected';
+      then('parseResult message should be "$expected"', () {
+        parseResult.message.should.be(expected);
+      });
+    });
+  });
+
   given('escapedTagStartParser and escapedTagEndParser', () {
     given('object: Template("Hello \\{{ world.")', () {
       var template = TextTemplate('Hello \\{{ world.');
