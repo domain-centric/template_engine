@@ -80,10 +80,85 @@ void main() {
       then('parseResult should be a failure', () {
         parseResult.isFailure.should.beTrue();
       });
+      var expected = 'number expected';
+      then('parseResult message should be "$expected"', () {
+        parseResult.message.should.be(expected);
+      });
     });
   });
 
-    given('escapedTagStartParser and escapedTagEndParser', () {
+  given('boolean Parser', () {
+    var parser = boolean();
+    String input = 'true';
+    when('calling parser.parse("$input")', () {
+      var parseResult = parser.parse(input);
+      then('parseResult should contain no errors', () {
+        parseResult.isFailure.should.beFalse();
+      });
+      then('parseResult value should contain true', () {
+        parseResult.value.should.beTrue();
+      });
+    });
+
+    input = 'TruE';
+    when('calling parser.parse("$input")', () {
+      var parseResult = parser.parse(input);
+      then('parseResult should contain no errors', () {
+        parseResult.isFailure.should.beFalse();
+      });
+      then('parseResult value should contain an int of -12', () {
+        parseResult.value.should.beTrue();
+      });
+    });
+
+    input = 'false';
+    when('calling parser.parse("$input")', () {
+      var parseResult = parser.parse(input);
+      then('parseResult should contain no errors', () {
+        parseResult.isFailure.should.beFalse();
+      });
+      then('parseResult value should contain false', () {
+        parseResult.value.should.beFalse();
+      });
+    });
+
+    input = 'faLSE';
+    when('calling parser.parse("$input")', () {
+      var parseResult = parser.parse(input);
+      then('parseResult should contain no errors', () {
+        parseResult.isFailure.should.beFalse();
+      });
+      then('parseResult value should be false', () {
+        parseResult.value.should.beFalse();
+      });
+    });
+
+    input = 'atrue';
+    when('calling parser.parse("$input")', () {
+      var parseResult = parser.parse(input);
+      then('parseResult should be a failure', () {
+        parseResult.isFailure.should.beTrue();
+      });
+      var expected = 'boolean expected';
+      then('parseResult message should be "$expected"', () {
+        parseResult.message.should.be(expected);
+      });
+    });
+
+    input = 'faAls';
+    when('calling parser.parse("$input")', () {
+      var parseResult = parser.parse(input);
+      then('parseResult should be a failure', () {
+        parseResult.isFailure.should.beTrue();
+      });
+      var expected = 'boolean expected';
+      then('parseResult message should be "$expected"', () {
+        parseResult.message.should.be(expected);
+      });
+    });
+  });
+
+  given('escapedTagStartParser and escapedTagEndParser', () {
     given('object: Template("Hello \\{{ world.")', () {
       var template = TextTemplate('Hello \\{{ world.');
       var engine = TemplateEngine();

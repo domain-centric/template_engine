@@ -7,13 +7,16 @@ import 'error_parser.dart';
 
 Parser optionalWhiteSpace() => whitespace().star().flatten();
 
-Parser<num> number() =>
-    (pattern('+-').optional() & 
-    digit().plus() &  
-    (char('.') & digit().plus()).optional() &
-    (pattern('eE') & pattern('+-').optional() & digit().plus())
-               .optional()).flatten('number expected').map(num.parse);
+Parser<num> number() => (pattern('+-').optional() &
+        digit().plus() &
+        (char('.') & digit().plus()).optional() &
+        (pattern('eE') & pattern('+-').optional() & digit().plus()).optional())
+    .flatten('number expected')
+    .map(num.parse);
 
+Parser<bool> boolean() => (stringIgnoreCase('true') | stringIgnoreCase('false'))
+    .flatten('boolean expected')
+    .map((value) => value.toLowerCase() == 'true');
 
 /// Creates a parser that can convert a [Template] text to a
 /// [parse tree](https://en.wikipedia.org/wiki/Parse_tree)
