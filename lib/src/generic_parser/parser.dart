@@ -7,7 +7,8 @@ import 'error_parser.dart';
 
 Parser optionalWhiteSpace() => whitespace().star().flatten();
 
-Parser intParser() => digit().plus().flatten().map(int.parse);
+Parser intParser() =>
+    ((char('-').optional()) & (digit().plus())).flatten().map(int.parse);
 
 /// Creates a parser that can convert a [Template] text to a
 /// [parse tree](https://en.wikipedia.org/wiki/Parse_tree)

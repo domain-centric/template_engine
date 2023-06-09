@@ -1,9 +1,48 @@
 import 'package:shouldly/shouldly.dart';
 import 'package:given_when_then_unit_test/given_when_then_unit_test.dart';
-import 'package:template_engine/src/template.dart';
-import 'package:template_engine/src/template_engine.dart';
+import 'package:template_engine/template_engine.dart';
 
 void main() {
+  given('intParser', () {
+    var parser = intParser();
+    when('calling parser.parse("12")', () {
+      var parseResult = parser.parse('12');
+      then('parseResult should contain no errors', () {
+        parseResult.isFailure.should.beFalse();
+      });
+      then('parseResult value should contain an int of 12', () {
+        NumericAssertions(parseResult.value).be(12);
+      });
+    });
+
+    when('calling parser.parse("-12")', () {
+      var parseResult = parser.parse('-12');
+      then('parseResult should contain no errors', () {
+        parseResult.isFailure.should.beFalse();
+      });
+      then('parseResult value should contain an int of -12', () {
+        NumericAssertions(parseResult.value).be(-12);
+      });
+    });
+
+    when('calling parser.parse("-1a2")', () {
+      var parseResult = parser.parse('-1a2');
+      then('parseResult should contain no errors', () {
+        parseResult.isFailure.should.beFalse();
+      });
+      then('parseResult value should contain an int of -1', () {
+        NumericAssertions(parseResult.value).be(-1);
+      });
+    });
+
+    when('calling parser.parse("a-12")', () {
+      var parseResult = parser.parse('a-12');
+      then('parseResult should be a failure', () {
+        parseResult.isFailure.should.beTrue();
+      });
+    });
+  });
+
   given('escapedTagStartParser and escapedTagEndParser', () {
     given('object: Template("Hello \\{{ world.")', () {
       var template = TextTemplate('Hello \\{{ world.');
