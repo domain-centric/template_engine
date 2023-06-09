@@ -1,6 +1,5 @@
 import 'package:collection/collection.dart';
 import 'package:petitparser/petitparser.dart';
-import 'package:template_engine/src/error.dart';
 import 'package:template_engine/src/generic_parser/map2_parser_extension.dart';
 import 'package:template_engine/src/tag/tag.dart';
 import 'package:template_engine/template_engine.dart';
@@ -15,9 +14,9 @@ class TagVariable extends Tag<VariableRenderer> {
   @override
   Parser<VariableRenderer> createTagParser(ParserContext context) =>
       (string(context.tagStart) &
-              whiteSpaceParser() &
+              optionalWhiteSpace() &
               TagName.namePathParser.flatten() &
-              whiteSpaceParser() & //TODO add attributes
+              optionalWhiteSpace() & //TODO add attributes
               string(context.tagEnd))
           .map2((values, parsePosition) => VariableRenderer(
               source: TemplateSource(

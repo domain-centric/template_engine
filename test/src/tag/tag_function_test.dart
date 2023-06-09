@@ -1,6 +1,6 @@
 import 'package:given_when_then_unit_test/given_when_then_unit_test.dart';
-import 'package:petitparser/src/core/parser.dart';
 import 'package:shouldly/shouldly.dart';
+import 'package:template_engine/src/error.dart';
 import 'package:template_engine/src/tag/tag_function.dart';
 import 'package:template_engine/src/template.dart';
 import 'package:template_engine/src/template_engine.dart';
@@ -35,5 +35,5 @@ class GreetingTag extends TagFunction<String> {
         );
 
   @override
-  String createParserResult(List value, Parser position) => text;
+  String createParserResult(TemplateSource source, String attributes) => text;
 }

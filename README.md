@@ -9,7 +9,8 @@ A flexible Dart library to parse templates and render output such as:
 * Etc...
 
 ## Features
-- Use variables and nested variables
+- Variable Tags: get values form variables and nested variables
+- Function Tags: call your Dart code to generate values with optional attributes
 
 ## Getting started
 
@@ -23,8 +24,8 @@ import 'package:template_engine/template_engine.dart';
 void main() {
   var template = TextTemplate('Hello {{name}}.');
   // See also FileTemplate and WebTemplate
-  var engine = TemplateEngine(variables: {'name': 'world'});
-  var parseResult = engine.parse(template);
+  var engine = TemplateEngine();
+  var parseResult = engine.parse(template, {'name': 'world'});
   // Here you could additionally mutate or validate the parseResult if needed.
   print(engine.render(parseResult)); // should print 'Hello world.';
 }

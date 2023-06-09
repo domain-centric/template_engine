@@ -1,4 +1,5 @@
 import 'package:petitparser/petitparser.dart';
+import 'package:template_engine/src/error.dart';
 import 'package:template_engine/src/generic_parser/map2_parser_extension.dart';
 import 'package:template_engine/src/generic_parser/parser.dart';
 import 'package:template_engine/src/tag/tag.dart';
@@ -15,26 +16,32 @@ import 'package:template_engine/src/tag/tag.dart';
 /// Example : {{greetings name={{name}} }}
 abstract class TagFunction<T extends Object> extends Tag {
   /// A [TagFunction] may have 0 or more [Attribute]s
-  final List<Attribute> attributeDefinitions;
+  final List<Attribute> attributes;
 
   TagFunction({
     required super.name,
     required super.description,
-    this.attributeDefinitions = const [],
+    this.attributes = const [],
   });
 
   @override
   Parser<T> createTagParser(ParserContext context) =>
       (string(context.tagStart) &
-              whiteSpaceParser() &
+              optionalWhiteSpace() &
               stringIgnoreCase(name) &
-              whiteSpaceParser() & //TODO add attributes
+              optionalWhiteSpace() &
+              rawAttributeParser(context) &
+              optionalWhiteSpace() &
               string(context.tagEnd))
-          .map2(
-              (value, parsePosition) => createParserResult(value, position()));
+          .map2((values, parsePosition) => createParserResult(
+              TemplateSource(
+                template: context.template,
+                parserPosition: parsePosition,
+              ),
+              values[4]));
 
-  T createParserResult(
-      List value, Parser position); //TODO change value with attribute value map
+  T createParserResult(TemplateSource source,
+      String attributes); //TODO change value with attribute value map
 }
 
 /// A [Tag] can have 0 or more attributes.
@@ -73,3 +80,8 @@ class Attribute {
     required this.optional,
   });
 }
+
+/// Creates a [Parser] that gets anything until the tag end
+/// TODO tagValues may contain tags, we therefor need change the parser
+Parser<String> rawAttributeParser(ParserContext context) =>
+    (any().starLazy(string(context.tagEnd))).flatten();

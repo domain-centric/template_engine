@@ -1,14 +1,13 @@
 import 'package:petitparser/petitparser.dart';
-import 'package:template_engine/src/error.dart';
 import 'package:template_engine/src/generic_parser/map2_parser_extension.dart';
 import 'package:template_engine/template_engine.dart';
 
 Parser<String> unknownTagOrVariableParser(ParserContext context) =>
     (string(context.tagStart) &
-            whiteSpaceParser().optional() &
+            optionalWhiteSpace().optional() &
             // any text up unit the Tag end
             any().starLazy(string(context.tagEnd)).flatten() &
-            whiteSpaceParser().optional() &
+            optionalWhiteSpace().optional() &
             string(context.tagEnd))
         .map2((values, parserPosition) {
       context.errors.add(Error(
