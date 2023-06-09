@@ -3,8 +3,8 @@ import 'package:given_when_then_unit_test/given_when_then_unit_test.dart';
 import 'package:template_engine/template_engine.dart';
 
 void main() {
-  given('intParser', () {
-    var parser = intParser();
+  given('numberParser', () {
+    var parser = number();
     when('calling parser.parse("12")', () {
       var parseResult = parser.parse('12');
       then('parseResult should contain no errors', () {
@@ -22,6 +22,46 @@ void main() {
       });
       then('parseResult value should contain an int of -12', () {
         NumericAssertions(parseResult.value).be(-12);
+      });
+    });
+
+    when('calling parser.parse("12.15")', () {
+      var parseResult = parser.parse('12');
+      then('parseResult should contain no errors', () {
+        parseResult.isFailure.should.beFalse();
+      });
+      then('parseResult value should contain an double of 12.15', () {
+        NumericAssertions(parseResult.value).be(12);
+      });
+    });
+
+    when('calling parser.parse("-12.15")', () {
+      var parseResult = parser.parse('-12.15');
+      then('parseResult should contain no errors', () {
+        parseResult.isFailure.should.beFalse();
+      });
+      then('parseResult value should contain an int of -12.15', () {
+        NumericAssertions(parseResult.value).be(-12.15);
+      });
+    });
+
+    when('calling parser.parse("12e10")', () {
+      var parseResult = parser.parse('12e10');
+      then('parseResult should contain no errors', () {
+        parseResult.isFailure.should.beFalse();
+      });
+      then('parseResult value should contain an in of 120000000000', () {
+        NumericAssertions(parseResult.value).be(120000000000);
+      });
+    });
+
+    when('calling parser.parse("-12e-2")', () {
+      var parseResult = parser.parse('-12e-2');
+      then('parseResult should contain no errors', () {
+        parseResult.isFailure.should.beFalse();
+      });
+      then('parseResult value should contain an int of -0.12', () {
+        NumericAssertions(parseResult.value).be(-0.12);
       });
     });
 
@@ -43,7 +83,7 @@ void main() {
     });
   });
 
-  given('escapedTagStartParser and escapedTagEndParser', () {
+    given('escapedTagStartParser and escapedTagEndParser', () {
     given('object: Template("Hello \\{{ world.")', () {
       var template = TextTemplate('Hello \\{{ world.');
       var engine = TemplateEngine();
