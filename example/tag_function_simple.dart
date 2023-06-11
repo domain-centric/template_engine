@@ -20,6 +20,7 @@ class GreetingTag extends TagFunction<String> {
         );
 
   @override
-  String createParserResult(TemplateSource source, String attributes) =>
+  String createParserResult(
+          TemplateSource source, Map<String, Object> attributes) =>
       'Hello world';
 }

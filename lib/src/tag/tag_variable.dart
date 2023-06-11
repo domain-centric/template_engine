@@ -95,11 +95,10 @@ class Variables extends DelegatingMap<String, Object> {
 
   /// Throws an [VariableException] when there are invalid namePath(s)
   void validateNames() {
-    var variableName = VariableName();
     List<String> errors = [];
     for (var namePath in namePaths) {
       try {
-        variableName.validate(namePath);
+        VariableName.validate(namePath);
       } on VariableException catch (e) {
         errors.add(e.message);
       }
@@ -135,7 +134,7 @@ class VariableName {
   static final namePathParser =
       (nameParser & (char('.') & nameParser).star()).end();
 
-  validate(String namePath) {
+  static validate(String namePath) {
     var result = namePathParser.parse(namePath);
     if (result.isFailure) {
       throw VariableException(

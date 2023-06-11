@@ -83,33 +83,32 @@ void main() {
   });
 
   given('VariableName', () {
-    var variableName = VariableName();
     when('calling validate("a")', () {
       then('should not throw an error', () {
-        Should.notThrowError(() => variableName.validate('a'));
+        Should.notThrowError(() => VariableName.validate('a'));
       });
     });
 
     when('calling validate("ab")', () {
       then('should not throw an error', () {
-        Should.notThrowError(() => variableName.validate('ab'));
+        Should.notThrowError(() => VariableName.validate('ab'));
       });
     });
     when('calling validate("a1")', () {
       then('should not throw an error', () {
-        Should.notThrowError(() => variableName.validate('a1'));
+        Should.notThrowError(() => VariableName.validate('a1'));
       });
     });
     when('calling validate("a11")', () {
       then('should not throw an error', () {
-        Should.notThrowError(() => variableName.validate('a11'));
+        Should.notThrowError(() => VariableName.validate('a11'));
       });
     });
 
     when('calling validate("1")', () {
       then('should throw a correct error', () {
         Should.throwException<VariableException>(
-                () => variableName.validate('1'))!
+                () => VariableName.validate('1'))!
             .message
             .should
             .be('Variable name: "1" is invalid: letter expected at position: 0');
@@ -119,7 +118,7 @@ void main() {
     when('calling validate("@")', () {
       then('should throw a correct error', () {
         Should.throwException<VariableException>(
-                () => variableName.validate('@'))!
+                () => VariableName.validate('@'))!
             .message
             .should
             .be('Variable name: "@" is invalid: letter expected at position: 0');
@@ -129,7 +128,7 @@ void main() {
     when('calling validate("ab.1")', () {
       then('should throw a correct error', () {
         Should.throwException<VariableException>(
-                () => variableName.validate('1'))!
+                () => VariableName.validate('1'))!
             .message
             .should
             .be('Variable name: "1" is invalid: letter expected at position: 0');
@@ -139,7 +138,7 @@ void main() {
     when('calling validate("ab@")', () {
       then('should throw a correct error', () {
         Should.throwException<VariableException>(
-                () => variableName.validate('ab@'))!
+                () => VariableName.validate('ab@'))!
             .message
             .should
             .be('Variable name: "ab@" is invalid: '
@@ -150,7 +149,7 @@ void main() {
     when('calling validate("ab1.@")', () {
       then('should throw a correct error', () {
         Should.throwException<VariableException>(
-                () => variableName.validate('ab1.@'))!
+                () => VariableName.validate('ab1.@'))!
             .message
             .should
             .be('Variable name: "ab1.@" is invalid: '

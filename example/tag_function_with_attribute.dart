@@ -3,22 +3,25 @@
 import 'package:template_engine/template_engine.dart';
 
 void main() {
-  var template = TextTemplate('{{greeting name="world"}}.');
-  // See also FileTemplate and WebTemplate
   var engine = TemplateEngine(tags: [GreetingTag()]);
-  var parseResult = engine.parse(template);
-  // Here you could additionally mutate or validate the parseResult if needed.
+  var parseResult = engine.parse(TextTemplate('{{greeting}}.'));
   print(engine.render(parseResult)); // should print 'Hello world.';
+  parseResult = engine.parse(TextTemplate('{{greeting name="Jane Doe"}}.'));
+  print(engine.render(parseResult)); // should print 'Hello Jane Doe.';
 }
 
 class GreetingTag extends TagFunction<String> {
   GreetingTag()
       : super(
-          name: 'greeting',
-          description: 'A tag that shows a greeting using attribute: name',
-        );
+            name: 'greeting',
+            description: 'A tag that shows a greeting using attribute: name',
+            attributeDefinitions: [
+              Attribute<String>(
+                  name: 'name', optional: true, defaultValue: 'world')
+            ]);
 
   @override
-  String createParserResult(TemplateSource source, String attributes) =>
-      'Hello $attributes';
+  String createParserResult(
+          TemplateSource source, Map<String, Object> attributes) =>
+      'Hello ${attributes['name']}';
 }

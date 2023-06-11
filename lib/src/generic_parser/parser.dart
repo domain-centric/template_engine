@@ -5,7 +5,7 @@ import 'package:template_engine/template_engine.dart';
 
 import 'error_parser.dart';
 
-Parser optionalWhiteSpace() => whitespace().star().flatten();
+Parser<String> optionalWhiteSpace() => whitespace().star().flatten();
 
 Parser<num> number() => (pattern('+-').optional() &
         digit().plus() &
@@ -63,13 +63,13 @@ Parser<List<Object>> delegatingParser({
 
   var parser = ChoiceParser<Object>([
     ChoiceParser<Object>(delegates),
-    untilParser(tagStart, tagEnd),
+    untilEndOfTagParser(tagStart, tagEnd),
     untilEndParser(),
   ]);
   return parser.plus();
 }
 
-Parser<String> untilParser(String tagStart, String tagEnd) => any()
+Parser<String> untilEndOfTagParser(String tagStart, String tagEnd) => any()
     .plusLazy(ChoiceParser([
       string('\\$tagStart'),
       string('\\$tagEnd'),
@@ -79,7 +79,7 @@ Parser<String> untilParser(String tagStart, String tagEnd) => any()
     .flatten()
     .map((value) => value);
 
-Parser<String> untilEndParser() => any().plus().flatten().map((value) => value);
+Parser<String> untilEndParser() => any().plus().flatten();
 
 /// Replaces an escaped [Tag] start (e.g. : /{{ )
 /// to a [String] e.g. containing:  {{ (without escape)

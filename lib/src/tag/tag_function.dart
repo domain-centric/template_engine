@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:petitparser/petitparser.dart';
 import 'package:template_engine/src/error.dart';
 import 'package:template_engine/src/generic_parser/map2_parser_extension.dart';
@@ -16,12 +17,12 @@ import 'package:template_engine/src/tag/tag.dart';
 /// Example : {{greetings name={{name}} }}
 abstract class TagFunction<T extends Object> extends Tag {
   /// A [TagFunction] may have 0 or more [Attribute]s
-  final List<Attribute> attributes;
+  final List<Attribute> attributeDefinitions;
 
   TagFunction({
     required super.name,
     required super.description,
-    this.attributes = const [],
+    this.attributeDefinitions = const [],
   });
 
   @override
@@ -29,19 +30,20 @@ abstract class TagFunction<T extends Object> extends Tag {
       (string(context.tagStart) &
               optionalWhiteSpace() &
               stringIgnoreCase(name) &
-              optionalWhiteSpace() &
-              rawAttributeParser(context) &
+              AttributesParser(attributeDefinitions) &
               optionalWhiteSpace() &
               string(context.tagEnd))
-          .map2((values, parsePosition) => createParserResult(
-              TemplateSource(
-                template: context.template,
-                parserPosition: parsePosition,
-              ),
-              values[4]));
+          .map2((values, parsePosition) {
+        return createParserResult(
+            TemplateSource(
+              template: context.template,
+              parserPosition: parsePosition,
+            ),
+            values[3]);
+      });
 
-  T createParserResult(TemplateSource source,
-      String attributes); //TODO change value with attribute value map
+  T createParserResult(TemplateSource source, Map<String, Object> attributes);
+
 }
 
 /// A [Tag] can have 0 or more attributes.
@@ -58,7 +60,7 @@ abstract class TagFunction<T extends Object> extends Tag {
 ///   * a [Tag] that is converted to a [Renderer]
 ///  * Can be optional
 ///  * Can have an default value when the attribute is optional
-class Attribute {
+class Attribute<T> {
   /// The name of the [Attribute]:
   /// * may not be empty
   /// * is case un-sensitive
@@ -68,23 +70,168 @@ class Attribute {
   /// A function to validate the value of an [Attribute]
   /// It returns an empty list when ok.
   /// It returns a list or error messages when not ok.
-  final List<String> Function(Object value) validateValue;
+  final List<String> Function(Object value)? validateValue;
 
   /// optional=true: the attribute is mandatory
   /// optional=false: the attribute may be omitted
   final bool optional;
 
+  /// The [Attribute] will get the [defaultValue] when the [Attribute]
+  /// is [optional] and the [defaultValue] is not null
+  final T? defaultValue;
+
+  Type get valueType => T;
+
   Attribute({
     required this.name,
-    required this.validateValue,
-    required this.optional,
+    this.validateValue,
+    this.optional = false,
+    this.defaultValue,
   });
 }
 
-/// Creates a [Parser] that gets anything until the tag end
-/// TODO tagValues may contain tags, we therefor need change the parser
-Parser<String> rawAttributeParser(ParserContext context) =>
-    (any().starLazy(string(context.tagEnd))).flatten();
+/// The [VariableName]:
+/// * must start with a letter, optionally followed by letters and or digits.
+/// * is case unsensitive .
+///
+/// E.g.: myValue1
+class AttributeName {
+  static final parser = (letter().plus() & digit().star()).plus().flatten();
+
+  static validate(String name) {
+    var result = parser.parse(name);
+    if (result.isFailure) {
+      throw AttributeException(
+          'Attribute name: "$name" is invalid: ${result.message} at position: ${result.position}');
+    }
+  }
+}
+
+/// TODO explain what [AttributeValue]s are supported
+abstract class AttributeValue {
+  // for documentation only;
+}
+
+class AttributeException implements Exception {
+  final String message;
+
+  AttributeException(this.message);
+}
+
+class AttributeExceptions implements Exception {
+  final List<String> messages;
+
+  AttributeExceptions(this.messages);
+}
 
 Parser<Object> attributeValueParser() =>
     ChoiceParser([number(), boolean(), quotedString()]); //TODO add tagParsers
+
+/// Creates parsers for each attribute name = value
+/// Then validates the result and converts attributes to a name-value [Map]
+class AttributesParser extends Parser<Map<String, Object>> {
+  final List<AttributeNameAndValueParser> nameAndValueParsers;
+  final List<Attribute> attributes;
+
+  AttributesParser(this.attributes)
+      : nameAndValueParsers = attributes
+            .map((attribute) => AttributeNameAndValueParser(attribute))
+            .toList();
+
+  @override
+  Result<Map<String, Object>> parseOn(Context context) {
+    Map<String, Object> namesAndValues = {};
+    List<AttributeNameAndValueParser> parsers = [...nameAndValueParsers];
+    var current = context;
+
+    AttributeNameAndValueParser? parserWithSuccess;
+    do {
+      parserWithSuccess = null;
+      for (var parser in parsers) {
+        if (parserWithSuccess == null) {
+          var result = parser.parseOn(current);
+          if (result.isSuccess) {
+            parserWithSuccess = parser;
+            namesAndValues[parser.attribute.name] = result.value;
+            current = result;
+          }
+        }
+      }
+      if (parserWithSuccess != null) {
+        // remove parser for efficiency
+        parsers.remove(parserWithSuccess);
+      }
+    } while (parserWithSuccess != null);
+
+//TODO get anything until the end of the tag and fail if it is something else than whitespace
+
+    try {
+      _validateIfMandatoryAttributesWhereFound(parsers);
+    } on AttributeException catch (e) {
+      return current.failure(e.message);
+    }
+
+    namesAndValues.addAll(_missingDefaultValues(namesAndValues));
+
+    return current.success(namesAndValues);
+  }
+
+  @override
+  AttributesParser copy() => AttributesParser(attributes);
+
+  void _validateIfMandatoryAttributesWhereFound(
+      List<AttributeNameAndValueParser> parsers) {
+    var missingMandatoryAttributes = parsers
+        .whereNot((parser) => parser.attribute.optional)
+        .map((parser) => parser.attribute)
+        .toList();
+    if (missingMandatoryAttributes.isNotEmpty) {
+      if (missingMandatoryAttributes.length == 1) {
+        throw AttributeException(
+            'Mandatory attribute: ${missingMandatoryAttributes.first.name} is missing');
+      } else {
+        throw AttributeException(
+            'Mandatory attributes: ${missingMandatoryAttributes.map((e) => e.name).join(', ')} are missing');
+      }
+    }
+  }
+
+  Map<String, Object> _missingDefaultValues(
+      Map<String, Object> namesAndValues) {
+    Map<String, Object> missingDefaultValues = {};
+
+    var optionalAttributes =
+        attributes.where((attribute) => attribute.optional);
+    for (var optionalAttribute in optionalAttributes) {
+      if (!namesAndValues.containsKey(optionalAttribute.name)) {
+        missingDefaultValues[optionalAttribute.name] =
+            optionalAttribute.defaultValue;
+      }
+    }
+    return missingDefaultValues;
+  }
+}
+
+class AttributeNameAndValueParser extends Parser<Object> {
+  final Attribute attribute;
+  final Parser<Object> internalParser;
+  AttributeNameAndValueParser(this.attribute)
+      : internalParser = _createInternalParser(attribute);
+
+  @override
+  Parser<Object> copy() => AttributeNameAndValueParser(attribute);
+
+  @override
+  Result<Object> parseOn(Context context) => internalParser.parseOn(context);
+
+  /// Returns a parser that returns the value of an attribute
+  /// Note that it must start with a whitespace for separation!
+  static Parser<Object> _createInternalParser(Attribute attribute) =>
+      (whitespace().plus() &
+              stringIgnoreCase(attribute.name) &
+              optionalWhiteSpace() &
+              char('=') &
+              optionalWhiteSpace() &
+              attributeValueParser())
+          .map((values) => values[5] as Object);
+}
