@@ -43,7 +43,6 @@ abstract class TagFunction<T extends Object> extends Tag {
       });
 
   T createParserResult(TemplateSource source, Map<String, Object> attributes);
-
 }
 
 /// A [Tag] can have 0 or more attributes.

@@ -1,5 +1,7 @@
+import 'package:petitparser/src/core/parser.dart';
 import 'package:shouldly/shouldly.dart';
 import 'package:given_when_then_unit_test/given_when_then_unit_test.dart';
+import 'package:template_engine/src/generic_parser/parser.dart';
 import 'package:template_engine/src/tag/tag.dart';
 
 void main() {
@@ -73,4 +75,26 @@ void main() {
       });
     });
   });
+  given('Tag', () {
+    when('Calling constructor', () {
+      then('Should throw an TagException with a valid message', () {
+        Should.throwException<TagException>(() => TagWithInvalidName())!
+            .message
+            .should
+            .be('Tag name: "inv@lid" is invalid: end of input expected at position: 3');
+      });
+    });
+  });
+}
+
+class TagWithInvalidName extends Tag<String> {
+  TagWithInvalidName()
+      : super(
+            name: 'inv@lid',
+            description: 'A tag with an invalid name for testing');
+
+  @override
+  Parser<String> createTagParser(ParserContext context) {
+    throw UnimplementedError();
+  }
 }
