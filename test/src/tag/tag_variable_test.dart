@@ -196,7 +196,7 @@ void main() {
     });
   });
   given('objects: Variables', () {
-    var variables = const Variables({
+    var variables = Variables({
       'person': {
         'name': 'John Doe',
         'age': 30,

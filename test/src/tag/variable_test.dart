@@ -4,7 +4,7 @@ import 'package:template_engine/src/tag/tag_variable.dart';
 
 void main() {
   given('Variables', () {
-    var variables = const Variables({
+    var variables = Variables({
       'person': {
         'name': 'John Doe',
         'age': 30,
@@ -32,14 +32,14 @@ void main() {
     when('calling value("person")', () {
       var value = variables.value('person');
       then('expect: person map', () {
-        value.should.be(const {
-          'name': 'John Doe',
-          'age': 30,
-          'child': {
-            'name': 'Jane Doe',
-            'age': 5,
-          }
-        });
+        value.toString().should.be({
+              'name': 'John Doe',
+              'age': 30,
+              'child': {
+                'name': 'Jane Doe',
+                'age': 5,
+              }
+            }.toString());
       });
     });
 
@@ -60,10 +60,10 @@ void main() {
     when('calling value("person.child")', () {
       var value = variables.value('person.child');
       then('expect: person map', () {
-        value.should.be(const {
-          'name': 'Jane Doe',
-          'age': 5,
-        });
+        value.toString().should.be({
+              'name': 'Jane Doe',
+              'age': 5,
+            }.toString());
       });
     });
 
@@ -159,7 +159,7 @@ void main() {
   });
 
   given('Variables with correct names', () {
-    var variable = const Variables({'name': 'John Doe', 'age': 30});
+    var variable = Variables({'name': 'John Doe', 'age': 30});
     when('calling validateNames()', () {
       then('should not throw Exception', () {
         Should.notThrowException(() => variable.validateNames());
@@ -168,11 +168,10 @@ void main() {
   });
 
   given('Variables with correct and incorrect name', () {
-    var variable = const Variables({'name': 'John Doe', 'age:': 30});
     when('calling validateNames()', () {
       then('should throw a correct exception', () {
         Should.throwException<VariableException>(
-                () => variable.validateNames())!
+                () => Variables({'name': 'John Doe', 'age:': 30}))!
             .message
             .should
             .be('Variable name: "age:" is invalid: '
@@ -182,13 +181,11 @@ void main() {
   });
 
   given('Variables with correct and incorrect name', () {
-    var variable = const Variables({
-      'child': {'n@me': 'Jane Doe'}
-    });
     when('calling validateNames()', () {
       then('should throw a correct exception', () {
-        Should.throwException<VariableException>(
-                () => variable.validateNames())!
+        Should.throwException<VariableException>(() => Variables({
+                  'child': {'n@me': 'Jane Doe'}
+                }))!
             .message
             .should
             .be('Variable name: "child.n@me" is invalid: '
@@ -198,18 +195,16 @@ void main() {
   });
 
   given('Variables with correct and incorrect names', () {
-    var variable = const Variables({
-      'name': 'John Doe',
-      '@ge': 30,
-      'child': {
-        'n@me': 'Jane Doe',
-        'age': 5,
-      }
-    });
     when('calling validateNames()', () {
       then('should throw a correct exception', () {
-        Should.throwException<VariableException>(
-                () => variable.validateNames())!
+        Should.throwException<VariableException>(() => Variables({
+                  'name': 'John Doe',
+                  '@ge': 30,
+                  'child': {
+                    'n@me': 'Jane Doe',
+                    'age': 5,
+                  }
+                }))!
             .message
             .should
             .be('Variable name: "@ge" is invalid: '

@@ -43,7 +43,9 @@ abstract class Variable {
 /// and the [Object?] represents the [VariableValue]
 /// This map is given to the [TemplateEngine] as a constructor parameter.
 class Variables extends DelegatingMap<String, Object> {
-  const Variables(super.base);
+  Variables(super.base) {
+    validateNames();
+  }
 
   List<String> get namePaths => _createNamePaths(this);
 

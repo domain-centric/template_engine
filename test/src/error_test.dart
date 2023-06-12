@@ -7,7 +7,7 @@ import 'package:template_engine/src/tag/tag_variable.dart';
 
 void main() {
   given('object: Variables', () {
-    var variables = const Variables({'name': 'John Doe'});
+    var variables = Variables({'name': 'John Doe'});
 
     given(
         'objects: ParseContext and '
