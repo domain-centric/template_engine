@@ -86,7 +86,9 @@ class Attribute<T> {
     this.validateValue,
     this.optional = false,
     this.defaultValue,
-  });
+  }) {
+    AttributeName.validate(name);
+  }
 }
 
 /// The [VariableName]:
@@ -98,7 +100,7 @@ class AttributeName {
   static final parser = (letter().plus() & digit().star()).plus().flatten();
 
   static validate(String name) {
-    var result = parser.parse(name);
+    var result = parser.end().parse(name);
     if (result.isFailure) {
       throw AttributeException(
           'Attribute name: "$name" is invalid: ${result.message} at position: ${result.position}');

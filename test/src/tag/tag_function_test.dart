@@ -3,6 +3,18 @@ import 'package:shouldly/shouldly.dart';
 import 'package:template_engine/template_engine.dart';
 
 void main() {
+  given('Attribute', () {
+    when('Calling constructor', () {
+      then('Should throw a AttributeException with a valid error message', () {
+        Should.throwException<AttributeException>(
+                () => Attribute(name: 'inv@lid'))!
+            .message
+            .should
+            .be('Attribute name: "inv@lid" is invalid: end of input expected at position: 3');
+      });
+    });
+  });
+
   given('AttributeValue parser', () {
     var parser = attributeValueParser();
     var input = '-123e-1';
