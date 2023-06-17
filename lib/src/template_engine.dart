@@ -50,7 +50,9 @@ class TemplateEngine {
     List<Tag>? tags,
     this.tagStart = '{{',
     this.tagEnd = '}}',
-  }) : tags = tags ?? StandardTags();
+  }) : tags = tags ?? StandardTags() {
+    validateNamesAreUnique();
+  }
 
   /// Parse the [Template] text into a
   /// [parser tree](https://en.wikipedia.org/wiki/Parse_tree).
@@ -83,5 +85,21 @@ class TemplateEngine {
       text: text,
       errors: context.errors,
     );
+  }
+
+  void validateNamesAreUnique() {
+    Set<String> processedNames = {};
+    List<String> allNames = tags.map((tag) => tag.name.toLowerCase()).toList();
+    Set<String> doubleNames =
+        allNames.where((name) => !processedNames.add(name)).toSet();
+    switch (doubleNames.length) {
+      case 0:
+        break;
+      case 1:
+        throw TagException('Tag name: ${doubleNames.first} is not unique');
+      default:
+        throw TagException(
+            'Tag names: ${doubleNames.join(', ')} are not unique');
+    }
   }
 }
