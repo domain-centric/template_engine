@@ -64,7 +64,6 @@ void main() {
       when('call: parse(template)', () {
         var result = engine.parse(template);
 
-//TODO try map instead of map2 in missingTagStartParser
         then('expect: 1 error', () => result.errors.length.should.be(1));
 
         var expected =

@@ -108,7 +108,7 @@ class AttributeName {
   }
 }
 
-/// TODO explain what [AttributeValue]s are supported
+/// See [attributeValueParser] for the [AttributeValue] types that are supported
 abstract class AttributeValue {
   // for documentation only;
 }
@@ -125,8 +125,12 @@ class AttributeExceptions implements Exception {
   AttributeExceptions(this.messages);
 }
 
+/// The following [AttributeValue] types are supported:
+/// * [number]
+/// * [boolean]
+/// * [quotedString]
 Parser<Object> attributeValueParser() =>
-    ChoiceParser([number(), boolean(), quotedString()]); //TODO add tagParsers
+    ChoiceParser([number(), boolean(), quotedString()]); 
 
 /// Creates parsers for each attribute name = value
 /// Then validates the result and converts attributes to a name-value [Map]

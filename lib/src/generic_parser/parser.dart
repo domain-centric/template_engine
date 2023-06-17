@@ -7,6 +7,7 @@ import 'error_parser.dart';
 
 Parser<String> optionalWhiteSpace() => whitespace().star().flatten();
 
+/// Number values such as: * 12, -12, 3.123, -3.123, 5E9, -5e9, 45E-9, -45e-9
 Parser<num> number() => (pattern('+-').optional() &
         digit().plus() &
         (char('.') & digit().plus()).optional() &
@@ -14,10 +15,14 @@ Parser<num> number() => (pattern('+-').optional() &
     .flatten('number expected')
     .map(num.parse);
 
+
+
+/// Boolean values such as: true, false, True, False, TRUE, FALSE, TRue, FALse
 Parser<bool> boolean() => (stringIgnoreCase('true') | stringIgnoreCase('false'))
     .flatten('boolean expected')
     .map((value) => value.toLowerCase() == 'true');
 
+/// String values such as: "Hello" or 'world'
 Parser<String> quotedString() =>
     ((char("'") & any().starGreedy(char("'")).flatten() & char("'")) |
             (char('"') & any().starGreedy(char('"')).flatten() & char('"')))
@@ -41,7 +46,7 @@ Parser<List<Object>> templateParser(ParserContext context) {
       escapedTagEndParser(context),
       ...context.tags.map((tag) => tag.createTagParser(context)),
       unknownTagOrVariableParser(
-          context), //TODO to be handled in the variable parser/ renderer????
+          context), 
       missingTagStartParser(context),
       missingTagEndParser(context),
     ],

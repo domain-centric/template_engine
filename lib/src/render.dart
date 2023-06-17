@@ -5,7 +5,6 @@ import 'package:template_engine/src/tag/tag_variable.dart';
 ///
 /// For [T] see [RenderType]
 ///
-// TODO consider rename the class name  that does not end with -er (see) debates on internet
 
 abstract class Renderer<T> {
   T render(RenderContext context);

@@ -16,7 +16,7 @@ class TagVariable extends Tag<VariableRenderer> {
       (string(context.tagStart) &
               optionalWhiteSpace() &
               TagName.namePathParser.flatten() &
-              optionalWhiteSpace() & //TODO add attributes
+              optionalWhiteSpace() & 
               string(context.tagEnd))
           .map2((values, parsePosition) => VariableRenderer(
               source: TemplateSource(
@@ -53,13 +53,12 @@ class Variables extends DelegatingMap<String, Object> {
       [String parentPath = '']) {
     List<String> namePaths = [];
     for (String name in variables.keys) {
-      //TODO validate name
       String namePath = _createNamePath(parentPath, name);
       namePaths.add(namePath);
       var value = variables[name];
       if (value is Map<String, Object>) {
         // recursive call
-        // TODO do we need to add something to prevent endless round trips?
+        // do we need to add something to prevent endless round trips?
         namePaths.addAll(_createNamePaths(value, namePath));
       }
     }
