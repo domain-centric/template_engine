@@ -2,23 +2,62 @@ import 'package:petitparser/petitparser.dart';
 import 'package:template_engine/src/generic_parser/map2_parser_extension.dart';
 import 'package:template_engine/template_engine.dart';
 
-Parser<String> unknownTagOrVariableParser(ParserContext context) =>
-    (string(context.tagStart) &
-            optionalWhiteSpace().optional() &
-            // any text up unit the Tag end
-            any().starLazy(string(context.tagEnd)).flatten() &
-            optionalWhiteSpace().optional() &
-            string(context.tagEnd))
-        .map2((values, parserPosition) {
-      context.errors.add(Error(
-          stage: ErrorStage.parse,
-          message: 'Unknown tag or variable.',
-          source: TemplateSource(
-            template: context.template,
-            parserPosition: parserPosition,
-          )));
-      return values.join();
-    });
+class InvalidTagParser extends Parser<String> {
+  final ParserContext context;
+  late Parser<String> internalParser;
+  late List<Parser<Map<String, Object>>> tagFunctionAttributeErrorParsers;
+
+  InvalidTagParser(this.context) {
+    internalParser = createInternalParser();
+    tagFunctionAttributeErrorParsers = context.tags
+        .whereType<TagFunction>()
+        .map((tagFunction) => tagFunction
+            .createTagFunctionParserThatReturnsMapWithAttributeErrors(context))
+        .toList();
+  }
+
+  @override
+  Parser<String> copy() => InvalidTagParser(context);
+
+  @override
+  Result<String> parseOn(Context context) => internalParser.parseOn(context);
+
+  Parser<String> createInternalParser() => (string(context.tagStart) &
+              optionalWhiteSpace().optional() &
+              untilEndOfTagParser(context.tagStart, context.tagEnd) &
+              optionalWhiteSpace().optional() &
+              string(context.tagEnd))
+          .map2((values, parserPosition) {
+        var source = TemplateSource(
+          template: context.template,
+          parserPosition: parserPosition,
+        );
+
+        var tag = values.join();
+
+        var errors = findTagFunctionsWithAttributeErrors(tag);
+        if (errors.isEmpty) {
+          errors.add(Error(
+              stage: ErrorStage.parse,
+              message: 'Invalid tag.',
+              source: source));
+        }
+
+        context.errors.addAll(errors);
+
+        return tag;
+      });
+
+  List<Error> findTagFunctionsWithAttributeErrors(String tag) {
+    for (var parser in tagFunctionAttributeErrorParsers) {
+      var result = parser.parse(tag);
+      if (result.isSuccess) {
+        return (result.value as Map<String, Error>).values.toList();
+      }
+    }
+    return [];
+  }
+}
 
 /// Adds an error if a [Tag] end is found but not a  [Tag] start.
 /// It replaces the [Tag] end to a [String] e.g. containing: }}
