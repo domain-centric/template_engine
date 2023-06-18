@@ -177,11 +177,17 @@ void main() {
   });
 
   given('AttributesParser()', () {
-    var parser = AttributesParser([Attribute(name: 'attribute')]);
+    ParserContext context =
+        ParserContext(template: TextTemplate('dummy'), tags: []);
+    var parser = AttributesParser(
+        parserContext: context,
+        failsOnError: true,
+        attributes: [Attribute(name: 'attribute')]);
     var input = "attribute='Hello'";
     when('calling parser.parse("$input")', () {
       var result = parser.parse(input);
-      String expected = 'Mandatory attribute: attribute is missing';
+      String expected =
+          'Parse Error: Mandatory attribute: attribute is missing position: 1:1 source: Text';
 
       then('result should have a failure',
           () => result.isFailure.should.beTrue());
@@ -192,8 +198,9 @@ void main() {
     input = " attribute1='Hello'";
     when('calling parser.parse("$input")', () {
       var result = parser.parse(input);
-      var expected = 'Mandatory attribute: attribute is missing';
 
+      var expected =
+          'Parse Error: Mandatory attribute: attribute is missing position: 1:1 source: Text';
       then(
           'result should be a failure', () => result.isFailure.should.beTrue());
       then('result.message should be: "$expected"',
@@ -232,6 +239,43 @@ void main() {
           () => result.nodes[0].should.be('Hello Jane Doe'));
       then('result 2nd node : "."', () => result.nodes[1].should.be('.'));
     });
+
+    var inputTag1 =
+        '{{greeting name= "Jane Doe" invalidAttribute=invalidValue}}';
+    var input1 = '$inputTag1.';
+    when('calling: engine.parse(TextTemplate("$input1"))', () {
+      var parseResult = engine.parse(TextTemplate(input1));
+
+      then('result.errors should contain 1 error',
+          () => parseResult.errors.length.should.be(1));
+      String expected = 'Parse Error: Invalid attribute defintion: '
+          'invalidAttribute=invalidValue position: 1:11 source: Text';
+      then('result.errorMessage should be "$expected"',
+          () => parseResult.errorMessage.should.be(expected));
+
+      then('result 1st node : "$inputTag1"',
+          () => parseResult.nodes[0].should.be(inputTag1));
+      then('result 2nd node : "."', () => parseResult.nodes[1].should.be('.'));
+    });
+
+    var inputTag2 =
+        '{{greeting name= "Jane Doe" invalidAttribute"invalidValue" }}';
+    var input2 = '$inputTag2.';
+    when('calling: engine.parse(TextTemplate("$input2"))', () {
+      var parseResult = engine.parse(TextTemplate(input2));
+
+      then('result.errors should contain 1 error',
+          () => parseResult.errors.length.should.be(1));
+
+      String expected = 'Parse Error: Invalid attribute defintion: '
+          'invalidAttribute"invalidValue" position: 1:11 source: Text';
+      then('result.errorMessage should be "$expected"',
+          () => parseResult.errorMessage.should.be(expected));
+
+      then('result 1st node : "$inputTag2"',
+          () => parseResult.nodes[0].should.be(inputTag2));
+      then('result 2nd node : "."', () => parseResult.nodes[1].should.be('.'));
+    });
   });
 
   given('a TemplateEngine with an AttributeTestTag', () {
@@ -241,11 +285,13 @@ void main() {
         '{{${AttributeTestTag.tagName}${AttributeTestTag.attributeName}=true}}';
     when('calling engine.parse(TextTemplate("$input"))', () {
       var result = engine.parse(TextTemplate(input));
-      var expected =
-          'Parse Error: Unknown tag or variable. position: 1:1 source: Text';
+      var expected = 'Parse Error: Invalid attribute defintion: '
+          'testAttribute=true position: 1:7 source: Text\n'
+          'Parse Error: Mandatory attribute: '
+          'testAttribute is missing position: 1:7 source: Text';
 
       then('result should have 1 error',
-          () => result.errors.length.should.be(1));
+          () => result.errors.length.should.be(2));
       then('result.errorMessage should be: "$expected"',
           () => result.errorMessage.should.be(expected));
     });

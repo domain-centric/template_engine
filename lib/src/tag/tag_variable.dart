@@ -16,7 +16,7 @@ class TagVariable extends Tag<VariableRenderer> {
       (string(context.tagStart) &
               optionalWhiteSpace() &
               TagName.namePathParser.flatten() &
-              optionalWhiteSpace() & 
+              optionalWhiteSpace() &
               string(context.tagEnd))
           .map2((values, parsePosition) => VariableRenderer(
               source: TemplateSource(

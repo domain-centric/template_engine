@@ -27,12 +27,7 @@ abstract class TagFunction<T extends Object> extends Tag {
 
   @override
   Parser<T> createTagParser(ParserContext context) =>
-      (string(context.tagStart) &
-              optionalWhiteSpace() &
-              stringIgnoreCase(name) &
-              AttributesParser(attributeDefinitions) &
-              optionalWhiteSpace() &
-              string(context.tagEnd))
+      _createParserWithoutMapping(context, failsOnAttributeError: true)
           .map2((values, parsePosition) {
         return createParserResult(
             TemplateSource(
@@ -41,6 +36,30 @@ abstract class TagFunction<T extends Object> extends Tag {
             ),
             values[3]);
       });
+
+  Parser<List<dynamic>> _createParserWithoutMapping(ParserContext context,
+      {required bool failsOnAttributeError}) {
+    return (string(context.tagStart) &
+        optionalWhiteSpace() &
+        stringIgnoreCase(name) &
+        AttributesParser(
+          parserContext: context,
+          attributes: attributeDefinitions,
+          failsOnError: failsOnAttributeError,
+        ) &
+        optionalWhiteSpace() &
+        string(context.tagEnd));
+  }
+
+  /// creates a parser that returns success when a [TagFunction] is found but the attributes contains an error.
+  /// It will return a map with attribute errors
+  Parser<Map<String, Object>>
+      createTagFunctionParserThatReturnsMapWithAttributeErrors(
+              ParserContext context) =>
+          _createParserWithoutMapping(context, failsOnAttributeError: false)
+              .map((values) {
+            return values[3];
+          });
 
   T createParserResult(TemplateSource source, Map<String, Object> attributes);
 }
@@ -130,22 +149,29 @@ class AttributeExceptions implements Exception {
 /// * [boolean]
 /// * [quotedString]
 Parser<Object> attributeValueParser() =>
-    ChoiceParser([number(), boolean(), quotedString()]); 
+    ChoiceParser([number(), boolean(), quotedString()]);
 
 /// Creates parsers for each attribute name = value
 /// Then validates the result and converts attributes to a name-value [Map]
 class AttributesParser extends Parser<Map<String, Object>> {
   final List<AttributeNameAndValueParser> nameAndValueParsers;
   final List<Attribute> attributes;
+  final ParserContext parserContext;
+  final bool failsOnError;
 
-  AttributesParser(this.attributes)
+  AttributesParser(
+      {required this.parserContext,
+      required this.attributes,
+      required this.failsOnError})
       : nameAndValueParsers = attributes
             .map((attribute) => AttributeNameAndValueParser(attribute))
             .toList();
 
   @override
   Result<Map<String, Object>> parseOn(Context context) {
+    List<Error> errors = [];
     Map<String, Object> namesAndValues = {};
+    TemplateSource source = _createTemplateSource(context);
     List<AttributeNameAndValueParser> parsers = [...nameAndValueParsers];
     var current = context;
 
@@ -168,37 +194,72 @@ class AttributesParser extends Parser<Map<String, Object>> {
       }
     } while (parserWithSuccess != null);
 
-//TODO get anything until the end of the tag and fail if it is something else than whitespace
-
-    try {
-      _validateIfMandatoryAttributesWhereFound(parsers);
-    } on AttributeException catch (e) {
-      return current.failure(e.message);
+    var result =
+        untilEndOfTagParser(parserContext.tagStart, parserContext.tagEnd)
+            .parseOn(current);
+    if (result.isSuccess) {
+      current = result;
+      if (result.value.trim().isNotEmpty) {
+        errors.add(Error(
+            source: source,
+            message: 'Invalid attribute defintion: ${result.value.trim()}',
+            stage: ErrorStage.parse));
+      }
     }
+
+    errors.addAll(_validateIfMandatoryAttributesWhereFound(parsers, source));
 
     namesAndValues.addAll(_missingDefaultValues(namesAndValues));
 
-    return current.success(namesAndValues);
+    if (failsOnError) {
+      if (errors.isEmpty) {
+        return current.success(namesAndValues);
+      } else {
+        return current.failure(errors.join('\n'));
+      }
+    } else {
+      var errorMap = {
+        for (int i = 0; i < errors.length; i++) i.toString(): errors[i]
+      };
+      return current.success(errorMap);
+    }
   }
 
   @override
-  AttributesParser copy() => AttributesParser(attributes);
+  AttributesParser copy() => AttributesParser(
+        parserContext: parserContext,
+        attributes: attributes,
+        failsOnError: failsOnError,
+      );
 
-  void _validateIfMandatoryAttributesWhereFound(
-      List<AttributeNameAndValueParser> parsers) {
+  List<Error> _validateIfMandatoryAttributesWhereFound(
+      List<AttributeNameAndValueParser> parsers, TemplateSource source) {
     var missingMandatoryAttributes = parsers
         .whereNot((parser) => parser.attribute.optional)
         .map((parser) => parser.attribute)
         .toList();
     if (missingMandatoryAttributes.isNotEmpty) {
       if (missingMandatoryAttributes.length == 1) {
-        throw AttributeException(
-            'Mandatory attribute: ${missingMandatoryAttributes.first.name} is missing');
+        return [
+          Error(
+            stage: ErrorStage.parse,
+            source: source,
+            message:
+                'Mandatory attribute: ${missingMandatoryAttributes.first.name} is missing',
+          )
+        ];
       } else {
-        throw AttributeException(
-            'Mandatory attributes: ${missingMandatoryAttributes.map((e) => e.name).join(', ')} are missing');
+        return [
+          Error(
+            stage: ErrorStage.parse,
+            source: source,
+            message:
+                'Mandatory attributes: ${missingMandatoryAttributes.map((e) => e.name).join(', ')} are missing',
+          )
+        ];
       }
     }
+    return [];
   }
 
   Map<String, Object> _missingDefaultValues(
@@ -215,6 +276,10 @@ class AttributesParser extends Parser<Map<String, Object>> {
     }
     return missingDefaultValues;
   }
+
+  TemplateSource _createTemplateSource(Context context) => TemplateSource(
+      template: parserContext.template,
+      parserPosition: context.toPositionString());
 }
 
 class AttributeNameAndValueParser extends Parser<Object> {

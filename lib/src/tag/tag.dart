@@ -33,7 +33,7 @@ abstract class Tag<T extends Object> {
   String documentation(ParserContext context) =>
       [example(context), description].join('\n');
 
-  Parser<T> createTagParser(ParserContext context); 
+  Parser<T> createTagParser(ParserContext context);
 }
 
 /// A [TagName]:

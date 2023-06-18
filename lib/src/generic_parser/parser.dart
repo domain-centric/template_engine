@@ -15,8 +15,6 @@ Parser<num> number() => (pattern('+-').optional() &
     .flatten('number expected')
     .map(num.parse);
 
-
-
 /// Boolean values such as: true, false, True, False, TRUE, FALSE, TRue, FALse
 Parser<bool> boolean() => (stringIgnoreCase('true') | stringIgnoreCase('false'))
     .flatten('boolean expected')
@@ -24,8 +22,8 @@ Parser<bool> boolean() => (stringIgnoreCase('true') | stringIgnoreCase('false'))
 
 /// String values such as: "Hello" or 'world'
 Parser<String> quotedString() =>
-    ((char("'") & any().starGreedy(char("'")).flatten() & char("'")) |
-            (char('"') & any().starGreedy(char('"')).flatten() & char('"')))
+    ((char("'") & any().starLazy(char("'")).flatten() & char("'")) |
+            (char('"') & any().starLazy(char('"')).flatten() & char('"')))
         .map((values) => values[1]);
 
 /// Creates a parser that can convert a [Template] text to a
@@ -45,8 +43,7 @@ Parser<List<Object>> templateParser(ParserContext context) {
       escapedTagStartParser(context),
       escapedTagEndParser(context),
       ...context.tags.map((tag) => tag.createTagParser(context)),
-      unknownTagOrVariableParser(
-          context), 
+      InvalidTagParser(context),
       missingTagStartParser(context),
       missingTagEndParser(context),
     ],
