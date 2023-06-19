@@ -249,7 +249,7 @@ void main() {
       then('result.errors should contain 1 error',
           () => parseResult.errors.length.should.be(1));
       String expected = 'Parse Error: Invalid attribute defintion: '
-          'invalidAttribute=invalidValue position: 1:11 source: Text';
+          'invalidAttribute=invalidValue position: 1:28 source: Text';
       then('result.errorMessage should be "$expected"',
           () => parseResult.errorMessage.should.be(expected));
 
@@ -268,7 +268,7 @@ void main() {
           () => parseResult.errors.length.should.be(1));
 
       String expected = 'Parse Error: Invalid attribute defintion: '
-          'invalidAttribute"invalidValue" position: 1:11 source: Text';
+          'invalidAttribute"invalidValue" position: 1:28 source: Text';
       then('result.errorMessage should be "$expected"',
           () => parseResult.errorMessage.should.be(expected));
 
@@ -285,13 +285,10 @@ void main() {
         '{{${AttributeTestTag.tagName}${AttributeTestTag.attributeName}=true}}';
     when('calling engine.parse(TextTemplate("$input"))', () {
       var result = engine.parse(TextTemplate(input));
-      var expected = 'Parse Error: Invalid attribute defintion: '
-          'testAttribute=true position: 1:7 source: Text\n'
-          'Parse Error: Mandatory attribute: '
-          'testAttribute is missing position: 1:7 source: Text';
-
       then('result should have 1 error',
-          () => result.errors.length.should.be(2));
+          () => result.errors.length.should.be(1));
+
+      var expected = 'Parse Error: Invalid tag. position: 1:1 source: Text';
       then('result.errorMessage should be: "$expected"',
           () => result.errorMessage.should.be(expected));
     });

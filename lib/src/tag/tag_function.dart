@@ -171,7 +171,6 @@ class AttributesParser extends Parser<Map<String, Object>> {
   Result<Map<String, Object>> parseOn(Context context) {
     List<Error> errors = [];
     Map<String, Object> namesAndValues = {};
-    TemplateSource source = _createTemplateSource(context);
     List<AttributeNameAndValueParser> parsers = [...nameAndValueParsers];
     var current = context;
 
@@ -194,20 +193,21 @@ class AttributesParser extends Parser<Map<String, Object>> {
       }
     } while (parserWithSuccess != null);
 
-    var result =
-        untilEndOfTagParser(parserContext.tagStart, parserContext.tagEnd)
-            .parseOn(current);
+    var remainingParser = (whitespace().plus().flatten()) &
+        untilEndOfTagParser(parserContext.tagStart, parserContext.tagEnd);
+    var result = remainingParser.parseOn(current);
     if (result.isSuccess) {
-      current = result;
-      if (result.value.trim().isNotEmpty) {
+      var remainingText = result.value[1].trim();
+      if (remainingText.isNotEmpty) {
         errors.add(Error(
-            source: source,
-            message: 'Invalid attribute defintion: ${result.value.trim()}',
+            source: _createTemplateSource(current),
+            message: 'Invalid attribute defintion: $remainingText',
             stage: ErrorStage.parse));
       }
+      current = result;
     }
 
-    errors.addAll(_validateIfMandatoryAttributesWhereFound(parsers, source));
+    errors.addAll(_validateIfMandatoryAttributesWhereFound(parsers, current));
 
     namesAndValues.addAll(_missingDefaultValues(namesAndValues));
 
@@ -233,7 +233,7 @@ class AttributesParser extends Parser<Map<String, Object>> {
       );
 
   List<Error> _validateIfMandatoryAttributesWhereFound(
-      List<AttributeNameAndValueParser> parsers, TemplateSource source) {
+      List<AttributeNameAndValueParser> parsers, Context context) {
     var missingMandatoryAttributes = parsers
         .whereNot((parser) => parser.attribute.optional)
         .map((parser) => parser.attribute)
@@ -243,7 +243,7 @@ class AttributesParser extends Parser<Map<String, Object>> {
         return [
           Error(
             stage: ErrorStage.parse,
-            source: source,
+            source: _createTemplateSource(context),
             message:
                 'Mandatory attribute: ${missingMandatoryAttributes.first.name} is missing',
           )
@@ -252,7 +252,7 @@ class AttributesParser extends Parser<Map<String, Object>> {
         return [
           Error(
             stage: ErrorStage.parse,
-            source: source,
+            source: _createTemplateSource(context),
             message:
                 'Mandatory attributes: ${missingMandatoryAttributes.map((e) => e.name).join(', ')} are missing',
           )
