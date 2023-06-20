@@ -85,11 +85,6 @@ class Attribute<T> {
   /// * may contain letters and numbers: 'title'
   final String name;
 
-  /// A function to validate the value of an [Attribute]
-  /// It returns an empty list when ok.
-  /// It returns a list or error messages when not ok.
-  final List<String> Function(Object value)? validateValue;
-
   /// optional=true: the attribute is mandatory
   /// optional=false: the attribute may be omitted
   final bool optional;
@@ -102,7 +97,6 @@ class Attribute<T> {
 
   Attribute({
     required this.name,
-    this.validateValue,
     this.optional = false,
     this.defaultValue,
   }) {
@@ -266,9 +260,9 @@ class AttributesParser extends Parser<Map<String, Object>> {
       Map<String, Object> namesAndValues) {
     Map<String, Object> missingDefaultValues = {};
 
-    var optionalAttributes =
-        attributes.where((attribute) => attribute.optional);
-    for (var optionalAttribute in optionalAttributes) {
+    var optionalAttributesWithDefaultValue = attributes.where(
+        (attribute) => attribute.optional && attribute.defaultValue != null);
+    for (var optionalAttribute in optionalAttributesWithDefaultValue) {
       if (!namesAndValues.containsKey(optionalAttribute.name)) {
         missingDefaultValues[optionalAttribute.name] =
             optionalAttribute.defaultValue;
