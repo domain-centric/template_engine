@@ -1,6 +1,4 @@
 import 'package:petitparser/parser.dart';
-import 'package:template_engine/src/tag/tag.dart';
-import 'package:template_engine/src/tag/tag_variable.dart';
 import 'package:template_engine/template_engine.dart';
 
 import 'error_parser.dart';

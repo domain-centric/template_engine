@@ -1,8 +1,7 @@
 import 'package:petitparser/src/core/parser.dart';
 import 'package:shouldly/shouldly.dart';
 import 'package:given_when_then_unit_test/given_when_then_unit_test.dart';
-import 'package:template_engine/src/generic_parser/parser.dart';
-import 'package:template_engine/src/tag/tag.dart';
+import 'package:template_engine/template_engine.dart';
 
 void main() {
   given('TagName', () {

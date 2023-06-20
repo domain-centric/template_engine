@@ -1,9 +1,9 @@
 import 'package:collection/collection.dart';
 import 'package:petitparser/petitparser.dart';
-import 'package:template_engine/src/error.dart';
-import 'package:template_engine/src/generic_parser/map2_parser_extension.dart';
-import 'package:template_engine/src/generic_parser/parser.dart';
-import 'package:template_engine/src/tag/tag.dart';
+import 'package:template_engine/src/parser/error.dart';
+import 'package:template_engine/src/parser/map2_parser_extension.dart';
+import 'package:template_engine/src/parser/parser.dart';
+import 'package:template_engine/src/parser/tag/tag.dart';
 
 /// A [TagFunction] is a [Tag] that generates the result using a
 /// Dart [Function] that you can write yourself.

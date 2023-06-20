@@ -1,8 +1,8 @@
-import 'package:template_engine/src/error.dart';
-import 'package:template_engine/src/generic_parser/parser.dart';
+import 'package:template_engine/src/parser/error.dart';
+import 'package:template_engine/src/parser/parser.dart';
 import 'package:template_engine/src/render.dart';
-import 'package:template_engine/src/tag/group.dart';
-import 'package:template_engine/src/tag/tag.dart';
+import 'package:template_engine/src/parser/tag/group.dart';
+import 'package:template_engine/src/parser/tag/tag.dart';
 import 'package:template_engine/src/template.dart';
 
 /// The [TemplateEngine] does the following:

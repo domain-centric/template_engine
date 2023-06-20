@@ -1,5 +1,5 @@
-import 'package:template_engine/src/error.dart';
-import 'package:template_engine/src/tag/tag_variable.dart';
+import 'package:template_engine/src/parser/error.dart';
+import 'package:template_engine/src/parser/tag/tag_variable.dart';
 
 /// Renders some value depending on the implementation of the [Renderer]
 ///

@@ -1,6 +1,6 @@
 import 'package:shouldly/shouldly.dart';
 import 'package:given_when_then_unit_test/given_when_then_unit_test.dart';
-import 'package:template_engine/src/tag/tag_variable.dart';
+import 'package:template_engine/src/parser/tag/tag_variable.dart';
 
 void main() {
   given('Variables', () {

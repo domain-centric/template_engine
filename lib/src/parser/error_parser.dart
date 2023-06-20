@@ -1,5 +1,4 @@
 import 'package:petitparser/petitparser.dart';
-import 'package:template_engine/src/generic_parser/map2_parser_extension.dart';
 import 'package:template_engine/template_engine.dart';
 
 class InvalidTagParser extends Parser<String> {
