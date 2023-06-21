@@ -21,6 +21,8 @@ class GreetingTag extends TagFunction<String> {
 
   @override
   String createParserResult(
-          TemplateSource source, Map<String, Object> attributes) =>
+          {required ParserContext context,
+          required TemplateSource source,
+          required Map<String, Object> attributes}) =>
       'Hello world';
 }

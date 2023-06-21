@@ -587,7 +587,9 @@ class GreetingTagWithAttribute extends TagFunction<String> {
 
   @override
   String createParserResult(
-          TemplateSource source, Map<String, Object> attributes) =>
+          {required ParserContext context,
+          required TemplateSource source,
+          required Map<String, Object> attributes}) =>
       'Hello ${attributes['name']}';
 }
 
@@ -602,7 +604,8 @@ class AttributeTestTag extends TagFunction<Map<String, Object>> {
 
   @override
   Map<String, Object> createParserResult(
-      TemplateSource source, Map<String, Object> attributes) {
-    return attributes;
-  }
+          {required ParserContext context,
+          required TemplateSource source,
+          required Map<String, Object> attributes}) =>
+      attributes;
 }

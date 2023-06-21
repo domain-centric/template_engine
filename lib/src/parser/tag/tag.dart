@@ -31,7 +31,7 @@ abstract class Tag<T extends Object> {
   /// a description
   /// a summary of attributes if any.
   String documentation(ParserContext context) =>
-      [example(context), description].join('\n');
+      ['Example: ${example(context)}', description].join('\n');
 
   Parser<T> createTagParser(ParserContext context);
 }

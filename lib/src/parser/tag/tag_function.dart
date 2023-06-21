@@ -30,11 +30,13 @@ abstract class TagFunction<T extends Object> extends Tag {
       _createParserWithoutMapping(context, failsOnAttributeError: true)
           .map2((values, parsePosition) {
         return createParserResult(
-            TemplateSource(
-              template: context.template,
-              parserPosition: parsePosition,
-            ),
-            values[3]);
+          context: context,
+          attributes: values[3],
+          source: TemplateSource(
+            template: context.template,
+            parserPosition: parsePosition,
+          ),
+        );
       });
 
   Parser<List<dynamic>> _createParserWithoutMapping(ParserContext context,
@@ -61,7 +63,38 @@ abstract class TagFunction<T extends Object> extends Tag {
             return values[3];
           });
 
-  T createParserResult(TemplateSource source, Map<String, Object> attributes);
+  T createParserResult({
+    required ParserContext context,
+    required TemplateSource source,
+    required Map<String, Object> attributes,
+  });
+
+  @override
+  String documentation(ParserContext context) => [
+        'Example: ${example(context)}',
+        description,
+        ...attributeDocumentation
+      ].join('\n');
+
+  List<String> get attributeDocumentation {
+    var attributeDoc = <String>[];
+    if (attributeDefinitions.isNotEmpty) {
+      attributeDoc.add('Attributes:');
+    }
+    for (var attribute in attributeDefinitions) {
+      attributeDoc.add('* ${attribute.name}');
+      if (attribute.description != null &&
+          attribute.description!.trim().isNotEmpty) {
+        attributeDoc.add('  Description: ${attribute.description}');
+      }
+      attributeDoc.add(
+          '  ${attribute.optional ? 'Usage: optional' : 'Usage: mandatory'}');
+      if (attribute.optional && attribute.defaultValue != null) {
+        attributeDoc.add('  Default value: ${attribute.defaultValue}');
+      }
+    }
+    return attributeDoc;
+  }
 }
 
 /// A [Tag] can have 0 or more attributes.
@@ -85,6 +118,9 @@ class Attribute<T> {
   /// * may contain letters and numbers: 'title'
   final String name;
 
+  /// Optional description
+  final String? description;
+
   /// optional=true: the attribute is mandatory
   /// optional=false: the attribute may be omitted
   final bool optional;
@@ -97,6 +133,7 @@ class Attribute<T> {
 
   Attribute({
     required this.name,
+    this.description,
     this.optional = false,
     this.defaultValue,
   }) {
