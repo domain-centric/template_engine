@@ -6,7 +6,7 @@ import 'package:template_engine/src/parser/tag/tag_expression.dart';
 
 void main() {
   given('expressionParser', () {
-    var parser = expressionParser;
+    var parser = numExpressionParser;
     var delta = 0.00001;
     when('calling: parser.parse("exp(7)").value.eval({})', () {
       var result = parser.parse("exp(7)").value.eval({});

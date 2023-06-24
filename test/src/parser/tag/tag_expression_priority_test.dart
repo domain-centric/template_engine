@@ -4,7 +4,7 @@ import 'package:template_engine/src/parser/tag/tag_expression.dart';
 
 void main() {
   given('expressionParser', () {
-    var parser = expressionParser;
+    var parser = numExpressionParser;
     double delta = 0.00001;
     when('calling: parser.parse("1 + 2 * 3").value.eval({})', () {
       var result = parser.parse("1 + 2 * 3").value.eval({});

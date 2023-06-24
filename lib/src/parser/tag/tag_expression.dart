@@ -1,9 +1,8 @@
 import 'dart:math';
-
 import 'package:petitparser/petitparser.dart';
 
-final expressionParser = () {
-  final builder = ExpressionBuilder<Expression>();
+final numExpressionParser = () {
+  final builder = ExpressionBuilder<Expression<num>>();
   builder
     ..primitive((digit().plus() &
             (char('.') & digit().plus()).optional() &
@@ -11,16 +10,15 @@ final expressionParser = () {
                 .optional())
         .flatten('number expected')
         .trim()
-        .map((value) => Value(num.parse(value))))
-    ..primitive(
-        ChoiceParser(constants.keys.map((name) => string(name)))
-            .flatten('constant expected')
-            .trim()
-            .map((name) => Value(constants[name]!)))
+        .map((value) => Value<num>(num.parse(value))))
+    ..primitive(ChoiceParser(constants.keys.map((name) => string(name)))
+        .flatten('constant expected')
+        .trim()
+        .map((name) => Value<num>(constants[name]!)))
     ..primitive((letter() & word().star())
         .flatten('variable expected')
         .trim()
-        .map((name) => Variable(name)));
+        .map((name) => Variable<num>(name)));
   builder.group()
     ..wrapper(
         seq2(
@@ -29,12 +27,13 @@ final expressionParser = () {
         ),
         char(')').trim(),
         (left, value, right) =>
-            TagFunction(left.first, value, functions[left.first]!))
+            TagFunction<num>(left.first, value, functions[left.first]!))
     ..wrapper(
         char('(').trim(), char(')').trim(), (left, value, right) => value);
   builder.group()
     ..prefix(char('+').trim(), (op, a) => a)
-    ..prefix(char('-').trim(), (op, a) => UnaryOperator('-', a, (x) => -x));
+    ..prefix(
+        char('-').trim(), (op, a) => UnaryOperator<num>('-', a, (x) => -x));
   builder
       .group()
       .right(char('^').trim(), (a, op, b) => BinaryOperator('^', a, b, pow));
@@ -49,6 +48,8 @@ final expressionParser = () {
     ..left(char('-').trim(),
         (a, op, b) => BinaryOperator('-', a, b, (x, y) => x - y));
   return builder.build().end();
+
+  //TODO add modulo?
 }();
 
 /// Common mathematical constants.
@@ -76,20 +77,20 @@ final functions = {
 /// * [Variable]s
 /// * [TagFunction]s
 /// * [Operator]s
-abstract class Expression {
+abstract class Expression<T extends Object> {
   /// Evaluates the expression with the provided [variables].
-  num eval(Map<String, num> variables);
+  T eval(Map<String, Object> variables);
 }
 
 /// A [Value] expression that does not change when evaluated.
 /// e.g. it can be like a [num], [bool], [String] etc...
-class Value extends Expression {
+class Value<T extends Object> extends Expression<T> {
   Value(this.value);
 
-  final num value;
+  final T value;
 
   @override
-  num eval(Map<String, num> variables) => value;
+  T eval(Map<String, Object> variables) => value;
 
   @override
   String toString() => 'Value{$value}';
@@ -100,14 +101,14 @@ class Value extends Expression {
 /// referred to as a value; or in simpler terms, a [Variable] is a
 /// named container for a particular set of bits or type of data
 /// (like [num], [bool], [String] etc...)
-class Variable extends Expression {
+class Variable<T extends Object> extends Expression<T> {
   Variable(this.name);
 
   final String name;
 
   @override
-  num eval(Map<String, num> variables) => variables.containsKey(name)
-      ? variables[name]!
+  T eval(Map<String, Object> variables) => variables.containsKey(name)
+      ? variables[name]! as T
       : throw 'Unknown variable $name';
 
   @override
@@ -116,15 +117,15 @@ class Variable extends Expression {
 
 /// An [Operator] that uses one [value]
 /// e.g. making a number negative
-class TagFunction extends Operator {
+class TagFunction<T extends Object> extends Expression<T> {
   TagFunction(this.name, this.value, this.function);
 
   final String name;
-  final Expression value;
-  final num Function(num value) function;
+  final Expression<T> value;
+  final T Function(T value) function; //TODO replace value with parameters
 
   @override
-  num eval(Map<String, num> variables) => function(value.eval(variables));
+  T eval(Map<String, Object> variables) => function(value.eval(variables));
 
   @override
   String toString() => 'Function{$name}';
@@ -132,40 +133,40 @@ class TagFunction extends Operator {
 
 /// An [Operator] behaves generally like functions,
 /// but differs syntactically or semantically.
-abstract class Operator implements Expression {
+abstract class Operator<T extends Object> implements Expression<T> {
   // for documentation only
 }
 
 /// An [Operator] that uses one [value]
 /// e.g. making a number negative
-class UnaryOperator extends Operator {
+class UnaryOperator<T extends Object> extends Operator<T> {
   UnaryOperator(this.name, this.value, this.function);
 
   final String name;
-  final Expression value;
-  final num Function(num value) function;
+  final Expression<T> value;
+  final T Function(T value) function;
 
   @override
-  num eval(Map<String, num> variables) => function(value.eval(variables));
+  T eval(Map<String, Object> variables) => function(value.eval(variables));
 
   @override
-  String toString() => 'Unary{$name}';
+  String toString() => 'UnaryOperator{$name}';
 }
 
 /// An [Operator] that uses the two values [left] and [right]
 /// An example of an opperation: a + b
-class BinaryOperator extends Operator {
+class BinaryOperator<T extends Object> extends Operator<T> {
   BinaryOperator(this.name, this.left, this.right, this.function);
 
   final String name;
-  final Expression left;
-  final Expression right;
-  final num Function(num left, num right) function;
+  final Expression<T> left;
+  final Expression<T> right;
+  final T Function(T left, T right) function;
 
   @override
-  num eval(Map<String, num> variables) =>
+  T eval(Map<String, Object> variables) =>
       function(left.eval(variables), right.eval(variables));
 
   @override
-  String toString() => 'Binary{$name}';
+  String toString() => 'BinaryOperator{$name}';
 }
