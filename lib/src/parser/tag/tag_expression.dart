@@ -2,7 +2,7 @@ import 'dart:math';
 
 import 'package:petitparser/petitparser.dart';
 
-final mathParser = () {
+final expressionParser = () {
   final builder = ExpressionBuilder<Expression>();
   builder
     ..primitive((digit().plus() &
@@ -11,11 +11,16 @@ final mathParser = () {
                 .optional())
         .flatten('number expected')
         .trim()
-        .map(_createValue))
+        .map((value) => Value(num.parse(value))))
+    ..primitive(
+        ChoiceParser(constants.keys.map((name) => string(name)))
+            .flatten('constant expected')
+            .trim()
+            .map((name) => Value(constants[name]!)))
     ..primitive((letter() & word().star())
         .flatten('variable expected')
         .trim()
-        .map(_createVariable));
+        .map((name) => Variable(name)));
   builder.group()
     ..wrapper(
         seq2(
@@ -23,29 +28,28 @@ final mathParser = () {
           char('(').trim(),
         ),
         char(')').trim(),
-        (left, value, right) => _createFunction(left.first, value))
+        (left, value, right) =>
+            TagFunction(left.first, value, functions[left.first]!))
     ..wrapper(
         char('(').trim(), char(')').trim(), (left, value, right) => value);
   builder.group()
     ..prefix(char('+').trim(), (op, a) => a)
-    ..prefix(char('-').trim(), (op, a) => Unary('-', a, (x) => -x));
-  builder.group().right(char('^').trim(), (a, op, b) => Binary('^', a, b, pow));
+    ..prefix(char('-').trim(), (op, a) => UnaryOperator('-', a, (x) => -x));
+  builder
+      .group()
+      .right(char('^').trim(), (a, op, b) => BinaryOperator('^', a, b, pow));
   builder.group()
-    ..left(char('*').trim(), (a, op, b) => Binary('*', a, b, (x, y) => x * y))
-    ..left(char('/').trim(), (a, op, b) => Binary('/', a, b, (x, y) => x / y));
+    ..left(char('*').trim(),
+        (a, op, b) => BinaryOperator('*', a, b, (x, y) => x * y))
+    ..left(char('/').trim(),
+        (a, op, b) => BinaryOperator('/', a, b, (x, y) => x / y));
   builder.group()
-    ..left(char('+').trim(), (a, op, b) => Binary('+', a, b, (x, y) => x + y))
-    ..left(char('-').trim(), (a, op, b) => Binary('-', a, b, (x, y) => x - y));
+    ..left(char('+').trim(),
+        (a, op, b) => BinaryOperator('+', a, b, (x, y) => x + y))
+    ..left(char('-').trim(),
+        (a, op, b) => BinaryOperator('-', a, b, (x, y) => x - y));
   return builder.build().end();
 }();
-
-Expression _createValue(String value) => Value(num.parse(value));
-
-Expression _createVariable(String name) =>
-    constants.containsKey(name) ? Value(constants[name]!) : Variable(name);
-
-Expression _createFunction(String name, Expression expression) =>
-    Unary(name, expression, functions[name]!);
 
 /// Common mathematical constants.
 final constants = {
@@ -67,12 +71,18 @@ final functions = {
 };
 
 /// An abstract expression that can be evaluated.
+/// It is a combination of one or more:
+/// * [Value]s
+/// * [Variable]s
+/// * [TagFunction]s
+/// * [Operator]s
 abstract class Expression {
   /// Evaluates the expression with the provided [variables].
   num eval(Map<String, num> variables);
 }
 
-/// A value expression.
+/// A [Value] expression that does not change when evaluated.
+/// e.g. it can be like a [num], [bool], [String] etc...
 class Value extends Expression {
   Value(this.value);
 
@@ -85,7 +95,11 @@ class Value extends Expression {
   String toString() => 'Value{$value}';
 }
 
-/// A variable expression.
+/// a [Variable] is an abstract storage location paired with an associated
+/// symbolic name, which contains some known or unknown quantity of information
+/// referred to as a value; or in simpler terms, a [Variable] is a
+/// named container for a particular set of bits or type of data
+/// (like [num], [bool], [String] etc...)
 class Variable extends Expression {
   Variable(this.name);
 
@@ -100,9 +114,32 @@ class Variable extends Expression {
   String toString() => 'Variable{$name}';
 }
 
-/// An unary expression.
-class Unary extends Expression {
-  Unary(this.name, this.value, this.function);
+/// An [Operator] that uses one [value]
+/// e.g. making a number negative
+class TagFunction extends Operator {
+  TagFunction(this.name, this.value, this.function);
+
+  final String name;
+  final Expression value;
+  final num Function(num value) function;
+
+  @override
+  num eval(Map<String, num> variables) => function(value.eval(variables));
+
+  @override
+  String toString() => 'Function{$name}';
+}
+
+/// An [Operator] behaves generally like functions,
+/// but differs syntactically or semantically.
+abstract class Operator implements Expression {
+  // for documentation only
+}
+
+/// An [Operator] that uses one [value]
+/// e.g. making a number negative
+class UnaryOperator extends Operator {
+  UnaryOperator(this.name, this.value, this.function);
 
   final String name;
   final Expression value;
@@ -115,9 +152,10 @@ class Unary extends Expression {
   String toString() => 'Unary{$name}';
 }
 
-/// A binary expression.
-class Binary extends Expression {
-  Binary(this.name, this.left, this.right, this.function);
+/// An [Operator] that uses the two values [left] and [right]
+/// An example of an opperation: a + b
+class BinaryOperator extends Operator {
+  BinaryOperator(this.name, this.left, this.right, this.function);
 
   final String name;
   final Expression left;

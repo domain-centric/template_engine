@@ -3,8 +3,8 @@ import 'package:given_when_then_unit_test/given_when_then_unit_test.dart';
 import 'package:template_engine/src/parser/tag/tag_expression.dart';
 
 void main() {
-  given('mathParser', () {
-    var parser = mathParser;
+  given('expressionParser', () {
+    var parser = expressionParser;
     var input = "0";
     Map<String, num> variables = const {};
     double delta = 0.00001;
