@@ -9,3 +9,5 @@ export 'src/parser/map2_parser_extension.dart';
 export 'src/parser/tag/tag.dart';
 export 'src/parser/tag/tag_function.dart';
 export 'src/parser/tag/tag_variable.dart';
+export 'src/parser/tag/expression/expression.dart';
+export 'src/parser/tag/expression/num_expression.dart';
