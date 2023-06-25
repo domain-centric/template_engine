@@ -36,14 +36,19 @@ Parser<Expression<bool>> boolExpressionParser() {
   //   ..wrapper(
   //       char('(').trim(), char(')').trim(), (left, value, right) => value);
   builder.group()
+
+    /// modulo
+    ..left(char('^').trim(),
+        (a, op, b) => BinaryOperator<bool>('^', a, b, (x, y) => x ^ y))
+
+    /// and
     ..left(char('&').trim(),
         (a, op, b) => BinaryOperator<bool>('&', a, b, (x, y) => x & y))
+
+    /// or
     ..left(char('|').trim(),
         (a, op, b) => BinaryOperator<bool>('|', a, b, (x, y) => x | y));
   return builder.build();
-
-  //TODO ()
-  //TODO test vars
 }
 
 // final functions = {
