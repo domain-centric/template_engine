@@ -12,10 +12,11 @@ Parser<bool> boolParser() => (whitespace().star() &
 /// * TRUE, FALSE
 /// * TRue, FALse
 /// You can use operators such as"
-/// * !
-/// * $
-/// * |
-/// * ()
+/// * ! : not e.g.: !false => true
+/// * & : and e.g.: true & true => true
+/// * | : or e.g.: false | true => true
+/// * ^ : xor e.g.: false | true => true
+/// * () : parentheses e.g.: true & (false | true) => true
 Parser<Expression<bool>> boolExpressionParser() {
   final builder = ExpressionBuilder<Expression<bool>>();
   builder.primitive(boolParser().map((boolValue) => Value<bool>(boolValue)));
@@ -24,17 +25,20 @@ Parser<Expression<bool>> boolExpressionParser() {
   //     .trim()
   //     .map((name) => Variable2<String>(name)));
 
-  // builder.group()
-  //   ..wrapper(
-  //       seq2(
-  //         word().plusString('function expected').trim(),
-  //         char('(').trim(),
-  //       ),
-  //       char(')').trim(),
-  //       (left, value, right) =>
-  //           TagFunction2<String>(left.first, value, functions[left.first]!))
-  //   ..wrapper(
-  //       char('(').trim(), char(')').trim(), (left, value, right) => value);
+  builder
+      .group()
+      //   ..wrapper(
+      //       seq2(
+      //         word().plusString('function expected').trim(),
+      //         char('(').trim(),
+      //       ),
+      //       char(')').trim(),
+      //       (left, value, right) =>
+      //           TagFunction2<String>(left.first, value, functions[left.first]!))
+
+      /// parentheses
+      .wrapper(
+          char('(').trim(), char(')').trim(), (left, value, right) => value);
 
   builder
       .group()
