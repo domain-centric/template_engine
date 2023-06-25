@@ -35,6 +35,14 @@ Parser<Expression<bool>> boolExpressionParser() {
   //           TagFunction2<String>(left.first, value, functions[left.first]!))
   //   ..wrapper(
   //       char('(').trim(), char(')').trim(), (left, value, right) => value);
+
+  builder
+      .group()
+
+      /// not
+      .prefix(
+          char('!').trim(), (op, a) => UnaryOperator<bool>('!', a, (x) => !x));
+
   builder.group()
 
     /// modulo
