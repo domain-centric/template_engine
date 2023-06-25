@@ -4,7 +4,7 @@ import 'package:template_engine/template_engine.dart';
 
 void main() {
   given('numExpressionParser', () {
-    var parser = numExpressionParser;
+    var parser = numExpressionParser();
     var input = "0";
     Map<String, num> variables = const {};
     double delta = 0.00001;

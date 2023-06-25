@@ -6,7 +6,7 @@ import 'package:template_engine/template_engine.dart';
 
 void main() {
   given('numExpressionParser', () {
-    var parser = numExpressionParser;
+    var parser = numExpressionParser();
     var delta = 0.00001;
     when('calling: parser.parse("exp(7)").value.eval({})', () {
       var result = parser.parse("exp(7)").value.eval({});

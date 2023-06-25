@@ -4,7 +4,7 @@ import 'package:template_engine/template_engine.dart';
 
 void main() {
   given('stringExpressionParser', () {
-    var parser = stringExpressionParser;
+    var parser = stringExpressionParser();
 
     when('calling: parser.parse("\'Hello ")', () {
       var result = parser.parse("'Hello ");

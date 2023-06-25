@@ -2,16 +2,17 @@ import 'dart:math';
 import 'package:petitparser/petitparser.dart';
 import 'package:template_engine/template_engine.dart';
 
-final numExpressionParser = () {
+Parser<num> numberParser() => (digit().plus() &
+        (char('.') & digit().plus()).optional() &
+        (pattern('eE') & pattern('+-').optional() & digit().plus()).optional())
+    .flatten('number expected')
+    .trim()
+    .map((value) => num.parse(value));
+
+Parser<Expression<num>> numExpressionParser() {
   final builder = ExpressionBuilder<Expression<num>>();
   builder
-    ..primitive((digit().plus() &
-            (char('.') & digit().plus()).optional() &
-            (pattern('eE') & pattern('+-').optional() & digit().plus())
-                .optional())
-        .flatten('number expected')
-        .trim()
-        .map((value) => Value<num>(num.parse(value))))
+    ..primitive(numberParser().map((number) => Value<num>(number)))
     ..primitive(ChoiceParser(constants.keys.map((name) => string(name)))
         .flatten('constant expected')
         .trim()
@@ -50,8 +51,8 @@ final numExpressionParser = () {
         (a, op, b) => BinaryOperator('+', a, b, (x, y) => x + y))
     ..left(char('-').trim(),
         (a, op, b) => BinaryOperator('-', a, b, (x, y) => x - y));
-  return builder.build().end();
-}();
+  return builder.build();
+}
 
 /// Common mathematical constants.
 final constants = {
