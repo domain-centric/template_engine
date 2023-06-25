@@ -1,6 +1,3 @@
-import 'dart:math';
-import 'package:petitparser/petitparser.dart';
-
 /// An abstract expression that can be evaluated.
 /// It is a combination of one or more:
 /// * [Value]s
@@ -31,7 +28,6 @@ class Value<T extends Object> extends Expression<T> {
 /// referred to as a value; or in simpler terms, a [Variable2] is a
 /// named container for a particular set of bits or type of data
 /// (like [num], [bool], [String] etc...)
-
 
 class Variable2<T extends Object> extends Expression<T> {
   Variable2(this.name);
