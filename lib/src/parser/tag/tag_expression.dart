@@ -41,15 +41,15 @@ final numExpressionParser = () {
     ..left(char('*').trim(),
         (a, op, b) => BinaryOperator('*', a, b, (x, y) => x * y))
     ..left(char('/').trim(),
-        (a, op, b) => BinaryOperator('/', a, b, (x, y) => x / y));
+        (a, op, b) => BinaryOperator('/', a, b, (x, y) => x / y))
+    ..left(char('%').trim(),
+        (a, op, b) => BinaryOperator('%', a, b, (x, y) => x % y));
   builder.group()
     ..left(char('+').trim(),
         (a, op, b) => BinaryOperator('+', a, b, (x, y) => x + y))
     ..left(char('-').trim(),
         (a, op, b) => BinaryOperator('-', a, b, (x, y) => x - y));
   return builder.build().end();
-
-  //TODO add modulo?
 }();
 
 /// Common mathematical constants.

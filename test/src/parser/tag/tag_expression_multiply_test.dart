@@ -33,5 +33,26 @@ void main() {
       then('result should be: $expected',
           () => result.should.beCloseTo(expected, delta: delta));
     });
+
+    when('calling: parser.parse("5 % 3").value.eval({})', () {
+      var result = parser.parse("5 % 3").value.eval({});
+      var expected = 2;
+      then('result should be: $expected',
+          () => result.should.beCloseTo(expected, delta: delta));
+    });
+
+    when('calling: parser.parse("-5 % 3").value.eval({})', () {
+      var result = parser.parse("-5 % 3").value.eval({});
+      var expected = 1;
+      then('result should be: $expected',
+          () => result.should.beCloseTo(expected, delta: delta));
+    });
+
+    when('calling: parser.parse("20 % 15 % 3").value.eval({})', () {
+      var result = parser.parse("20 % 15 % 3").value.eval({});
+      var expected = 2;
+      then('result should be: $expected',
+          () => result.should.beCloseTo(expected, delta: delta));
+    });
   });
 }
