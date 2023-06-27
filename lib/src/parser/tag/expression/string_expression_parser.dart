@@ -1,7 +1,7 @@
 import 'package:petitparser/petitparser.dart';
 import 'package:template_engine/template_engine.dart';
 
-Parser<String> qouatedStringParser() =>
+Parser<String> quotedStringParser() =>
     ((char("'") & any().starLazy(char("'")).flatten() & char("'")) |
             (char('"') & any().starLazy(char('"')).flatten() & char('"')))
         .map((values) => values[1]);
@@ -14,7 +14,7 @@ Parser<Expression<String>> stringExpressionParser() {
   final builder = ExpressionBuilder<Expression<String>>();
 
   builder.primitive(
-      (whitespace().star() & qouatedStringParser() & whitespace().star())
+      (whitespace().star() & quotedStringParser() & whitespace().star())
           .map((values) => Value<String>(values[1])));
   // ..primitive((letter() & word().star())
   //     .flatten('variable expected')

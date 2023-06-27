@@ -97,7 +97,7 @@ class UnaryOperator<T extends Object> extends Operator<T> {
 }
 
 /// An [Operator] that uses the two values [left] and [right]
-/// An example of an opperation: a + b
+/// An example of an operation: a + b
 class BinaryOperator<T extends Object> extends Operator<T> {
   BinaryOperator(this.name, this.left, this.right, this.function);
 
@@ -111,5 +111,5 @@ class BinaryOperator<T extends Object> extends Operator<T> {
       function(left.eval(variables), right.eval(variables));
 
   @override
-  String toString() => 'BinaryOperator{$name}';
+  String toString() => 'BinaryOperatorExpression{$name}';
 }
