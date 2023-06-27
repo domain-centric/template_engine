@@ -43,20 +43,35 @@ class Variable2<T extends Object> extends Expression<T> {
   String toString() => 'Variable{$name}';
 }
 
-/// An [Operator] that uses one [value]
+/// An [Operator] that uses one [parameter]
 /// e.g. making a number negative
-class TagFunction2<T extends Object> extends Expression<T> {
-  TagFunction2(this.name, this.value, this.function);
+class TagFunction2<R extends Object> extends Expression<R> {
+  final TagFunctionDefinition<R> definition;
+  final Expression parameter;
+
+  TagFunction2(
+    this.definition,
+    this.parameter,
+  );
+
+  @override
+  R eval(Map<String, Object> variables) {
+    var parameters = <String, Object>{'value': parameter.eval(variables)};
+    return definition.function(parameters);
+  }
+
+  @override
+  String toString() => 'Function{${definition.name}}';
+}
+
+class TagFunctionDefinition<R extends Object> {
+  TagFunctionDefinition({
+    required this.name,
+    required this.function,
+  });
 
   final String name;
-  final Expression<T> value;
-  final T Function(T value) function; //TODO replace value with parameters
-
-  @override
-  T eval(Map<String, Object> variables) => function(value.eval(variables));
-
-  @override
-  String toString() => 'Function{$name}';
+  final R Function(Map<String, Object> parameters) function;
 }
 
 /// An [Operator] behaves generally like functions,

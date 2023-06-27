@@ -21,17 +21,20 @@ Parser<Expression<num>> numExpressionParser() {
         .flatten('variable expected')
         .trim()
         .map((name) => Variable2<num>(name)));
-  builder.group()
-    ..wrapper(
+
+  var group = builder.group();
+  for (var definition in numFunctions()) {
+    group.wrapper(
         seq2(
-          word().plusString('function expected').trim(),
+          string(definition.name, 'expected function name: ${definition.name}'),
           char('(').trim(),
         ),
         char(')').trim(),
-        (left, value, right) =>
-            TagFunction2<num>(left.first, value, functions[left.first]!))
-    ..wrapper(
-        char('(').trim(), char(')').trim(), (left, value, right) => value);
+        (left, parameterValue, right) =>
+            TagFunction2<num>(definition, parameterValue));
+  }
+  group.wrapper(
+      char('(').trim(), char(')').trim(), (left, value, right) => value);
   builder.group()
     ..prefix(char('+').trim(), (op, a) => a)
     ..prefix(
@@ -60,15 +63,100 @@ final constants = {
   'pi': pi,
 };
 
-/// Common mathematical functions.
-final functions = {
-  'exp': exp,
-  'log': log,
-  'sin': sin,
-  'asin': asin,
-  'cos': cos,
-  'acos': acos,
-  'tan': tan,
-  'atan': atan,
-  'sqrt': sqrt,
-};
+/// Returns a list of functions that return a number
+List<TagFunctionDefinition<num>> numFunctions() => [
+      ExpFunction(),
+      LogFunction(),
+      SinFunction(),
+      AsinFunction(),
+      CosFunction(),
+      AcosFunction(),
+      TanFunction(),
+      AtanFunction(),
+      SqrtFunction(),
+      StringLengthFunction(),
+    ];
+
+class ExpFunction extends TagFunctionDefinition<num> {
+  ExpFunction()
+      : super(
+            name: 'exp',
+            function: (parameters) => exp(parameters['value'] as num));
+}
+
+class LogFunction extends TagFunctionDefinition<num> {
+  LogFunction()
+      : super(
+            name: 'log',
+            function: (parameters) => log(parameters['value'] as num));
+}
+
+class SinFunction extends TagFunctionDefinition<num> {
+  SinFunction()
+      : super(
+            name: 'sin',
+            function: (parameters) => sin(parameters['value'] as num));
+}
+
+class AsinFunction extends TagFunctionDefinition<num> {
+  AsinFunction()
+      : super(
+            name: 'asin',
+            function: (parameters) => asin(parameters['value'] as num));
+}
+
+class CosFunction extends TagFunctionDefinition<num> {
+  CosFunction()
+      : super(
+            name: 'cos',
+            function: (parameters) => cos(parameters['value'] as num));
+}
+
+class AcosFunction extends TagFunctionDefinition<num> {
+  AcosFunction()
+      : super(
+            name: 'acos',
+            function: (parameters) => acos(parameters['value'] as num));
+}
+
+class TanFunction extends TagFunctionDefinition<num> {
+  TanFunction()
+      : super(
+            name: 'tan',
+            function: (parameters) => tan(parameters['value'] as num));
+}
+
+class AtanFunction extends TagFunctionDefinition<num> {
+  AtanFunction()
+      : super(
+            name: 'atan',
+            function: (parameters) => atan(parameters['value'] as num));
+}
+
+class SqrtFunction extends TagFunctionDefinition<num> {
+  SqrtFunction()
+      : super(
+            name: 'sqrt',
+            function: (parameters) => sqrt(parameters['value'] as num));
+}
+
+class StringLengthFunction extends TagFunctionDefinition<num> {
+  StringLengthFunction()
+      : super(
+            name: 'length',
+            function: (parameters) {
+              var value = parameters['value'];
+              if (value is String) {
+                return value.length;
+              } else {
+                throw ParameterException(
+                    'String expected'); //TODO add TemplateSource
+              }
+            });
+}
+
+class ParameterException implements Exception {
+  final String message;
+
+  ParameterException(this.message);
+}
