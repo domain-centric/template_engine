@@ -22,7 +22,7 @@ class NegativeNumberExpression extends Expression {
 /// A value that needs to be calculated (evaluated)
 /// from 2 expressions that return a number
 class TwoNumberExpression extends Expression {
-  final Operator2 operator;
+  final String operator;
   final Expression left;
   final Expression right;
   final num Function(num left, num right) function;
@@ -45,15 +45,18 @@ class TwoNumberExpression extends Expression {
 
     if (!leftIsNum && !rightIsNum) {
       return OperatorException(
-          'left and right of the ${operator.operator} operator must be a number');
+          'left and right of the $operator operator must be a number');
     }
     if (leftIsNum) {
       return OperatorException(
-          'left of the ${operator.operator} operator must be a number');
+          'left of the $operator operator must be a number');
     }
     return OperatorException(
-        'right of the ${operator.operator} operator must be a number');
+        'right of the $operator operator must be a number');
   }
+
+  @override
+  String toString() => 'TwoNumberExpression{$operator}';
 }
 
 /// An [Operator] behaves generally like functions,
@@ -172,6 +175,6 @@ class PowerOperator extends Operator2 {
     group.right(
         char('^').trim(),
         (left, op, right) => TwoNumberExpression(
-            operator: this, left: left, right: right, function: pow));
+            operator: operator, left: left, right: right, function: pow));
   }
 }

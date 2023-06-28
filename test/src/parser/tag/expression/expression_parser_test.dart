@@ -37,10 +37,10 @@ void main() {
       });
     });
 
-    when('calling parser.parse("length(\'Hello\'+3)")', () {
+    when('calling parser.parse("length(\'Hello\')+3")', () {
       var result = parser.parse("length('Hello')+3");
-      then('result.value should be an Expression<num>', () {
-        result.value.should.beAssignableTo<Expression<num>>();
+      then('result.value should be an Expression', () {
+        result.value.should.beAssignableTo<Expression>();
       });
       then('result.value.eval({}) should be 8', () {
         (result.value.eval({}) as num).should.be(8);

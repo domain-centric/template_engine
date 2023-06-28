@@ -2,7 +2,7 @@ import 'package:petitparser/petitparser.dart';
 import 'package:template_engine/template_engine.dart';
 
 /// Parses [String] values such as: "Hello" or 'world'
-/// You can contactate strings with the + and & attributes.
+/// You can concatenate strings with the + and & attributes.
 /// E.g.:
 /// "Hel" + 'l' & "o" results in [String]: Hello
 Parser<Expression<String>> stringExpressionParser() {

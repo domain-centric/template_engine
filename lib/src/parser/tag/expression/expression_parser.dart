@@ -67,27 +67,41 @@ Parser<Expression> expressionParser() {
   NegativeOperator().addParser(group);
   group = builder.group();
   PowerOperator().addParser(group);
-  builder.group()
-    ..left(
-        char('*').trim(),
-        (a, op, b) => BinaryOperator<num>(
-            '*', a as Expression<num>, b as Expression<num>, (x, y) => x * y))
-    ..left(
-        char('/').trim(),
-        (a, op, b) => BinaryOperator<num>(
-            '/', a as Expression<num>, b as Expression<num>, (x, y) => x / y))
-    ..left(
-        char('%').trim(),
-        (a, op, b) => BinaryOperator<num>(
-            '%', a as Expression<num>, b as Expression<num>, (x, y) => x % y));
-  builder.group()
-    ..left(
-        char('+').trim(),
-        (a, op, b) => BinaryOperator<num>(
-            '+', a as Expression<num>, b as Expression<num>, (x, y) => x + y))
-    ..left(
-        char('-').trim(),
-        (a, op, b) => BinaryOperator<num>(
-            '-', a as Expression<num>, b as Expression<num>, (x, y) => x - y));
+  group = builder.group();
+
+  group.left(
+    char('*').trim(),
+    (left, op, right) => TwoNumberExpression(
+        operator: '*', left: left, right: right, function: (x, y) => x * y),
+  );
+  group.left(
+    char('/').trim(),
+    (left, op, right) => TwoNumberExpression(
+        operator: '/', left: left, right: right, function: (x, y) => x / y),
+  );
+  // group.left(
+  //     char('~/').trim(),
+  //     (left, op, right) => TwoNumberExpression(
+  //         operator: '~/',
+  //         left: left,
+  //         right: right,
+  //         function: (x, y) => x ~/ y));
+  group.left(
+    char('%').trim(),
+    (left, op, right) => TwoNumberExpression(
+        operator: '%', left: left, right: right, function: (x, y) => x % y),
+  );
+
+  group = builder.group();
+  group.left(
+    char('+').trim(),
+    (left, op, right) => TwoNumberExpression(
+        operator: '+', left: left, right: right, function: (x, y) => x + y),
+  );
+  group.left(
+    char('-').trim(),
+    (left, op, right) => TwoNumberExpression(
+        operator: '-', left: left, right: right, function: (x, y) => x - y),
+  );
   return builder.build();
 }
