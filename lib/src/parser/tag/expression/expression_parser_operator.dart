@@ -46,18 +46,22 @@ class BinaryOperator<T extends Object> extends Operator<T> {
 /// An [Operator] that uses the two values [left] and [right]
 /// An example of an operation: a + b
 class BinaryOperator2<T extends Object> extends Operator {
-  BinaryOperator2(this.operator, this.left, this.right);
+  BinaryOperator2(this.callback, this.left, this.right);
 
-  final Operator2 operator;
+  final BinaryOperator2CallBack callback;
   final Expression<T> left;
   final Expression<T> right;
 
   @override
   Object eval(Map<String, Object> variables) =>
-      operator.eval(left.eval(variables), right.eval(variables));
+      callback.eval(left.eval(variables), right.eval(variables));
 
   @override
-  String toString() => 'BinaryOperatorExpression{$operator}';
+  String toString() => 'BinaryOperatorExpression{$callback}';
+}
+
+abstract class BinaryOperator2CallBack {
+  Object eval(Object left, Object right);
 }
 
 /// An [Operator] behaves generally like functions,
@@ -77,8 +81,6 @@ abstract class Operator2 {
   });
 
   addParser(ExpressionGroup<Expression> group);
-
-  Object eval(Object left, Object right);
 
   @override
   String toString() => 'Operator{$operator}';
@@ -108,7 +110,17 @@ class OperatorExceptionFactory {
   }
 }
 
-class PowerOperator extends Operator2 {
+class ParenthesesOperator extends Operator2 {
+  ParenthesesOperator() : super(operator: '()', descriptions: ['']);
+
+  @override
+  addParser(ExpressionGroup<Expression<Object>> group) {
+    group.wrapper(
+        char('(').trim(), char(')').trim(), (left, value, right) => value);
+  }
+}
+
+class PowerOperator extends Operator2 implements BinaryOperator2CallBack {
   PowerOperator()
       : super(
           operator: '^',

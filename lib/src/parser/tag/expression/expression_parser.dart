@@ -28,8 +28,9 @@ Parser<Expression> expressionParser() {
             TagFunction2<num>(definition, parameterValue));
   }
 
-  group.wrapper(
-      char('(').trim(), char(')').trim(), (left, value, right) => value);
+  ParenthesesOperator().addParser(group);
+  // group.wrapper(
+  //     char('(').trim(), char(')').trim(), (left, value, right) => value);
   builder.group()
     ..prefix(char('+').trim(), (op, a) => a)
     ..prefix(char('-').trim(),
