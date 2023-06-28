@@ -33,6 +33,13 @@ Parser<Expression<num>> constantParser() {
       .map((name) => Value<num>(constants[name]!));
 }
 
+Parser<Expression<Object>> variableParser() {
+  return (letter() & word().star())
+      .flatten('variable expected')
+      .trim()
+      .map((name) => Variable2<num>(name));
+}
+
 Parser<Expression> expressionParser() {
   final builder = ExpressionBuilder<Expression>();
   builder
@@ -40,10 +47,7 @@ Parser<Expression> expressionParser() {
     ..primitive(numberParser().map((number) => Value<num>(number)))
     ..primitive(boolParser().map((boolean) => Value<bool>(boolean)))
     ..primitive(constantParser())
-    ..primitive((letter() & word().star())
-        .flatten('variable expected')
-        .trim()
-        .map((name) => Variable2<num>(name)));
+    ..primitive(variableParser());
 
   var group = builder.group();
   for (var definition in numFunctions()) {
