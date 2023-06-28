@@ -1,16 +1,5 @@
-import 'dart:math';
-
 import 'package:petitparser/petitparser.dart';
 import 'package:template_engine/template_engine.dart';
-
-// Parser<Expression> expressionParser() {
-//   final builder = ExpressionBuilder<Expression>();
-//   builder
-//     ..primitive(boolExpressionParser())
-//     ..primitive(numExpressionParser())
-//     ..primitive(stringExpressionParser());
-//   return builder.build();
-// }
 
 Parser<Expression> expressionParser() {
   final builder = ExpressionBuilder<Expression>();
@@ -38,16 +27,20 @@ Parser<Expression> expressionParser() {
         (left, parameterValue, right) =>
             TagFunction2<num>(definition, parameterValue));
   }
+
   group.wrapper(
       char('(').trim(), char(')').trim(), (left, value, right) => value);
   builder.group()
     ..prefix(char('+').trim(), (op, a) => a)
     ..prefix(char('-').trim(),
         (op, a) => UnaryOperator<num>('-', a as Expression<num>, (x) => -x));
-  builder.group().right(
-      char('^').trim(),
-      (a, op, b) => BinaryOperator<num>('^', a as Expression<num>,
-          b as Expression<num>, (x, y) => pow(x, y)));
+
+  group = builder.group();
+  PowerOperator().addParser(group);
+  // builder.group().right(
+  //     char('^').trim(),
+  //     (a, op, b) => BinaryOperator<num>('^', a as Expression<num>,
+  //         b as Expression<num>, (x, y) => pow(x, y)));
   builder.group()
     ..left(
         char('*').trim(),
