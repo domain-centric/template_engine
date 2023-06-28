@@ -31,10 +31,10 @@ Parser<Expression> expressionParser() {
   ParenthesesOperator().addParser(group);
   // group.wrapper(
   //     char('(').trim(), char(')').trim(), (left, value, right) => value);
-  builder.group()
-    ..prefix(char('+').trim(), (op, a) => a)
-    ..prefix(char('-').trim(),
-        (op, a) => UnaryOperator<num>('-', a as Expression<num>, (x) => -x));
+  group = builder.group();
+  PositiveOperator().addParser(group);
+  group.prefix(char('-').trim(),
+      (op, a) => UnaryOperator<num>('-', a as Expression<num>, (x) => -x));
 
   group = builder.group();
   PowerOperator().addParser(group);

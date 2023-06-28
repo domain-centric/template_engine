@@ -120,6 +120,18 @@ class ParenthesesOperator extends Operator2 {
   }
 }
 
+class PositiveOperator extends Operator2 {
+  PositiveOperator()
+      : super(
+            operator: '+ prefix',
+            descriptions: ['Assumes that the number is positive, e.g.: +3 =3']);
+
+  @override
+  addParser(ExpressionGroup<Expression<Object>> group) {
+    group.prefix(char('+').trim(), (op, a) => a);
+  }
+}
+
 class PowerOperator extends Operator2 implements BinaryOperator2CallBack {
   PowerOperator()
       : super(
