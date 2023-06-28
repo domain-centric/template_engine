@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:petitparser/petitparser.dart';
 import 'package:template_engine/template_engine.dart';
 
@@ -18,16 +20,26 @@ Parser<String> quotedStringParser() =>
             (char('"') & any().starLazy(char('"')).flatten() & char('"')))
         .map((values) => values[1]);
 
+/// Common mathematical constants.
+final constants = {
+  'e': e,
+  'pi': pi,
+};
+
+Parser<Expression<num>> constantParser() {
+  return ChoiceParser(constants.keys.map((name) => string(name)))
+      .flatten('constant expected')
+      .trim()
+      .map((name) => Value<num>(constants[name]!));
+}
+
 Parser<Expression> expressionParser() {
   final builder = ExpressionBuilder<Expression>();
   builder
     ..primitive(quotedStringParser().map((string) => Value<String>(string)))
     ..primitive(numberParser().map((number) => Value<num>(number)))
     ..primitive(boolParser().map((boolean) => Value<bool>(boolean)))
-    ..primitive(ChoiceParser(constants.keys.map((name) => string(name)))
-        .flatten('constant expected')
-        .trim()
-        .map((name) => Value<num>(constants[name]!)))
+    ..primitive(constantParser())
     ..primitive((letter() & word().star())
         .flatten('variable expected')
         .trim()

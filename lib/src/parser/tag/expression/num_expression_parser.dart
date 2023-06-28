@@ -50,12 +50,6 @@ Parser<Expression<num>> numExpressionParser() {
   return builder.build();
 }
 
-/// Common mathematical constants.
-final constants = {
-  'e': e,
-  'pi': pi,
-};
-
 /// Returns a list of functions that return a number
 List<TagFunctionDefinition<num>> numFunctions() => [
       ExpFunction(),
