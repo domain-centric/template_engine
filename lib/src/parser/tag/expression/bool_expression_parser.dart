@@ -1,11 +1,6 @@
 import 'package:petitparser/petitparser.dart';
 import 'package:template_engine/template_engine.dart';
 
-Parser<bool> boolParser() => (whitespace().star() &
-        (stringIgnoreCase('true') | stringIgnoreCase('false'))
-            .flatten('boolean expected'))
-    .map((values) => values[1].toLowerCase() == 'true');
-
 /// Parses [bool] values such as:
 /// * true, false
 /// * True, False

@@ -1,11 +1,28 @@
 import 'package:petitparser/petitparser.dart';
 import 'package:template_engine/template_engine.dart';
 
+Parser<bool> boolParser() => (whitespace().star() &
+        (stringIgnoreCase('true') | stringIgnoreCase('false'))
+            .flatten('boolean expected'))
+    .map((values) => values[1].toLowerCase() == 'true');
+
+Parser<num> numberParser() => (digit().plus() &
+        (char('.') & digit().plus()).optional() &
+        (pattern('eE') & pattern('+-').optional() & digit().plus()).optional())
+    .flatten('number expected')
+    .trim()
+    .map((value) => num.parse(value));
+
+Parser<String> quotedStringParser() =>
+    ((char("'") & any().starLazy(char("'")).flatten() & char("'")) |
+            (char('"') & any().starLazy(char('"')).flatten() & char('"')))
+        .map((values) => values[1]);
+
 Parser<Expression> expressionParser() {
   final builder = ExpressionBuilder<Expression>();
   builder
-    ..primitive(numberParser().map((number) => Value<num>(number)))
     ..primitive(quotedStringParser().map((string) => Value<String>(string)))
+    ..primitive(numberParser().map((number) => Value<num>(number)))
     ..primitive(boolParser().map((boolean) => Value<bool>(boolean)))
     ..primitive(ChoiceParser(constants.keys.map((name) => string(name)))
         .flatten('constant expected')
@@ -29,19 +46,11 @@ Parser<Expression> expressionParser() {
   }
 
   ParenthesesOperator().addParser(group);
-  // group.wrapper(
-  //     char('(').trim(), char(')').trim(), (left, value, right) => value);
   group = builder.group();
   PositiveOperator().addParser(group);
-  group.prefix(char('-').trim(),
-      (op, a) => UnaryOperator<num>('-', a as Expression<num>, (x) => -x));
-
+  NegativeOperator().addParser(group);
   group = builder.group();
   PowerOperator().addParser(group);
-  // builder.group().right(
-  //     char('^').trim(),
-  //     (a, op, b) => BinaryOperator<num>('^', a as Expression<num>,
-  //         b as Expression<num>, (x, y) => pow(x, y)));
   builder.group()
     ..left(
         char('*').trim(),

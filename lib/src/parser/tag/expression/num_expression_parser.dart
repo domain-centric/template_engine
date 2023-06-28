@@ -2,13 +2,6 @@ import 'dart:math';
 import 'package:petitparser/petitparser.dart';
 import 'package:template_engine/template_engine.dart';
 
-Parser<num> numberParser() => (digit().plus() &
-        (char('.') & digit().plus()).optional() &
-        (pattern('eE') & pattern('+-').optional() & digit().plus()).optional())
-    .flatten('number expected')
-    .trim()
-    .map((value) => num.parse(value));
-
 Parser<Expression<num>> numExpressionParser() {
   final builder = ExpressionBuilder<Expression<num>>();
   builder

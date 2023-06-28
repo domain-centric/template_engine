@@ -1,11 +1,6 @@
 import 'package:petitparser/petitparser.dart';
 import 'package:template_engine/template_engine.dart';
 
-Parser<String> quotedStringParser() =>
-    ((char("'") & any().starLazy(char("'")).flatten() & char("'")) |
-            (char('"') & any().starLazy(char('"')).flatten() & char('"')))
-        .map((values) => values[1]);
-
 /// Parses [String] values such as: "Hello" or 'world'
 /// You can contactate strings with the + and & attributes.
 /// E.g.:

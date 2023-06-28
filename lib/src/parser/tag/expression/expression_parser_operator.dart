@@ -3,6 +3,59 @@ import 'dart:math';
 import 'package:petitparser/petitparser.dart';
 import 'package:template_engine/template_engine.dart';
 
+class NegativeNumberExpression extends Expression {
+  final Expression valueExpression;
+
+  NegativeNumberExpression(this.valueExpression);
+
+  @override
+  Object eval(Map<String, Object> variables) {
+    var value = valueExpression.eval(variables);
+    if (value is num) {
+      return -value;
+    }
+    throw OperatorException(
+        'A number expected after the - operator'); //TODO position
+  }
+}
+
+/// A value that needs to be calculated (evaluated)
+/// from 2 expressions that return a number
+class TwoNumberExpression extends Expression {
+  final Operator2 operator;
+  final Expression left;
+  final Expression right;
+  final num Function(num left, num right) function;
+
+  TwoNumberExpression(
+      {required this.operator,
+      required this.left,
+      required this.right,
+      required this.function});
+
+  @override
+  Object eval(Map<String, Object> variables) {
+    var leftValue = left.eval(variables);
+    bool leftIsNum = leftValue is num;
+    var rightValue = right.eval(variables);
+    bool rightIsNum = rightValue is num;
+    if (leftIsNum && rightIsNum) {
+      return function(leftValue, rightValue);
+    }
+
+    if (!leftIsNum && !rightIsNum) {
+      return OperatorException(
+          'left and right of the ${operator.operator} operator must be a number');
+    }
+    if (leftIsNum) {
+      return OperatorException(
+          'left of the ${operator.operator} operator must be a number');
+    }
+    return OperatorException(
+        'right of the ${operator.operator} operator must be a number');
+  }
+}
+
 /// An [Operator] behaves generally like functions,
 /// but differs syntactically or semantically.
 abstract class Operator<T extends Object> implements Expression<T> {
@@ -43,27 +96,6 @@ class BinaryOperator<T extends Object> extends Operator<T> {
   String toString() => 'BinaryOperatorExpression{$name}';
 }
 
-/// An [Operator] that uses the two values [left] and [right]
-/// An example of an operation: a + b
-class BinaryOperator2<T extends Object> extends Operator {
-  BinaryOperator2(this.callback, this.left, this.right);
-
-  final BinaryOperator2CallBack callback;
-  final Expression<T> left;
-  final Expression<T> right;
-
-  @override
-  Object eval(Map<String, Object> variables) =>
-      callback.eval(left.eval(variables), right.eval(variables));
-
-  @override
-  String toString() => 'BinaryOperatorExpression{$callback}';
-}
-
-abstract class BinaryOperator2CallBack {
-  Object eval(Object left, Object right);
-}
-
 /// An [Operator] behaves generally like functions,
 /// but differs syntactically or semantically.
 abstract class Operator2 {
@@ -92,24 +124,6 @@ class OperatorException implements Exception {
   OperatorException(this.message);
 }
 
-class OperatorExceptionFactory {
-  static OperatorException bothNeedToBeOfType<T>(
-      String operator, Object left, Object right) {
-    bool leftHasWrongType = left is! T;
-    bool rightHasWrongType = right is! T;
-    if (leftHasWrongType & rightHasWrongType) {
-      return OperatorException(
-          'left and right of the $operator operator must be a ${T.toString()}');
-    }
-    if (leftHasWrongType) {
-      return OperatorException(
-          'left of the $operator operator must be a ${T.toString()}');
-    }
-    return OperatorException(
-        'right of the $operator operator must be a ${T.toString()}');
-  }
-}
-
 class ParenthesesOperator extends Operator2 {
   ParenthesesOperator() : super(operator: '()', descriptions: ['']);
 
@@ -122,9 +136,9 @@ class ParenthesesOperator extends Operator2 {
 
 class PositiveOperator extends Operator2 {
   PositiveOperator()
-      : super(
-            operator: '+ prefix',
-            descriptions: ['Assumes that the number is positive, e.g.: +3 =3']);
+      : super(operator: '+ prefix', descriptions: [
+          'Optional prefix for positive numbers, e.g.: +3 =3'
+        ]);
 
   @override
   addParser(ExpressionGroup<Expression<Object>> group) {
@@ -132,7 +146,19 @@ class PositiveOperator extends Operator2 {
   }
 }
 
-class PowerOperator extends Operator2 implements BinaryOperator2CallBack {
+class NegativeOperator extends Operator2 {
+  NegativeOperator()
+      : super(
+            operator: '- prefix',
+            descriptions: ['Prefix for a negative number, e.g.: -2 =-2']);
+
+  @override
+  addParser(ExpressionGroup<Expression<Object>> group) {
+    group.prefix(char('-').trim(), (op, a) => NegativeNumberExpression(a));
+  }
+}
+
+class PowerOperator extends Operator2 {
   PowerOperator()
       : super(
           operator: '^',
@@ -143,16 +169,9 @@ class PowerOperator extends Operator2 implements BinaryOperator2CallBack {
 
   @override
   void addParser(ExpressionGroup<Expression> group) {
-    group.right(char('^').trim(),
-        (left, op, right) => BinaryOperator2(this, left, right));
-  }
-
-  @override
-  Object eval(Object left, Object right) {
-    if (left is num && right is num) {
-      return pow(left, right);
-    }
-    throw OperatorExceptionFactory.bothNeedToBeOfType<num>(
-        operator, left, right);
+    group.right(
+        char('^').trim(),
+        (left, op, right) => TwoNumberExpression(
+            operator: this, left: left, right: right, function: pow));
   }
 }
