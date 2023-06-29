@@ -240,3 +240,41 @@ class ModuloOperator extends Operator2 {
             function: (x, y) => x % y));
   }
 }
+
+class AddOperator extends Operator2 {
+  AddOperator()
+      : super(
+          operator: '+',
+          descriptions: ['Adds two numbers, e.g.: 2+3=5'],
+        );
+
+  @override
+  void addParser(ExpressionGroup<Expression> group) {
+    group.left(
+        char('+').trim(),
+        (left, op, right) => TwoNumberExpression(
+            operator: operator,
+            left: left,
+            right: right,
+            function: (x, y) => x + y));
+  }
+}
+
+class SubtractOperator extends Operator2 {
+  SubtractOperator()
+      : super(
+          operator: '-',
+          descriptions: ['Subtracts two numbers, e.g.: 5-3=2'],
+        );
+
+  @override
+  void addParser(ExpressionGroup<Expression> group) {
+    group.left(
+        char('-').trim(),
+        (left, op, right) => TwoNumberExpression(
+            operator: operator,
+            left: left,
+            right: right,
+            function: (x, y) => x - y));
+  }
+}
