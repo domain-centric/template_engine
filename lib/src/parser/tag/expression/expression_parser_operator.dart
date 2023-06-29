@@ -128,7 +128,10 @@ class OperatorException implements Exception {
 }
 
 class ParenthesesOperator extends Operator2 {
-  ParenthesesOperator() : super(operator: '()', descriptions: ['']);
+  ParenthesesOperator()
+      : super(operator: '()', descriptions: [
+          'Groups expressions together so that the are calculated first, e.g.: (2+1)*3=9 while 2+1*3=5'
+        ]);
 
   @override
   addParser(ExpressionGroup<Expression<Object>> group) {
@@ -176,5 +179,24 @@ class PowerOperator extends Operator2 {
         char('^').trim(),
         (left, op, right) => TwoNumberExpression(
             operator: operator, left: left, right: right, function: pow));
+  }
+}
+
+class MultiplyOperator extends Operator2 {
+  MultiplyOperator()
+      : super(
+          operator: '*',
+          descriptions: ['Multiplies 2 numbers, e.g.: 2*3=6'],
+        );
+
+  @override
+  void addParser(ExpressionGroup<Expression> group) {
+    group.right(
+        char('*').trim(),
+        (left, op, right) => TwoNumberExpression(
+            operator: operator,
+            left: left,
+            right: right,
+            function: (x, y) => x * y));
   }
 }

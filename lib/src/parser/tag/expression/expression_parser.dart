@@ -69,11 +69,7 @@ Parser<Expression> expressionParser() {
   PowerOperator().addParser(group);
   group = builder.group();
 
-  group.left(
-    char('*').trim(),
-    (left, op, right) => TwoNumberExpression(
-        operator: '*', left: left, right: right, function: (x, y) => x * y),
-  );
+  MultiplyOperator().addParser(group);
   group.left(
     char('/').trim(),
     (left, op, right) => TwoNumberExpression(

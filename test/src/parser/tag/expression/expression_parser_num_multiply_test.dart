@@ -3,26 +3,24 @@ import 'package:given_when_then_unit_test/given_when_then_unit_test.dart';
 import 'package:template_engine/template_engine.dart';
 
 void main() {
-  given('numExpressionParser', () {
-    var parser = numExpressionParser();
+  given('expressionParser()', () {
+    var parser = expressionParser();
     double delta = 0.00001;
     when('calling: parser.parse("2 * 3").value.eval({})', () {
       var result = parser.parse("2 * 3").value.eval({});
       var expected = 6;
-      then('result should be: $expected',
-          () => result.should.beCloseTo(expected, delta: delta));
+      then('result should be: $expected', () => result.should.be(expected));
     });
 
     when('calling: parser.parse("2 * 3 * 4").value.eval({})', () {
       var result = parser.parse("2 * 3 * 4").value.eval({});
       var expected = 24;
-      then('result should be: $expected',
-          () => result.should.beCloseTo(expected, delta: delta));
+      then('result should be: $expected', () => result.should.be(expected));
     });
 
-    when('calling: parser.parse("6 / 3").value.eval({})', () {
-      var result = parser.parse("6 / 3").value.eval({});
-      var expected = 2;
+    when('calling: parser.parse("6 / 4").value.eval({}) as num', () {
+      var result = parser.parse("6 / 4").value.eval({}) as num;
+      var expected = 1.5;
       then('result should be: $expected',
           () => result.should.beCloseTo(expected, delta: delta));
     });
@@ -30,29 +28,25 @@ void main() {
     when('calling: parser.parse("6 / 3 / 2").value.eval({})', () {
       var result = parser.parse("6 / 3 / 2").value.eval({});
       var expected = 1;
-      then('result should be: $expected',
-          () => result.should.beCloseTo(expected, delta: delta));
+      then('result should be: $expected', () => result.should.be(expected));
     });
 
     when('calling: parser.parse("5 % 3").value.eval({})', () {
       var result = parser.parse("5 % 3").value.eval({});
       var expected = 2;
-      then('result should be: $expected',
-          () => result.should.beCloseTo(expected, delta: delta));
+      then('result should be: $expected', () => result.should.be(expected));
     });
 
     when('calling: parser.parse("-5 % 3").value.eval({})', () {
       var result = parser.parse("-5 % 3").value.eval({});
       var expected = 1;
-      then('result should be: $expected',
-          () => result.should.beCloseTo(expected, delta: delta));
+      then('result should be: $expected', () => result.should.be(expected));
     });
 
     when('calling: parser.parse("20 % 15 % 3").value.eval({})', () {
       var result = parser.parse("20 % 15 % 3").value.eval({});
       var expected = 2;
-      then('result should be: $expected',
-          () => result.should.beCloseTo(expected, delta: delta));
+      then('result should be: $expected', () => result.should.be(expected));
     });
   });
 }
