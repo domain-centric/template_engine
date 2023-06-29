@@ -191,12 +191,52 @@ class MultiplyOperator extends Operator2 {
 
   @override
   void addParser(ExpressionGroup<Expression> group) {
-    group.right(
+    group.left(
         char('*').trim(),
         (left, op, right) => TwoNumberExpression(
             operator: operator,
             left: left,
             right: right,
             function: (x, y) => x * y));
+  }
+}
+
+class DivideOperator extends Operator2 {
+  DivideOperator()
+      : super(
+          operator: '/',
+          descriptions: ['Divides 2 numbers, e.g.: 6*4=1.5'],
+        );
+
+  @override
+  void addParser(ExpressionGroup<Expression> group) {
+    group.left(
+        char('/').trim(),
+        (left, op, right) => TwoNumberExpression(
+            operator: operator,
+            left: left,
+            right: right,
+            function: (x, y) => x / y));
+  }
+}
+
+class ModuloOperator extends Operator2 {
+  ModuloOperator()
+      : super(
+          operator: '%',
+          descriptions: [
+            'Calculates the modulo (rest value of a division), e.g.: 8%3=2'
+          ],
+        );
+
+  @override
+  void addParser(ExpressionGroup<Expression> group) {
+    group.left(
+        char('%').trim(),
+        (left, op, right) => TwoNumberExpression(
+            operator: operator,
+            left: left,
+            right: right,
+            function: (x, y) => x % y));
   }
 }

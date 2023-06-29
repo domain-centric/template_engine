@@ -70,11 +70,7 @@ Parser<Expression> expressionParser() {
   group = builder.group();
 
   MultiplyOperator().addParser(group);
-  group.left(
-    char('/').trim(),
-    (left, op, right) => TwoNumberExpression(
-        operator: '/', left: left, right: right, function: (x, y) => x / y),
-  );
+  DivideOperator().addParser(group);
   // group.left(
   //     char('~/').trim(),
   //     (left, op, right) => TwoNumberExpression(
@@ -82,11 +78,7 @@ Parser<Expression> expressionParser() {
   //         left: left,
   //         right: right,
   //         function: (x, y) => x ~/ y));
-  group.left(
-    char('%').trim(),
-    (left, op, right) => TwoNumberExpression(
-        operator: '%', left: left, right: right, function: (x, y) => x % y),
-  );
+  ModuloOperator().addParser(group);
 
   group = builder.group();
   group.left(

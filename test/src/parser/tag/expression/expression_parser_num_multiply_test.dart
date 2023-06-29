@@ -12,40 +12,16 @@ void main() {
       then('result should be: $expected', () => result.should.be(expected));
     });
 
-    when('calling: parser.parse("2 * 3 * 4").value.eval({})', () {
-      var result = parser.parse("2 * 3 * 4").value.eval({});
-      var expected = 24;
-      then('result should be: $expected', () => result.should.be(expected));
-    });
-
-    when('calling: parser.parse("6 / 4").value.eval({}) as num', () {
-      var result = parser.parse("6 / 4").value.eval({}) as num;
-      var expected = 1.5;
+    when('calling: parser.parse("1.3*4").value.eval({}) as num', () {
+      var result = parser.parse("1.3*4").value.eval({}) as num;
+      var expected = 5.2;
       then('result should be: $expected',
           () => result.should.beCloseTo(expected, delta: delta));
     });
 
-    when('calling: parser.parse("6 / 3 / 2").value.eval({})', () {
-      var result = parser.parse("6 / 3 / 2").value.eval({});
-      var expected = 1;
-      then('result should be: $expected', () => result.should.be(expected));
-    });
-
-    when('calling: parser.parse("5 % 3").value.eval({})', () {
-      var result = parser.parse("5 % 3").value.eval({});
-      var expected = 2;
-      then('result should be: $expected', () => result.should.be(expected));
-    });
-
-    when('calling: parser.parse("-5 % 3").value.eval({})', () {
-      var result = parser.parse("-5 % 3").value.eval({});
-      var expected = 1;
-      then('result should be: $expected', () => result.should.be(expected));
-    });
-
-    when('calling: parser.parse("20 % 15 % 3").value.eval({})', () {
-      var result = parser.parse("20 % 15 % 3").value.eval({});
-      var expected = 2;
+    when('calling: parser.parse("2 * 3 * 4").value.eval({})', () {
+      var result = parser.parse("2 * 3 * 4").value.eval({});
+      var expected = 24;
       then('result should be: $expected', () => result.should.be(expected));
     });
   });
