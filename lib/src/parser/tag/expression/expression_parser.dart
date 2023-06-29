@@ -73,10 +73,6 @@ Parser<Expression> expressionParser() {
   ModuloOperator().addParser(group);
   group = builder.group();
   AddOperator().addParser(group);
-  group.left(
-    char('-').trim(),
-    (left, op, right) => TwoNumberExpression(
-        operator: '-', left: left, right: right, function: (x, y) => x - y),
-  );
+  SubtractOperator().addParser(group);
   return builder.build();
 }
