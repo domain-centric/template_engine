@@ -251,8 +251,7 @@ class ParenthesesOperator extends Operator2 {
 
 class PositiveOperator extends Operator2 {
   PositiveOperator()
-      : super(
-            '+', ['Optional prefix for positive numbers, e.g.: +3 =3']);
+      : super('+', ['Optional prefix for positive numbers, e.g.: +3 =3']);
 
   @override
   addParser(ExpressionGroup<Expression<Object>> group) {
@@ -280,12 +279,15 @@ class NotOperator extends Operator2 {
   }
 }
 
-class PowerOperator extends OperatorWith2Values {
-  PowerOperator()
+class CaretOperator extends OperatorWith2Values {
+  CaretOperator()
       : super('^', [
           TwoValueOperatorVariant<num>(
               'Calculates a number to the power of the exponent number, e.g.: 2^3=8',
-              pow)
+              pow),
+          TwoValueOperatorVariant<bool>(
+              'Logical XOR with two booleans, e.g.: true^false=true',
+              (left, right) => left ^ right)
         ]);
 
   @override
