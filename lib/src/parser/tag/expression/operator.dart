@@ -160,22 +160,6 @@ abstract class Operator<T extends Object> implements Expression<T> {
   // for documentation only
 }
 
-/// An [Operator] that uses one [value]
-/// e.g. making a number negative
-class UnaryOperator<T extends Object> extends Operator<T> {
-  UnaryOperator(this.name, this.value, this.function);
-
-  final String name;
-  final Expression<T> value;
-  final T Function(T value) function;
-
-  @override
-  T eval(Map<String, Object> variables) => function(value.eval(variables));
-
-  @override
-  String toString() => 'UnaryOperator{$name}';
-}
-
 /// An [Operator] behaves generally like functions,
 /// but differs syntactically or semantically.
 abstract class Operator2 {
