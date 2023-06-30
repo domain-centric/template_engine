@@ -156,13 +156,7 @@ class TwoValueOperatorExpression<T extends Object> extends Expression {
 
 /// An [Operator] behaves generally like functions,
 /// but differs syntactically or semantically.
-abstract class Operator<T extends Object> implements Expression<T> {
-  // for documentation only
-}
-
-/// An [Operator] behaves generally like functions,
-/// but differs syntactically or semantically.
-abstract class Operator2 {
+abstract class Operator {
   final String operator;
 
   /// a description and an example for each type.
@@ -171,7 +165,7 @@ abstract class Operator2 {
   /// * Concatenates two strings, e.g.: 'Hel'+'lo'="Hello"
   final List<String> descriptions;
 
-  Operator2(
+  Operator(
     this.operator,
     this.descriptions,
   );
@@ -182,7 +176,7 @@ abstract class Operator2 {
   String toString() => 'Operator{$operator}';
 }
 
-abstract class OperatorWith2Values extends Operator2 {
+abstract class OperatorWith2Values extends Operator {
   final List<TwoValueOperatorVariant> variants;
 
   OperatorWith2Values(
@@ -202,7 +196,7 @@ class OperatorException implements Exception {
   OperatorException(this.message);
 }
 
-class ParenthesesOperator extends Operator2 {
+class ParenthesesOperator extends Operator {
   ParenthesesOperator()
       : super('()', [
           'Groups expressions together so that the are calculated first, e.g.: (2+1)*3=9 while 2+1*3=5'
@@ -215,7 +209,7 @@ class ParenthesesOperator extends Operator2 {
   }
 }
 
-class PositiveOperator extends Operator2 {
+class PositiveOperator extends Operator {
   PositiveOperator()
       : super('+', ['Optional prefix for positive numbers, e.g.: +3 =3']);
 
@@ -225,7 +219,7 @@ class PositiveOperator extends Operator2 {
   }
 }
 
-class NegativeOperator extends Operator2 {
+class NegativeOperator extends Operator {
   NegativeOperator()
       : super('-', ['Prefix for a negative number, e.g.: -2 =-2']);
 
@@ -235,7 +229,7 @@ class NegativeOperator extends Operator2 {
   }
 }
 
-class NotOperator extends Operator2 {
+class NotOperator extends Operator {
   NotOperator()
       : super('!', ['Prefix to invert a boolean, e.g.: !true =false']);
 
