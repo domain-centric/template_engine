@@ -176,24 +176,6 @@ class UnaryOperator<T extends Object> extends Operator<T> {
   String toString() => 'UnaryOperator{$name}';
 }
 
-/// An [Operator] that uses the two values [left] and [right]
-/// An example of an operation: a + b
-class BinaryOperator<T extends Object> extends Operator<T> {
-  BinaryOperator(this.name, this.left, this.right, this.function);
-
-  final String name;
-  final Expression<T> left;
-  final Expression<T> right;
-  final T Function(T left, T right) function;
-
-  @override
-  T eval(Map<String, Object> variables) =>
-      function(left.eval(variables), right.eval(variables));
-
-  @override
-  String toString() => 'BinaryOperatorExpression{$name}';
-}
-
 /// An [Operator] behaves generally like functions,
 /// but differs syntactically or semantically.
 abstract class Operator2 {
