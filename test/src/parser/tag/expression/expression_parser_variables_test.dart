@@ -16,7 +16,5 @@ void main() {
       var expected = 3;
       then('result should be: $expected', () => result.should.be(expected));
     });
-
-    //TODO add tests like tag_variable_test.dart
   });
 }

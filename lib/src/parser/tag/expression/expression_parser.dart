@@ -79,8 +79,10 @@ Parser<Expression> expressionParser() {
   MultiplyOperator().addParser(group);
   DivideOperator().addParser(group);
   ModuloOperator().addParser(group);
+  AndOperator().addParser(group);
   group = builder.group();
   AddOperator().addParser(group);
   SubtractOperator().addParser(group);
+  OrOperator().addParser(group);
   return builder.build();
 }
