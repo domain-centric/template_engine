@@ -3,8 +3,8 @@ import 'package:given_when_then_unit_test/given_when_then_unit_test.dart';
 import 'package:template_engine/template_engine.dart';
 
 void main() {
-  given('boolExpressionParser()', () {
-    var parser = boolExpressionParser();
+  given('expressionParser()', () {
+    var parser = expressionParser();
 
     when('calling: parser.parse("true").value.eval({})', () {
       var result = parser.parse("true").value.eval({});

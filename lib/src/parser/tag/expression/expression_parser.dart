@@ -55,11 +55,6 @@ Parser<Expression> expressionParser() {
       variableParser(),
     ], failureJoiner: selectFarthestJoined),
   );
-  // ..primitive(quotedStringParser().map((string) => Value<String>(string)))
-  // ..primitive(numberParser().map((number) => Value<num>(number)))
-  // ..primitive(boolParser().map((boolean) => Value<bool>(boolean)))
-  // ..primitive(constantParser())
-  // ..primitive(variableParser());
 
   var group = builder.group();
   for (var definition in numFunctions()) {
