@@ -5,10 +5,10 @@ import 'package:template_engine/src/parser/override_message_parser.dart';
 import 'package:template_engine/template_engine.dart';
 
 Parser<bool> boolParser() =>
-    (whitespace().star() & //TODO replace with trim after flatten
-            (stringIgnoreCase('true') | stringIgnoreCase('false'))
-                .flatten('boolean expected'))
-        .map((values) => values[1].toLowerCase() == 'true');
+    (stringIgnoreCase('true') | stringIgnoreCase('false'))
+        .flatten('boolean expected')
+        .trim()
+        .map((value) => value.toLowerCase() == 'true');
 
 Parser<num> numberParser() => (digit().plus() &
         (char('.') & digit().plus()).optional() &
