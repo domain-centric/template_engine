@@ -248,7 +248,7 @@ void main() {
 
       then('result.errors should contain 1 error',
           () => parseResult.errors.length.should.be(1));
-      String expected = 'Parse Error: Invalid attribute defintion: '
+      String expected = 'Parse Error: Invalid attribute definition: '
           'invalidAttribute=invalidValue position: 1:28 source: Text';
       then('result.errorMessage should be "$expected"',
           () => parseResult.errorMessage.should.be(expected));
@@ -267,7 +267,7 @@ void main() {
       then('result.errors should contain 1 error',
           () => parseResult.errors.length.should.be(1));
 
-      String expected = 'Parse Error: Invalid attribute defintion: '
+      String expected = 'Parse Error: Invalid attribute definition: '
           'invalidAttribute"invalidValue" position: 1:28 source: Text';
       then('result.errorMessage should be "$expected"',
           () => parseResult.errorMessage.should.be(expected));

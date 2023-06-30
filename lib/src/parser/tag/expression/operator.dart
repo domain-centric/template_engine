@@ -19,6 +19,22 @@ class NegativeNumberExpression extends Expression {
   }
 }
 
+class NotExpression extends Expression {
+  final Expression valueExpression;
+
+  NotExpression(this.valueExpression);
+
+  @override
+  Object eval(Map<String, Object> variables) {
+    var value = valueExpression.eval(variables);
+    if (value is bool) {
+      return !value;
+    }
+    throw OperatorException(
+        'A boolean expected after the ! operator'); //TODO position
+  }
+}
+
 class OperatorFunction<PARAMETER_TYPE extends Object> {
   ///
   final String description;
@@ -204,6 +220,18 @@ class NegativeOperator extends Operator2 {
   @override
   addParser(ExpressionGroup<Expression<Object>> group) {
     group.prefix(char('-').trim(), (op, a) => NegativeNumberExpression(a));
+  }
+}
+
+class NotOperator extends Operator2 {
+  NotOperator()
+      : super(
+            operator: '! prefix',
+            descriptions: ['Prefix to invert a boolean, e.g.: !true =false']);
+
+  @override
+  addParser(ExpressionGroup<Expression<Object>> group) {
+    group.prefix(char('!').trim(), (op, a) => NotExpression(a));
   }
 }
 

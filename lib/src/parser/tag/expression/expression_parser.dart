@@ -72,6 +72,7 @@ Parser<Expression> expressionParser() {
   group = builder.group();
   PositiveOperator().addParser(group);
   NegativeOperator().addParser(group);
+  NotOperator().addParser(group);
   group = builder.group();
   PowerOperator().addParser(group);
   group = builder.group();

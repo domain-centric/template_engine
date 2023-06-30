@@ -232,7 +232,7 @@ class AttributesParser extends Parser<Map<String, Object>> {
       if (remainingText.isNotEmpty) {
         errors.add(Error(
             source: _createTemplateSource(current),
-            message: 'Invalid attribute defintion: $remainingText',
+            message: 'Invalid attribute definition: $remainingText',
             stage: ErrorStage.parse));
       }
       current = result;
