@@ -51,7 +51,8 @@ Parser<Expression> expressionParser() {
       quotedStringParser().map((string) => Value<String>(string)),
       numberParser().map((number) => Value<num>(number)),
       boolParser().map((boolean) => Value<bool>(boolean)),
-      constantParser()
+      constantParser(),
+      variableParser(),
     ], failureJoiner: selectFarthestJoined),
   );
   // ..primitive(quotedStringParser().map((string) => Value<String>(string)))

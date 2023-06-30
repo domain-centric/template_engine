@@ -13,5 +13,4 @@ export 'src/parser/tag/expression/expression.dart';
 export 'src/parser/tag/expression/expression_parser.dart';
 export 'src/parser/tag/expression/operator.dart';
 export 'src/parser/tag/expression/bool_expression_parser.dart';
-export 'src/parser/tag/expression/string_expression_parser.dart';
 export 'src/parser/tag/expression/function.dart';
