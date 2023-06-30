@@ -7,7 +7,8 @@ void main() {
     var parser = expressionParser();
 
     when('calling: parser.parse("false & 3").value.eval({})', () {
-      var expected = 'right of the & operator must be a boolean';
+      var expected = 'right of the & operator must be a boolean, or '
+          'left and right of the & operator must be a String';
       then(
           'should throw an OperatorException with message: $expected',
           () => Should.throwException<OperatorException>(
@@ -18,7 +19,8 @@ void main() {
     });
 
     when('calling: parser.parse("2 & true").value.eval({})', () {
-      var expected = 'left of the & operator must be a boolean';
+      var expected = 'left of the & operator must be a boolean, or '
+          'left and right of the & operator must be a String';
       then(
           'should throw an OperatorException with message: $expected',
           () => Should.throwException<OperatorException>(
@@ -29,7 +31,8 @@ void main() {
     });
 
     when('calling: parser.parse("2 & 3").value.eval({})', () {
-      var expected = 'left and right of the & operator must be a boolean';
+      var expected = 'left and right of the & operator must be a boolean, or '
+          'left and right of the & operator must be a String';
       then(
           'should throw an OperatorException with message: $expected',
           () => Should.throwException<OperatorException>(

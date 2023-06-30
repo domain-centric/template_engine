@@ -44,8 +44,8 @@ void main() {
       then('result should be: $expected', () => result.should.be(expected));
     });
 
-    when('calling: parser.parse("\'Hel\' + \'l\' + "o"").value.eval({})', () {
-      var result = parser.parse("'Hel' + 'l' + \"o\"").value.eval({});
+    when('calling: parser.parse("\'Hel\' + \'l\' & "o"").value.eval({})', () {
+      var result = parser.parse("'Hel' + 'l' & \"o\"").value.eval({});
       var expected = "Hello";
       then('result should be: $expected', () => result.should.be(expected));
     });

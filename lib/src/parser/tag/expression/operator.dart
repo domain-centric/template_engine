@@ -353,7 +353,10 @@ class AndOperator extends OperatorWith2Values {
           [
             TwoValueOperatorVariant<bool>(
                 'Logical AND operation on two booleans, e.g.: true&true=true',
-                (left, right) => left & right)
+                (left, right) => left & right),
+            TwoValueOperatorVariant<String>(
+                'Concatenates two strings, e.g.: "Hel"&"lo"="Hello"',
+                (left, right) => '$left$right')
           ],
         );
 
