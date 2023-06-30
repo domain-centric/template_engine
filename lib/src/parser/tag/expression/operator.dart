@@ -19,6 +19,49 @@ class NegativeNumberExpression extends Expression {
   }
 }
 
+class OperatorFunction<PARAMETER_TYPE extends Object> {
+  ///
+  final String description;
+  final Object Function(PARAMETER_TYPE left, PARAMETER_TYPE right) function;
+
+  OperatorFunction(this.description, this.function);
+
+  bool parameterTypesMatch(Object left, Object right) =>
+      left is PARAMETER_TYPE && right is PARAMETER_TYPE;
+
+  Object eval(Object leftValue, Object rightValue) =>
+      function(leftValue as PARAMETER_TYPE, rightValue as PARAMETER_TYPE);
+}
+
+/// delegates the work to one of the [operatorFunctions] that can process
+/// the correct types of the evaluated [left] and [right] values.
+class ConditionalOperatorExpression extends Expression {
+  final List<OperatorFunction> operatorFunctions;
+  final String operator;
+  final Expression left;
+  final Expression right;
+
+  ConditionalOperatorExpression(
+      {required this.operator,
+      required this.operatorFunctions,
+      required this.left,
+      required this.right});
+
+  @override
+  Object eval(Map<String, Object> variables) {
+    var leftValue = left.eval(variables);
+    var rightValue = right.eval(variables);
+
+    for (var operatorFunction in operatorFunctions) {
+      if (operatorFunction.parameterTypesMatch(leftValue, rightValue)) {
+        return operatorFunction.eval(leftValue, rightValue);
+      }
+    }
+    throw OperatorException(
+        '$operator Operator is used for an unsupported types. See documentation.');
+  }
+}
+
 /// A value that needs to be calculated (evaluated)
 /// from 2 expressions that return a number
 class TwoNumberExpression extends Expression {
@@ -242,21 +285,27 @@ class ModuloOperator extends Operator2 {
 }
 
 class AddOperator extends Operator2 {
+  static final operatorFunctions = [
+    OperatorFunction<num>('Adds two numbers, e.g.: 2+3=5', (x, y) => x + y),
+    OperatorFunction<String>(
+        'Concatenates two strings, e.g.: "Hel"+"lo"="Hello"', (x, y) => '$x$y')
+  ];
+
   AddOperator()
       : super(
-          operator: '+',
-          descriptions: ['Adds two numbers, e.g.: 2+3=5'],
-        );
+            operator: '+',
+            descriptions: operatorFunctions.map((f) => f.description).toList());
 
   @override
   void addParser(ExpressionGroup<Expression> group) {
     group.left(
         char('+').trim(),
-        (left, op, right) => TwoNumberExpression(
-            operator: operator,
-            left: left,
-            right: right,
-            function: (x, y) => x + y));
+        (left, op, right) => ConditionalOperatorExpression(
+              operator: operator,
+              operatorFunctions: operatorFunctions,
+              left: left,
+              right: right,
+            ));
   }
 }
 

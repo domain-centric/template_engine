@@ -3,8 +3,8 @@ import 'package:given_when_then_unit_test/given_when_then_unit_test.dart';
 import 'package:template_engine/template_engine.dart';
 
 void main() {
-  given('stringExpressionParser', () {
-    var parser = stringExpressionParser();
+  given('expressionParser()', () {
+    var parser = expressionParser();
 
     when('calling: parser.parse("\'Hello ")', () {
       var result = parser.parse("'Hello ");
@@ -12,7 +12,9 @@ void main() {
       then('result.isFailure should be true',
           () => result.isFailure.should.beTrue());
 
-      var expected = '"\\"" expected';
+      var expected =
+          'quoted string expected OR number expected OR boolean expected '
+          'OR constant expected';
       then('result.message should be: $expected',
           () => result.message.should.be(expected));
     });
@@ -23,7 +25,9 @@ void main() {
       then('result.isFailure should be true',
           () => result.isFailure.should.beTrue());
 
-      var expected = '"\\"" expected';
+      var expected =
+          'quoted string expected OR number expected OR boolean expected '
+          'OR constant expected';
       then('result.message should be: $expected',
           () => result.message.should.be(expected));
     });
@@ -41,7 +45,7 @@ void main() {
     });
 
     when('calling: parser.parse("\'Hel\' + \'l\' + "o"").value.eval({})', () {
-      var result = parser.parse("'Hel' + 'l' & \"o\"").value.eval({});
+      var result = parser.parse("'Hel' + 'l' + \"o\"").value.eval({});
       var expected = "Hello";
       then('result should be: $expected', () => result.should.be(expected));
     });
