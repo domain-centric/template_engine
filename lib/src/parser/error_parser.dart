@@ -4,15 +4,9 @@ import 'package:template_engine/template_engine.dart';
 class InvalidTagParser extends Parser<String> {
   final ParserContext context;
   late Parser<String> internalParser;
-  late List<Parser<Map<String, Object>>> tagFunctionAttributeErrorParsers;
 
   InvalidTagParser(this.context) {
     internalParser = createInternalParser();
-    tagFunctionAttributeErrorParsers = context.tags
-        .whereType<TagFunction>()
-        .map((tagFunction) => tagFunction
-            .createTagFunctionParserThatReturnsMapWithAttributeErrors(context))
-        .toList();
   }
 
   @override
@@ -31,31 +25,10 @@ class InvalidTagParser extends Parser<String> {
           template: context.template,
           parserPosition: parserPosition,
         );
-
-        var tag = values.join();
-
-        var errors = findTagFunctionsWithAttributeErrors(tag);
-        if (errors.isEmpty) {
-          errors.add(Error(
-              stage: ErrorStage.parse,
-              message: 'Invalid tag.',
-              source: source));
-        }
-
-        context.errors.addAll(errors);
-
-        return tag;
+        context.errors.add(Error(
+            source: source, message: 'invalid tag', stage: ErrorStage.parse));
+        return values.join();
       });
-
-  List<Error> findTagFunctionsWithAttributeErrors(String tag) {
-    for (var parser in tagFunctionAttributeErrorParsers) {
-      var result = parser.parse(tag);
-      if (result.isSuccess) {
-        return (result.value as Map<String, Error>).values.toList();
-      }
-    }
-    return [];
-  }
 }
 
 /// Adds an error if a [Tag] end is found but not a  [Tag] start.

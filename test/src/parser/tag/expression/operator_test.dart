@@ -3,8 +3,8 @@ import 'package:given_when_then_unit_test/given_when_then_unit_test.dart';
 import 'package:template_engine/template_engine.dart';
 
 void main() {
-  given('expressionParser()', () {
-    var parser = expressionParser();
+  given('expressionParser(ParserContext())', () {
+    var parser = expressionParser(ParserContext());
 
     when('calling: parser.parse("false & 3").value.eval({})', () {
       var expected = 'right of the & operator must be a boolean, or '

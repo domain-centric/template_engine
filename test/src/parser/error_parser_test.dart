@@ -12,7 +12,7 @@ void main() {
         var result = engine.parse(template);
 
         then('expect: no 1 error', () => result.errors.length.should.be(1));
-        var expected = 'Parse Error: Invalid tag. position: 1:7 source: Text';
+        var expected = 'Parse Error: invalid tag position: 1:7 source: Text';
         then('expect: errorMessage to be "$expected"',
             () => result.errorMessage.should.be(expected));
       });
@@ -27,8 +27,8 @@ void main() {
         var result = engine.parse(template);
 
         then('expect: no 2 error', () => result.errors.length.should.be(2));
-        var expected = 'Parse Error: Invalid tag. position: 1:7 source: Text\n'
-            'Parse Error: Invalid tag. position: 1:37 source: Text';
+        var expected = 'Parse Error: invalid tag position: 1:7 source: Text\n'
+            'Parse Error: invalid tag position: 1:37 source: Text';
         then('expect: errorMessage to be "$expected"',
             () => result.errorMessage.should.be(expected));
       });

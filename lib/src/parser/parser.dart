@@ -5,25 +5,6 @@ import 'error_parser.dart';
 
 Parser<String> optionalWhiteSpace() => whitespace().star().flatten();
 
-/// Number values such as: * 12, -12, 3.123, -3.123, 5E9, -5e9, 45E-9, -45e-9
-Parser<num> number() => (pattern('+-').optional() &
-        digit().plus() &
-        (char('.') & digit().plus()).optional() &
-        (pattern('eE') & pattern('+-').optional() & digit().plus()).optional())
-    .flatten('number expected')
-    .map(num.parse);
-
-/// Boolean values such as: true, false, True, False, TRUE, FALSE, TRue, FALse
-Parser<bool> boolean() => (stringIgnoreCase('true') | stringIgnoreCase('false'))
-    .flatten('boolean expected')
-    .map((value) => value.toLowerCase() == 'true');
-
-/// String values such as: "Hello" or 'world'
-Parser<String> quotedString() =>
-    ((char("'") & any().starLazy(char("'")).flatten() & char("'")) |
-            (char('"') & any().starLazy(char('"')).flatten() & char('"')))
-        .map((values) => values[1]);
-
 /// Creates a parser that can convert a [Template] text to a
 /// [parse tree](https://en.wikipedia.org/wiki/Parse_tree)
 /// containing [Renderer]s.
@@ -98,6 +79,7 @@ class ParserContext {
   final Template template;
 
   final List<Tag> tags;
+  final List<TagFunction> functions;
 
   /// See [tagStart] doc in [TemplateEngine] constructor
   final String tagStart;
@@ -108,11 +90,15 @@ class ParserContext {
   final List<Error> errors;
 
   ParserContext({
-    required this.template,
-    required this.tags,
+    Template? template,
+    final List<Tag>? tags,
+    List<TagFunction>? functions,
     this.tagStart = '{{',
     this.tagEnd = '}}',
-  }) : errors = [];
+  })  : template = template ?? TextTemplate(''),
+        errors = [],
+        tags = tags ?? DefaultTags(),
+        functions = functions ?? DefaultFunctions();
 }
 
 class ParseResult extends ParserTree {

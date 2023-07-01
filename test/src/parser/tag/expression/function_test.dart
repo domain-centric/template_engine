@@ -5,8 +5,8 @@ import 'package:given_when_then_unit_test/given_when_then_unit_test.dart';
 import 'package:template_engine/template_engine.dart';
 
 void main() {
-  given('expressionParser()', () {
-    var parser = expressionParser();
+  given('expressionParser(ParserContext())', () {
+    var parser = expressionParser(ParserContext());
     var delta = 0.00001;
     when('calling: parser.parse("exp(7)").value.eval({}) as num', () {
       var result = parser.parse("exp(7)").value.eval({}) as num;

@@ -23,33 +23,13 @@ class Value<T extends Object> extends Expression<T> {
   String toString() => 'Value{$value}';
 }
 
-/// a [Variable2] is an abstract storage location paired with an associated
-/// symbolic name, which contains some known or unknown quantity of information
-/// referred to as a value; or in simpler terms, a [Variable2] is a
-/// named container for a particular set of bits or type of data
-/// (like [num], [bool], [String] etc...)
-
-class Variable2<T extends Object> extends Expression<T> {
-  Variable2(this.name);
-
-  final String name;
-
-  @override
-  T eval(Map<String, Object> variables) => variables.containsKey(name)
-      ? variables[name]! as T
-      : throw 'Unknown variable $name';
-
-  @override
-  String toString() => 'Variable{$name}';
-}
-
 /// An [Operator] that uses one [parameter]
 /// e.g. making a number negative
-class TagFunction2<R extends Object> extends Expression<R> {
-  final TagFunctionDefinition<R> definition;
+class FunctionExpression<R extends Object> extends Expression<R> {
+  final TagFunction<R> definition;
   final Expression parameter;
 
-  TagFunction2(
+  FunctionExpression(
     this.definition,
     this.parameter,
   );
@@ -64,12 +44,14 @@ class TagFunction2<R extends Object> extends Expression<R> {
   String toString() => 'Function{${definition.name}}';
 }
 
-class TagFunctionDefinition<R extends Object> {
-  TagFunctionDefinition({
+class TagFunction<R extends Object> {
+  TagFunction({
     required this.name,
+    this.description,
     required this.function,
   });
 
   final String name;
+  final String? description;
   final R Function(Map<String, Object> parameters) function;
 }

@@ -37,14 +37,7 @@ Parser<Expression<num>> constantParser() {
       .map((name) => Value<num>(constants[name]!));
 }
 
-Parser<Expression<Object>> variableParser() {
-  return (letter() & word().star())
-      .flatten('variable expected')
-      .trim()
-      .map((name) => Variable2<num>(name));
-}
-
-Parser<Expression> expressionParser() {
+Parser<Expression> expressionParser(ParserContext context) {
   final builder = ExpressionBuilder<Expression>();
   builder.primitive(
     ChoiceParser([
@@ -57,7 +50,7 @@ Parser<Expression> expressionParser() {
   );
 
   var group = builder.group();
-  for (var definition in numFunctions()) {
+  for (var definition in context.functions) {
     group.wrapper(
         seq2(
           string(definition.name, 'expected function name: ${definition.name}'),
@@ -65,7 +58,7 @@ Parser<Expression> expressionParser() {
         ),
         char(')').trim(),
         (left, parameterValue, right) =>
-            TagFunction2<num>(definition, parameterValue));
+            FunctionExpression(definition, parameterValue));
   }
 
   ParenthesesOperator().addParser(group);

@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:petitparser/parser.dart';
 import 'package:template_engine/template_engine.dart';
 
@@ -59,4 +60,8 @@ class TagException implements Exception {
   final String message;
 
   TagException(this.message);
+}
+
+class DefaultTags extends DelegatingList<Tag> {
+  DefaultTags() : super([ExpressionTag()]);
 }

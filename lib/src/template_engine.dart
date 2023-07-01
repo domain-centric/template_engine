@@ -1,5 +1,6 @@
 import 'package:template_engine/src/parser/error.dart';
 import 'package:template_engine/src/parser/parser.dart';
+import 'package:template_engine/src/parser/tag/expression/expression.dart';
 import 'package:template_engine/src/render.dart';
 import 'package:template_engine/src/parser/tag/group.dart';
 import 'package:template_engine/src/parser/tag/tag.dart';
@@ -57,9 +58,14 @@ class TemplateEngine {
   /// Parse the [Template] text into a
   /// [parser tree](https://en.wikipedia.org/wiki/Parse_tree).
   /// See [Renderer]
-  ParseResult parse(Template template) {
+  ParseResult parse(Template template, {List<TagFunction>? functions}) {
     var context = ParserContext(
-        tags: tags, tagStart: tagStart, tagEnd: tagEnd, template: template);
+      tags: tags,
+      tagStart: tagStart,
+      tagEnd: tagEnd,
+      template: template,
+      functions: functions,
+    );
     var parser = templateParser(context);
     var result = parser.parse(template.text);
 

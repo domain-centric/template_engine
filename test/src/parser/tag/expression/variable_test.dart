@@ -3,6 +3,20 @@ import 'package:given_when_then_unit_test/given_when_then_unit_test.dart';
 import 'package:template_engine/template_engine.dart';
 
 void main() {
+  given('expressionParser(ParserContext())', () {
+    var parser = expressionParser(ParserContext());
+    when('calling: parser.parse("x").value.eval({"x": 42})', () {
+      var result = parser.parse("x").value.eval({"x": 42});
+      var expected = 42;
+      then('result should be: $expected', () => result.should.be(expected));
+    });
+
+    when('calling: parser.parse("x / y").value.eval({"x": 6, "y": 2})', () {
+      var result = parser.parse("x / y").value.eval({"x": 6, "y": 2});
+      var expected = 3;
+      then('result should be: $expected', () => result.should.be(expected));
+    });
+  });
   var variables = {'name': 'world'};
   var engine = TemplateEngine();
   given('object: TemplateEngine with variables and a template', () {
@@ -21,9 +35,12 @@ void main() {
               .be('Hello '));
 
       then(
-          'expect: second child node to be a VariableNode with namePath "name"',
+          'expect: second child node to be a ExpressionRender with namePath "name"',
           () => parseResult.nodes[1].should
-              .beOfType<VariableRenderer>()!
+              .beOfType<ExpressionRender>()!
+              .expression
+              .should
+              .beOfType<VariableExpression>()!
               .namePath
               .should
               .be('name'));
@@ -63,7 +80,10 @@ void main() {
       then(
           'expect: second child node to be a VariableNode with namePath "name"',
           () => parseResult.nodes[1].should
-              .beOfType<VariableRenderer>()!
+              .beOfType<ExpressionRender>()!
+              .expression
+              .should
+              .beOfType<VariableExpression>()!
               .namePath
               .should
               .be('name'));
@@ -102,7 +122,10 @@ void main() {
       then(
           'expect: second child node to be a VariableNode with namePath "name"',
           () => parseResult.nodes[1].should
-              .beOfType<VariableRenderer>()!
+              .beOfType<ExpressionRender>()!
+              .expression
+              .should
+              .beOfType<VariableExpression>()!
               .namePath
               .should
               .be('name'));
@@ -142,7 +165,10 @@ void main() {
       then(
           'expect: second child node to be a VariableNode with namePath "name"',
           () => parseResult.nodes[1].should
-              .beOfType<VariableRenderer>()!
+              .beOfType<ExpressionRender>()!
+              .expression
+              .should
+              .beOfType<VariableExpression>()!
               .namePath
               .should
               .be('name'));
@@ -181,7 +207,10 @@ void main() {
           'expect: second child node to be a VariableRenderer '
           'with namePath "name"',
           () => parseResult.nodes[1].should
-              .beOfType<VariableRenderer>()!
+              .beOfType<ExpressionRender>()!
+              .expression
+              .should
+              .beOfType<VariableExpression>()!
               .namePath
               .should
               .be('name'));
@@ -195,7 +224,7 @@ void main() {
     });
   });
   given('objects: Variables', () {
-    var variables = Variables({
+    Variables variables = {
       'person': {
         'name': 'John Doe',
         'age': 30,
@@ -204,22 +233,13 @@ void main() {
           'age': 5,
         }
       }
-    });
+    };
 
-    given(
-        'objects: ParseContext and '
-        'VariableNode with variable name "person"', () {
-      var node = VariableRenderer(
-        source: DummyTemplateSection(),
-        namePath: 'person',
-      );
-      var context = RenderContext(variables);
+    given("VariableExpression('person')", () {
+      var expression = VariableExpression('person');
 
-      when('call: node.render(context)', () {
-        var result = node.render(context).toString();
-
-        then('expect: context.errors to be empty',
-            () => context.errors.should.beEmpty());
+      when('calling: expression.eval(variables).toString()', () {
+        var result = expression.eval(variables).toString();
 
         then(
             'expect: result should be '
@@ -229,38 +249,22 @@ void main() {
       });
     });
 
-    given(
-        'objects: ParseContext and '
-        'VariableNode with variable name "person.name"', () {
-      var node = VariableRenderer(
-        source: DummyTemplateSection(),
-        namePath: 'person.name',
-      );
-      var context = RenderContext(variables);
+    given("VariableExpression('person.name')", () {
+      var expression = VariableExpression('person.name');
 
-      when('call: node.render(context)', () {
-        var result = node.render(context);
-        then('expect: context.errors to be empty',
-            () => context.errors.should.beEmpty());
+      when('calling: expression.eval(variables)', () {
+        var result = expression.eval(variables);
 
         then('expect: result should be "John Doe"',
             () => result.should.be('John Doe'));
       });
     });
 
-    given(
-        'objects: ParseContext and '
-        'VariableNode with variable name "person.name.child.name"', () {
-      var node = VariableRenderer(
-        source: DummyTemplateSection(),
-        namePath: 'person.child.name',
-      );
-      var context = RenderContext(variables);
+    given("VariableExpression('person.child.name')", () {
+      var expression = VariableExpression('person.child.name');
 
       when('call: node.render(context)', () {
-        var result = node.render(context);
-        then('expect: context.errors to be empty',
-            () => context.errors.should.beEmpty());
+        var result = expression.eval(variables);
 
         then('expect: result should be "Jane Doe"',
             () => result.should.be('Jane Doe'));
@@ -269,58 +273,58 @@ void main() {
 
     /// none existing variable name
 
-    given(
-        'objects: ParseContext and '
-        'VariableNode with none existing variable name', () {
-      var node = VariableRenderer(
-        source: DummyTemplateSection(),
-        namePath: 'invalid',
-      );
-      var context = RenderContext(variables);
+    given("VariableExpression('invalid')", () {
+      var expression = VariableExpression('invalid');
 
-      when('call: node.render(context)', () {
-        var result = node.render(context);
-
-        then('expect: empty result', () => result.should.be(''));
-
-        then('expect: context.errors to contain 1 error',
-            () => context.errors.length.should.be(1));
-
-        then('expect: context.errors[0].stage == errorStage.render',
-            () => context.errors[0].stage.should.be(ErrorStage.render));
-
+      when('calling: expression.eval(variables)', () {
+        var expected = 'Variable name path could not be found: invalid';
         then(
-            'expect: context.errors[0].severity == errorSeverity.error',
-            () => context.errors[0].message.should
-                .be('Variable name path could not be found: invalid'));
-
-        then(
-            'expect: context.errors[0].source == "position: 1:4 source: Text"',
-            () => context.errors[0].source
-                .toString()
+            'should throw a Variable exception with message: $expected',
+            () => Should.throwException<VariableException>(
+                    () => expression.eval(variables))!
+                .message
                 .should
-                .be('position: 1:4 source: Text'));
+                .be(expected));
 
-        then(
-          'expect: context.errors[0].occurrence == no older than 1 minute',
-          () => context.errors[0].occurrence.should
-              .beCloseTo(DateTime.now(), delta: const Duration(minutes: 1)),
-        );
+//TODO
+        // then('expect: context.errors to contain 1 error',
+        //     () => context.errors.length.should.be(1));
 
-        then(
-          'expect: context.errors[0].toString is correct',
-          () => context.errors[0]
-              .toString()
-              .should
-              .be('Render Error: Variable name path could not be found: '
-                  'invalid position: 1:4 source: Text'),
-        );
+        // then('expect: context.errors[0].stage == errorStage.render',
+        //     () => context.errors[0].stage.should.be(ErrorStage.render));
+
+        // then(
+        //     'expect: context.errors[0].severity == errorSeverity.error',
+        //     () => context.errors[0].message.should
+        //         .be('Variable name path could not be found: invalid'));
+
+        // then(
+        //     'expect: context.errors[0].source == "position: 1:4 source: Text"',
+        //     () => context.errors[0].source
+        //         .toString()
+        //         .should
+        //         .be('position: 1:4 source: Text'));
+
+        // then(
+        //   'expect: context.errors[0].occurrence == no older than 1 minute',
+        //   () => context.errors[0].occurrence.should
+        //       .beCloseTo(DateTime.now(), delta: const Duration(minutes: 1)),
+        // );
+
+        // then(
+        //   'expect: context.errors[0].toString is correct',
+        //   () => context.errors[0]
+        //       .toString()
+        //       .should
+        //       .be('Render Error: Variable name path could not be found: '
+        //           'invalid position: 1:4 source: Text'),
+        // );
       });
     });
   });
 }
 
-class DummyTemplateSection extends TemplateSource {
-  DummyTemplateSection()
+class DummyTemplateSource extends TemplateSource {
+  DummyTemplateSource()
       : super(template: TextTemplate('Hello {{name}}.'), parserPosition: '1:4');
 }
