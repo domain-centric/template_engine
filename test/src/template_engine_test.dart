@@ -109,3 +109,8 @@ class ParserTreeThatRegistersError extends ParserTree {
     return "";
   }
 }
+
+class DummyTemplateSource extends TemplateSource {
+  DummyTemplateSource()
+      : super(template: TextTemplate('Hello {{name}}.'), parserPosition: '1:4');
+}

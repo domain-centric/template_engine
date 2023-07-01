@@ -187,7 +187,7 @@ void main() {
     });
   });
 
-  given('object: TemplateEngine without variables and a template', () {
+  given("TextTemplate('Hello {{name}}.')", () {
     var template = TextTemplate('Hello {{name}}.');
     var engine = TemplateEngine();
 
@@ -223,7 +223,7 @@ void main() {
       then('expect: no errors', () => parseResult.errors.should.beEmpty());
     });
   });
-  given('objects: Variables', () {
+  given("Nested variables", () {
     Variables variables = {
       'person': {
         'name': 'John Doe',
@@ -235,18 +235,16 @@ void main() {
       }
     };
 
-    given("VariableExpression('person')", () {
-      var expression = VariableExpression('person');
+    var expression = VariableExpression('person');
 
-      when('calling: expression.eval(variables).toString()', () {
-        var result = expression.eval(variables).toString();
+    when('calling: expression.eval(variables).toString()', () {
+      var result = expression.eval(variables).toString();
 
-        then(
-            'expect: result should be '
-            '"{name: John Doe, age: 30, child: {name: Jane Doe, age: 5}}"',
-            () => result.should.be(
-                '{name: John Doe, age: 30, child: {name: Jane Doe, age: 5}}'));
-      });
+      then(
+          'expect: result should be '
+          '"{name: John Doe, age: 30, child: {name: Jane Doe, age: 5}}"',
+          () => result.should.be(
+              '{name: John Doe, age: 30, child: {name: Jane Doe, age: 5}}'));
     });
 
     given("VariableExpression('person.name')", () {
@@ -285,46 +283,56 @@ void main() {
                 .message
                 .should
                 .be(expected));
+      });
+    });
 
-//TODO
-        // then('expect: context.errors to contain 1 error',
-        //     () => context.errors.length.should.be(1));
+    given('TextTemplate with a nested variable name', () {
+      var template = TextTemplate('Hello {{person.child.name}}.');
+      var engine = TemplateEngine();
+      when('calling: engine.parse(template)', () {
+        var parseResult = engine.parse(template);
 
-        // then('expect: context.errors[0].stage == errorStage.render',
-        //     () => context.errors[0].stage.should.be(ErrorStage.render));
-
-        // then(
-        //     'expect: context.errors[0].severity == errorSeverity.error',
-        //     () => context.errors[0].message.should
-        //         .be('Variable name path could not be found: invalid'));
-
-        // then(
-        //     'expect: context.errors[0].source == "position: 1:4 source: Text"',
-        //     () => context.errors[0].source
-        //         .toString()
-        //         .should
-        //         .be('position: 1:4 source: Text'));
-
-        // then(
-        //   'expect: context.errors[0].occurrence == no older than 1 minute',
-        //   () => context.errors[0].occurrence.should
-        //       .beCloseTo(DateTime.now(), delta: const Duration(minutes: 1)),
-        // );
-
-        // then(
-        //   'expect: context.errors[0].toString is correct',
-        //   () => context.errors[0]
-        //       .toString()
-        //       .should
-        //       .be('Render Error: Variable name path could not be found: '
-        //           'invalid position: 1:4 source: Text'),
-        // );
+        when('calling: engine.parse(template).text', () {
+          var renderResult = engine.render(parseResult, variables).text;
+          var expected = 'Hello Jane Doe.';
+          then('result should be: $expected', () {
+            renderResult.should.be(expected);
+          });
+        });
       });
     });
   });
-}
+//TODO
+  // then('expect: context.errors to contain 1 error',
+  //     () => context.errors.length.should.be(1));
 
-class DummyTemplateSource extends TemplateSource {
-  DummyTemplateSource()
-      : super(template: TextTemplate('Hello {{name}}.'), parserPosition: '1:4');
+  // then('expect: context.errors[0].stage == errorStage.render',
+  //     () => context.errors[0].stage.should.be(ErrorStage.render));
+
+  // then(
+  //     'expect: context.errors[0].severity == errorSeverity.error',
+  //     () => context.errors[0].message.should
+  //         .be('Variable name path could not be found: invalid'));
+
+  // then(
+  //     'expect: context.errors[0].source == "position: 1:4 source: Text"',
+  //     () => context.errors[0].source
+  //         .toString()
+  //         .should
+  //         .be('position: 1:4 source: Text'));
+
+  // then(
+  //   'expect: context.errors[0].occurrence == no older than 1 minute',
+  //   () => context.errors[0].occurrence.should
+  //       .beCloseTo(DateTime.now(), delta: const Duration(minutes: 1)),
+  // );
+
+  // then(
+  //   'expect: context.errors[0].toString is correct',
+  //   () => context.errors[0]
+  //       .toString()
+  //       .should
+  //       .be('Render Error: Variable name path could not be found: '
+  //           'invalid position: 1:4 source: Text'),
+  // );
 }

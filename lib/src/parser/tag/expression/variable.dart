@@ -17,14 +17,17 @@ class VariableExpression extends Expression {
   @override
   String toString() => 'Variable{$namePath}';
 
-  Object? _findVariableValue(
-      Map<String, Object> variables, List<String> namePath, namePathIndex) {
+  Object _findVariableValue(
+      Variables variables, List<String> namePath, namePathIndex) {
     var name = namePath[namePathIndex];
 
     if (variables.containsKey(name)) {
       var value = variables[name];
       if (namePath.length == namePathIndex + 1) {
-        return value;
+        if (value == null) {
+          VariableException('Variable: $namePath may not be null');
+        }
+        return value!;
       } else if (value is Map<String, Object>) {
         // recursive:
         return _findVariableValue(value, namePath, namePathIndex + 1);
@@ -36,16 +39,12 @@ class VariableExpression extends Expression {
 
   @override
   Object eval(Map<String, Object> variables) {
-    var value = _findVariableValue(variables, namePath.split('.'), 0);
-    if (value == null) {
-      VariableException('Variable: $namePath may not be null');
-    }
-    return value!;
+    return _findVariableValue(variables, namePath.split('.'), 0);
   }
 }
 
 Parser<Expression<Object>> variableParser() {
-  return (letter() & word().star())
+  return (VariableName.pathParser)
       .flatten('variable expected')
       .trim()
       .map((name) => VariableExpression(name));
@@ -72,15 +71,15 @@ class VariableException implements Exception {
 /// [Variables] map: {'person': {'name': 'John Doe', 'age',30}}
 /// [VariableName] person.name: refers to the [VariableValue] of 'John Doe'
 class VariableName {
-  static final nameParser = (letter().plus() & digit().star()).plus();
-  static final namePathParser =
-      (nameParser & (char('.') & nameParser).star()).end();
+  static final _parser = (letter().plus() & digit().star()).plus();
+  static final pathParser = (_parser & (char('.') & _parser).star());
 
   static validate(String namePath) {
-    var result = namePathParser.parse(namePath);
+    var result = pathParser.end().parse(namePath);
     if (result.isFailure) {
       throw VariableException(
-          'Variable name: "$namePath" is invalid: ${result.message} at position: ${result.position}');
+          'Variable name: "$namePath" is invalid: ${result.message} '
+          'at position: ${result.position}');
     }
   }
 }
