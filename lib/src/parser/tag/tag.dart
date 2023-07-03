@@ -63,5 +63,13 @@ class TagException implements Exception {
 }
 
 class DefaultTags extends DelegatingList<Tag> {
-  DefaultTags() : super([ExpressionTag()]);
+  DefaultTags({
+    List<Constant>? constants,
+    List<TagFunction>? functions,
+  }) : super([
+          ExpressionTag(
+            constants: constants,
+            functions: functions,
+          )
+        ]);
 }

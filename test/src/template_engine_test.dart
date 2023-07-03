@@ -2,7 +2,6 @@ import 'package:petitparser/src/core/parser.dart';
 import 'package:shouldly/shouldly.dart';
 import 'package:given_when_then_unit_test/given_when_then_unit_test.dart';
 import 'package:template_engine/template_engine.dart';
-import 'parser/tag/expression/variable_test.dart';
 
 void main() {
   // See also other .._parser_test_files

@@ -71,4 +71,47 @@ void main() {
           () => result.should.beCloseTo(expected, delta: delta));
     });
   });
+
+  given('TemplateEngine() and a custom function', () {
+    var functions = DefaultFunctions();
+    functions.add(GreetingWithParameter());
+    var engine = TemplateEngine(tags: DefaultTags(functions: functions));
+    when(
+        "calling: engine.parse(TextTemplate('{{greeting()}}.'), "
+        "functions: functions)", () {
+      var parseResult = engine.parse(TextTemplate('{{greeting()}}.'));
+      when('calling: engine.render(parseResult).text', () {
+        var renderResult = engine.render(parseResult).text;
+        var expected = 'Hello world.';
+        then('result should be: $expected',
+            () => renderResult.should.be(expected));
+      });
+    });
+
+    when(
+        "calling: engine.parse(TextTemplate('{{greeting()}}.'), "
+        "functions: functions)", () {
+      var parseResult = engine.parse(TextTemplate('{{greeting("Jane Doe")}}.'));
+
+      when('calling: engine.render(parseResult).text', () {
+        var renderResult = engine.render(parseResult).text;
+        var expected = 'Hello Jane Doe.';
+        then('result should be: $expected',
+            () => renderResult.should.be(expected));
+      });
+    });
+  });
+}
+
+class GreetingWithParameter extends TagFunction {
+  GreetingWithParameter()
+      : super(
+          name: 'greeting',
+          description: 'A tag that shows a greeting using attribute: name',
+          // attributeDefinitions: [
+          //   Attribute<String>(
+          //       name: 'name', optional: true, defaultValue: 'world')
+          // ]);
+          function: (parameters) => 'Hello ${parameters['name']}',
+        );
 }

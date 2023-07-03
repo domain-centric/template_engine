@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:petitparser/petitparser.dart';
 import 'package:template_engine/src/parser/override_message_parser.dart';
 import 'package:template_engine/template_engine.dart';
@@ -24,33 +22,22 @@ Parser<String> quotedStringParser() => OverrideMessageParser(
         .map((values) => values[1]),
     'quoted string expected');
 
-/// Common mathematical constants.
-final constants = {
-  'e': e,
-  'pi': pi,
-};
-
-Parser<Expression<num>> constantParser() {
-  return ChoiceParser(constants.keys.map((name) => string(name)))
-      .flatten('constant expected')
-      .trim()
-      .map((name) => Value<num>(constants[name]!));
-}
-
 Parser<Expression> expressionParser(ParserContext context) {
+  var tag =
+      context.tags.firstWhere((tag) => tag is ExpressionTag) as ExpressionTag;
   final builder = ExpressionBuilder<Expression>();
   builder.primitive(
     ChoiceParser([
       quotedStringParser().map((string) => Value<String>(string)),
       numberParser().map((number) => Value<num>(number)),
       boolParser().map((boolean) => Value<bool>(boolean)),
-      constantParser(),
+      constantParser(tag.constants),
       variableParser(),
     ], failureJoiner: selectFarthestJoined),
   );
 
   var group = builder.group();
-  for (var definition in context.functions) {
+  for (var definition in tag.functions) {
     group.wrapper(
         seq2(
           string(definition.name, 'expected function name: ${definition.name}'),

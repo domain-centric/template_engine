@@ -79,7 +79,6 @@ class ParserContext {
   final Template template;
 
   final List<Tag> tags;
-  final List<TagFunction> functions;
 
   /// See [tagStart] doc in [TemplateEngine] constructor
   final String tagStart;
@@ -92,13 +91,11 @@ class ParserContext {
   ParserContext({
     Template? template,
     final List<Tag>? tags,
-    List<TagFunction>? functions,
     this.tagStart = '{{',
     this.tagEnd = '}}',
   })  : template = template ?? TextTemplate(''),
         errors = [],
-        tags = tags ?? DefaultTags(),
-        functions = functions ?? DefaultFunctions();
+        tags = tags ?? DefaultTags();
 }
 
 class ParseResult extends ParserTree {

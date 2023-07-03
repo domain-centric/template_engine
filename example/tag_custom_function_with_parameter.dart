@@ -3,14 +3,12 @@
 import 'package:template_engine/template_engine.dart';
 
 void main() {
-  var engine = TemplateEngine();
   var functions = DefaultFunctions();
   functions.add(GreetingWithParameter());
-  var parseResult =
-      engine.parse(TextTemplate('{{greeting()}}.'), functions: functions);
+  var engine = TemplateEngine(tags: DefaultTags(functions: functions));
+  var parseResult = engine.parse(TextTemplate('{{greeting()}}.'));
   print(engine.render(parseResult)); // should print 'Hello world.';
-  parseResult = engine.parse(TextTemplate('{{greeting("Jane Doe")}}.'),
-      functions: functions);
+  parseResult = engine.parse(TextTemplate('{{greeting("Jane Doe")}}.'));
   print(engine.render(parseResult)); // should print 'Hello Jane Doe.';
 }
 
