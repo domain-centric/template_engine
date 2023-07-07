@@ -6,21 +6,22 @@ void main() {
   given('expressionParser(ParserContext())', () {
     var parser = expressionParser(ParserContext());
     double delta = 0.00001;
-    when('calling: parser.parse("2 * 3").value.eval({})', () {
-      var result = parser.parse("2 * 3").value.eval({});
+    var context = RenderContext();
+    when('calling: parser.parse("2 * 3").value.render(context)', () {
+      var result = parser.parse("2 * 3").value.render(context);
       var expected = 6;
       then('result should be: $expected', () => result.should.be(expected));
     });
 
-    when('calling: parser.parse("1.3*4").value.eval({}) as num', () {
-      var result = parser.parse("1.3*4").value.eval({}) as num;
+    when('calling: parser.parse("1.3*4").value.render(context) as num', () {
+      var result = parser.parse("1.3*4").value.render(context) as num;
       var expected = 5.2;
       then('result should be: $expected',
           () => result.should.beCloseTo(expected, delta: delta));
     });
 
-    when('calling: parser.parse("2 * 3 * 4").value.eval({})', () {
-      var result = parser.parse("2 * 3 * 4").value.eval({});
+    when('calling: parser.parse("2 * 3 * 4").value.render(context)', () {
+      var result = parser.parse("2 * 3 * 4").value.render(context);
       var expected = 24;
       then('result should be: $expected', () => result.should.be(expected));
     });

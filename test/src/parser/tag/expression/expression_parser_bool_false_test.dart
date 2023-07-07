@@ -5,27 +5,27 @@ import 'package:template_engine/template_engine.dart';
 void main() {
   given('expressionParser(ParserContext())', () {
     var parser = expressionParser(ParserContext());
-
-    when('calling: parser.parse("false").value.eval({})', () {
-      var result = parser.parse("false").value.eval({});
+    var context = RenderContext();
+    when('calling: parser.parse("false").value.render(context)', () {
+      var result = parser.parse("false").value.render(context);
       var expected = false;
       then('result should be: $expected', () => result.should.be(expected));
     });
 
-    when('calling: parser.parse("FALse").value.eval({})', () {
-      var result = parser.parse("FALse").value.eval({});
+    when('calling: parser.parse("FALse").value.render(context)', () {
+      var result = parser.parse("FALse").value.render(context);
       var expected = false;
       then('result should be: $expected', () => result.should.be(expected));
     });
 
-    when('calling: parser.parse("   FALse").value.eval({})', () {
-      var result = parser.parse("   FALse").value.eval({});
+    when('calling: parser.parse("   FALse").value.render(context)', () {
+      var result = parser.parse("   FALse").value.render(context);
       var expected = false;
       then('result should be: $expected', () => result.should.be(expected));
     });
 
-    when('calling: parser.parse("   FALse   ").value.eval({})', () {
-      var result = parser.parse("   FALse   ").value.eval({});
+    when('calling: parser.parse("   FALse   ").value.render(context)', () {
+      var result = parser.parse("   FALse   ").value.render(context);
       var expected = false;
       then('result should be: $expected', () => result.should.be(expected));
     });

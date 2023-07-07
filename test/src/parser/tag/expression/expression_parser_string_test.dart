@@ -5,7 +5,7 @@ import 'package:template_engine/template_engine.dart';
 void main() {
   given('expressionParser(ParserContext())', () {
     var parser = expressionParser(ParserContext());
-
+    var context = RenderContext();
     when('calling: parser.parse("\'Hello ")', () {
       var result = parser.parse("'Hello ");
 
@@ -32,20 +32,21 @@ void main() {
           () => result.message.should.be(expected));
     });
 
-    when('calling: parser.parse("\'Hello\'  ").value.eval({})', () {
-      var result = parser.parse("'Hello'  ").value.eval({});
+    when('calling: parser.parse("\'Hello\'  ").value.render(context)', () {
+      var result = parser.parse("'Hello'  ").value.render(context);
       var expected = "Hello";
       then('result should be: $expected', () => result.should.be(expected));
     });
 
-    when('calling: parser.parse(' "Hello" ').value.eval({})', () {
-      var result = parser.parse('  "Hello"').value.eval({});
+    when('calling: parser.parse(' "Hello" ').value.render(context)', () {
+      var result = parser.parse('  "Hello"').value.render(context);
       var expected = "Hello";
       then('result should be: $expected', () => result.should.be(expected));
     });
 
-    when('calling: parser.parse("\'Hel\' + \'l\' & "o"").value.eval({})', () {
-      var result = parser.parse("'Hel' + 'l' & \"o\"").value.eval({});
+    when('calling: parser.parse("\'Hel\' + \'l\' & "o"").value.render(context)',
+        () {
+      var result = parser.parse("'Hel' + 'l' & \"o\"").value.render(context);
       var expected = "Hello";
       then('result should be: $expected', () => result.should.be(expected));
     });

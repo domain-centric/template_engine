@@ -5,15 +5,16 @@ import 'package:template_engine/template_engine.dart';
 void main() {
   given('expressionParser(ParserContext())', () {
     var parser = expressionParser(ParserContext());
+    var context = RenderContext();
 
-    when('calling: parser.parse("5 - 3").value.eval({})', () {
-      var result = parser.parse("5 - 3").value.eval({});
+    when('calling: parser.parse("5 - 3").value.render(context)', () {
+      var result = parser.parse("5 - 3").value.render(context);
       var expected = 2;
       then('result should be: $expected', () => result.should.be(expected));
     });
 
-    when('calling: parser.parse("5 - 3 - 4").value.eval({})', () {
-      var result = parser.parse("5 - 3 - 4").value.eval({});
+    when('calling: parser.parse("5 - 3 - 4").value.render(context)', () {
+      var result = parser.parse("5 - 3 - 4").value.render(context);
       var expected = -2;
       then('result should be: $expected', () => result.should.be(expected));
     });

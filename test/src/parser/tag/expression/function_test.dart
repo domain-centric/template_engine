@@ -7,90 +7,94 @@ import 'package:template_engine/template_engine.dart';
 void main() {
   given('expressionParser(ParserContext())', () {
     var delta = 0.00001;
-    when('calling: parser.parse("exp(7)").value.eval({}) as num', () {
+    var context = RenderContext();
+    when('calling: parser.parse("exp(7)").value.render(context) as num', () {
       var parse = expressionParser(ParserContext()).parse("exp(7)");
-      var result = parse.value.eval({}) as num;
+      var result = parse.value.render(context) as num;
 
       var expected = exp(7);
       then('result should be: $expected',
           () => result.should.beCloseTo(expected, delta: delta));
     });
 
-    when('calling: parser.parse("log(7)").value.eval({}) as num', () {
+    when('calling: parser.parse("log(7)").value.render(context) as num', () {
       var result = expressionParser(ParserContext())
           .parse("log(7)")
           .value
-          .eval({}) as num;
+          .render(context) as num;
       var expected = log(7);
       then('result should be: $expected',
           () => result.should.beCloseTo(expected, delta: delta));
     });
 
-    when('calling: parser.parse("sin(7)").value.eval({})) as num', () {
+    when('calling: parser.parse("sin(7)").value.render(context)) as num', () {
       var result = expressionParser(ParserContext())
           .parse("sin(7)")
           .value
-          .eval({}) as num;
+          .render(context) as num;
       var expected = sin(7);
       then('result should be: $expected',
           () => result.should.beCloseTo(expected, delta: delta));
     });
 
-    when('calling: parser.parse("asin(0.5)").value.eval({})) as num', () {
+    when('calling: parser.parse("asin(0.5)").value.render(context)) as num',
+        () {
       var result = expressionParser(ParserContext())
           .parse("asin(0.5)")
           .value
-          .eval({}) as num;
+          .render(context) as num;
       var expected = asin(0.5);
       then('result should be: $expected',
           () => result.should.beCloseTo(expected, delta: delta));
     });
 
-    when('calling: parser.parse("cos(7)").value.eval({})) as num', () {
+    when('calling: parser.parse("cos(7)").value.render(context)) as num', () {
       var result = expressionParser(ParserContext())
           .parse("cos(7)")
           .value
-          .eval({}) as num;
+          .render(context) as num;
       var expected = cos(7);
       then('result should be: $expected',
           () => result.should.beCloseTo(expected, delta: delta));
     });
 
-    when('calling: parser.parse("acos(0.5)").value.eval({})) as num', () {
+    when('calling: parser.parse("acos(0.5)").value.render(context)) as num',
+        () {
       var result = expressionParser(ParserContext())
           .parse("acos(0.5)")
           .value
-          .eval({}) as num;
+          .render(context) as num;
       var expected = acos(0.5);
       then('result should be: $expected',
           () => result.should.beCloseTo(expected, delta: delta));
     });
 
-    when('calling: parser.parse("tan(7)").value.eval({})) as num', () {
+    when('calling: parser.parse("tan(7)").value.render(context)) as num', () {
       var result = expressionParser(ParserContext())
           .parse("tan(7)")
           .value
-          .eval({}) as num;
+          .render(context) as num;
       var expected = tan(7);
       then('result should be: $expected',
           () => result.should.beCloseTo(expected, delta: delta));
     });
 
-    when('calling: parser.parse("atan(0.5)").value.eval({})) as num', () {
+    when('calling: parser.parse("atan(0.5)").value.render(context)) as num',
+        () {
       var result = expressionParser(ParserContext())
           .parse("atan(0.5)")
           .value
-          .eval({}) as num;
+          .render(context) as num;
       var expected = atan(0.5);
       then('result should be: $expected',
           () => result.should.beCloseTo(expected, delta: delta));
     });
 
-    when('calling: parser.parse("sqrt(2)").value.eval({})) as num', () {
+    when('calling: parser.parse("sqrt(2)").value.render(context)) as num', () {
       var result = expressionParser(ParserContext())
           .parse("sqrt(2)")
           .value
-          .eval({}) as num;
+          .render(context) as num;
       var expected = sqrt(2);
       then('result should be: $expected',
           () => result.should.beCloseTo(expected, delta: delta));

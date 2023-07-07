@@ -5,14 +5,15 @@ import 'package:template_engine/template_engine.dart';
 void main() {
   given('expressionParser(ParserContext())', () {
     var parser = expressionParser(ParserContext());
-    when('calling: parser.parse("2 + 3").value.eval({})', () {
-      var result = parser.parse("2 + 3").value.eval({});
+    var context = RenderContext();
+    when('calling: parser.parse("2 + 3").value.render(context)', () {
+      var result = parser.parse("2 + 3").value.render(context);
       var expected = 5;
       then('result should be: $expected', () => result.should.be(expected));
     });
 
-    when('calling: parser.parse("2 + 3 + 4").value.eval({})', () {
-      var result = parser.parse("2 + 3 + 4").value.eval({});
+    when('calling: parser.parse("2 + 3 + 4").value.render(context)', () {
+      var result = parser.parse("2 + 3 + 4").value.render(context);
       var expected = 9;
       then('result should be: $expected', () => result.should.be(expected));
     });

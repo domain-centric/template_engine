@@ -6,29 +6,30 @@ void main() {
   given('expressionParser(ParserContext())', () {
     var parser = expressionParser(ParserContext());
     double delta = 0.00001;
-    when('calling: parser.parse("2 ^ 3").value.eval({}) as num', () {
-      var result = parser.parse("2 ^ 3").value.eval({}) as num;
+    var context = RenderContext();
+    when('calling: parser.parse("2 ^ 3").value.render(context) as num', () {
+      var result = parser.parse("2 ^ 3").value.render(context) as num;
       var expected = 8;
       then('result should be: $expected',
           () => result.should.beCloseTo(expected, delta: delta));
     });
 
-    when('calling: parser.parse("2 ^ -3").value.eval({}) as num', () {
-      var result = parser.parse("2 ^ -3").value.eval({}) as num;
+    when('calling: parser.parse("2 ^ -3").value.render(context) as num', () {
+      var result = parser.parse("2 ^ -3").value.render(context) as num;
       var expected = 0.125;
       then('result should be: $expected',
           () => result.should.beCloseTo(expected, delta: delta));
     });
 
-    when('calling: parser.parse("-2 ^ 3").value.eval({}) as num', () {
-      var result = parser.parse("-2 ^ 3").value.eval({}) as num;
+    when('calling: parser.parse("-2 ^ 3").value.render(context) as num', () {
+      var result = parser.parse("-2 ^ 3").value.render(context) as num;
       var expected = -8;
       then('result should be: $expected',
           () => result.should.beCloseTo(expected, delta: delta));
     });
 
-    when('calling: parser.parse("-2 ^ -3").value.eval({}) as num', () {
-      var result = parser.parse("-2 ^ -3").value.eval({}) as num;
+    when('calling: parser.parse("-2 ^ -3").value.render(context) as num', () {
+      var result = parser.parse("-2 ^ -3").value.render(context) as num;
       var expected = -0.125;
       then('result should be: $expected',
           () => result.should.beCloseTo(expected, delta: delta));

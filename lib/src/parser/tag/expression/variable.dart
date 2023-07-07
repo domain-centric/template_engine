@@ -38,8 +38,8 @@ class VariableExpression extends Expression {
   }
 
   @override
-  Object eval(Map<String, Object> variables) {
-    return _findVariableValue(variables, namePath.split('.'), 0);
+  Object render(RenderContext context) {
+    return _findVariableValue(context.variables, namePath.split('.'), 0);
   }
 }
 

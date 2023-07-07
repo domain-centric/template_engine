@@ -5,13 +5,14 @@ import 'package:template_engine/template_engine.dart';
 void main() {
   given('expressionParser(ParserContext()).end()', () {
     var parser = expressionParser(ParserContext()); //.end();
+    var context = RenderContext();
     when('calling parser.parse("\'Hello\'")', () {
       var result = parser.parse("'Hello'");
       then('result.value should be an Expression<String>', () {
         result.value.should.beAssignableTo<Expression<String>>();
       });
-      then('result.value.eval({}) should be "Hello"', () {
-        result.value.eval({}).should.be('Hello');
+      then('result.value.render(context) should be "Hello"', () {
+        result.value.render(context).should.be('Hello');
       });
     });
 
@@ -20,8 +21,10 @@ void main() {
       then('result.value should be an Expression<num>', () {
         result.value.should.beAssignableTo<Expression<num>>();
       });
-      then('result.value.eval({}) should be 123.45', () {
-        (result.value.eval({}) as num).should.beCloseTo(123.45, delta: 0.001);
+      then('result.value.render(context) should be 123.45', () {
+        (result.value.render(context) as num)
+            .should
+            .beCloseTo(123.45, delta: 0.001);
       });
     });
 
@@ -30,8 +33,8 @@ void main() {
       then('result.value should be an Expression', () {
         result.value.should.beAssignableTo<Expression>();
       });
-      then('result.value.eval({}) should be 5', () {
-        (result.value.eval({}) as num).should.be(5);
+      then('result.value.render(context) should be 5', () {
+        (result.value.render(context) as num).should.be(5);
       });
     });
 
@@ -40,8 +43,8 @@ void main() {
       then('result.value should be an Expression', () {
         result.value.should.beAssignableTo<Expression>();
       });
-      then('result.value.eval({}) should be 8', () {
-        (result.value.eval({}) as num).should.be(8);
+      then('result.value.render(context) should be 8', () {
+        (result.value.render(context) as num).should.be(8);
       });
     });
   });

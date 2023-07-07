@@ -51,9 +51,9 @@ class RenderContext {
   final Variables variables;
   final List<Error> errors;
 
-  RenderContext(
-    this.variables,
-  ) : errors = [];
+  RenderContext([Variables? variables])
+      : variables = variables ?? {},
+        errors = [];
 }
 
 class RenderResult {

@@ -5,23 +5,30 @@ import 'package:template_engine/template_engine.dart';
 void main() {
   given('expressionParser(ParserContext())', () {
     var parser = expressionParser(ParserContext());
-
-    when('calling: parser.parse("false & false | false ^ true").value.eval({})',
+    var context = RenderContext();
+    when(
+        'calling: parser.parse("false & false | false ^ true").value.render(context)',
         () {
-      var result = parser.parse("false & false | false ^ true").value.eval({});
+      var result =
+          parser.parse("false & false | false ^ true").value.render(context);
       var expected = false & false | false ^ true;
       then('result should be: $expected', () => result.should.be(expected));
     });
 
-    when('calling: parser.parse("true && (false || true)").value.eval({})', () {
-      var result = parser.parse("true && (false || true)").value.eval({});
+    when(
+        'calling: parser.parse("true && (false || true)").value.render(context)',
+        () {
+      var result =
+          parser.parse("true && (false || true)").value.render(context);
       var expected = true;
       then('result should be: $expected', () => result.should.be(expected));
     });
 
-    when('calling: parser.parse("true && !(false || false)").value.eval({})',
+    when(
+        'calling: parser.parse("true && !(false || false)").value.render(context)',
         () {
-      var result = parser.parse("true && !(false || false)").value.eval({});
+      var result =
+          parser.parse("true && !(false || false)").value.render(context);
       var expected = true;
       then('result should be: $expected', () => result.should.be(expected));
     });

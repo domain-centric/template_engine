@@ -8,43 +8,44 @@ void main() {
   given('expressionParser(ParserContext())', () {
     var parser = expressionParser(ParserContext());
     double delta = 0.00001;
-    when('calling: parser.parse("pi").value.eval({}) as num', () {
-      var result = parser.parse("pi").value.eval({}) as num;
+    var context = RenderContext();
+    when('calling: parser.parse("pi").value.render(context) as num', () {
+      var result = parser.parse("pi").value.render(context) as num;
       var expected = pi;
       then('result should be: $expected',
           () => result.should.beCloseTo(expected, delta: delta));
     });
 
-    when('calling: parser.parse("e").value.eval({}) as num', () {
-      var result = parser.parse("e").value.eval({}) as num;
+    when('calling: parser.parse("e").value.render(context) as num', () {
+      var result = parser.parse("e").value.render(context) as num;
       var expected = e;
       then('result should be: $expected',
           () => result.should.beCloseTo(expected, delta: delta));
     });
 
-    when('calling: parser.parse("ln10").value.eval({}) as num', () {
-      var result = parser.parse("ln10").value.eval({}) as num;
+    when('calling: parser.parse("ln10").value.render(context) as num', () {
+      var result = parser.parse("ln10").value.render(context) as num;
       var expected = ln10;
       then('result should be: $expected',
           () => result.should.beCloseTo(expected, delta: delta));
     });
 
-    when('calling: parser.parse("ln2").value.eval({}) as num', () {
-      var result = parser.parse("ln2").value.eval({}) as num;
+    when('calling: parser.parse("ln2").value.render(context) as num', () {
+      var result = parser.parse("ln2").value.render(context) as num;
       var expected = ln2;
       then('result should be: $expected',
           () => result.should.beCloseTo(expected, delta: delta));
     });
 
-    when('calling: parser.parse("log10e").value.eval({}) as num', () {
-      var result = parser.parse("log10e").value.eval({}) as num;
+    when('calling: parser.parse("log10e").value.render(context) as num', () {
+      var result = parser.parse("log10e").value.render(context) as num;
       var expected = log10e;
       then('result should be: $expected',
           () => result.should.beCloseTo(expected, delta: delta));
     });
 
-    when('calling: parser.parse("log2e").value.eval({}) as num', () {
-      var result = parser.parse("log2e").value.eval({}) as num;
+    when('calling: parser.parse("log2e").value.render(context) as num', () {
+      var result = parser.parse("log2e").value.render(context) as num;
       var expected = log2e;
       then('result should be: $expected',
           () => result.should.beCloseTo(expected, delta: delta));

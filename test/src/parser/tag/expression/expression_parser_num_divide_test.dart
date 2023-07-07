@@ -6,16 +6,16 @@ void main() {
   given('expressionParser(ParserContext())', () {
     var parser = expressionParser(ParserContext());
     double delta = 0.00001;
-
-    when('calling: parser.parse("6 / 4").value.eval({}) as num', () {
-      var result = parser.parse("6 / 4").value.eval({}) as num;
+    var context = RenderContext();
+    when('calling: parser.parse("6 / 4").value.render(context) as num', () {
+      var result = parser.parse("6 / 4").value.render(context) as num;
       var expected = 1.5;
       then('result should be: $expected',
           () => result.should.beCloseTo(expected, delta: delta));
     });
 
-    when('calling: parser.parse("6 / 3 / 2").value.eval({})', () {
-      var result = parser.parse("6 / 3 / 2").value.eval({});
+    when('calling: parser.parse("6 / 3 / 2").value.render(context)', () {
+      var result = parser.parse("6 / 3 / 2").value.render(context);
       var expected = 1;
       then('result should be: $expected', () => result.should.be(expected));
     });

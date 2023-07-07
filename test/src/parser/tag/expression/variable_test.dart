@@ -5,14 +5,19 @@ import 'package:template_engine/template_engine.dart';
 void main() {
   given('expressionParser(ParserContext())', () {
     var parser = expressionParser(ParserContext());
-    when('calling: parser.parse("x").value.eval({"x": 42})', () {
-      var result = parser.parse("x").value.eval({"x": 42});
+    when(
+        'calling: parser.parse("x").value.'
+        'render(RenderContext({"x": 42})', () {
+      var result = parser.parse("x").value.render(RenderContext({"x": 42}));
       var expected = 42;
       then('result should be: $expected', () => result.should.be(expected));
     });
 
-    when('calling: parser.parse("x / y").value.eval({"x": 6, "y": 2})', () {
-      var result = parser.parse("x / y").value.eval({"x": 6, "y": 2});
+    when(
+        'calling: parser.parse("x / y").value.'
+        'render(RenderContext({"x": 6, "y": 2})', () {
+      var result =
+          parser.parse("x / y").value.render(RenderContext({"x": 6, "y": 2}));
       var expected = 3;
       then('result should be: $expected', () => result.should.be(expected));
     });
@@ -35,11 +40,8 @@ void main() {
               .be('Hello '));
 
       then(
-          'expect: second child node to be a ExpressionRender with namePath "name"',
+          'expect: second child node to be a Expression with namePath "name"',
           () => parseResult.nodes[1].should
-              .beOfType<ExpressionRender>()!
-              .expression
-              .should
               .beOfType<VariableExpression>()!
               .namePath
               .should
@@ -80,9 +82,6 @@ void main() {
       then(
           'expect: second child node to be a VariableNode with namePath "name"',
           () => parseResult.nodes[1].should
-              .beOfType<ExpressionRender>()!
-              .expression
-              .should
               .beOfType<VariableExpression>()!
               .namePath
               .should
@@ -122,9 +121,6 @@ void main() {
       then(
           'expect: second child node to be a VariableNode with namePath "name"',
           () => parseResult.nodes[1].should
-              .beOfType<ExpressionRender>()!
-              .expression
-              .should
               .beOfType<VariableExpression>()!
               .namePath
               .should
@@ -163,11 +159,9 @@ void main() {
               .be('Hello '));
 
       then(
-          'expect: second child node to be a VariableNode with namePath "name"',
+          'expect: second child node to be a VariableExpression '
+          'with namePath "name"',
           () => parseResult.nodes[1].should
-              .beOfType<ExpressionRender>()!
-              .expression
-              .should
               .beOfType<VariableExpression>()!
               .namePath
               .should
@@ -204,12 +198,9 @@ void main() {
               .be('Hello '));
 
       then(
-          'expect: second child node to be a VariableRenderer '
+          'expect: second child node to be a VariableExpression '
           'with namePath "name"',
           () => parseResult.nodes[1].should
-              .beOfType<ExpressionRender>()!
-              .expression
-              .should
               .beOfType<VariableExpression>()!
               .namePath
               .should
@@ -237,8 +228,10 @@ void main() {
 
     var expression = VariableExpression('person');
 
-    when('calling: expression.eval(variables).toString()', () {
-      var result = expression.eval(variables).toString();
+    when(
+        'calling: expression'
+        '.render(RenderContext(variables)).toString()', () {
+      var result = expression.render(RenderContext(variables)).toString();
 
       then(
           'expect: result should be '
@@ -250,8 +243,8 @@ void main() {
     given("VariableExpression('person.name')", () {
       var expression = VariableExpression('person.name');
 
-      when('calling: expression.eval(variables)', () {
-        var result = expression.eval(variables);
+      when('calling: expression.render(RenderContext(variables))', () {
+        var result = expression.render(RenderContext(variables));
 
         then('expect: result should be "John Doe"',
             () => result.should.be('John Doe'));
@@ -261,8 +254,8 @@ void main() {
     given("VariableExpression('person.child.name')", () {
       var expression = VariableExpression('person.child.name');
 
-      when('call: node.render(context)', () {
-        var result = expression.eval(variables);
+      when('call: expression.render(RenderContext(variables))', () {
+        var result = expression.render(RenderContext(variables));
 
         then('expect: result should be "Jane Doe"',
             () => result.should.be('Jane Doe'));
@@ -279,7 +272,7 @@ void main() {
         then(
             'should throw a Variable exception with message: $expected',
             () => Should.throwException<VariableException>(
-                    () => expression.eval(variables))!
+                    () => expression.render(RenderContext(variables)))!
                 .message
                 .should
                 .be(expected));

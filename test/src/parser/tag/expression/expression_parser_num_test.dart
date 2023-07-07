@@ -6,26 +6,26 @@ void main() {
   given('expressionParser(ParserContext())', () {
     var parser = expressionParser(ParserContext());
     var input = "0";
-    Map<String, num> variables = const {};
     double delta = 0.00001;
-    when('calling: parser.parse("$input").value.eval("$variables" as num', () {
-      var result = parser.parse(input).value.eval(variables) as num;
+    var context = RenderContext();
+    when('calling: parser.parse("$input").value.render(context) as num', () {
+      var result = parser.parse(input).value.render(context) as num;
       var expected = 0;
       then('result should be: $expected',
           () => result.should.beCloseTo(expected, delta: delta));
     });
 
     input = "42";
-    when('calling: parser.parse("$input").value.eval("$variables") as num', () {
-      var result = parser.parse(input).value.eval(variables) as num;
+    when('calling: parser.parse("$input").value.render(context) as num', () {
+      var result = parser.parse(input).value.render(context) as num;
       var expected = 42;
       then('result should be: $expected',
           () => result.should.beCloseTo(expected, delta: delta));
     });
 
     input = "3.141";
-    when('calling: parser.parse("$input").value.eval("$variables") as num', () {
-      var result = parser.parse(input).value.eval(variables) as num;
+    when('calling: parser.parse("$input").value.render(context) as num', () {
+      var result = parser.parse(input).value.render(context) as num;
       var expected = 3.141;
       then('result should be: $expected',
           () => result.should.beCloseTo(expected, delta: delta));
@@ -33,15 +33,15 @@ void main() {
 
     input = "1.2e5";
     when('parsing "$input"', () {
-      var result = parser.parse(input).value.eval(variables) as num;
+      var result = parser.parse(input).value.render(context) as num;
       var expected = 1.2e5;
-      then('calling: parser.parse("$input").value.eval("$variables") as num',
+      then('calling: parser.parse("$input").value.render(context) as num',
           () => result.should.beCloseTo(expected, delta: delta));
     });
 
     input = "3.4e-1";
-    when('calling: parser.parse("$input").value.eval("$variables") as num', () {
-      var result = parser.parse(input).value.eval(variables) as num;
+    when('calling: parser.parse("$input").value.render(context) as num', () {
+      var result = parser.parse(input).value.render(context) as num;
       var expected = 3.4e-1;
       then('result should be: $expected',
           () => result.should.beCloseTo(expected, delta: delta));

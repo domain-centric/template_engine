@@ -8,8 +8,9 @@ void main() {
   given('expressionParser(ParserContext())', () {
     var parser = expressionParser(ParserContext());
     double delta = 0.00001;
-    when('calling: parser.parse("-pi").value.eval({}) as num', () {
-      var result = parser.parse("-pi").value.eval({}) as num;
+    var context = RenderContext();
+    when('calling: parser.parse("-pi").value.render(context) as num', () {
+      var result = parser.parse("-pi").value.render(context) as num;
       var expected = -pi;
       then('result should be: $expected',
           () => result.should.beCloseTo(expected, delta: delta));

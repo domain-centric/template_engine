@@ -30,10 +30,10 @@ class FunctionExpression<R extends Object> extends Expression<R> {
   FunctionExpression(this.tagFunction, this.parameterExpressionMap);
 
   @override
-  R eval(Map<String, Object> variables) {
+  R render(RenderContext context) {
     ParameterMap parameterMap = <String, Object>{};
     for (var name in parameterExpressionMap.keys) {
-      var value = parameterExpressionMap[name]!.eval(variables);
+      var value = parameterExpressionMap[name]!.render(context);
       parameterMap[name] = value;
     }
     return tagFunction.function(parameterMap);

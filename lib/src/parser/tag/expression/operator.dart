@@ -9,8 +9,8 @@ class NegativeNumberExpression extends Expression {
   NegativeNumberExpression(this.valueExpression);
 
   @override
-  Object eval(Map<String, Object> variables) {
-    var value = valueExpression.eval(variables);
+  Object render(RenderContext context) {
+    var value = valueExpression.render(context);
     if (value is num) {
       return -value;
     }
@@ -24,8 +24,8 @@ class NotExpression extends Expression {
   NotExpression(this.valueExpression);
 
   @override
-  Object eval(Map<String, Object> variables) {
-    var value = valueExpression.eval(variables);
+  Object render(RenderContext context) {
+    var value = valueExpression.render(context);
     if (value is bool) {
       return !value;
     }
@@ -86,9 +86,9 @@ class OperatorVariantExpression extends Expression {
       required this.right});
 
   @override
-  Object eval(Map<String, Object> variables) {
-    var leftValue = left.eval(variables);
-    var rightValue = right.eval(variables);
+  Object render(RenderContext context) {
+    var leftValue = left.render(context);
+    var rightValue = right.render(context);
 
     var errors = <String>[];
     for (var operatorVariant in variants) {
@@ -129,10 +129,10 @@ class TwoValueOperatorExpression<T extends Object> extends Expression {
   }
 
   @override
-  Object eval(Map<String, Object> variables) {
-    var leftValue = left.eval(variables);
+  Object render(RenderContext context) {
+    var leftValue = left.render(context);
     bool leftTypeOk = leftValue is T;
-    var rightValue = right.eval(variables);
+    var rightValue = right.render(context);
     bool rightTypeOk = rightValue is T;
     if (leftTypeOk && rightTypeOk) {
       return function(leftValue, rightValue);
