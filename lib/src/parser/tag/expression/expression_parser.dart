@@ -31,22 +31,13 @@ Parser<Expression> expressionParser(ParserContext context) {
       quotedStringParser().map((string) => Value<String>(string)),
       numberParser().map((number) => Value<num>(number)),
       boolParser().map((boolean) => Value<bool>(boolean)),
+      functionsParser(context, tag.functions),
       constantParser(tag.constants),
       variableParser(),
     ], failureJoiner: selectFarthestJoined),
   );
 
   var group = builder.group();
-  for (var definition in tag.functions) {
-    group.wrapper(
-        seq2(
-          string(definition.name, 'expected function name: ${definition.name}'),
-          char('(').trim(),
-        ),
-        char(')').trim(),
-        (left, parameterValue, right) =>
-            FunctionExpression(definition, parameterValue));
-  }
 
   ParenthesesOperator().addParser(group);
   group = builder.group();

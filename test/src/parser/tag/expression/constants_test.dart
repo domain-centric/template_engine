@@ -50,4 +50,6 @@ void main() {
           () => result.should.beCloseTo(expected, delta: delta));
     });
   });
+
+  //TODO test variable 'east' will be found (not taken hostage by e constant)
 }

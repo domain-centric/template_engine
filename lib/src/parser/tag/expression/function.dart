@@ -2,25 +2,45 @@ import 'dart:math';
 
 import 'package:collection/collection.dart';
 import 'package:petitparser/petitparser.dart';
+import 'package:template_engine/src/parser/override_message_parser.dart';
 import 'package:template_engine/template_engine.dart';
 
-class FunctionExpression<R extends Object> extends Expression<R> {
-  final TagFunction<R> definition;
-  final Expression parameter;
+Parser<Expression> functionsParser(
+        ParserContext context, List<TagFunction<Object>> functions) =>
+    OverrideMessageParser(
+        ChoiceParser(
+            functions.map((function) => functionParser(context, function))),
+        'function expected');
 
-  FunctionExpression(
-    this.definition,
-    this.parameter,
-  );
+Parser<Expression> functionParser(
+    ParserContext context, TagFunction<Object> function) {
+  return (string(function.name, 'expected function name: ${function.name}') &
+          char('(').trim() &
+          ParametersParser(
+              parserContext: context, parameters: function.parameters) &
+          char(')').trim())
+      .map((values) =>
+          FunctionExpression(function, values[2] as Map<String, Expression>));
+}
+
+class FunctionExpression<R extends Object> extends Expression<R> {
+  final TagFunction<R> tagFunction;
+  final Map<String, Expression> parameterExpressionMap;
+
+  FunctionExpression(this.tagFunction, this.parameterExpressionMap);
 
   @override
   R eval(Map<String, Object> variables) {
-    var parameters = <String, Object>{'value': parameter.eval(variables)};
-    return definition.function(parameters);
+    ParameterMap parameterMap = <String, Object>{};
+    for (var name in parameterExpressionMap.keys) {
+      var value = parameterExpressionMap[name]!.eval(variables);
+      parameterMap[name] = value;
+    }
+    return tagFunction.function(parameterMap);
   }
 
   @override
-  String toString() => 'Function{${definition.name}}';
+  String toString() => 'Function{${tagFunction.name}}';
 }
 
 class DefaultFunctions extends DelegatingList<TagFunction> {
@@ -43,6 +63,7 @@ class Exp extends TagFunction<num> {
   Exp()
       : super(
             name: 'exp',
+            parameters: [Parameter(name: 'value')],
             function: (parameters) => exp(parameters['value'] as num));
 }
 
@@ -50,6 +71,7 @@ class Log extends TagFunction<num> {
   Log()
       : super(
             name: 'log',
+            parameters: [Parameter(name: 'value')],
             function: (parameters) => log(parameters['value'] as num));
 }
 
@@ -57,6 +79,7 @@ class Sin extends TagFunction<num> {
   Sin()
       : super(
             name: 'sin',
+            parameters: [Parameter(name: 'value')],
             function: (parameters) => sin(parameters['value'] as num));
 }
 
@@ -64,6 +87,7 @@ class Asin extends TagFunction<num> {
   Asin()
       : super(
             name: 'asin',
+            parameters: [Parameter(name: 'value')],
             function: (parameters) => asin(parameters['value'] as num));
 }
 
@@ -71,6 +95,7 @@ class Cos extends TagFunction<num> {
   Cos()
       : super(
             name: 'cos',
+            parameters: [Parameter(name: 'value')],
             function: (parameters) => cos(parameters['value'] as num));
 }
 
@@ -78,6 +103,7 @@ class Acos extends TagFunction<num> {
   Acos()
       : super(
             name: 'acos',
+            parameters: [Parameter(name: 'value')],
             function: (parameters) => acos(parameters['value'] as num));
 }
 
@@ -85,6 +111,7 @@ class Tan extends TagFunction<num> {
   Tan()
       : super(
             name: 'tan',
+            parameters: [Parameter(name: 'value')],
             function: (parameters) => tan(parameters['value'] as num));
 }
 
@@ -92,6 +119,7 @@ class Atan extends TagFunction<num> {
   Atan()
       : super(
             name: 'atan',
+            parameters: [Parameter(name: 'value')],
             function: (parameters) => atan(parameters['value'] as num));
 }
 
@@ -99,6 +127,7 @@ class Sqrt extends TagFunction<num> {
   Sqrt()
       : super(
             name: 'sqrt',
+            parameters: [Parameter(name: 'value')],
             function: (parameters) => sqrt(parameters['value'] as num));
 }
 
@@ -106,6 +135,7 @@ class StringLength extends TagFunction<num> {
   StringLength()
       : super(
             name: 'length',
+            parameters: [Parameter(name: 'value')],
             function: (parameters) {
               var value = parameters['value'];
               if (value is String) {
@@ -116,97 +146,19 @@ class StringLength extends TagFunction<num> {
             });
 }
 
-// /// A [Tag] is a [Tag] that generates the result using a
-// /// Dart [] that you can write yourself.
-// /// You can use attributes inside a [Tag].
-// /// These will be passed to the Dart [] together with the [ParserContext]
-// ///
-// /// Example of an [Tag]: {{greetings name='world'}}
-// ///
-// /// Note that attribute values can also be a tag. In the following example the
-// /// name attributes gets value of variable name.
-// /// Example : {{greetings name={{name}} }}
-// abstract class Tag<T extends Object> extends Tag {
-//   /// A [Tag] may have 0 or more [Parameter]s
-//   final List<Parameter> attributeDefinitions;
+class TagFunction<R extends Object> {
+  TagFunction({
+    required this.name,
+    this.description,
+    this.parameters = const [],
+    required this.function,
+  });
 
-//   Tag({
-//     required super.name,
-//     required super.description,
-//     this.attributeDefinitions = const [],
-//   });
-
-//   @override
-//   Parser<T> createTagParser(ParserContext context) =>
-//       _createParserWithoutMapping(context, failsOnParameterError: true)
-//           .map2((values, parsePosition) {
-//         return createParserResult(
-//           context: context,
-//           attributes: values[3],
-//           source: TemplateSource(
-//             template: context.template,
-//             parserPosition: parsePosition,
-//           ),
-//         );
-//       });
-
-//   Parser<List<dynamic>> _createParserWithoutMapping(ParserContext context,
-//       {required bool failsOnParameterError}) {
-//     return (string(context.tagStart) &
-//         optionalWhiteSpace() &
-//         stringIgnoreCase(name) &
-//         ParametersParser(
-//           parserContext: context,
-//           attributes: attributeDefinitions,
-//           failsOnError: failsOnParameterError,
-//         ) &
-//         optionalWhiteSpace() &
-//         string(context.tagEnd));
-//   }
-
-//   /// creates a parser that returns success when a [Tag] is found but the attributes contains an error.
-//   /// It will return a map with attribute errors
-//   Parser<Map<String, Object>>
-//       createTagParserThatReturnsMapWithParameterErrors(
-//               ParserContext context) =>
-//           _createParserWithoutMapping(context, failsOnParameterError: false)
-//               .map((values) {
-//             return values[3];
-//           });
-
-//   T createParserResult({
-//     required ParserContext context,
-//     required TemplateSource source,
-//     required Map<String, Object> attributes,
-//   });
-
-//   @override
-//   String documentation(ParserContext context) => [
-//         'Example: ${example(context)}',
-//         description,
-//         ...attributeDocumentation
-//       ].join('\n');
-
-//   List<String> get attributeDocumentation {
-//     var attributeDoc = <String>[];
-//     if (attributeDefinitions.isNotEmpty) {
-//       attributeDoc.add('Parameters:');
-//     }
-//     for (var attribute in attributeDefinitions) {
-//       attributeDoc.add('* ${attribute.name}');
-//       if (attribute.description != null &&
-//           attribute.description!.trim().isNotEmpty) {
-//         attributeDoc.add('  Description: ${attribute.description}');
-//       }
-//       attributeDoc.add(
-//           '  ${attribute.optional ? 'Usage: optional' : 'Usage: mandatory'}');
-//       if (attribute.optional && attribute.defaultValue != null) {
-//         attributeDoc.add('  Default value: ${attribute.defaultValue}');
-//       }
-//     }
-//     return attributeDoc;
-//   }
-// }
+  final String name;
+  final String? description;
+  final List<Parameter> parameters;
+  final R Function(Map<String, Object> parameters) function;
+}
 
 /// A [Tag] can have 0 or more [Parameter]s.
 /// An [Parameter]:
@@ -282,11 +234,6 @@ class ParameterName {
   }
 }
 
-/// See [attributeValueParser] for the [ParameterValue] types that are supported
-abstract class ParameterValue {
-  // for documentation only;
-}
-
 class ParameterException implements Exception {
   final String message;
   //TODO add TemplateSource
@@ -299,23 +246,24 @@ class ParameterExceptions implements Exception {
   ParameterExceptions(this.messages);
 }
 
-typedef Parameters = Map<String, Object>;
+typedef ParameterMap = Map<String, Object>;
 
 /// Creates parsers for each parameter:
 /// * no parameters
 /// * one parameter: value or name=value
 /// * multiple parameters: name=value, name=value etc...
 /// Then validates the result and converts parameters to a name-value [Map]
-class ParametersParser extends Parser<Map<String, Object>> {
+class ParametersParser extends Parser<Map<String, Expression>> {
+  final _remainingParser =
+      (any().plusLazy(char(')'))).flatten().trim().map((value) => value);
+
   final ParserContext parserContext;
   final List<ParameterParser> parameterParsers;
   final List<Parameter> parameters;
-  final bool failsOnError;
 
   ParametersParser({
     required this.parserContext,
     required this.parameters,
-    required this.failsOnError,
   }) : parameterParsers = parameters
             .map((parameter) => parameterParser(
                   parserContext: parserContext,
@@ -327,36 +275,34 @@ class ParametersParser extends Parser<Map<String, Object>> {
             .toList();
 
   @override
-  Result<Map<String, Object>> parseOn(Context context) {
+  Result<Map<String, Expression>> parseOn(Context context) {
     List<Error> errors = [];
-    Parameters namesAndValues = {};
+    var parameterMap = <String, Expression>{};
     var current = context;
-
+    var unUsedParameterParsers = [...parameterParsers];
     ParameterParser? parserWithSuccess;
     do {
       parserWithSuccess = null;
       //TODO add separation comma's
-      for (var parser in parameterParsers) {
+      for (var parser in unUsedParameterParsers) {
         if (parserWithSuccess == null) {
           var result = parser.parseOn(current);
           if (result.isSuccess) {
             parserWithSuccess = parser;
-            namesAndValues.addEntries([result.value]);
+            parameterMap.addEntries([result.value]);
             current = result;
           }
         }
       }
       if (parserWithSuccess != null) {
         // remove parser for efficiency
-        parameterParsers.remove(parserWithSuccess);
+        unUsedParameterParsers.remove(parserWithSuccess);
       }
     } while (parserWithSuccess != null);
 
-    var remainingParser = (whitespace().plus().flatten()) &
-        untilEndOfTagParser(parserContext.tagStart, parserContext.tagEnd);
-    var result = remainingParser.parseOn(current);
+    var result = _remainingParser.parseOn(current);
     if (result.isSuccess) {
-      var remainingText = result.value[1].trim();
+      var remainingText = result.value;
       if (remainingText.isNotEmpty) {
         errors.add(Error(
             source: _createTemplateSource(current),
@@ -367,36 +313,26 @@ class ParametersParser extends Parser<Map<String, Object>> {
     }
 
     errors.addAll(
-        _validateIfMandatoryParametersWhereFound(namesAndValues, current));
+        _validateIfMandatoryParametersWhereFound(parameterMap, current));
 
-    namesAndValues.addAll(_missingDefaultValues(namesAndValues));
+    parameterMap.addAll(_missingDefaultValues(parameterMap));
 
-    if (failsOnError) {
-      if (errors.isEmpty) {
-        return current.success(namesAndValues);
-      } else {
-        return current.failure(errors.join('\n'));
-      }
+    if (errors.isEmpty) {
+      return current.success(parameterMap);
     } else {
-      var errorMap = {
-        for (int i = 0; i < errors.length; i++) i.toString(): errors[i]
-      };
-      return current.success(errorMap);
+      return current.failure(errors.join('\n'));
     }
   }
 
   @override
-  ParametersParser copy() => ParametersParser(
-        parserContext: parserContext,
-        parameters: parameters,
-        failsOnError: failsOnError,
-      );
+  ParametersParser copy() =>
+      ParametersParser(parserContext: parserContext, parameters: parameters);
 
   List<Error> _validateIfMandatoryParametersWhereFound(
-      Parameters parameterNamesAndValues, Context context) {
+      ParameterMap parameterMap, Context context) {
     var missingMandatoryParameters = parameters.where((parameter) =>
         parameter.presence == Presence.mandatory() &&
-        !parameterNamesAndValues.containsKey(parameter.name));
+        !parameterMap.containsKey(parameter.name));
     if (missingMandatoryParameters.isNotEmpty) {
       if (missingMandatoryParameters.length == 1) {
         return [
@@ -421,16 +357,16 @@ class ParametersParser extends Parser<Map<String, Object>> {
     return [];
   }
 
-  Map<String, Object> _missingDefaultValues(
-      Map<String, Object> namesAndValues) {
-    Map<String, Object> missingDefaultValues = {};
+  Map<String, Expression> _missingDefaultValues(
+      Map<String, Expression> namesAndValues) {
+    Map<String, Expression> missingDefaultValues = {};
 
     var optionalParametersWithDefaultValue = parameters
         .where((parameter) => parameter.presence.optionalWithDefaultValue);
     for (var optionalParameter in optionalParametersWithDefaultValue) {
       if (!namesAndValues.containsKey(optionalParameter.name)) {
         missingDefaultValues[optionalParameter.name] =
-            optionalParameter.presence.defaultValue;
+            Value(optionalParameter.presence.defaultValue);
       }
     }
     return missingDefaultValues;
@@ -443,7 +379,7 @@ class ParametersParser extends Parser<Map<String, Object>> {
 
 typedef ParameterParser = Parser<MapEntry<String, Expression>>;
 
-/// Returns a parser that returns the value of an attribute
+/// Returns a parser that returns the value of an [TagFunction] parameter
 /// Note that it must start with a whitespace for separation!
 ParameterParser parameterParser({
   required ParserContext parserContext,
@@ -451,14 +387,18 @@ ParameterParser parameterParser({
   required ParameterParserType parserType,
 }) {
   if (parserType == ParameterParserType.withName) {
-    return (optionalWhiteSpace() &
-            stringIgnoreCase(parameter.name) &
-            optionalWhiteSpace() &
-            char('=') &
-            expressionParser(parserContext))
-        .map((values) => MapEntry(parameter.name, values[4]));
+    return (stringIgnoreCase(parameter.name).trim() &
+            char('=').trim() &
+            ChoiceParser([
+              numberParser(),
+              quotedStringParser()
+            ]).map((value) => Value(
+                value))) //TODO replace with expressionParser(parserContext)) without causing a stack overflow (with loopBackParser??)
+        .map((values) => MapEntry(parameter.name, values[2]));
   } else {
-    return expressionParser(parserContext)
+    return ChoiceParser([numberParser(), quotedStringParser()])
+        .map((value) => Value(
+            value)) //TODO replace with expressionParser(parserContext)) without causing a stack overflow (with loopBackParser??)
         .map((value) => MapEntry(parameter.name, value));
   }
 }

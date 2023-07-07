@@ -13,8 +13,8 @@ void main() {
           () => result.isFailure.should.beTrue());
 
       var expected =
-          'quoted string expected OR number expected OR boolean expected '
-          'OR constant expected OR variable expected';
+          'quoted string expected OR number expected OR boolean expected OR '
+          'function expected OR constant expected OR variable expected';
       then('result.message should be: $expected',
           () => result.message.should.be(expected));
     });
@@ -26,8 +26,8 @@ void main() {
           () => result.isFailure.should.beTrue());
 
       var expected =
-          'quoted string expected OR number expected OR boolean expected '
-          'OR constant expected OR variable expected';
+          'quoted string expected OR number expected OR boolean expected OR '
+          'function expected OR constant expected OR variable expected';
       then('result.message should be: $expected',
           () => result.message.should.be(expected));
     });

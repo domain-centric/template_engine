@@ -1,11 +1,10 @@
-import 'package:petitparser/parser.dart';
 import 'package:shouldly/shouldly.dart';
 import 'package:given_when_then_unit_test/given_when_then_unit_test.dart';
 import 'package:template_engine/template_engine.dart';
 
 void main() {
   given('expressionParser(ParserContext()).end()', () {
-    var parser = expressionParser(ParserContext()).end();
+    var parser = expressionParser(ParserContext()); //.end();
     when('calling parser.parse("\'Hello\'")', () {
       var result = parser.parse("'Hello'");
       then('result.value should be an Expression<String>', () {

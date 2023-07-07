@@ -16,11 +16,12 @@ class GreetingWithParameter extends TagFunction {
   GreetingWithParameter()
       : super(
           name: 'greeting',
-          description: 'A tag that shows a greeting using attribute: name',
-          // attributeDefinitions: [
-          //   Attribute<String>(
-          //       name: 'name', optional: true, defaultValue: 'world')
-          // ]);
+          description: 'A tag that shows a greeting using parameter: name',
+          parameters: [
+            Parameter(
+                name: 'name',
+                presence: Presence.optionalWithDefaultValue('world'))
+          ],
           function: (parameters) => 'Hello ${parameters['name']}',
         );
 }

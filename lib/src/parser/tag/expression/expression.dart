@@ -1,3 +1,5 @@
+import 'package:template_engine/template_engine.dart';
+
 /// An abstract expression that can be evaluated.
 /// It is a combination of one or more:
 /// * [Value]s
@@ -21,19 +23,4 @@ class Value<T extends Object> extends Expression<T> {
 
   @override
   String toString() => 'Value{$value}';
-}
-
-/// An [Operator] that uses one [parameter]
-/// e.g. making a number negative
-
-class TagFunction<R extends Object> {
-  TagFunction({
-    required this.name,
-    this.description,
-    required this.function,
-  });
-
-  final String name;
-  final String? description;
-  final R Function(Map<String, Object> parameters) function;
 }

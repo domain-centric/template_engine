@@ -44,7 +44,7 @@ class VariableExpression extends Expression {
 }
 
 Parser<Expression<Object>> variableParser() {
-  return (VariableName.pathParser)
+  return (VariableName.pathParser & char('(').trim().not())
       .flatten('variable expected')
       .trim()
       .map((name) => VariableExpression(name));
