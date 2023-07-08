@@ -23,6 +23,7 @@ Parser<String> quotedStringParser() => OverrideMessageParser(
     'quoted string expected');
 
 Parser<Expression> expressionParser(ParserContext context) {
+  SettableParser loopback = undefined();
   var tag =
       context.tags.firstWhere((tag) => tag is ExpressionTag) as ExpressionTag;
   final builder = ExpressionBuilder<Expression>();
@@ -31,7 +32,11 @@ Parser<Expression> expressionParser(ParserContext context) {
       quotedStringParser().map((string) => Value<String>(string)),
       numberParser().map((number) => Value<num>(number)),
       boolParser().map((boolean) => Value<bool>(boolean)),
-      functionsParser(context, tag.functions),
+      functionsParser(
+        context: context,
+        functions: tag.functions,
+        loopbackParser: loopback,
+      ),
       constantParser(tag.constants),
       variableParser(),
     ], failureJoiner: selectFarthestJoined),
@@ -55,5 +60,8 @@ Parser<Expression> expressionParser(ParserContext context) {
   AddOperator().addParser(group);
   SubtractOperator().addParser(group);
   OrOperator().addParser(group);
-  return builder.build();
+
+  var parser = builder.build();
+  loopback.set(parser);
+  return parser;
 }

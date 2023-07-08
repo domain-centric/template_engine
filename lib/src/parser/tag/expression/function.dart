@@ -5,19 +5,29 @@ import 'package:petitparser/petitparser.dart';
 import 'package:template_engine/src/parser/override_message_parser.dart';
 import 'package:template_engine/template_engine.dart';
 
+///TODO make something so that errors message is not overridden to get detailed info when there is a problem with a function
 Parser<Expression> functionsParser(
-        ParserContext context, List<TagFunction<Object>> functions) =>
+        {required ParserContext context,
+        required List<TagFunction<Object>> functions,
+        required SettableParser loopbackParser}) =>
     OverrideMessageParser(
-        ChoiceParser(
-            functions.map((function) => functionParser(context, function))),
+        ChoiceParser(functions.map((function) => functionParser(
+            context: context,
+            function: function,
+            loopbackParser: loopbackParser))),
         'function expected');
 
-Parser<Expression> functionParser(
-    ParserContext context, TagFunction<Object> function) {
+Parser<Expression> functionParser({
+  required ParserContext context,
+  required TagFunction<Object> function,
+  required SettableParser loopbackParser,
+}) {
   return (string(function.name, 'expected function name: ${function.name}') &
           char('(').trim() &
           ParametersParser(
-              parserContext: context, parameters: function.parameters) &
+              parserContext: context,
+              parameters: function.parameters,
+              loopbackParser: loopbackParser) &
           char(')').trim())
       .map((values) =>
           FunctionExpression(function, values[2] as Map<String, Expression>));
@@ -255,23 +265,23 @@ typedef ParameterMap = Map<String, Object>;
 /// Then validates the result and converts parameters to a name-value [Map]
 class ParametersParser extends Parser<Map<String, Expression>> {
   final _remainingParser =
-      (any().plusLazy(char(')'))).flatten().trim().map((value) => value);
+      (any().starLazy(char(')'))).flatten().trim().map((value) => value);
 
   final ParserContext parserContext;
   final List<ParameterParser> parameterParsers;
   final List<Parameter> parameters;
+  final SettableParser loopbackParser;
 
-  ParametersParser({
-    required this.parserContext,
-    required this.parameters,
-  }) : parameterParsers = parameters
+  ParametersParser(
+      {required this.parserContext,
+      required this.parameters,
+      required this.loopbackParser})
+      : parameterParsers = parameters
             .map((parameter) => parameterParser(
-                  parserContext: parserContext,
-                  parameter: parameter,
-                  parserType: parameters.length == 1
-                      ? ParameterParserType.withoutName
-                      : ParameterParserType.withName,
-                ))
+                parserContext: parserContext,
+                parameter: parameter,
+                loopbackParser: loopbackParser,
+                withName: parameters.length > 1))
             .toList();
 
   @override
@@ -325,8 +335,10 @@ class ParametersParser extends Parser<Map<String, Expression>> {
   }
 
   @override
-  ParametersParser copy() =>
-      ParametersParser(parserContext: parserContext, parameters: parameters);
+  ParametersParser copy() => ParametersParser(
+      parserContext: parserContext,
+      parameters: parameters,
+      loopbackParser: loopbackParser);
 
   List<Error> _validateIfMandatoryParametersWhereFound(
       ParameterMap parameterMap, Context context) {
@@ -380,27 +392,22 @@ class ParametersParser extends Parser<Map<String, Expression>> {
 typedef ParameterParser = Parser<MapEntry<String, Expression>>;
 
 /// Returns a parser that returns the value of an [TagFunction] parameter
-/// Note that it must start with a whitespace for separation!
+/// It uses a loopback parser which is an [expressionParser] so that it can
+/// parse any known expression to a parameter value.
+/// The [loopbackParser] is a SettableParser because the [expressionParser]
+/// does not exist when this [parameterParser] is created.
 ParameterParser parameterParser({
   required ParserContext parserContext,
   required Parameter parameter,
-  required ParameterParserType parserType,
+  required SettableParser loopbackParser,
+  required bool withName,
 }) {
-  if (parserType == ParameterParserType.withName) {
+  if (withName) {
     return (stringIgnoreCase(parameter.name).trim() &
             char('=').trim() &
-            ChoiceParser([
-              numberParser(),
-              quotedStringParser()
-            ]).map((value) => Value(
-                value))) //TODO replace with expressionParser(parserContext)) without causing a stack overflow (with loopBackParser??)
+            loopbackParser)
         .map((values) => MapEntry(parameter.name, values[2]));
   } else {
-    return ChoiceParser([numberParser(), quotedStringParser()])
-        .map((value) => Value(
-            value)) //TODO replace with expressionParser(parserContext)) without causing a stack overflow (with loopBackParser??)
-        .map((value) => MapEntry(parameter.name, value));
+    return loopbackParser.map((value) => MapEntry(parameter.name, value));
   }
 }
-
-enum ParameterParserType { withName, withoutName }
