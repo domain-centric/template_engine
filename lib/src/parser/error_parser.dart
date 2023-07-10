@@ -1,34 +1,87 @@
 import 'package:petitparser/petitparser.dart';
 import 'package:template_engine/template_engine.dart';
 
-class InvalidTagParser extends Parser<String> {
-  final ParserContext context;
-  late Parser<String> internalParser;
+/// This [Parser] looks for any remaining tags that where not recognized
+/// by the [Tag][Parser]s.
+/// It will return this unknown tag as a [String] and add detailed error(s)
+/// to the [ParserContext].
+class InvalidTagParser extends Parser<Object> {
+  final ParserContext parserContext;
+  final Parser<String> tagStartParser;
+  final Parser<String> anythingBeforeEndParser;
+  final Parser<String> tagEndParser;
+  InvalidTagParser(this.parserContext)
+      : tagStartParser = string(parserContext.tagStart),
+        anythingBeforeEndParser =
+            untilEndOfTagParser(parserContext.tagStart, parserContext.tagEnd),
+        tagEndParser = string(parserContext.tagEnd);
 
-  InvalidTagParser(this.context) {
-    internalParser = createInternalParser();
+  @override
+  Parser<Object> copy() => InvalidTagParser(parserContext);
+
+  /// see dart doc if this class.
+  @override
+  Result<Object> parseOn(Context context) {
+    var errors = <Error>[];
+    var tagStartResult = tagStartParser.parseOn(context);
+    if (tagStartResult.isFailure) {
+      return tagStartResult;
+    }
+    var expressionResult = expressionParser(parserContext, verboseErrors: true)
+        .parseOn(tagStartResult);
+    if (expressionResult.position > tagStartResult.position) {
+      if (expressionResult.isFailure) {
+        errors.add(Error(
+            stage: ErrorStage.parse,
+            message: expressionResult.message,
+            source: TemplateSource(
+                template: parserContext.template,
+                parserPosition: expressionResult.toPositionString())));
+      }
+    }
+
+    var anythingBeforeEndResult =
+        anythingBeforeEndParser.parseOn(expressionResult);
+    if (errors.isEmpty &&
+        anythingBeforeEndResult.isSuccess &&
+        anythingBeforeEndResult.value.isNotEmpty) {
+      errors.add(Error(
+          stage: ErrorStage.parse,
+          message: 'invalid tag syntax',
+          source: TemplateSource(
+              template: parserContext.template,
+              parserPosition: expressionResult.toPositionString())));
+    }
+
+    var tagEndResult = tagEndParser.parseOn(anythingBeforeEndResult);
+    if (tagEndResult.isFailure) {
+      return tagEndResult;
+    }
+
+    if (errors.isNotEmpty) {
+      parserContext.errors.addAll(errors);
+      String tag =
+          context.buffer.substring(context.position, tagEndResult.position);
+      return tagEndResult.success(tag);
+    } else {
+      return tagEndResult.failure('not an invalid tag');
+    }
   }
 
-  @override
-  Parser<String> copy() => InvalidTagParser(context);
-
-  @override
-  Result<String> parseOn(Context context) => internalParser.parseOn(context);
-
-  Parser<String> createInternalParser() => (string(context.tagStart) &
-              optionalWhiteSpace().optional() &
-              untilEndOfTagParser(context.tagStart, context.tagEnd) &
-              optionalWhiteSpace().optional() &
-              string(context.tagEnd))
-          .map2((values, parserPosition) {
-        var source = TemplateSource(
-          template: context.template,
-          parserPosition: parserPosition,
-        );
-        context.errors.add(Error(
-            source: source, message: 'invalid tag', stage: ErrorStage.parse));
-        return values.join();
-      });
+  // Parser<String> createInternalParser() => ( &
+  //             optionalWhiteSpace().optional() &
+  //              &
+  //             optionalWhiteSpace().optional() &
+  //             string(parserContext.tagEnd))
+  //         .map2((values, parserPosition) {
+  //       var source = TemplateSource(
+  //         template: parserContext.template,
+  //         parserPosition: parserPosition,
+  //       );
+  //       parserContext.errors.add(Error(
+  //           source: source, message: 'invalid tag', stage: ErrorStage.parse));
+  //       return values.join();
+  //     });
 }
 
 /// Adds an error if a [Tag] end is found but not a  [Tag] start.

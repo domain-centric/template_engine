@@ -1,6 +1,5 @@
 import 'dart:math';
 
-import 'package:petitparser/debug.dart';
 import 'package:shouldly/shouldly.dart';
 import 'package:given_when_then_unit_test/given_when_then_unit_test.dart';
 import 'package:template_engine/template_engine.dart';
@@ -150,7 +149,6 @@ void main() {
     });
   });
 
-//TODO fails: why does the trace not show functions?
   given(
       'A function with a parameter that contains a function '
       '(needs to be rendered first)', () {
@@ -162,6 +160,25 @@ void main() {
         var expected = '0.5';
         then('result should be: $expected',
             () => renderResult.should.be(expected));
+      });
+    });
+  });
+  given('A function with a missing parameter', () {
+    var engine = TemplateEngine();
+    when("calling: engine.parse(TextTemplate('{{sin()}}'))", () {
+      var parseResult = engine.parse(TextTemplate('{{sin()}}'));
+      when('calling: engine.render(parseResult).text', () {
+        var renderResult = engine.render(parseResult);
+        then('parseResult.errors.length should be 1',
+            () => parseResult.errors.length.should.be(1));
+        then(
+            'parseResult.errors.first.message should be "Parse Error: '
+            'Missing mandatory parameter: value position: 1:7 source: Text"',
+            () => parseResult.errors.first.message.should
+                .be("Parse Error: Missing mandatory parameter: "
+                    "value position: 1:7 source: Text"));
+        then('renderResult.text should be: "{{sin()}}"',
+            () => renderResult.text.should.be('{{sin()}}'));
       });
     });
   });

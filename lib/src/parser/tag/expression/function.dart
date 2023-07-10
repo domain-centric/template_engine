@@ -5,17 +5,24 @@ import 'package:petitparser/petitparser.dart';
 import 'package:template_engine/src/parser/override_message_parser.dart';
 import 'package:template_engine/template_engine.dart';
 
-///TODO make something so that errors message is not overridden to get detailed info when there is a problem with a function
-Parser<Expression> functionsParser(
-        {required ParserContext context,
-        required List<TagFunction<Object>> functions,
-        required SettableParser loopbackParser}) =>
-    OverrideMessageParser(
-        ChoiceParser(functions.map((function) => functionParser(
-            context: context,
-            function: function,
-            loopbackParser: loopbackParser))),
-        'function expected');
+Parser<Expression> functionsParser({
+  required ParserContext context,
+  required List<TagFunction<Object>> functions,
+  required SettableParser loopbackParser,
+  required bool verboseErrors,
+}) {
+  var parser = ChoiceParser<Expression>(
+      functions.map((function) => functionParser(
+          context: context,
+          function: function,
+          loopbackParser: loopbackParser)),
+      failureJoiner: selectFarthest);
+  if (verboseErrors) {
+    return parser;
+  } else {
+    return OverrideMessageParser(parser, 'function expected');
+  }
+}
 
 Parser<Expression> functionParser({
   required ParserContext context,
@@ -73,7 +80,9 @@ class Exp extends TagFunction<num> {
   Exp()
       : super(
             name: 'exp',
-            parameters: [Parameter(name: 'value')],
+            parameters: [
+              Parameter(name: 'value', presence: Presence.mandatory())
+            ],
             function: (parameters) => exp(parameters['value'] as num));
 }
 
@@ -81,7 +90,9 @@ class Log extends TagFunction<num> {
   Log()
       : super(
             name: 'log',
-            parameters: [Parameter(name: 'value')],
+            parameters: [
+              Parameter(name: 'value', presence: Presence.mandatory())
+            ],
             function: (parameters) => log(parameters['value'] as num));
 }
 
@@ -89,7 +100,9 @@ class Sin extends TagFunction<num> {
   Sin()
       : super(
             name: 'sin',
-            parameters: [Parameter(name: 'value')],
+            parameters: [
+              Parameter(name: 'value', presence: Presence.mandatory())
+            ],
             function: (parameters) => sin(parameters['value'] as num));
 }
 
@@ -97,7 +110,9 @@ class Asin extends TagFunction<num> {
   Asin()
       : super(
             name: 'asin',
-            parameters: [Parameter(name: 'value')],
+            parameters: [
+              Parameter(name: 'value', presence: Presence.mandatory())
+            ],
             function: (parameters) => asin(parameters['value'] as num));
 }
 
@@ -105,7 +120,9 @@ class Cos extends TagFunction<num> {
   Cos()
       : super(
             name: 'cos',
-            parameters: [Parameter(name: 'value')],
+            parameters: [
+              Parameter(name: 'value', presence: Presence.mandatory())
+            ],
             function: (parameters) => cos(parameters['value'] as num));
 }
 
@@ -113,7 +130,9 @@ class Acos extends TagFunction<num> {
   Acos()
       : super(
             name: 'acos',
-            parameters: [Parameter(name: 'value')],
+            parameters: [
+              Parameter(name: 'value', presence: Presence.mandatory())
+            ],
             function: (parameters) => acos(parameters['value'] as num));
 }
 
@@ -121,7 +140,9 @@ class Tan extends TagFunction<num> {
   Tan()
       : super(
             name: 'tan',
-            parameters: [Parameter(name: 'value')],
+            parameters: [
+              Parameter(name: 'value', presence: Presence.mandatory())
+            ],
             function: (parameters) => tan(parameters['value'] as num));
 }
 
@@ -129,7 +150,9 @@ class Atan extends TagFunction<num> {
   Atan()
       : super(
             name: 'atan',
-            parameters: [Parameter(name: 'value')],
+            parameters: [
+              Parameter(name: 'value', presence: Presence.mandatory())
+            ],
             function: (parameters) => atan(parameters['value'] as num));
 }
 
@@ -137,7 +160,9 @@ class Sqrt extends TagFunction<num> {
   Sqrt()
       : super(
             name: 'sqrt',
-            parameters: [Parameter(name: 'value')],
+            parameters: [
+              Parameter(name: 'value', presence: Presence.mandatory())
+            ],
             function: (parameters) => sqrt(parameters['value'] as num));
 }
 
@@ -145,7 +170,9 @@ class StringLength extends TagFunction<num> {
   StringLength()
       : super(
             name: 'length',
-            parameters: [Parameter(name: 'value')],
+            parameters: [
+              Parameter(name: 'value', presence: Presence.mandatory())
+            ],
             function: (parameters) {
               var value = parameters['value'];
               if (value is String) {
@@ -343,7 +370,7 @@ class ParametersParser extends Parser<Map<String, Expression>> {
   List<Error> _validateIfMandatoryParametersWhereFound(
       ParameterMap parameterMap, Context context) {
     var missingMandatoryParameters = parameters.where((parameter) =>
-        parameter.presence == Presence.mandatory() &&
+        parameter.presence.mandatory &&
         !parameterMap.containsKey(parameter.name));
     if (missingMandatoryParameters.isNotEmpty) {
       if (missingMandatoryParameters.length == 1) {

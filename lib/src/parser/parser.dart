@@ -57,8 +57,7 @@ Parser<String> untilEndOfTagParser(String tagStart, String tagEnd) => any()
       string(tagStart),
       string(tagEnd),
     ]))
-    .flatten()
-    .map((value) => value);
+    .flatten();
 
 Parser<String> untilEndParser() => any().plus().flatten();
 

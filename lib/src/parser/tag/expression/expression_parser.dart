@@ -22,7 +22,8 @@ Parser<String> quotedStringParser() => OverrideMessageParser(
         .map((values) => values[1]),
     'quoted string expected');
 
-Parser<Expression> expressionParser(ParserContext context) {
+Parser<Expression> expressionParser(ParserContext context,
+    {bool verboseErrors = false}) {
   SettableParser loopback = undefined();
   var tag =
       context.tags.firstWhere((tag) => tag is ExpressionTag) as ExpressionTag;
@@ -36,6 +37,7 @@ Parser<Expression> expressionParser(ParserContext context) {
         context: context,
         functions: tag.functions,
         loopbackParser: loopback,
+        verboseErrors: verboseErrors,
       ),
       constantParser(tag.constants),
       variableParser(),
