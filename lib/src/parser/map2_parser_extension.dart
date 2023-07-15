@@ -30,7 +30,7 @@ class Map2Parser<R, S> extends DelegateParser<R, S> {
   Result<S> parseOn(Context context) {
     final result = delegate.parseOn(context);
     if (result.isSuccess) {
-      var callbackResults = callback(result.value, context.toPositionString());
+      var callbackResults = callback(result.value, context);
       return result.success(callbackResults);
     } else {
       return result.failure(result.message);
@@ -47,4 +47,4 @@ class Map2Parser<R, S> extends DelegateParser<R, S> {
 
 /// We pass the parse position so that errors and or warnings can be logged
 /// with the current parse position within the [Template]
-typedef Callback2<T, R> = R Function(T value, String parsePosition);
+typedef Callback2<T, R> = R Function(T value, Context context);

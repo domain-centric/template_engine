@@ -167,16 +167,15 @@ void main() {
     var engine = TemplateEngine();
     when("calling: engine.parse(TextTemplate('{{sin()}}'))", () {
       var parseResult = engine.parse(TextTemplate('{{sin()}}'));
+      then('parseResult.errors.length should be 1',
+          () => parseResult.errors.length.should.be(1));
+      var expected = 'Parse Error: missing mandatory function parameter: '
+          'value, position: 1:7, source: Text';
+      then('parseResult.errors.first.message should be "$expected"',
+          () => parseResult.errors.first.toString().should.be(expected));
       when('calling: engine.render(parseResult).text', () {
         var renderResult = engine.render(parseResult);
-        then('parseResult.errors.length should be 1',
-            () => parseResult.errors.length.should.be(1));
-        then(
-            'parseResult.errors.first.message should be "Parse Error: '
-            'Missing mandatory parameter: value position: 1:7 source: Text"',
-            () => parseResult.errors.first.message.should
-                .be("Parse Error: Missing mandatory parameter: "
-                    "value position: 1:7 source: Text"));
+
         then('renderResult.text should be: "{{sin()}}"',
             () => renderResult.text.should.be('{{sin()}}'));
       });

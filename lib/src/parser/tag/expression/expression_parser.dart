@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:petitparser/petitparser.dart';
 import 'package:template_engine/src/parser/override_message_parser.dart';
 import 'package:template_engine/template_engine.dart';
@@ -25,8 +26,12 @@ Parser<String> quotedStringParser() => OverrideMessageParser(
 Parser<Expression> expressionParser(ParserContext context,
     {bool verboseErrors = false}) {
   SettableParser loopback = undefined();
-  var tag =
-      context.tags.firstWhere((tag) => tag is ExpressionTag) as ExpressionTag;
+  Tag? tag = context.tags.firstWhereOrNull((tag) => tag is ExpressionTag);
+  if (tag == null) {
+    return undefined();
+  }
+  tag as ExpressionTag;
+
   final builder = ExpressionBuilder<Expression>();
   builder.primitive(
     ChoiceParser([

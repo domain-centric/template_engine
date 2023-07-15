@@ -256,7 +256,7 @@ class Presence {
 
 /// The [ParameterName]:
 /// * must start with a letter, optionally followed by letters and or digits.
-/// * is case unsensitive .
+/// * is case sensitive .
 ///
 /// E.g.: myValue1
 class ParameterName {
@@ -273,7 +273,6 @@ class ParameterName {
 
 class ParameterException implements Exception {
   final String message;
-  //TODO add TemplateSource
   ParameterException(this.message);
 }
 
@@ -291,9 +290,8 @@ typedef ParameterMap = Map<String, Object>;
 /// * multiple parameters: name=value, name=value etc...
 /// Then validates the result and converts parameters to a name-value [Map]
 class ParametersParser extends Parser<Map<String, Expression>> {
-  final _remainingParser =
-      (any().starLazy(char(')'))).flatten().trim().map((value) => value);
-
+  static final _remainingParser = (any().starLazy(char(')'))).flatten().trim();
+  static final _commaParser = char(',').flatten('comma expected').trim();
   final ParserContext parserContext;
   final List<ParameterParser> parameterParsers;
   final List<Parameter> parameters;
@@ -313,14 +311,14 @@ class ParametersParser extends Parser<Map<String, Expression>> {
 
   @override
   Result<Map<String, Expression>> parseOn(Context context) {
-    List<Error> errors = [];
     var parameterMap = <String, Expression>{};
     var current = context;
     var unUsedParameterParsers = [...parameterParsers];
     ParameterParser? parserWithSuccess;
+    bool firstParameter = true;
     do {
       parserWithSuccess = null;
-      //TODO add separation comma's
+
       for (var parser in unUsedParameterParsers) {
         if (parserWithSuccess == null) {
           var result = parser.parseOn(current);
@@ -334,31 +332,37 @@ class ParametersParser extends Parser<Map<String, Expression>> {
       if (parserWithSuccess != null) {
         // remove parser for efficiency
         unUsedParameterParsers.remove(parserWithSuccess);
+        if (firstParameter) {
+          firstParameter = false;
+          //add commaParsers before parameterParsers
+          var withCommaPrefixParsers = unUsedParameterParsers
+              .map((parser) => (_commaParser & parser)
+                  .map((values) => values[1] as MapEntry<String, Expression>))
+              .toList();
+          unUsedParameterParsers = withCommaPrefixParsers;
+        }
       }
-    } while (parserWithSuccess != null);
+    } while (parserWithSuccess != null && unUsedParameterParsers.isNotEmpty);
 
     var result = _remainingParser.parseOn(current);
     if (result.isSuccess) {
       var remainingText = result.value;
       if (remainingText.isNotEmpty) {
-        errors.add(Error(
-            source: _createTemplateSource(current),
-            message: 'Invalid parameter: $remainingText',
-            stage: ErrorStage.parse));
+        return current
+            .failure('invalid function parameter syntax: $remainingText');
       }
       current = result;
     }
 
-    errors.addAll(
-        _validateIfMandatoryParametersWhereFound(parameterMap, current));
+    var validationError =
+        _validateIfMandatoryParametersWhereFound(parameterMap, current);
+    if (validationError != null) {
+      return current.failure(validationError);
+    }
 
     parameterMap.addAll(_missingDefaultValues(parameterMap));
 
-    if (errors.isEmpty) {
-      return current.success(parameterMap);
-    } else {
-      return current.failure(errors.join('\n'));
-    }
+    return current.success(parameterMap);
   }
 
   @override
@@ -367,33 +371,20 @@ class ParametersParser extends Parser<Map<String, Expression>> {
       parameters: parameters,
       loopbackParser: loopbackParser);
 
-  List<Error> _validateIfMandatoryParametersWhereFound(
+  /// returns an validation error message or null when valid
+  String? _validateIfMandatoryParametersWhereFound(
       ParameterMap parameterMap, Context context) {
     var missingMandatoryParameters = parameters.where((parameter) =>
         parameter.presence.mandatory &&
         !parameterMap.containsKey(parameter.name));
     if (missingMandatoryParameters.isNotEmpty) {
       if (missingMandatoryParameters.length == 1) {
-        return [
-          Error(
-            stage: ErrorStage.parse,
-            source: _createTemplateSource(context),
-            message:
-                'Missing mandatory parameter: ${missingMandatoryParameters.first.name}',
-          )
-        ];
+        return 'missing mandatory function parameter: ${missingMandatoryParameters.first.name}';
       } else {
-        return [
-          Error(
-            stage: ErrorStage.parse,
-            source: _createTemplateSource(context),
-            message:
-                'Missing mandatory parameters: ${missingMandatoryParameters.map((e) => e.name).join(', ')}',
-          )
-        ];
+        return 'missing mandatory function parameters: ${missingMandatoryParameters.map((e) => e.name).join(', ')}';
       }
     }
-    return [];
+    return null;
   }
 
   Map<String, Expression> _missingDefaultValues(
@@ -410,10 +401,6 @@ class ParametersParser extends Parser<Map<String, Expression>> {
     }
     return missingDefaultValues;
   }
-
-  TemplateSource _createTemplateSource(Context context) => TemplateSource(
-      template: parserContext.template,
-      parserPosition: context.toPositionString());
 }
 
 typedef ParameterParser = Parser<MapEntry<String, Expression>>;
@@ -430,9 +417,7 @@ ParameterParser parameterParser({
   required bool withName,
 }) {
   if (withName) {
-    return (stringIgnoreCase(parameter.name).trim() &
-            char('=').trim() &
-            loopbackParser)
+    return (string(parameter.name).trim() & char('=').trim() & loopbackParser)
         .map((values) => MapEntry(parameter.name, values[2]));
   } else {
     return loopbackParser.map((value) => MapEntry(parameter.name, value));

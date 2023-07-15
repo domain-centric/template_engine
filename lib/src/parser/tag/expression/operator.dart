@@ -16,6 +16,11 @@ class NegativeNumberExpression extends Expression {
     }
     throw OperatorException('A number expected after the - operator');
   }
+
+  @override
+  String toString() {
+    return 'NegativeNumberExpression{$valueExpression}';
+  }
 }
 
 class NotExpression extends Expression {

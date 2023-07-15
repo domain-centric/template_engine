@@ -12,8 +12,8 @@ void main() {
         var result = engine.parse(template);
 
         then('expect: no 1 error', () => result.errors.length.should.be(1));
-        var expected = 'Parse Error: invalid tag syntax '
-            'position: 1:20 source: Text';
+        var expected = 'Parse Error: invalid tag syntax, '
+            'position: 1:20, source: Text';
         then('expect: errorMessage to be "$expected"',
             () => result.errorMessage.should.be(expected));
       });
@@ -29,8 +29,8 @@ void main() {
 
         then('expect: no 2 error', () => result.errors.length.should.be(2));
         var expected =
-            'Parse Error: invalid tag syntax position: 1:21 source: Text\n'
-            'Parse Error: invalid tag syntax position: 1:51 source: Text';
+            'Parse Error: invalid tag syntax, position: 1:21, source: Text\n'
+            'Parse Error: invalid tag syntax, position: 1:51, source: Text';
         then('expect: errorMessage to be "$expected"',
             () => result.errorMessage.should.be(expected));
       });
@@ -49,7 +49,7 @@ void main() {
 
         var expected = 'Parse Error: Found tag start: {{, '
             'but it was not followed '
-            'with a tag end: }} position: 1:7 source: Text';
+            'with a tag end: }}, position: 1:7, source: Text';
         then('expect: errorMessage to be "$expected"', () {
           return result.errorMessage.should.be(expected);
         });
@@ -67,7 +67,7 @@ void main() {
 
         var expected =
             'Parse Error: Found tag start: {{, but it was not followed '
-            'with a tag end: }} position: 1:11 source: Text';
+            'with a tag end: }}, position: 1:11, source: Text';
         then('expect: errorMessage to be "$expected"', () {
           return result.errorMessage.should.be(expected);
         });
@@ -85,7 +85,7 @@ void main() {
 
         var expected =
             'Parse Error: Found tag start: {{, but it was not followed '
-            'with a tag end: }} position: 1:16 source: Text';
+            'with a tag end: }}, position: 1:16, source: Text';
         then('expect: errorMessage to be "$expected"', () {
           return result.errorMessage.should.be(expected);
         });
@@ -105,7 +105,7 @@ void main() {
 
         var expected =
             'Parse Error: Found tag end: }}, but it was not preceded '
-            'with a tag start: {{ position: 1:7 source: Text';
+            'with a tag start: {{, position: 1:7, source: Text';
         then('expect: errorMessage to be "$expected"', () {
           return result.errorMessage.should.be(expected);
         });
@@ -122,7 +122,7 @@ void main() {
 
         var expected =
             'Parse Error: Found tag end: }}, but it was not preceded '
-            'with a tag start: {{ position: 1:11 source: Text';
+            'with a tag start: {{, position: 1:11, source: Text';
         then('expect: errorMessage to be "$expected"', () {
           return result.errorMessage.should.be(expected);
         });
@@ -139,7 +139,7 @@ void main() {
 
         var expected =
             'Parse Error: Found tag end: }}, but it was not preceded '
-            'with a tag start: {{ position: 1:16 source: Text';
+            'with a tag start: {{, position: 1:16, source: Text';
         then('expect: errorMessage to be "$expected"', () {
           return result.errorMessage.should.be(expected);
         });

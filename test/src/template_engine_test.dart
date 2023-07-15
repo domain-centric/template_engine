@@ -1,4 +1,4 @@
-import 'package:petitparser/src/core/parser.dart';
+import 'package:petitparser/petitparser.dart';
 import 'package:shouldly/shouldly.dart';
 import 'package:given_when_then_unit_test/given_when_then_unit_test.dart';
 import 'package:template_engine/template_engine.dart';
@@ -78,8 +78,8 @@ void main() {
         return result.errors.length.should.be(1);
       });
 
-      var expected = 'Render Error: Something went wrong. '
-          'position: 1:4 source: Text';
+      var expected = 'Render Error: something went wrong, '
+          'position: 1:4, source: Text';
 
       then('expect: an errorMessage: "$expected"', () {
         return result.errorMessage.should.be(expected);
@@ -101,15 +101,16 @@ class TestTag extends Tag {
 class ParserTreeThatRegistersError extends ParserTree {
   @override
   String render(RenderContext context) {
-    context.errors.add(Error(
+    var template = DummyTemplate();
+    context.errors.add(Error.fromContext(
         stage: ErrorStage.render,
-        message: 'Something went wrong.',
-        source: DummyTemplateSource()));
+        context: Context(template.text, 3),
+        message: 'something went wrong',
+        template: template));
     return "";
   }
 }
 
-class DummyTemplateSource extends TemplateSource {
-  DummyTemplateSource()
-      : super(template: TextTemplate('Hello {{name}}.'), parserPosition: '1:4');
+class DummyTemplate extends TextTemplate {
+  DummyTemplate() : super('Hello {{name}}.');
 }

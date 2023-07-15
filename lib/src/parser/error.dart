@@ -1,3 +1,4 @@
+import 'package:petitparser/petitparser.dart';
 import 'package:template_engine/src/template.dart';
 import 'package:recase/recase.dart';
 
@@ -11,35 +12,32 @@ class Error {
   final DateTime occurrence;
   final ErrorStage stage;
   final String message;
-  final TemplateSource source;
+  final String position;
+  final Template template;
 
-  Error({
+  Error.fromFailure({
     required this.stage,
+    required Failure failure,
+    required this.template,
+  })  : occurrence = DateTime.now(),
+        message = failure.message,
+        position = failure.toPositionString();
+
+  Error.fromContext({
+    required this.stage,
+    required Context context,
     required this.message,
-    required this.source,
-  }) : occurrence = DateTime.now();
+    required this.template,
+  })  : occurrence = DateTime.now(),
+        position = context.toPositionString();
 
   @override
-  String toString() => '${stage.name.titleCase} Error: $message $source';
+  String toString() => '${stage.name.titleCase} Error: $message, '
+      'position: $position, '
+      'source: ${template.source}';
 }
 
 enum ErrorStage {
   parse,
   render,
-}
-
-/// A [TemplateSource] to identify where a [Parser] error or warning
-/// has occurred.
-class TemplateSource {
-  /// The source of the text
-  final Template template;
-
-  /// The current [Parser] position within the [Template].
-  /// Format: {row}:{column}
-  final String parserPosition;
-
-  TemplateSource({required this.template, required this.parserPosition});
-
-  @override
-  String toString() => 'position: $parserPosition source: ${template.source}';
 }

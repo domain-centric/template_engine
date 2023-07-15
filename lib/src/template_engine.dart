@@ -1,3 +1,4 @@
+import 'package:petitparser/petitparser.dart';
 import 'package:template_engine/src/parser/error.dart';
 import 'package:template_engine/src/parser/parser.dart';
 import 'package:template_engine/src/render.dart';
@@ -68,13 +69,11 @@ class TemplateEngine {
     var result = parser.parse(template.text);
 
     if (result.isFailure) {
-      context.errors.add(Error(
-          stage: ErrorStage.parse,
-          message: result.message,
-          source: TemplateSource(
-            template: template,
-            parserPosition: result.toPositionString(),
-          )));
+      context.errors.add(Error.fromFailure(
+        stage: ErrorStage.parse,
+        failure: result as Failure,
+        template: template,
+      ));
     }
     return ParseResult(children: result.value, errors: context.errors);
   }
