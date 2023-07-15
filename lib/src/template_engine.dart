@@ -1,4 +1,4 @@
-import 'package:petitparser/petitparser.dart';  
+import 'package:petitparser/petitparser.dart';
 import 'package:template_engine/template_engine.dart';
 
 /// The [TemplateEngine] does the following:

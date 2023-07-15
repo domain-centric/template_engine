@@ -16,6 +16,86 @@ void main() {
     });
   });
 
+  given('ParameterNameAndValueParser with a nameless parameter', () {
+    var parserContext = ParserContext(engine: TemplateEngine());
+    var loopBackParser = SettableParser(expressionParser(parserContext));
+    var parser = parameterParser(
+            parserContext: parserContext,
+            parameter: Parameter(name: 'parameter'),
+            loopbackParser: loopBackParser,
+            withName: false)
+        .end();
+
+    var input = '-123e-1';
+    when('calling parser.parse("$input")', () {
+      var result = parser.parse(input);
+      var expected =
+          MapEntry('parameter', NegativeNumberExpression(Value(12.3)))
+              .toString();
+
+      then('result.value should be: $expected',
+          () => result.value.toString().should.be(expected));
+    });
+
+    input = ' -123e-1';
+    when('calling parser.parse("$input")', () {
+      var result = parser.parse(input);
+      var expected =
+          MapEntry('parameter', NegativeNumberExpression(Value(12.3)))
+              .toString();
+
+      then('result should have no failures',
+          () => result.isFailure.should.beFalse());
+      then('result.value should be: $expected',
+          () => result.value.toString().should.be(expected));
+    });
+
+    input = ' true';
+    when('calling parser.parse("$input")', () {
+      var result = parser.parse(input);
+      var expected = MapEntry('parameter', Value(true)).toString();
+
+      then('result should have no failures',
+          () => result.isFailure.should.beFalse());
+      then('result.value should be: $expected',
+          () => result.value.toString().should.be(expected));
+    });
+
+    input = ' FALse';
+    when('calling parser.parse("$input")', () {
+      var result = parser.parse(input);
+      var expected = MapEntry('parameter', Value(false)).toString();
+
+      then('result should have no failures',
+          () => result.isFailure.should.beFalse());
+      then('result.value should be: $expected',
+          () => result.value.toString().should.be(expected));
+    });
+
+    input = '  "Hello"';
+    when('calling parser.parse("$input")', () {
+      var result = parser.parse(input);
+
+      then('result should not be a failure',
+          () => result.isFailure.should.beFalse());
+
+      var expected = MapEntry('parameter', Value('Hello')).toString();
+      then('result.value should be: $expected',
+          () => result.value.toString().should.be(expected));
+    });
+
+    input = "  'Hello'   ";
+    when('calling parser.parse("$input")', () {
+      var result = parser.parse(input);
+      var expected = MapEntry('parameter', Value('Hello')).toString();
+
+      then('result should have no failures',
+          () => result.isFailure.should.beFalse());
+      then('result.value should be: $expected',
+          () => result.value.toString().should.be(expected));
+    });
+  });
+
   given('ParameterNameAndValueParser with parameter: parameter', () {
     var parserContext = ParserContext(engine: TemplateEngine());
     var loopBackParser = SettableParser(expressionParser(parserContext));
@@ -24,7 +104,7 @@ void main() {
             parameter: Parameter(name: 'parameter'),
             loopbackParser: loopBackParser,
             withName: true)
-        .end(); //TODO add test without name
+        .end();
 
     var input = 'parameter=-123e-1';
     when('calling parser.parse("$input")', () {
