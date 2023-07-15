@@ -9,6 +9,7 @@ export 'src/parser/map2_parser_extension.dart';
 export 'src/parser/tag/tag.dart';
 export 'src/parser/tag/expression/expression.dart';
 export 'src/parser/tag/expression/expression_parser.dart';
+export 'src/parser/tag/expression/base_type/base_type.dart';
 export 'src/parser/tag/expression/operator/operator.dart';
 export 'src/parser/tag/expression/operator/default.dart';
 export 'src/parser/tag/expression/constant.dart';

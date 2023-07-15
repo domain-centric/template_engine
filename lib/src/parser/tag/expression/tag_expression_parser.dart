@@ -7,7 +7,7 @@ class ExpressionTag extends Tag {
           name: 'ExpressionTag',
           description: 'Evaluates an expression that can contain values '
               '(bool, num, string), operators, functions, constants '
-              'and variables',
+              'and variables.',
         );
 
   @override

@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:collection/collection.dart';
 import 'package:petitparser/petitparser.dart';
 import 'package:template_engine/template_engine.dart';

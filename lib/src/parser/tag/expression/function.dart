@@ -7,12 +7,11 @@ import 'package:template_engine/template_engine.dart';
 
 Parser<Expression> functionsParser({
   required ParserContext context,
-  required List<TagFunction<Object>> functions,
   required SettableParser loopbackParser,
   required bool verboseErrors,
 }) {
   var parser = ChoiceParser<Expression>(
-      functions.map((function) => functionParser(
+      context.engine.functions.map((function) => functionParser(
           context: context,
           function: function,
           loopbackParser: loopbackParser)),

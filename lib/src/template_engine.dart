@@ -1,11 +1,4 @@
-import 'package:petitparser/petitparser.dart';
-import 'package:template_engine/src/parser/error.dart';
-import 'package:template_engine/src/parser/parser.dart';
-import 'package:template_engine/src/parser/tag/expression/constant.dart';
-import 'package:template_engine/src/parser/tag/expression/function.dart';
-import 'package:template_engine/src/render.dart';
-import 'package:template_engine/src/parser/tag/tag.dart';
-import 'package:template_engine/src/template.dart';
+import 'package:petitparser/petitparser.dart';  
 import 'package:template_engine/template_engine.dart';
 
 /// The [TemplateEngine] does the following:
@@ -49,18 +42,21 @@ class TemplateEngine {
   /// * JSP and ASP uses <% %>
   String tagEnd = '}}';
 
+  final List<BaseType> baseTypes;
   final List<Constant> constants;
   final List<TagFunction> functions;
   final List<OperatorGroup> operatorGroups;
 
   TemplateEngine({
+    List<BaseType>? baseTypes,
     List<Constant>? constants,
     List<OperatorGroup>? operatorGroups,
     List<TagFunction>? functions,
     List<Tag>? tags,
     this.tagStart = '{{',
     this.tagEnd = '}}',
-  })  : constants = constants ?? DefaultConstants(),
+  })  : baseTypes = baseTypes ?? DefaultBaseTypes(),
+        constants = constants ?? DefaultConstants(),
         functions = functions ?? DefaultFunctions(),
         operatorGroups = operatorGroups ?? DefaultOperators(),
         tags = tags ?? DefaultTags() {
