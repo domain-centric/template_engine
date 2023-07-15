@@ -43,26 +43,19 @@ Parser<Expression> expressionParser(ParserContext context,
     ], failureJoiner: selectFarthestJoined),
   );
 
-  var group = builder.group();
-
-  ParenthesesOperator().addParser(group);
-  group = builder.group();
-  PositiveOperator().addParser(group);
-  NegativeOperator().addParser(group);
-  NotOperator().addParser(group);
-  group = builder.group();
-  CaretOperator().addParser(group);
-  group = builder.group();
-  MultiplyOperator().addParser(group);
-  DivideOperator().addParser(group);
-  ModuloOperator().addParser(group);
-  AndOperator().addParser(group);
-  group = builder.group();
-  AddOperator().addParser(group);
-  SubtractOperator().addParser(group);
-  OrOperator().addParser(group);
+  _addOperators(context.engine.operatorGroups, builder);
 
   var parser = builder.build();
   loopback.set(parser);
   return parser;
+}
+
+void _addOperators(
+    List<OperatorGroup> operatorGroups, ExpressionBuilder<Expression> builder) {
+  for (var operatorGroup in operatorGroups) {
+    var builderGroup = builder.group();
+    for (var operator in operatorGroup) {
+      operator.addParser(builderGroup);
+    }
+  }
 }

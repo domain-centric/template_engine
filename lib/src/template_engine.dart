@@ -6,6 +6,7 @@ import 'package:template_engine/src/parser/tag/expression/function.dart';
 import 'package:template_engine/src/render.dart';
 import 'package:template_engine/src/parser/tag/tag.dart';
 import 'package:template_engine/src/template.dart';
+import 'package:template_engine/template_engine.dart';
 
 /// The [TemplateEngine] does the following:
 /// * Parse the [Template] text into a
@@ -50,15 +51,18 @@ class TemplateEngine {
 
   final List<Constant> constants;
   final List<TagFunction> functions;
+  final List<OperatorGroup> operatorGroups;
 
   TemplateEngine({
     List<Constant>? constants,
+    List<OperatorGroup>? operatorGroups,
     List<TagFunction>? functions,
     List<Tag>? tags,
     this.tagStart = '{{',
     this.tagEnd = '}}',
   })  : constants = constants ?? DefaultConstants(),
         functions = functions ?? DefaultFunctions(),
+        operatorGroups = operatorGroups ?? DefaultOperators(),
         tags = tags ?? DefaultTags() {
     validateNamesAreUnique();
   }
