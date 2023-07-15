@@ -59,7 +59,8 @@ class QuotesString extends BaseType<String> {
   String get name => 'String';
 
   @override
-  List<String> get examples => [];
+  List<String> get examples =>
+      ["'Hello'", '"world"', "'Hel'+'lo '&\"world\" & \".\""];
 
   @override
   Parser<Value<String>> createParser() => OverrideMessageParser(
