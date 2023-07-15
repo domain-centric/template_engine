@@ -22,9 +22,9 @@ abstract class Tag<T extends Object> {
 
   /// gives an example of the tag, e.g. {{tag}}
   String example(ParserContext context) => [
-        context.tagStart,
+        context.engine.tagStart,
         name,
-        context.tagEnd,
+        context.engine.tagEnd,
       ].join();
 
   /// gives documentation of the tag, e.g. {{tag}} e.g.:
@@ -63,13 +63,5 @@ class TagException implements Exception {
 }
 
 class DefaultTags extends DelegatingList<Tag> {
-  DefaultTags({
-    List<Constant>? constants,
-    List<TagFunction>? functions,
-  }) : super([
-          ExpressionTag(
-            constants: constants,
-            functions: functions,
-          )
-        ]);
+  DefaultTags() : super([ExpressionTag()]);
 }

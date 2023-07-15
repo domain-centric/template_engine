@@ -1,4 +1,3 @@
-import 'package:collection/collection.dart';
 import 'package:petitparser/petitparser.dart';
 import 'package:template_engine/src/parser/override_message_parser.dart';
 import 'package:template_engine/template_engine.dart';
@@ -26,11 +25,6 @@ Parser<String> quotedStringParser() => OverrideMessageParser(
 Parser<Expression> expressionParser(ParserContext context,
     {bool verboseErrors = false}) {
   SettableParser loopback = undefined();
-  Tag? tag = context.tags.firstWhereOrNull((tag) => tag is ExpressionTag);
-  if (tag == null) {
-    return undefined();
-  }
-  tag as ExpressionTag;
 
   final builder = ExpressionBuilder<Expression>();
   builder.primitive(
@@ -40,11 +34,11 @@ Parser<Expression> expressionParser(ParserContext context,
       boolParser().map((boolean) => Value<bool>(boolean)),
       functionsParser(
         context: context,
-        functions: tag.functions,
+        functions: context.engine.functions,
         loopbackParser: loopback,
         verboseErrors: verboseErrors,
       ),
-      constantParser(tag.constants),
+      constantParser(context.engine.constants),
       variableParser(),
     ], failureJoiner: selectFarthestJoined),
   );

@@ -1,8 +1,9 @@
 import 'package:petitparser/petitparser.dart';
 import 'package:template_engine/src/parser/error.dart';
 import 'package:template_engine/src/parser/parser.dart';
+import 'package:template_engine/src/parser/tag/expression/constant.dart';
+import 'package:template_engine/src/parser/tag/expression/function.dart';
 import 'package:template_engine/src/render.dart';
-import 'package:template_engine/src/parser/tag/group.dart';
 import 'package:template_engine/src/parser/tag/tag.dart';
 import 'package:template_engine/src/template.dart';
 
@@ -47,11 +48,18 @@ class TemplateEngine {
   /// * JSP and ASP uses <% %>
   String tagEnd = '}}';
 
+  final List<Constant> constants;
+  final List<TagFunction> functions;
+
   TemplateEngine({
+    List<Constant>? constants,
+    List<TagFunction>? functions,
     List<Tag>? tags,
     this.tagStart = '{{',
     this.tagEnd = '}}',
-  }) : tags = tags ?? StandardTags() {
+  })  : constants = constants ?? DefaultConstants(),
+        functions = functions ?? DefaultFunctions(),
+        tags = tags ?? DefaultTags() {
     validateNamesAreUnique();
   }
 
@@ -60,10 +68,8 @@ class TemplateEngine {
   /// See [Renderer]
   ParseResult parse(Template template) {
     var context = ParserContext(
-      tags: tags,
-      tagStart: tagStart,
-      tagEnd: tagEnd,
       template: template,
+      engine: this,
     );
     var parser = templateParser(context);
     var result = parser.parse(template.text);

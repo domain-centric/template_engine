@@ -4,7 +4,7 @@ import 'package:template_engine/template_engine.dart';
 
 void main() {
   given('expressionParser(ParserContext())', () {
-    var parser = expressionParser(ParserContext());
+    var parser = expressionParser(ParserContext(engine: TemplateEngine()));
     when(
         'calling: parser.parse("x").value.'
         'render(RenderContext({"x": 42})', () {

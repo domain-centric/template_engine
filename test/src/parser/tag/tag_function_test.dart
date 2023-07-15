@@ -17,7 +17,7 @@ void main() {
   });
 
   given('ParameterNameAndValueParser with parameter: parameter', () {
-    var parserContext = ParserContext();
+    var parserContext = ParserContext(engine: TemplateEngine());
     var loopBackParser = SettableParser(expressionParser(parserContext));
     var parser = parameterParser(
             parserContext: parserContext,
@@ -119,9 +119,8 @@ void main() {
   });
 
   given('an TemplateEngine with a GreetingTag', () {
-    var functions = DefaultFunctions();
-    functions.add(GreetingWithParameterFunction());
-    var engine = TemplateEngine(tags: DefaultTags(functions: functions));
+    var engine = TemplateEngine();
+    engine.functions.add(GreetingWithParameterFunction());
 
     var input = '{{greeting()}}.';
     when('calling: engine.parse(TextTemplate("$input"))', () {
@@ -198,9 +197,8 @@ void main() {
     var parameterName = 'testParameter';
     var parameterTestFunction =
         ParameterTestFunction([Parameter(name: parameterName)]);
-    var functions = DefaultFunctions();
-    functions.add(parameterTestFunction);
-    var engine = TemplateEngine(tags: DefaultTags(functions: functions));
+    var engine = TemplateEngine();
+    engine.functions.add(parameterTestFunction);
 
     var input = '{{123true}}';
     when('calling engine.parse(TextTemplate("$input"))', () {
@@ -295,9 +293,9 @@ void main() {
       Parameter(name: parameterName2),
       Parameter(name: parameterName3),
     ]);
-    var functions = DefaultFunctions();
-    functions.add(testFunction);
-    var engine = TemplateEngine(tags: DefaultTags(functions: functions));
+
+    var engine = TemplateEngine();
+    engine.functions.add(testFunction);
 
     var input = '{{${ParameterTestFunction.tagName}'
         '($parameterName1=true$parameterName2="$test")}}';
@@ -400,9 +398,9 @@ void main() {
       Parameter(name: parameterName3),
       Parameter(name: parameterName4),
     ]);
-    var functions = DefaultFunctions();
-    functions.add(testFunction);
-    var engine = TemplateEngine(tags: DefaultTags(functions: functions));
+
+    var engine = TemplateEngine();
+    engine.functions.add(testFunction);
 
     var input = '{{${ParameterTestFunction.tagName} '
         '$parameterName1=true$parameterName2="$test"}}';

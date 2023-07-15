@@ -19,15 +19,15 @@ Parser<List<Object>> templateParser(ParserContext context) {
   //context.variables.validateNames();
   return delegatingParser(
     delegates: [
-      escapedTagStartParser(context),
-      escapedTagEndParser(context),
-      ...context.tags.map((tag) => tag.createTagParser(context)),
+      escapedTagStartParser(context.engine.tagStart),
+      escapedTagEndParser(context.engine.tagEnd),
+      ...context.engine.tags.map((tag) => tag.createTagParser(context)),
       InvalidTagParser(context),
       missingTagStartParser(context),
       missingTagEndParser(context),
     ],
-    tagStart: context.tagStart,
-    tagEnd: context.tagEnd,
+    tagStart: context.engine.tagStart,
+    tagEnd: context.engine.tagEnd,
   );
 }
 
@@ -64,37 +64,28 @@ Parser<String> untilEndParser() => any().plus().flatten();
 /// Replaces an escaped [Tag] start (e.g. : /{{ )
 /// to a [String] e.g. containing:  {{ (without escape)
 /// so that it is not parsed as a [Tag] or [Variable]
-Parser<String> escapedTagStartParser(ParserContext context) =>
-    string('\\${context.tagStart}').map((value) => context.tagStart);
+Parser<String> escapedTagStartParser(String tagStart) =>
+    string('\\$tagStart').map((value) => tagStart);
 
 /// Replaces an escaped [Tag] end (e.g. : /}} )
 /// to a [String] e.g. containing: }} (without escape)
 /// so that it is not parsed as a [Tag] or [Variable]
-Parser<String> escapedTagEndParser(ParserContext context) =>
-    string('\\${context.tagEnd}').map((value) => context.tagEnd);
+Parser<String> escapedTagEndParser(String tagEnd) =>
+    string('\\$tagEnd').map((value) => tagEnd);
 
 class ParserContext {
   /// The template being parsed (for error or warning logging)
   final Template template;
 
-  final List<Tag> tags;
-
-  /// See [tagStart] doc in [TemplateEngine] constructor
-  final String tagStart;
-
-  /// See [tagEnd] doc in [TemplateEngine] constructor
-  final String tagEnd;
+  TemplateEngine engine;
 
   final List<Error> errors;
 
   ParserContext({
     Template? template,
-    final List<Tag>? tags,
-    this.tagStart = '{{',
-    this.tagEnd = '}}',
+    required this.engine,
   })  : template = template ?? TextTemplate(''),
-        errors = [],
-        tags = tags ?? DefaultTags();
+        errors = [];
 }
 
 class ParseResult extends ParserTree {

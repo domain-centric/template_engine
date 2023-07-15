@@ -11,10 +11,10 @@ class InvalidTagParser extends Parser<Object> {
   final Parser<String> anythingBeforeEndParser;
   final Parser<String> tagEndParser;
   InvalidTagParser(this.parserContext)
-      : tagStartParser = string(parserContext.tagStart),
-        anythingBeforeEndParser =
-            untilEndOfTagParser(parserContext.tagStart, parserContext.tagEnd),
-        tagEndParser = string(parserContext.tagEnd);
+      : tagStartParser = string(parserContext.engine.tagStart),
+        anythingBeforeEndParser = untilEndOfTagParser(
+            parserContext.engine.tagStart, parserContext.engine.tagEnd),
+        tagEndParser = string(parserContext.engine.tagEnd);
 
   @override
   Parser<Object> copy() => InvalidTagParser(parserContext);
@@ -71,12 +71,13 @@ class InvalidTagParser extends Parser<Object> {
 /// Adds an error if a [Tag] end is found but not a  [Tag] start.
 /// It replaces the [Tag] end to a [String] e.g. containing: }}
 Parser<String> missingTagStartParser(ParserContext parserContext) =>
-    string(parserContext.tagEnd).map2((value, context) {
+    string(parserContext.engine.tagEnd).map2((value, context) {
       parserContext.errors.add(Error.fromContext(
           stage: ErrorStage.parse,
           context: context,
-          message: 'Found tag end: ${parserContext.tagEnd}, '
-              'but it was not preceded with a tag start: ${parserContext.tagStart}',
+          message: 'Found tag end: ${parserContext.engine.tagEnd}, '
+              'but it was not preceded with a tag start: '
+              '${parserContext.engine.tagStart}',
           template: parserContext.template));
       return value;
     });
@@ -85,15 +86,16 @@ Parser<String> missingTagStartParser(ParserContext parserContext) =>
 /// they are both present they would have been parsed already.
 /// It replaces the [Tag] end to a [String] e.g. containing: {{
 Parser<String> missingTagEndParser(ParserContext parserContext) =>
-    (string(parserContext.tagStart) &
+    (string(parserContext.engine.tagStart) &
             any().star() &
-            string(parserContext.tagEnd).not())
+            string(parserContext.engine.tagEnd).not())
         .map2((values, context) {
       parserContext.errors.add(Error.fromContext(
           stage: ErrorStage.parse,
           context: context,
-          message: 'Found tag start: ${parserContext.tagStart}, '
-              'but it was not followed with a tag end: ${parserContext.tagEnd}',
+          message: 'Found tag start: ${parserContext.engine.tagStart}, '
+              'but it was not followed with a tag end: '
+              '${parserContext.engine.tagEnd}',
           template: parserContext.template));
       return values.first;
     });

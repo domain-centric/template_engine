@@ -4,9 +4,8 @@ import 'package:template_engine/template_engine.dart';
 
 void main() {
   var template = TextTemplate('{{greeting()}}.');
-  var functions = DefaultFunctions();
-  functions.add(Greeting());
-  var engine = TemplateEngine(tags: DefaultTags(functions: functions));
+  var engine = TemplateEngine();
+  engine.functions.add(Greeting());
   var parseResult = engine.parse(template);
   print(engine.render(parseResult)); // should print 'Hello world.';
 }
