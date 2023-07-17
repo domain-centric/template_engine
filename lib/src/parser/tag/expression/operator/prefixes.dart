@@ -12,8 +12,8 @@ class PositiveOperator extends Operator {
       : super('+', ['Optional prefix for positive numbers, e.g.: +3 =3']);
 
   @override
-  addParser(ExpressionGroup<Expression<Object>> group) {
-    group.prefix(char(operator).trim(), (op, a) => a);
+  addParser(Template template, ExpressionGroup2<Expression<Object>> group) {
+    group.prefix(char(operator).trim(), (context, op, a) => a);
   }
 }
 
@@ -22,8 +22,11 @@ class NegativeOperator extends Operator {
       : super('-', ['Prefix for a negative number, e.g.: -2 =-2']);
 
   @override
-  addParser(ExpressionGroup<Expression<Object>> group) {
-    group.prefix(char(operator).trim(), (op, a) => NegativeNumberExpression(a));
+  addParser(Template template, ExpressionGroup2<Expression<Object>> group) {
+    group.prefix(
+        char(operator).trim(),
+        (context, op, a) =>
+            NegativeNumberExpression(Source.fromContext(template, context), a));
   }
 }
 
@@ -32,7 +35,10 @@ class NotOperator extends Operator {
       : super('!', ['Prefix to invert a boolean, e.g.: !true =false']);
 
   @override
-  addParser(ExpressionGroup<Expression<Object>> group) {
-    group.prefix(char(operator).trim(), (op, a) => NotExpression(a));
+  addParser(Template template, ExpressionGroup2<Expression<Object>> group) {
+    group.prefix(
+        char(operator).trim(),
+        (context, op, a) =>
+            NotExpression(Source.fromContext(template, context), a));
   }
 }

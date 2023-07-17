@@ -15,5 +15,5 @@ class ExpressionTag extends Tag {
       (string(context.engine.tagStart) &
               expressionParser(context) &
               string(context.engine.tagEnd))
-          .map2((values, parsePosition) => values[1]);
+          .valueContextMap((values, parsePosition) => values[1]);
 }

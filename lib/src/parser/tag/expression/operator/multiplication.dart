@@ -1,6 +1,5 @@
 import 'dart:math';
 
-import 'package:petitparser/expression.dart';
 import 'package:petitparser/parser.dart';
 import 'package:template_engine/template_engine.dart';
 
@@ -28,9 +27,11 @@ class CaretOperator extends OperatorWith2Values {
         ]);
 
   @override
-  void addParser(ExpressionGroup<Expression> group) {
-    group.right(char(operator).trim(),
-        (left, op, right) => createExpression(left, right));
+  void addParser(Template template, ExpressionGroup2<Expression> group) {
+    group.right(
+        char(operator).trim(),
+        (context, left, op, right) => createExpression(
+            Source.fromContext(template, context), left, right));
   }
 }
 
@@ -42,9 +43,11 @@ class MultiplyOperator extends OperatorWith2Values {
         ]);
 
   @override
-  void addParser(ExpressionGroup<Expression> group) {
-    group.left(char(operator).trim(),
-        (left, op, right) => createExpression(left, right));
+  void addParser(Template template, ExpressionGroup2<Expression> group) {
+    group.left(
+        char(operator).trim(),
+        (context, left, op, right) => createExpression(
+            Source.fromContext(template, context), left, right));
   }
 }
 
@@ -59,9 +62,11 @@ class DivideOperator extends OperatorWith2Values {
         );
 
   @override
-  void addParser(ExpressionGroup<Expression> group) {
-    group.left(char(operator).trim(),
-        (left, op, right) => createExpression(left, right));
+  void addParser(Template template, ExpressionGroup2<Expression> group) {
+    group.left(
+        char(operator).trim(),
+        (context, left, op, right) => createExpression(
+            Source.fromContext(template, context), left, right));
   }
 }
 
@@ -77,9 +82,11 @@ class ModuloOperator extends OperatorWith2Values {
         );
 
   @override
-  void addParser(ExpressionGroup<Expression> group) {
-    group.left(char(operator).trim(),
-        (left, op, right) => createExpression(left, right));
+  void addParser(Template template, ExpressionGroup2<Expression> group) {
+    group.left(
+        char(operator).trim(),
+        (context, left, op, right) => createExpression(
+            Source.fromContext(template, context), left, right));
   }
 }
 
@@ -98,8 +105,10 @@ class AndOperator extends OperatorWith2Values {
         );
 
   @override
-  void addParser(ExpressionGroup<Expression> group) {
-    group.left(char(operator).trim(),
-        (left, op, right) => createExpression(left, right));
+  void addParser(Template template, ExpressionGroup2<Expression> group) {
+    group.left(
+        char(operator).trim(),
+        (context, left, op, right) => createExpression(
+            Source.fromContext(template, context), left, right));
   }
 }

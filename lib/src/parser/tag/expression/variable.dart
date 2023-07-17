@@ -10,7 +10,8 @@ typedef Variables = Map<String, Object>;
 /// (like [num], [bool], [String] etc...)
 
 class VariableExpression extends Expression {
-  VariableExpression(this.namePath);
+  final Source source;
+  VariableExpression(this.source, this.namePath);
 
   final String namePath;
 
@@ -33,21 +34,28 @@ class VariableExpression extends Expression {
         return _findVariableValue(value, namePath, namePathIndex + 1);
       }
     }
-    throw VariableException('Variable name path could not be found: '
+    throw VariableException('Variable does not exist: '
         '${namePath.sublist(0, namePathIndex + 1).join('.')}');
   }
 
   @override
   Object render(RenderContext context) {
-    return _findVariableValue(context.variables, namePath.split('.'), 0);
+    try {
+      return _findVariableValue(context.variables, namePath.split('.'), 0);
+    } on VariableException catch (e) {
+      context.errors.add(Error.fromSource(
+          stage: ErrorStage.render, source: source, message: e.message));
+      return namePath;
+    }
   }
 }
 
-Parser<Expression<Object>> variableParser() {
+Parser<Expression<Object>> variableParser(Template template) {
   return (VariableName.pathParser & char('(').trim().not())
       .flatten('variable expected')
       .trim()
-      .map((name) => VariableExpression(name));
+      .valueContextMap((name, context) =>
+          VariableExpression(Source.fromContext(template, context), name));
 }
 
 class VariableException implements Exception {

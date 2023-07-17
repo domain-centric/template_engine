@@ -1,11 +1,11 @@
 import 'package:collection/collection.dart';
-import 'package:petitparser/petitparser.dart';
 import 'package:template_engine/template_engine.dart';
 
 class NegativeNumberExpression extends Expression {
+  final Source source;
   final Expression valueExpression;
 
-  NegativeNumberExpression(this.valueExpression);
+  NegativeNumberExpression(this.source, this.valueExpression);
 
   @override
   Object render(RenderContext context) {
@@ -13,7 +13,11 @@ class NegativeNumberExpression extends Expression {
     if (value is num) {
       return -value;
     }
-    throw OperatorException('A number expected after the - operator');
+    context.errors.add(Error.fromSource(
+        stage: ErrorStage.render,
+        source: source,
+        message: 'A number expected after the - operator'));
+    return '-';
   }
 
   @override
@@ -23,9 +27,10 @@ class NegativeNumberExpression extends Expression {
 }
 
 class NotExpression extends Expression {
+  final Source source;
   final Expression valueExpression;
 
-  NotExpression(this.valueExpression);
+  NotExpression(this.source, this.valueExpression);
 
   @override
   Object render(RenderContext context) {
@@ -33,7 +38,11 @@ class NotExpression extends Expression {
     if (value is bool) {
       return !value;
     }
-    throw OperatorException('A boolean expected after the ! operator');
+    context.errors.add(Error.fromSource(
+        stage: ErrorStage.render,
+        source: source,
+        message: 'A boolean expected after the ! operator'));
+    return '!';
   }
 }
 
@@ -78,13 +87,15 @@ class TwoValueOperatorVariant<PARAMETER_TYPE extends Object> {
 /// delegates the work to one of the [variants] that can process
 /// the correct types of the evaluated [left] and [right] values.
 class OperatorVariantExpression extends Expression {
+  final Source source;
   final List<TwoValueOperatorVariant> variants;
   final String operator;
   final Expression left;
   final Expression right;
 
   OperatorVariantExpression(
-      {required this.operator,
+      {required this.source,
+      required this.operator,
       required this.variants,
       required this.left,
       required this.right});
@@ -104,20 +115,26 @@ class OperatorVariantExpression extends Expression {
         errors.addAll(variantErrors);
       }
     }
-    throw OperatorException(errors.join(', or '));
+    context.errors.add(Error.fromSource(
+        stage: ErrorStage.render,
+        source: source,
+        message: errors.join(', or ')));
+    return operator;
   }
 }
 
 /// A value that needs to be calculated (evaluated)
 /// from 2 expressions that return a object of type [T]
 class TwoValueOperatorExpression<T extends Object> extends Expression {
+  final Source source;
   final String operator;
   final Expression left;
   final Expression right;
   final T Function(T left, T right) function;
 
   TwoValueOperatorExpression(
-      {required this.operator,
+      {required this.source,
+      required this.operator,
       required this.left,
       required this.right,
       required this.function});
@@ -143,15 +160,27 @@ class TwoValueOperatorExpression<T extends Object> extends Expression {
     }
 
     if (!leftTypeOk && !rightTypeOk) {
-      throw OperatorException(
-          'left and right of the $operator operator must be a $leftAndRightTypeDescription');
+      context.errors.add(Error.fromSource(
+          stage: ErrorStage.render,
+          source: source,
+          message:
+              'left and right of the $operator operator must be a $leftAndRightTypeDescription'));
+      return operator;
+    } else if (!leftTypeOk) {
+      context.errors.add(Error.fromSource(
+          stage: ErrorStage.render,
+          source: source,
+          message:
+              'left of the $operator operator must be a $leftAndRightTypeDescription'));
+      return operator;
+    } else {
+      context.errors.add(Error.fromSource(
+          stage: ErrorStage.render,
+          source: source,
+          message:
+              'right of the $operator operator must be a $leftAndRightTypeDescription'));
+      return operator;
     }
-    if (!leftTypeOk) {
-      throw OperatorException(
-          'left of the $operator operator must be a $leftAndRightTypeDescription');
-    }
-    throw OperatorException(
-        'right of the $operator operator must be a $leftAndRightTypeDescription');
   }
 
   @override
@@ -174,7 +203,7 @@ abstract class Operator {
     this.descriptions,
   );
 
-  addParser(ExpressionGroup<Expression> group);
+  addParser(Template template, ExpressionGroup2<Expression> group);
 
   @override
   String toString() => 'Operator{$operator}';
@@ -188,16 +217,17 @@ abstract class OperatorWith2Values extends Operator {
     this.variants,
   ) : super(operator, variants.map((v) => v.description).toList());
 
-  Expression createExpression(Expression left, Expression right) =>
+  Expression createExpression(
+          Source source, Expression left, Expression right) =>
       OperatorVariantExpression(
-          operator: operator, variants: variants, left: left, right: right);
+        source: source,
+        operator: operator,
+        variants: variants,
+        left: left,
+        right: right,
+      );
   @override
   String toString() => 'Operator{$operator}';
-}
-
-class OperatorException implements Exception {
-  late String message;
-  OperatorException(this.message);
 }
 
 class OperatorGroup extends DelegatingList<Operator> {

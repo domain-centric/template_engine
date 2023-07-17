@@ -1,6 +1,6 @@
 import 'package:petitparser/petitparser.dart';
 
-extension Map2ParserExtension<R> on Parser<R> {
+extension ValueContextMapParserExtension<R> on Parser<R> {
   /// Inspired by [MapParserExtension]: with te addition that [Callback2]
   /// also provides the current parser position for error or warnings.
   ///
@@ -10,18 +10,18 @@ extension Map2ParserExtension<R> on Parser<R> {
   /// For example, the parser `digit().map((char) => int.parse(char))` returns
   /// the number `1` for the input string `'1'`. If the delegate fails, the
   /// production action is not executed and the failure is passed on.
-  Parser<S> map2<S>(
+  Parser<S> valueContextMap<S>(
     Callback2<R, S> callback, {
     @Deprecated('All callbacks are considered to have side-effects')
         bool hasSideEffects = true,
   }) =>
-      Map2Parser<R, S>(this, callback);
+      ValueContextMapParser<R, S>(this, callback);
 }
 
 /// A parser that performs a transformation with a given function on the
 /// successful parse result of the delegate.
-class Map2Parser<R, S> extends DelegateParser<R, S> {
-  Map2Parser(super.delegate, this.callback);
+class ValueContextMapParser<R, S> extends DelegateParser<R, S> {
+  ValueContextMapParser(super.delegate, this.callback);
 
   /// The production action to be called.
   final Callback2<R, S> callback;
@@ -38,11 +38,12 @@ class Map2Parser<R, S> extends DelegateParser<R, S> {
   }
 
   @override
-  bool hasEqualProperties(Map2Parser<R, S> other) =>
+  bool hasEqualProperties(ValueContextMapParser<R, S> other) =>
       super.hasEqualProperties(other) && callback == other.callback;
 
   @override
-  Map2Parser<R, S> copy() => Map2Parser<R, S>(delegate, callback);
+  ValueContextMapParser<R, S> copy() =>
+      ValueContextMapParser<R, S>(delegate, callback);
 }
 
 /// We pass the parse position so that errors and or warnings can be logged

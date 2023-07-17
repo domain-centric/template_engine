@@ -1,4 +1,3 @@
-import 'package:petitparser/expression.dart';
 import 'package:petitparser/parser.dart';
 import 'package:template_engine/template_engine.dart';
 
@@ -18,9 +17,11 @@ class AddOperator extends OperatorWith2Values {
         ]);
 
   @override
-  void addParser(ExpressionGroup<Expression> group) {
-    group.left(char(operator).trim(),
-        (left, op, right) => createExpression(left, right));
+  void addParser(Template template, ExpressionGroup2<Expression> group) {
+    group.left(
+        char(operator).trim(),
+        (context, left, op, right) => createExpression(
+            Source.fromContext(template, context), left, right));
   }
 }
 
@@ -35,9 +36,11 @@ class SubtractOperator extends OperatorWith2Values {
         );
 
   @override
-  void addParser(ExpressionGroup<Expression> group) {
-    group.left(char(operator).trim(),
-        (left, op, right) => createExpression(left, right));
+  void addParser(Template template, ExpressionGroup2<Expression> group) {
+    group.left(
+        char(operator).trim(),
+        (context, left, op, right) => createExpression(
+            Source.fromContext(template, context), left, right));
   }
 }
 
@@ -53,8 +56,10 @@ class OrOperator extends OperatorWith2Values {
         );
 
   @override
-  void addParser(ExpressionGroup<Expression> group) {
-    group.left(char(operator).trim(),
-        (left, op, right) => createExpression(left, right));
+  void addParser(Template template, ExpressionGroup2<Expression> group) {
+    group.left(
+        char(operator).trim(),
+        (context, left, op, right) => createExpression(
+            Source.fromContext(template, context), left, right));
   }
 }

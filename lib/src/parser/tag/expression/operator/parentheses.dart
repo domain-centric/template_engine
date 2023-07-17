@@ -12,7 +12,7 @@ class ParenthesesOperator extends Operator {
         ]);
 
   @override
-  addParser(ExpressionGroup<Expression<Object>> group) {
+  addParser(Template template, ExpressionGroup2<Expression<Object>> group) {
     group.wrapper(
         char('(').trim(), char(')').trim(), (left, value, right) => value);
   }

@@ -1,3 +1,4 @@
+import 'package:petitparser/petitparser.dart';
 import 'package:template_engine/template_engine.dart';
 
 /// A template is a text that can contain [Tag]s.
@@ -28,3 +29,17 @@ class TextTemplate extends Template {
 
 //TODO FileTemplate: gets text from a file on this device
 //TODO WebTemplate: gets text from a URL
+
+/// A cursor position within the [Template.text]
+/// where [RenderContext.errors] or [ParserContext.errors] occurred.
+class Source {
+  final Template template;
+
+  /// A cursor position within the [Template.text] in format <row>, <column>
+  final String position;
+
+  Source.fromContext(this.template, Context context)
+      : position = context.toPositionString();
+
+  Source.fromPosition(this.template, this.position);
+}

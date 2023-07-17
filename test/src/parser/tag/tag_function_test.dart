@@ -3,6 +3,8 @@ import 'package:petitparser/petitparser.dart';
 import 'package:shouldly/shouldly.dart';
 import 'package:template_engine/template_engine.dart';
 
+import 'expression/variable_test.dart';
+
 void main() {
   given('Parameter', () {
     when('Calling constructor', () {
@@ -29,9 +31,9 @@ void main() {
     var input = '-123e-1';
     when('calling parser.parse("$input")', () {
       var result = parser.parse(input);
-      var expected =
-          MapEntry('parameter', NegativeNumberExpression(Value(12.3)))
-              .toString();
+      var expected = MapEntry(
+              'parameter', NegativeNumberExpression(DummySource(), Value(12.3)))
+          .toString();
 
       then('result.value should be: $expected',
           () => result.value.toString().should.be(expected));
@@ -40,9 +42,9 @@ void main() {
     input = ' -123e-1';
     when('calling parser.parse("$input")', () {
       var result = parser.parse(input);
-      var expected =
-          MapEntry('parameter', NegativeNumberExpression(Value(12.3)))
-              .toString();
+      var expected = MapEntry(
+              'parameter', NegativeNumberExpression(DummySource(), Value(12.3)))
+          .toString();
 
       then('result should have no failures',
           () => result.isFailure.should.beFalse());
@@ -109,9 +111,9 @@ void main() {
     var input = 'parameter=-123e-1';
     when('calling parser.parse("$input")', () {
       var result = parser.parse(input);
-      var expected =
-          MapEntry('parameter', NegativeNumberExpression(Value(12.3)))
-              .toString();
+      var expected = MapEntry(
+              'parameter', NegativeNumberExpression(DummySource(), Value(12.3)))
+          .toString();
 
       then('result.value should be: $expected',
           () => result.value.toString().should.be(expected));
@@ -120,9 +122,9 @@ void main() {
     input = ' parameter =  -123e-1';
     when('calling parser.parse("$input")', () {
       var result = parser.parse(input);
-      var expected =
-          MapEntry('parameter', NegativeNumberExpression(Value(12.3)))
-              .toString();
+      var expected = MapEntry(
+              'parameter', NegativeNumberExpression(DummySource(), Value(12.3)))
+          .toString();
 
       then('result should have no failures',
           () => result.isFailure.should.beFalse());

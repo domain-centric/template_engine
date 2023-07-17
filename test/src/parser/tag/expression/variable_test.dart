@@ -2,6 +2,8 @@ import 'package:shouldly/shouldly.dart';
 import 'package:given_when_then_unit_test/given_when_then_unit_test.dart';
 import 'package:template_engine/template_engine.dart';
 
+import '../../../template_engine_test.dart';
+
 void main() {
   given('expressionParser(ParserContext())', () {
     var parser = expressionParser(ParserContext(engine: TemplateEngine()));
@@ -226,7 +228,7 @@ void main() {
       }
     };
 
-    var expression = VariableExpression('person');
+    var expression = VariableExpression(DummySource(), 'person');
 
     when(
         'calling: expression'
@@ -241,7 +243,7 @@ void main() {
     });
 
     given("VariableExpression('person.name')", () {
-      var expression = VariableExpression('person.name');
+      var expression = VariableExpression(DummySource(), 'person.name');
 
       when('calling: expression.render(RenderContext(variables))', () {
         var result = expression.render(RenderContext(variables));
@@ -252,7 +254,7 @@ void main() {
     });
 
     given("VariableExpression('person.child.name')", () {
-      var expression = VariableExpression('person.child.name');
+      var expression = VariableExpression(DummySource(), 'person.child.name');
 
       when('call: expression.render(RenderContext(variables))', () {
         var result = expression.render(RenderContext(variables));
@@ -262,20 +264,19 @@ void main() {
       });
     });
 
-    /// none existing variable name
-
     given("VariableExpression('invalid')", () {
-      var expression = VariableExpression('invalid');
+      var expression = VariableExpression(DummySource(), 'invalid');
+      var renderContext = RenderContext(variables);
 
-      when('calling: expression.eval(variables)', () {
-        var expected = 'Variable name path could not be found: invalid';
-        then(
-            'should throw a Variable exception with message: $expected',
-            () => Should.throwException<VariableException>(
-                    () => expression.render(RenderContext(variables)))!
-                .message
-                .should
-                .be(expected));
+      when('calling: expression.render(renderContext)', () {
+        expression.render(renderContext);
+
+        then('renderContext.errors.length should be 1', () {
+          renderContext.errors.length.should.be(1);
+        });
+        var expected = 'Variable does not exist: invalid';
+        then('should throw a Variable exception with message: $expected',
+            () => renderContext.errors.first.message.should.be(expected));
       });
     });
 
@@ -295,4 +296,8 @@ void main() {
       });
     });
   });
+}
+
+class DummySource extends Source {
+  DummySource() : super.fromPosition(DummyTemplate(), '1,1');
 }

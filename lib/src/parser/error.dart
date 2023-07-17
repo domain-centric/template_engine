@@ -9,32 +9,34 @@ import 'package:recase/recase.dart';
 /// for each [Error]
 
 class Error {
-  final DateTime occurrence;
   final ErrorStage stage;
   final String message;
-  final String position;
-  final Template template;
+  final Source source;
 
   Error.fromFailure({
     required this.stage,
     required Failure failure,
-    required this.template,
-  })  : occurrence = DateTime.now(),
-        message = failure.message,
-        position = failure.toPositionString();
+    required Template template,
+  })  : message = failure.message,
+        source = Source.fromContext(template, failure);
 
   Error.fromContext({
     required this.stage,
     required Context context,
     required this.message,
-    required this.template,
-  })  : occurrence = DateTime.now(),
-        position = context.toPositionString();
+    required Template template,
+  }) : source = Source.fromContext(template, context);
+
+  Error.fromSource({
+    required this.stage,
+    required this.source,
+    required this.message,
+  });
 
   @override
   String toString() => '${stage.name.titleCase} Error: $message, '
-      'position: $position, '
-      'source: ${template.source}';
+      'position: ${source.position}, '
+      'source: ${source.template.source}';
 }
 
 enum ErrorStage {

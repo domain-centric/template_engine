@@ -71,7 +71,7 @@ class InvalidTagParser extends Parser<Object> {
 /// Adds an error if a [Tag] end is found but not a  [Tag] start.
 /// It replaces the [Tag] end to a [String] e.g. containing: }}
 Parser<String> missingTagStartParser(ParserContext parserContext) =>
-    string(parserContext.engine.tagEnd).map2((value, context) {
+    string(parserContext.engine.tagEnd).valueContextMap((value, context) {
       parserContext.errors.add(Error.fromContext(
           stage: ErrorStage.parse,
           context: context,
@@ -89,7 +89,7 @@ Parser<String> missingTagEndParser(ParserContext parserContext) =>
     (string(parserContext.engine.tagStart) &
             any().star() &
             string(parserContext.engine.tagEnd).not())
-        .map2((values, context) {
+        .valueContextMap((values, context) {
       parserContext.errors.add(Error.fromContext(
           stage: ErrorStage.parse,
           context: context,

@@ -7,14 +7,12 @@ import 'package:template_engine/template_engine.dart';
 
 Parser<Expression> functionsParser({
   required ParserContext context,
-  required SettableParser loopbackParser,
+  required SettableParser loopback,
   required bool verboseErrors,
 }) {
   var parser = ChoiceParser<Expression>(
       context.engine.functions.map((function) => functionParser(
-          context: context,
-          function: function,
-          loopbackParser: loopbackParser)),
+          context: context, function: function, loopbackParser: loopback)),
       failureJoiner: selectFarthest);
   if (verboseErrors) {
     return parser;
