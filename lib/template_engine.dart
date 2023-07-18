@@ -12,7 +12,7 @@ export 'src/parser/tag/expression/expression_parser.dart';
 export 'src/parser/tag/expression/base_type/base_type.dart';
 export 'src/parser/tag/expression/operator/operator.dart';
 export 'src/parser/tag/expression/operator/default.dart';
-export 'src/parser/tag/expression/constant.dart';
+export 'src/parser/tag/expression/constant/constant.dart';
 export 'src/parser/tag/expression/function/function.dart';
 export 'src/parser/tag/expression/function/default.dart';
 export 'src/parser/tag/expression/function/math.dart';
