@@ -2,7 +2,7 @@ import 'package:shouldly/shouldly.dart';
 import 'package:given_when_then_unit_test/given_when_then_unit_test.dart';
 import 'package:template_engine/template_engine.dart';
 
-import '../../../template_engine_test.dart';
+import '../../../../template_engine_test.dart';
 
 void main() {
   given('expressionParser(ParserContext())', () {

@@ -3,7 +3,7 @@ import 'package:petitparser/petitparser.dart';
 import 'package:shouldly/shouldly.dart';
 import 'package:template_engine/template_engine.dart';
 
-import '../variable_test.dart';
+import '../variable/variable_test.dart';
 
 void main() {
   given('Parameter', () {
