@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:collection/collection.dart';
 import 'package:petitparser/petitparser.dart';
 import 'package:template_engine/src/parser/override_message_parser.dart';
@@ -10,8 +8,10 @@ Parser<Expression> functionsParser({
   required SettableParser loopback,
   required bool verboseErrors,
 }) {
+  var functions =
+      context.engine.functionGroups.expand((function) => function).toList();
   var parser = ChoiceParser<Expression>(
-      context.engine.functions.map((function) => functionParser(
+      functions.map((function) => functionParser(
           context: context, function: function, loopbackParser: loopback)),
       failureJoiner: selectFarthest);
   if (verboseErrors) {
@@ -23,7 +23,7 @@ Parser<Expression> functionsParser({
 
 Parser<Expression> functionParser({
   required ParserContext context,
-  required TagFunction<Object> function,
+  required ExpressionFunction<Object> function,
   required SettableParser loopbackParser,
 }) {
   return (string(function.name, 'expected function name: ${function.name}') &
@@ -38,7 +38,7 @@ Parser<Expression> functionParser({
 }
 
 class FunctionExpression<R extends Object> extends Expression<R> {
-  final TagFunction<R> tagFunction;
+  final ExpressionFunction<R> tagFunction;
   final Map<String, Expression> parameterExpressionMap;
 
   FunctionExpression(this.tagFunction, this.parameterExpressionMap);
@@ -57,131 +57,11 @@ class FunctionExpression<R extends Object> extends Expression<R> {
   String toString() => 'Function{${tagFunction.name}}';
 }
 
-class DefaultFunctions extends DelegatingList<TagFunction> {
-  DefaultFunctions()
-      : super([
-          Exp(),
-          Log(),
-          Sin(),
-          Asin(),
-          Cos(),
-          Acos(),
-          Tan(),
-          Atan(),
-          Sqrt(),
-          StringLength()
-        ]);
-}
-
-class Exp extends TagFunction<num> {
-  Exp()
-      : super(
-            name: 'exp',
-            parameters: [
-              Parameter(name: 'value', presence: Presence.mandatory())
-            ],
-            function: (parameters) => exp(parameters['value'] as num));
-}
-
-class Log extends TagFunction<num> {
-  Log()
-      : super(
-            name: 'log',
-            parameters: [
-              Parameter(name: 'value', presence: Presence.mandatory())
-            ],
-            function: (parameters) => log(parameters['value'] as num));
-}
-
-class Sin extends TagFunction<num> {
-  Sin()
-      : super(
-            name: 'sin',
-            parameters: [
-              Parameter(name: 'value', presence: Presence.mandatory())
-            ],
-            function: (parameters) => sin(parameters['value'] as num));
-}
-
-class Asin extends TagFunction<num> {
-  Asin()
-      : super(
-            name: 'asin',
-            parameters: [
-              Parameter(name: 'value', presence: Presence.mandatory())
-            ],
-            function: (parameters) => asin(parameters['value'] as num));
-}
-
-class Cos extends TagFunction<num> {
-  Cos()
-      : super(
-            name: 'cos',
-            parameters: [
-              Parameter(name: 'value', presence: Presence.mandatory())
-            ],
-            function: (parameters) => cos(parameters['value'] as num));
-}
-
-class Acos extends TagFunction<num> {
-  Acos()
-      : super(
-            name: 'acos',
-            parameters: [
-              Parameter(name: 'value', presence: Presence.mandatory())
-            ],
-            function: (parameters) => acos(parameters['value'] as num));
-}
-
-class Tan extends TagFunction<num> {
-  Tan()
-      : super(
-            name: 'tan',
-            parameters: [
-              Parameter(name: 'value', presence: Presence.mandatory())
-            ],
-            function: (parameters) => tan(parameters['value'] as num));
-}
-
-class Atan extends TagFunction<num> {
-  Atan()
-      : super(
-            name: 'atan',
-            parameters: [
-              Parameter(name: 'value', presence: Presence.mandatory())
-            ],
-            function: (parameters) => atan(parameters['value'] as num));
-}
-
-class Sqrt extends TagFunction<num> {
-  Sqrt()
-      : super(
-            name: 'sqrt',
-            parameters: [
-              Parameter(name: 'value', presence: Presence.mandatory())
-            ],
-            function: (parameters) => sqrt(parameters['value'] as num));
-}
-
-class StringLength extends TagFunction<num> {
-  StringLength()
-      : super(
-            name: 'length',
-            parameters: [
-              Parameter(name: 'value', presence: Presence.mandatory())
-            ],
-            function: (parameters) {
-              var value = parameters['value'];
-              if (value is String) {
-                return value.length;
-              } else {
-                throw ParameterException('String expected');
-              }
-            });
-}
-
-class TagFunction<R extends Object> {
-  TagFunction({
+/// A function of a [Expression]
+/// It has the [Expression] prefix in the name since [Function]
+/// is already taken by Dart core.
+class ExpressionFunction<R extends Object> {
+  ExpressionFunction({
     required this.name,
     this.description,
     this.parameters = const [],
@@ -194,7 +74,13 @@ class TagFunction<R extends Object> {
   final R Function(Map<String, Object> parameters) function;
 }
 
-/// A [Tag] can have 0 or more [Parameter]s.
+class FunctionGroup extends DelegatingList<ExpressionFunction> {
+  final String name;
+
+  FunctionGroup(this.name, super.base);
+}
+
+/// A [ExpressionFunction] can have 0 or more [Parameter]s.
 /// An [Parameter]:
 /// * Has a name
 /// * Has a value of one of the following types:
@@ -402,7 +288,7 @@ class ParametersParser extends Parser<Map<String, Expression>> {
 
 typedef ParameterParser = Parser<MapEntry<String, Expression>>;
 
-/// Returns a parser that returns the value of an [TagFunction] parameter
+/// Returns a parser that returns the value of an [ExpressionFunction] parameter
 /// It uses a loopback parser which is an [expressionParser] so that it can
 /// parse any known expression to a parameter value.
 /// The [loopbackParser] is a SettableParser because the [expressionParser]

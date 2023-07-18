@@ -44,20 +44,20 @@ class TemplateEngine {
 
   final List<BaseType> baseTypes;
   final List<Constant> constants;
-  final List<TagFunction> functions;
+  final List<FunctionGroup> functionGroups;
   final List<OperatorGroup> operatorGroups;
 
   TemplateEngine({
     List<BaseType>? baseTypes,
     List<Constant>? constants,
     List<OperatorGroup>? operatorGroups,
-    List<TagFunction>? functions,
+    List<FunctionGroup>? functionGroups,
     List<Tag>? tags,
     this.tagStart = '{{',
     this.tagEnd = '}}',
   })  : baseTypes = baseTypes ?? DefaultBaseTypes(),
         constants = constants ?? DefaultConstants(),
-        functions = functions ?? DefaultFunctions(),
+        functionGroups = functionGroups ?? DefaultFunctionGroups(),
         operatorGroups = operatorGroups ?? DefaultOperators(),
         tags = tags ?? DefaultTags() {
     validateNamesAreUnique();

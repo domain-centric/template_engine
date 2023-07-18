@@ -4,7 +4,7 @@ import 'package:template_engine/template_engine.dart';
 /// It is a combination of one or more:
 /// * [Value]s
 /// * [Variable]s
-/// * [TagFunction]s
+/// * [ExpressionFunction]s
 /// * [Operator]s
 abstract class Expression<T extends Object> extends Renderer<T> {}
 

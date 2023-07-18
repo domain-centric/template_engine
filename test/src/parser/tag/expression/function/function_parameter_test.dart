@@ -3,7 +3,7 @@ import 'package:petitparser/petitparser.dart';
 import 'package:shouldly/shouldly.dart';
 import 'package:template_engine/template_engine.dart';
 
-import 'expression/variable_test.dart';
+import '../variable_test.dart';
 
 void main() {
   given('Parameter', () {
@@ -202,7 +202,8 @@ void main() {
 
   given('an TemplateEngine with a GreetingTag', () {
     var engine = TemplateEngine();
-    engine.functions.add(GreetingWithParameterFunction());
+    engine.functionGroups
+        .add(FunctionGroup('Greeting', [GreetingWithParameterFunction()]));
 
     var input = '{{greeting()}}.';
     when('calling: engine.parse(TextTemplate("$input"))', () {
@@ -280,7 +281,7 @@ void main() {
     var parameterTestFunction =
         ParameterTestFunction([Parameter(name: parameterName)]);
     var engine = TemplateEngine();
-    engine.functions.add(parameterTestFunction);
+    engine.functionGroups.add(FunctionGroup('Test', [parameterTestFunction]));
 
     var input = '{{123true}}';
     when('calling engine.parse(TextTemplate("$input"))', () {
@@ -377,7 +378,7 @@ void main() {
     ]);
 
     var engine = TemplateEngine();
-    engine.functions.add(testFunction);
+    engine.functionGroups.add(FunctionGroup('Test', [testFunction]));
 
     var input = '{{${ParameterTestFunction.tagName}'
         '($parameterName1=true$parameterName2="$test")}}';
@@ -482,7 +483,7 @@ void main() {
     ]);
 
     var engine = TemplateEngine();
-    engine.functions.add(testFunction);
+    engine.functionGroups.add(FunctionGroup('Test', [testFunction]));
 
     var input = '{{${ParameterTestFunction.tagName} '
         '$parameterName1=true$parameterName2="$test"}}';
@@ -582,7 +583,7 @@ void main() {
   });
 }
 
-class GreetingWithParameterFunction extends TagFunction {
+class GreetingWithParameterFunction extends ExpressionFunction {
   GreetingWithParameterFunction()
       : super(
             name: 'greeting',
@@ -597,7 +598,7 @@ class GreetingWithParameterFunction extends TagFunction {
                 'Hello ${parameters['name']}');
 }
 
-class ParameterTestFunction extends TagFunction<Map<String, Object>> {
+class ParameterTestFunction extends ExpressionFunction<Map<String, Object>> {
   static const tagName = 'test';
 
   ParameterTestFunction(List<Parameter> parameters)
