@@ -50,7 +50,7 @@ class FunctionExpression<R extends Object> extends Expression<R> {
       var value = parameterExpressionMap[name]!.render(context);
       parameterMap[name] = value;
     }
-    return tagFunction.function(parameterMap);
+    return tagFunction.function(context, parameterMap);
   }
 
   @override
@@ -71,7 +71,8 @@ class ExpressionFunction<R extends Object> {
   final String name;
   final String? description;
   final List<Parameter> parameters;
-  final R Function(Map<String, Object> parameters) function;
+  final R Function(RenderContext renderContext, Map<String, Object> parameters)
+      function;
 }
 
 class FunctionGroup extends DelegatingList<ExpressionFunction> {

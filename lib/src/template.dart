@@ -8,19 +8,19 @@ import 'package:template_engine/template_engine.dart';
 /// implementation of the [TagRenderer]
 abstract class Template {
   /// Explains where the template text came form.
-  String source;
+  final String source;
 
   /// The text to be parsed by the [TemplateEngine]
-  String text;
+  final String text;
 
-  Template({
+  const Template({
     required this.source,
     required this.text,
   });
 }
 
 class TextTemplate extends Template {
-  TextTemplate(String text)
+  const TextTemplate(String text)
       : super(
           source: 'Text',
           text: text,

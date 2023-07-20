@@ -6,11 +6,13 @@ import '../../../../template_engine_test.dart';
 
 void main() {
   given('expressionParser(ParserContext())', () {
-    var parser = expressionParser(ParserContext(engine: TemplateEngine()));
+    var engine = TemplateEngine();
+    var parser = expressionParser(ParserContext(engine));
     when(
         'calling: parser.parse("x").value.'
         'render(RenderContext({"x": 42})', () {
-      var result = parser.parse("x").value.render(RenderContext({"x": 42}));
+      var result =
+          parser.parse("x").value.render(RenderContext(engine, {"x": 42}));
       var expected = 42;
       then('result should be: $expected', () => result.should.be(expected));
     });
@@ -18,8 +20,10 @@ void main() {
     when(
         'calling: parser.parse("x / y").value.'
         'render(RenderContext({"x": 6, "y": 2})', () {
-      var result =
-          parser.parse("x / y").value.render(RenderContext({"x": 6, "y": 2}));
+      var result = parser
+          .parse("x / y")
+          .value
+          .render(RenderContext(engine, {"x": 6, "y": 2}));
       var expected = 3;
       then('result should be: $expected', () => result.should.be(expected));
     });
@@ -27,7 +31,7 @@ void main() {
   var variables = {'name': 'world'};
   var engine = TemplateEngine();
   given('object: TemplateEngine with variables and a template', () {
-    var template = TextTemplate('Hello {{name}}.');
+    var template = const TextTemplate('Hello {{name}}.');
 
     when('call: parse(template)', () {
       var parseResult = engine.parse(template);
@@ -66,7 +70,7 @@ void main() {
   given(
       'object: TemplateEngine with variable and a '
       'template with spaces before variable name', () {
-    var template = TextTemplate('Hello {{  \t name}}.');
+    var template = const TextTemplate('Hello {{  \t name}}.');
     var engine = TemplateEngine();
 
     when('call: parse(template)', () {
@@ -106,7 +110,7 @@ void main() {
   given(
       'object: TemplateEngine with variable and a '
       'template with spaces after variable name', () {
-    var template = TextTemplate('Hello {{name  \t }}.');
+    var template = const TextTemplate('Hello {{name  \t }}.');
 
     when('call: parse(template)', () {
       var parseResult = engine.parse(template);
@@ -145,7 +149,7 @@ void main() {
   given(
       'object: TemplateEngine with variable and a '
       'template with spaces after variable name', () {
-    var template = TextTemplate('Hello {{\t\tname  \t }}.');
+    var template = const TextTemplate('Hello {{\t\tname  \t }}.');
     var engine = TemplateEngine();
 
     when('call: parse(template)', () {
@@ -184,7 +188,7 @@ void main() {
   });
 
   given("TextTemplate('Hello {{name}}.')", () {
-    var template = TextTemplate('Hello {{name}}.');
+    var template = const TextTemplate('Hello {{name}}.');
     var engine = TemplateEngine();
 
     when('call: parse(template)', () {
@@ -233,7 +237,8 @@ void main() {
     when(
         'calling: expression'
         '.render(RenderContext(variables)).toString()', () {
-      var result = expression.render(RenderContext(variables)).toString();
+      var result =
+          expression.render(RenderContext(engine, variables)).toString();
 
       then(
           'expect: result should be '
@@ -246,7 +251,7 @@ void main() {
       var expression = VariableExpression(DummySource(), 'person.name');
 
       when('calling: expression.render(RenderContext(variables))', () {
-        var result = expression.render(RenderContext(variables));
+        var result = expression.render(RenderContext(engine, variables));
 
         then('expect: result should be "John Doe"',
             () => result.should.be('John Doe'));
@@ -257,7 +262,7 @@ void main() {
       var expression = VariableExpression(DummySource(), 'person.child.name');
 
       when('call: expression.render(RenderContext(variables))', () {
-        var result = expression.render(RenderContext(variables));
+        var result = expression.render(RenderContext(engine, variables));
 
         then('expect: result should be "Jane Doe"',
             () => result.should.be('Jane Doe'));
@@ -266,7 +271,7 @@ void main() {
 
     given("VariableExpression('invalid')", () {
       var expression = VariableExpression(DummySource(), 'invalid');
-      var renderContext = RenderContext(variables);
+      var renderContext = RenderContext(engine, variables);
 
       when('calling: expression.render(renderContext)', () {
         expression.render(renderContext);
@@ -281,7 +286,7 @@ void main() {
     });
 
     given('TextTemplate with a nested variable name', () {
-      var template = TextTemplate('Hello {{person.child.name}}.');
+      var template = const TextTemplate('Hello {{person.child.name}}.');
       var engine = TemplateEngine();
       when('calling: engine.parse(template)', () {
         var parseResult = engine.parse(template);

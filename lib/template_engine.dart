@@ -17,5 +17,6 @@ export 'src/parser/tag/expression/function/function.dart';
 export 'src/parser/tag/expression/function/default.dart';
 export 'src/parser/tag/expression/function/math.dart';
 export 'src/parser/tag/expression/function/string.dart';
+export 'src/parser/tag/expression/function/documentation.dart';
 export 'src/parser/tag/expression/variable/variable.dart';
 export 'src/parser/tag/expression/tag_expression_parser.dart';

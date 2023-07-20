@@ -6,9 +6,10 @@ import 'package:template_engine/template_engine.dart';
 
 void main() {
   given('expressionParser(ParserContext())', () {
-    var parser = expressionParser(ParserContext(engine: TemplateEngine()));
+    var engine = TemplateEngine();
+    var parser = expressionParser(ParserContext(engine));
     double delta = 0.00001;
-    var context = RenderContext();
+    var context = RenderContext(engine);
     when('calling: parser.parse("pi").value.render(context) as num', () {
       var result = parser.parse("pi").value.render(context) as num;
       var expected = pi;

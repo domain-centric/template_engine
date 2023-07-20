@@ -83,11 +83,10 @@ class ParserContext {
 
   final List<Error> errors;
 
-  ParserContext({
-    Template? template,
-    required this.engine,
-  })  : template = template ?? TextTemplate(''),
-        errors = [];
+  ParserContext(
+    this.engine, [
+    this.template = const TextTemplate(''),
+  ]) : errors = [];
 }
 
 class ParseResult extends ParserTree {

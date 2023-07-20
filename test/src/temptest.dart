@@ -2,7 +2,7 @@ import 'package:shouldly/shouldly.dart';
 import 'package:template_engine/template_engine.dart';
 
 void main() {
-  var template = TextTemplate('Hello {{world}}.');
+  var template = const TextTemplate('Hello {{world}}.');
   var engine = TemplateEngine();
 
   var result = engine.parse(template);

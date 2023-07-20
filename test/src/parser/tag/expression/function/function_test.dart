@@ -10,7 +10,7 @@ void main() {
     when(
         "calling: engine.parse(TextTemplate('{{greeting()}}.'), "
         "functions: functions)", () {
-      var parseResult = engine.parse(TextTemplate('{{greeting()}}.'));
+      var parseResult = engine.parse(const TextTemplate('{{greeting()}}.'));
       when('calling: engine.render(parseResult).text', () {
         var renderResult = engine.render(parseResult).text;
         var expected = 'Hello world.';
@@ -22,7 +22,8 @@ void main() {
     when(
         "calling: engine.parse(TextTemplate({{greeting(\"Jane Doe\")}}.), "
         "functions: functions)", () {
-      var parseResult = engine.parse(TextTemplate('{{greeting("Jane Doe")}}.'));
+      var parseResult =
+          engine.parse(const TextTemplate('{{greeting("Jane Doe")}}.'));
 
       when('calling: engine.render(parseResult).text', () {
         var renderResult = engine.render(parseResult).text;
@@ -40,8 +41,8 @@ void main() {
     when(
         "calling: engine.parse(TextTemplate"
         "('{{length(\"Hello\" + \" \" & \"world.\") + 3}}')) ", () {
-      var parseResult = engine
-          .parse(TextTemplate('{{length("Hello" + " " & "world.") + 3}}'));
+      var parseResult = engine.parse(
+          const TextTemplate('{{length("Hello" + " " & "world.") + 3}}'));
       when('calling: engine.render(parseResult).text', () {
         var renderResult = engine.render(parseResult).text;
         var expected = (('Hello world.'.length) + 3).toString();
@@ -56,7 +57,7 @@ void main() {
       '(needs to be rendered first)', () {
     var engine = TemplateEngine();
     when("calling: engine.parse(TextTemplate('{{sin(asin(0.5))}}'))", () {
-      var parseResult = engine.parse(TextTemplate('{{sin(asin(0.5))}}'));
+      var parseResult = engine.parse(const TextTemplate('{{sin(asin(0.5))}}'));
       when('calling: engine.render(parseResult).text', () {
         var renderResult = engine.render(parseResult).text;
         var expected = '0.5';
@@ -68,7 +69,7 @@ void main() {
   given('A function with a missing parameter', () {
     var engine = TemplateEngine();
     when("calling: engine.parse(TextTemplate('{{sin()}}'))", () {
-      var parseResult = engine.parse(TextTemplate('{{sin()}}'));
+      var parseResult = engine.parse(const TextTemplate('{{sin()}}'));
       then('parseResult.errors.length should be 1',
           () => parseResult.errors.length.should.be(1));
       var expected = 'Parse Error: missing mandatory function parameter: '
@@ -95,6 +96,7 @@ class GreetingWithParameter extends ExpressionFunction {
                 name: "name",
                 presence: Presence.optionalWithDefaultValue('world'))
           ],
-          function: (parameters) => 'Hello ${parameters['name']}',
+          function: (renderContext, parameters) =>
+              'Hello ${parameters['name']}',
         );
 }

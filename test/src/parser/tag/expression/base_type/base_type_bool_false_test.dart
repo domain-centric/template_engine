@@ -4,8 +4,9 @@ import 'package:template_engine/template_engine.dart';
 
 void main() {
   given('expressionParser(ParserContext())', () {
-    var parser = expressionParser(ParserContext(engine: TemplateEngine()));
-    var context = RenderContext();
+    var engine = TemplateEngine();
+    var parser = expressionParser(ParserContext(engine));
+    var context = RenderContext(engine);
     when('calling: parser.parse("false").value.render(context)', () {
       var result = parser.parse("false").value.render(context);
       var expected = false;

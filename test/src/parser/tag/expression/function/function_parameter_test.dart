@@ -19,7 +19,7 @@ void main() {
   });
 
   given('ParameterNameAndValueParser with a nameless parameter', () {
-    var parserContext = ParserContext(engine: TemplateEngine());
+    var parserContext = ParserContext(TemplateEngine());
     var loopBackParser = SettableParser(expressionParser(parserContext));
     var parser = parameterParser(
             parserContext: parserContext,
@@ -99,7 +99,7 @@ void main() {
   });
 
   given('ParameterNameAndValueParser with parameter: parameter', () {
-    var parserContext = ParserContext(engine: TemplateEngine());
+    var parserContext = ParserContext(TemplateEngine());
     var loopBackParser = SettableParser(expressionParser(parserContext));
     var parser = parameterParser(
             parserContext: parserContext,
@@ -594,7 +594,7 @@ class GreetingWithParameterFunction extends ExpressionFunction {
                 presence: Presence.optionalWithDefaultValue('world'),
               )
             ],
-            function: (Map<String, Object> parameters) =>
+            function: (renderContext, parameters) =>
                 'Hello ${parameters['name']}');
 }
 
@@ -606,5 +606,5 @@ class ParameterTestFunction extends ExpressionFunction<Map<String, Object>> {
             name: tagName,
             description: 'A tag for testing',
             parameters: parameters,
-            function: (Map<String, Object> parameters) => parameters);
+            function: (renderContext, parameters) => parameters);
 }

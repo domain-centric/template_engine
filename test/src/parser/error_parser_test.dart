@@ -5,7 +5,7 @@ import 'package:template_engine/template_engine.dart';
 void main() {
   given('unknownTagOrVariableParser', () {
     given('object: Template with none defined tag', () {
-      var template = TextTemplate('Hello {{notDefined attribute="1"}}.');
+      var template = const TextTemplate('Hello {{notDefined attribute="1"}}.');
       var engine = TemplateEngine();
 
       when('call: parse(template)', () {
@@ -20,7 +20,7 @@ void main() {
     });
 
     given('object: Template with 2 none defined tags', () {
-      var template = TextTemplate(
+      var template = const TextTemplate(
           'Hello {{notDefined1 attribute="1"}} {{notDefined2 attribute="1"}}.');
       var engine = TemplateEngine();
 
@@ -39,7 +39,7 @@ void main() {
 
   given('missingTagStartParser', () {
     given('object: Template("Hello {{ world.")', () {
-      var template = TextTemplate('Hello {{ world.');
+      var template = const TextTemplate('Hello {{ world.');
       var engine = TemplateEngine();
 
       when('call: parse(template)', () {
@@ -57,7 +57,7 @@ void main() {
     });
 
     given('object: Template("Hello \\{{ {{ world.")', () {
-      var template = TextTemplate('Hello \\{{ {{ world.');
+      var template = const TextTemplate('Hello \\{{ {{ world.');
       var engine = TemplateEngine();
 
       when('call: parse(template)', () {
@@ -75,7 +75,7 @@ void main() {
     });
 
     given('object: Template("Hello {{name}} {{.")', () {
-      var template = TextTemplate('Hello {{name}} {{.');
+      var template = const TextTemplate('Hello {{name}} {{.');
       var engine = TemplateEngine();
 
       when('call: parse(template)', () {
@@ -95,7 +95,7 @@ void main() {
 
   given('missingTagEndParser', () {
     given('object: Template("Hello }} world.")', () {
-      var template = TextTemplate('Hello }} world.');
+      var template = const TextTemplate('Hello }} world.');
       var engine = TemplateEngine();
 
       when('call: parse(template)', () {
@@ -113,7 +113,7 @@ void main() {
     });
 
     given('object: Template("Hello \\}} }} world.")', () {
-      var template = TextTemplate('Hello \\}} }} world.');
+      var template = const TextTemplate('Hello \\}} }} world.');
       var engine = TemplateEngine();
 
       when('call: parse(template)', () {
@@ -130,7 +130,7 @@ void main() {
     });
 
     given('object: Template("Hello {{name}} }}.")', () {
-      var template = TextTemplate('Hello {{name}} }}.');
+      var template = const TextTemplate('Hello {{name}} }}.');
       var engine = TemplateEngine();
 
       when('call: parse(template)', () {

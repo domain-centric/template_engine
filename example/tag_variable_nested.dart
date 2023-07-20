@@ -3,7 +3,7 @@
 import 'package:template_engine/template_engine.dart';
 
 void main() {
-  var template = TextTemplate('Hello {{person.child.name}}.');
+  var template = const TextTemplate('Hello {{person.child.name}}.');
   var variables = {
     'person': {
       'name': 'John Doe',

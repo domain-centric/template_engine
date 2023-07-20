@@ -5,10 +5,27 @@ import 'package:template_engine/template_engine.dart';
 /// [Tag]s are specific texts in [Template]s that are replaced by the
 /// [TemplateEngine] with other information.
 ///
-/// [Tag]s:
-/// * Are surrounded with symbols like {{  }}
-/// * Start with [TagName]
-/// * Can be followed by [Attribute]s
+/// A [Tag]:
+/// * Starts with some bracket and/or character combination, e.g.: {{
+/// * Followed by some contents
+/// * Ends with some closing bracket and/or character combination, e.g.: }}
+///
+/// A tag example: {{customer.name}}
+///
+/// By default the TemplateEngine [Tag]s start with {{ and end with }} brackets,
+/// just like the popular template engines
+/// [Mustache](http://mustache.github.io/) and
+/// [Handlebars](https://handlebarsjs.com).
+///
+/// You can also define other Tag brackets in the [TemplateEngine] constructor
+/// parameters. See [TemplateEngine.tagStart] and [TemplateEngine.tagEnd].
+/// It is recommended to use a start and end combination that is not used
+/// elsewhere in your templates, e.g.: Do not use < > as [Tag] start and end
+/// if your template contains HTML or XML
+///
+/// The [TemplateEngine] comes with [DefaultTags]. You can replace or add your
+/// own [Tag]s by manipulating the the [TemplateEngine.tags] field.
+
 abstract class Tag<T extends Object> {
   Tag({
     required this.name,
@@ -21,18 +38,18 @@ abstract class Tag<T extends Object> {
   final String description;
 
   /// gives an example of the tag, e.g. {{tag}}
-  String example(ParserContext context) => [
-        context.engine.tagStart,
+  String example(TemplateEngine engine) => [
+        engine.tagStart,
         name,
-        context.engine.tagEnd,
+        engine.tagEnd,
       ].join();
 
   /// gives documentation of the tag, e.g. {{tag}} e.g.:
   /// an example,
   /// a description
   /// a summary of attributes if any.
-  String documentation(ParserContext context) =>
-      ['Example: ${example(context)}', description].join('\n');
+  String documentation(TemplateEngine engine) =>
+      ['Example: ${example(engine)}', description].join('\n');
 
   Parser<T> createTagParser(ParserContext context);
 }

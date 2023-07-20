@@ -5,9 +5,9 @@ import 'package:template_engine/template_engine.dart';
 void main() {
   var engine = TemplateEngine();
   engine.functionGroups.add(FunctionGroup('Greeting', [Greeting()]));
-  var parseResult = engine.parse(TextTemplate('{{greeting()}}.'));
+  var parseResult = engine.parse(const TextTemplate('{{greeting()}}.'));
   print(engine.render(parseResult)); // should print 'Hello world.';
-  parseResult = engine.parse(TextTemplate('{{greeting("Jane Doe")}}.'));
+  parseResult = engine.parse(const TextTemplate('{{greeting("Jane Doe")}}.'));
   print(engine.render(parseResult)); // should print 'Hello Jane Doe.';
 }
 
@@ -21,6 +21,7 @@ class Greeting extends ExpressionFunction {
                 name: 'name',
                 presence: Presence.optionalWithDefaultValue('world'))
           ],
-          function: (parameters) => 'Hello ${parameters['name']}',
+          function: (renderContext, parameters) =>
+              'Hello ${parameters['name']}',
         );
 }

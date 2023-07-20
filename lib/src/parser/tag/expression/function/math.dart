@@ -24,7 +24,8 @@ class Exp extends ExpressionFunction<num> {
             parameters: [
               Parameter(name: 'value', presence: Presence.mandatory())
             ],
-            function: (parameters) => exp(parameters['value'] as num));
+            function: (renderContext, parameters) =>
+                exp(parameters['value'] as num));
 }
 
 class Log extends ExpressionFunction<num> {
@@ -34,7 +35,8 @@ class Log extends ExpressionFunction<num> {
             parameters: [
               Parameter(name: 'value', presence: Presence.mandatory())
             ],
-            function: (parameters) => log(parameters['value'] as num));
+            function: (renderContext, parameters) =>
+                log(parameters['value'] as num));
 }
 
 class Sin extends ExpressionFunction<num> {
@@ -44,7 +46,8 @@ class Sin extends ExpressionFunction<num> {
             parameters: [
               Parameter(name: 'value', presence: Presence.mandatory())
             ],
-            function: (parameters) => sin(parameters['value'] as num));
+            function: (renderContext, parameters) =>
+                sin(parameters['value'] as num));
 }
 
 class Asin extends ExpressionFunction<num> {
@@ -54,7 +57,8 @@ class Asin extends ExpressionFunction<num> {
             parameters: [
               Parameter(name: 'value', presence: Presence.mandatory())
             ],
-            function: (parameters) => asin(parameters['value'] as num));
+            function: (renderContext, parameters) =>
+                asin(parameters['value'] as num));
 }
 
 class Cos extends ExpressionFunction<num> {
@@ -64,7 +68,8 @@ class Cos extends ExpressionFunction<num> {
             parameters: [
               Parameter(name: 'value', presence: Presence.mandatory())
             ],
-            function: (parameters) => cos(parameters['value'] as num));
+            function: (renderContext, parameters) =>
+                cos(parameters['value'] as num));
 }
 
 class Acos extends ExpressionFunction<num> {
@@ -74,7 +79,8 @@ class Acos extends ExpressionFunction<num> {
             parameters: [
               Parameter(name: 'value', presence: Presence.mandatory())
             ],
-            function: (parameters) => acos(parameters['value'] as num));
+            function: (renderContext, parameters) =>
+                acos(parameters['value'] as num));
 }
 
 class Tan extends ExpressionFunction<num> {
@@ -84,7 +90,8 @@ class Tan extends ExpressionFunction<num> {
             parameters: [
               Parameter(name: 'value', presence: Presence.mandatory())
             ],
-            function: (parameters) => tan(parameters['value'] as num));
+            function: (renderContext, parameters) =>
+                tan(parameters['value'] as num));
 }
 
 class Atan extends ExpressionFunction<num> {
@@ -94,7 +101,8 @@ class Atan extends ExpressionFunction<num> {
             parameters: [
               Parameter(name: 'value', presence: Presence.mandatory())
             ],
-            function: (parameters) => atan(parameters['value'] as num));
+            function: (renderContext, parameters) =>
+                atan(parameters['value'] as num));
 }
 
 class Sqrt extends ExpressionFunction<num> {
@@ -104,5 +112,6 @@ class Sqrt extends ExpressionFunction<num> {
             parameters: [
               Parameter(name: 'value', presence: Presence.mandatory())
             ],
-            function: (parameters) => sqrt(parameters['value'] as num));
+            function: (renderContext, parameters) =>
+                sqrt(parameters['value'] as num));
 }

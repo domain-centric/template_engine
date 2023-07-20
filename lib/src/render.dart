@@ -48,10 +48,11 @@ class ParserTree extends Renderer<String> {
 }
 
 class RenderContext {
+  final TemplateEngine engine;
   final Variables variables;
   final List<Error> errors;
 
-  RenderContext([Variables? variables])
+  RenderContext(this.engine, [Variables? variables])
       : variables = variables ?? {},
         errors = [];
 }
