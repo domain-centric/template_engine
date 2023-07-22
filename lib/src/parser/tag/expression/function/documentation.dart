@@ -3,19 +3,15 @@ import 'package:template_engine/template_engine.dart';
 /// Functions that create documentation of the [TemplateEngine] configuration
 class DocumentationFunctions extends FunctionGroup {
   DocumentationFunctions()
-      : super(
-            'Functions to generate markdown Template Engine Documentation. '
-            'It is likely that the documentation that you are currently reading'
-            ' was generated using these expression functions',
-            [
-              TagDocumentation(),
-              // BaseTypeDocumentation(),
-              //TODO basetypes
-              //TODO constants
-              //TODO variables
-              //TODO operators
-              FunctionDocumentation(),
-            ]);
+      : super('Documentation Functions', [
+          TagDocumentation(),
+          // BaseTypeDocumentation(),
+          //TODO basetypes
+          //TODO constants
+          //TODO variables
+          //TODO operators
+          FunctionDocumentation(),
+        ]);
 }
 
 class TitleLevelParameter extends Parameter<num> {
@@ -30,8 +26,8 @@ abstract class DocumentationFunction extends ExpressionFunction<String> {
   DocumentationFunction({
     required super.name,
     required super.description,
-    required super.exampleExpression,
-    required super.exampleResult,
+    super.exampleExpression,
+    super.exampleResult,
     required List<DocumentationFactory> Function(RenderContext renderContext)
         documentationSource,
   }) : super(
@@ -68,8 +64,6 @@ class TagDocumentation extends DocumentationFunction {
             name: 'engine.tag.documentation',
             description: 'Generates markdown documentation of all the tags '
                 'within a TemplateEngine',
-            exampleExpression: 'engine.tag.documentation()',
-            exampleResult: 'All the text in this paragraph',
             documentationSource: (renderContext) => renderContext.engine.tags);
 }
 
@@ -89,10 +83,9 @@ class FunctionDocumentation extends DocumentationFunction {
   FunctionDocumentation()
       : super(
             name: 'engine.function.documentation',
-            description: 'Generates markdown documentation of all the functions'
+            description:
+                'Generates markdown documentation of all the functions '
                 'that can be used within a ExpressionTag of a TemplateEngine',
-            exampleExpression: 'engine.function.documentation()',
-            exampleResult: 'All the text in this paragraph',
             documentationSource: (renderContext) =>
                 renderContext.engine.functionGroups);
 }

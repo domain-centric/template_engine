@@ -112,11 +112,16 @@ class ExpressionFunction<R extends Object> implements DocumentationFactory {
       expression.write(
           _createExampleExpressionParameterValue(mandatoryParameters.first));
     } else {
+      var commaNeeded = false;
       for (var mandatoryParameter in mandatoryParameters) {
+        if (commaNeeded) {
+          expression.write(', ');
+        }
         expression.write(mandatoryParameter.name);
         expression.write('=');
         expression
             .write(_createExampleExpressionParameterValue(mandatoryParameter));
+        commaNeeded = true;
       }
     }
     expression.write(') }}');
@@ -125,16 +130,16 @@ class ExpressionFunction<R extends Object> implements DocumentationFactory {
 
   String _createExampleExpressionParameterValue(Parameter mandatoryParameter) {
     var type = mandatoryParameter.valueType;
-    if (type is String) {
+    if (type == String) {
       return "'${mandatoryParameter.name} value'";
     }
-    if (type is double) {
+    if (type == double) {
       return '12.34';
     }
-    if (type is num) {
+    if (type == num) {
       return '1234';
     }
-    if (type is bool) {
+    if (type == bool) {
       return 'true';
     }
     return '???';
@@ -201,9 +206,10 @@ class Parameter<T> implements DocumentationFactory {
             '<td>parameter:</td>'
             '<td>$name</td>'
             '<td>${typeDescription<T>()}</td>'
-            '<td>$presence</td>'
-            '<td>$description</td>'
-            '</tr>',
+            '<td${description == null ? ' colspan="2"' : ""}>$presence</td>',
+        if (description != null)
+          '<td>$description</td>'
+              '</tr>',
       ];
 }
 
@@ -225,6 +231,15 @@ class Presence {
   bool get optional => name == 'optional';
 
   bool get optionalWithDefaultValue => name == 'optionalWithDefaultValue';
+
+  @override
+  String toString() {
+    if (mandatory || optional) {
+      return name;
+    } else {
+      return 'optional (default="$defaultValue")';
+    }
+  }
 }
 
 /// The [ParameterName]:
