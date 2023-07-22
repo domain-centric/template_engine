@@ -60,25 +60,101 @@ class FunctionExpression<R extends Object> extends Expression<R> {
 /// A function of a [Expression]
 /// It has the [Expression] prefix in the name since [Function]
 /// is already taken by Dart core.
-class ExpressionFunction<R extends Object> {
+class ExpressionFunction<R extends Object> implements DocumentationFactory {
   ExpressionFunction({
     required this.name,
     this.description,
+    this.exampleExpression,
+    this.exampleResult,
     this.parameters = const [],
     required this.function,
   });
 
   final String name;
   final String? description;
+  final String? exampleExpression;
+  final String? exampleResult;
   final List<Parameter> parameters;
   final R Function(RenderContext renderContext, Map<String, Object> parameters)
       function;
+
+  @override
+  List<String> createMarkdownDocumentation(
+          RenderContext renderContext, int titleLevel) =>
+      [
+        '<table>',
+        '<tr><th colspan="5">$name</th></tr>',
+        if (description != null)
+          '<tr><td>description:</td><td colspan="4">$description</td></tr>',
+        '<tr><td>return type:</td><td colspan="4">${typeDescription<R>()}</td></tr>',
+        _createExampleLine(),
+        ...parameters
+            .map((parameter) => parameter.createMarkdownDocumentation(
+                renderContext, titleLevel))
+            .flattened,
+        '</table>',
+      ];
+
+  String _createExampleLine() {
+    var expression = exampleExpression ?? _createExampleExpression(this);
+    if (exampleResult == null || exampleResult!.trim().isEmpty) {
+      return '<tr><td>example</td><td colspan="4">$expression</td><tr>';
+    }
+    return '<tr><td>example</td><td colspan="2">$expression</td><td colspan="2">$exampleResult</td><tr>';
+  }
+
+  String _createExampleExpression(ExpressionFunction function) {
+    var expression = StringBuffer();
+    expression.write('{{ ${function.name}(');
+    var mandatoryParameters =
+        function.parameters.where((parameter) => parameter.presence.mandatory);
+    if (mandatoryParameters.length == 1) {
+      expression.write(
+          _createExampleExpressionParameterValue(mandatoryParameters.first));
+    } else {
+      for (var mandatoryParameter in mandatoryParameters) {
+        expression.write(mandatoryParameter.name);
+        expression.write('=');
+        expression
+            .write(_createExampleExpressionParameterValue(mandatoryParameter));
+      }
+    }
+    expression.write(') }}');
+    return expression.toString();
+  }
+
+  String _createExampleExpressionParameterValue(Parameter mandatoryParameter) {
+    var type = mandatoryParameter.valueType;
+    if (type is String) {
+      return "'${mandatoryParameter.name} value'";
+    }
+    if (type is double) {
+      return '12.34';
+    }
+    if (type is num) {
+      return '1234';
+    }
+    if (type is bool) {
+      return 'true';
+    }
+    return '???';
+  }
 }
 
-class FunctionGroup extends DelegatingList<ExpressionFunction> {
+class FunctionGroup extends DelegatingList<ExpressionFunction>
+    implements DocumentationFactory {
   final String name;
 
   FunctionGroup(this.name, super.base);
+
+  @override
+  List<String> createMarkdownDocumentation(
+          RenderContext renderContext, int titleLevel) =>
+      [
+        '${"#" * titleLevel} $name',
+        ...map((function) => function.createMarkdownDocumentation(
+            renderContext, titleLevel + 1)).flattened
+      ];
 }
 
 /// A [ExpressionFunction] can have 0 or more [Parameter]s.
@@ -95,7 +171,7 @@ class FunctionGroup extends DelegatingList<ExpressionFunction> {
 ///   * an [Expression]
 ///  * Can be optional
 ///  * Can have an default value when the attribute is optional
-class Parameter<T> {
+class Parameter<T> implements DocumentationFactory {
   /// The name of the [Parameter]:
   /// * may not be empty
   /// * is case un-sensitive
@@ -116,6 +192,19 @@ class Parameter<T> {
   }) : presence = presence ?? Presence.mandatory() {
     ParameterName.validate(name);
   }
+
+  @override
+  List<String> createMarkdownDocumentation(
+          RenderContext renderContext, int titleLevel) =>
+      [
+        '<tr>'
+            '<td>parameter:</td>'
+            '<td>$name</td>'
+            '<td>${typeDescription<T>()}</td>'
+            '<td>$presence</td>'
+            '<td>$description</td>'
+            '</tr>',
+      ];
 }
 
 class Presence {

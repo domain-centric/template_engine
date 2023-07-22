@@ -71,9 +71,9 @@ void main() {
           () => result.should.beCloseTo(expected, delta: delta));
     });
 
-    when('calling: parser.parse("sqrt(2)").value.render(context)) as num', () {
-      var result = parser.parse("sqrt(2)").value.render(context) as num;
-      var expected = sqrt(2);
+    when('calling: parser.parse("sqrt(9)").value.render(context)) as num', () {
+      var result = parser.parse("sqrt(9)").value.render(context) as num;
+      var expected = sqrt(9);
       then('result should be: $expected',
           () => result.should.beCloseTo(expected, delta: delta));
     });

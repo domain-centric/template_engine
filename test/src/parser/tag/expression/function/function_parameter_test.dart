@@ -588,6 +588,8 @@ class GreetingWithParameterFunction extends ExpressionFunction {
       : super(
             name: 'greeting',
             description: 'A tag that shows a greeting',
+            exampleExpression: 'greeting()',
+            exampleResult: 'Hello world',
             parameters: [
               Parameter(
                 name: 'name',
@@ -605,6 +607,8 @@ class ParameterTestFunction extends ExpressionFunction<Map<String, Object>> {
       : super(
             name: tagName,
             description: 'A tag for testing',
+            exampleExpression: 'dummy',
+            exampleResult: 'dummy',
             parameters: parameters,
             function: (renderContext, parameters) => parameters);
 }

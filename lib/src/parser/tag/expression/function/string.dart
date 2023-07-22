@@ -11,11 +11,14 @@ class StringLength extends ExpressionFunction<num> {
   StringLength()
       : super(
             name: 'length',
+            description: 'returns the length of a string',
+            exampleExpression: 'length("Hello")',
+            exampleResult: "Hello".length.toString(),
             parameters: [
-              Parameter(name: 'value', presence: Presence.mandatory())
+              Parameter<String>(name: 'string', presence: Presence.mandatory())
             ],
             function: (renderContext, parameters) {
-              var value = parameters['value'];
+              var value = parameters['string'];
               if (value is String) {
                 return value.length;
               } else {

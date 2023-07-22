@@ -18,3 +18,15 @@ String stringDifference(String s1, String s2) {
   }
   return 'Equal';
 }
+
+String typeDescription<T>() {
+  switch (T) {
+    case num:
+      return 'number';
+    case bool:
+      return 'boolean';
+
+    default:
+      return T.toString();
+  }
+}

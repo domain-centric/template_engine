@@ -73,7 +73,7 @@ void main() {
       then('parseResult.errors.length should be 1',
           () => parseResult.errors.length.should.be(1));
       var expected = 'Parse Error: missing mandatory function parameter: '
-          'value, position: 1:7, source: Text';
+          'radians, position: 1:7, source: Text';
       then('parseResult.errors.first.message should be "$expected"',
           () => parseResult.errors.first.toString().should.be(expected));
       when('calling: engine.render(parseResult).text', () {
@@ -91,6 +91,8 @@ class GreetingWithParameter extends ExpressionFunction {
       : super(
           name: 'greeting',
           description: 'A tag that shows a greeting using attribute: name',
+          exampleExpression: 'dummy',
+          exampleResult: 'dummy',
           parameters: [
             Parameter(
                 name: "name",

@@ -51,31 +51,18 @@ class TwoValueOperatorVariant<PARAMETER_TYPE extends Object> {
   final Object Function(PARAMETER_TYPE left, PARAMETER_TYPE right) function;
 
   List<String> validate(String operator, Object leftValue, Object rightValue) {
+    var typeDesc = typeDescription<PARAMETER_TYPE>();
     bool leftTypeOk = leftValue is PARAMETER_TYPE;
     bool rightTypeOk = rightValue is PARAMETER_TYPE;
     if (leftTypeOk && rightTypeOk) {
       return [];
     } else if (!leftTypeOk && !rightTypeOk) {
-      return [
-        'left and right of the $operator operator must be a $typeDescription'
-      ];
+      return ['left and right of the $operator operator must be a $typeDesc'];
     }
     if (!leftTypeOk) {
-      return ['left of the $operator operator must be a $typeDescription'];
+      return ['left of the $operator operator must be a $typeDesc'];
     }
-    return ['right of the $operator operator must be a $typeDescription'];
-  }
-
-  String get typeDescription {
-    switch (PARAMETER_TYPE) {
-      case num:
-        return 'number';
-      case bool:
-        return 'boolean';
-
-      default:
-        return PARAMETER_TYPE.toString();
-    }
+    return ['right of the $operator operator must be a $typeDesc'];
   }
 
   Object eval(Object leftValue, Object rightValue) =>

@@ -26,7 +26,7 @@ import 'package:template_engine/template_engine.dart';
 /// The [TemplateEngine] comes with [DefaultTags]. You can replace or add your
 /// own [Tag]s by manipulating the the [TemplateEngine.tags] field.
 
-abstract class Tag<T extends Object> {
+abstract class Tag<T extends Object> implements DocumentationFactory {
   Tag({
     required this.name,
     required this.description,
@@ -44,12 +44,14 @@ abstract class Tag<T extends Object> {
         engine.tagEnd,
       ].join();
 
-  /// gives documentation of the tag, e.g. {{tag}} e.g.:
-  /// an example,
-  /// a description
-  /// a summary of attributes if any.
-  String documentation(TemplateEngine engine) =>
-      ['Example: ${example(engine)}', description].join('\n');
+  @override
+  List<String> createMarkdownDocumentation(
+          RenderContext renderContext, int titleLevel) =>
+      [
+        '${"#" * titleLevel} $name',
+        description,
+        'Example: ${example(renderContext.engine)}',
+      ];
 
   Parser<T> createTagParser(ParserContext context);
 }
