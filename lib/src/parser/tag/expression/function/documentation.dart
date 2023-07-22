@@ -18,7 +18,7 @@ class TitleLevelParameter extends Parameter<num> {
   TitleLevelParameter()
       : super(
             name: 'titleLevel',
-            description: 'The level of the tag title (default=1)',
+            description: 'The level of the tag title',
             presence: Presence.optionalWithDefaultValue(1));
 }
 

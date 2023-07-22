@@ -98,9 +98,10 @@ class ExpressionFunction<R extends Object> implements DocumentationFactory {
   String _createExampleLine() {
     var expression = exampleExpression ?? _createExampleExpression(this);
     if (exampleResult == null || exampleResult!.trim().isEmpty) {
-      return '<tr><td>example</td><td colspan="4">$expression</td><tr>';
+      return '<tr><td>example:</td><td colspan="4">$expression</td><tr>';
     }
-    return '<tr><td>example</td><td colspan="2">$expression</td><td colspan="2">$exampleResult</td><tr>';
+    return '<tr><td>example:</td><td colspan="2">'
+        '$expression</td><td colspan="2">$exampleResult</td><tr>';
   }
 
   String _createExampleExpression(ExpressionFunction function) {
@@ -237,7 +238,8 @@ class Presence {
     if (mandatory || optional) {
       return name;
     } else {
-      return 'optional (default="$defaultValue")';
+      return 'optional (default='
+          '${defaultValue is String ? '"$defaultValue"' : defaultValue})';
     }
   }
 }

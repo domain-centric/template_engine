@@ -11,8 +11,8 @@ class StringLength extends ExpressionFunction<num> {
   StringLength()
       : super(
             name: 'length',
-            description: 'returns the length of a string',
-            exampleExpression: 'length("Hello")',
+            description: 'Returns the length of a string',
+            exampleExpression: '{{length("Hello")}}',
             exampleResult: "Hello".length.toString(),
             parameters: [
               Parameter<String>(name: 'string', presence: Presence.mandatory())

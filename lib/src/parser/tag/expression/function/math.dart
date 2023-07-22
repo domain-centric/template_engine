@@ -23,7 +23,7 @@ class Exp extends ExpressionFunction<num> {
             name: 'exp',
             description: 'Returns the natural exponent e, '
                 'to the power of the value',
-            exampleExpression: 'exp(7)',
+            exampleExpression: '{{exp(7)}}',
             exampleResult: exp(7).toString(),
             parameters: [
               Parameter<num>(name: 'value', presence: Presence.mandatory())
@@ -36,8 +36,8 @@ class Log extends ExpressionFunction<num> {
   Log()
       : super(
             name: 'log',
-            description: 'returns the natural logarithm of the value',
-            exampleExpression: 'log(7)',
+            description: 'Returns the natural logarithm of the value',
+            exampleExpression: '{{log(7)}}',
             exampleResult: log(7).toString(),
             parameters: [
               Parameter<num>(name: 'value', presence: Presence.mandatory())
@@ -50,8 +50,8 @@ class Sin extends ExpressionFunction<num> {
   Sin()
       : super(
             name: 'sin',
-            description: 'returns the sine of the radians',
-            exampleExpression: 'sin(7)',
+            description: 'Returns the sine of the radians',
+            exampleExpression: '{{sin(7)}}',
             exampleResult: sin(7).toString(),
             parameters: [
               Parameter<num>(name: 'radians', presence: Presence.mandatory())
@@ -64,8 +64,8 @@ class Asin extends ExpressionFunction<num> {
   Asin()
       : super(
             name: 'asin',
-            description: 'returns the values arc sine in radians',
-            exampleExpression: 'asin(0.5)',
+            description: 'Returns the values arc sine in radians',
+            exampleExpression: '{{asin(0.5)}}',
             exampleResult: asin(0.5).toString(),
             parameters: [
               Parameter<num>(name: 'value', presence: Presence.mandatory())
@@ -78,8 +78,8 @@ class Cos extends ExpressionFunction<num> {
   Cos()
       : super(
             name: 'cos',
-            description: 'returns the cosine of the radians',
-            exampleExpression: 'cos(7)',
+            description: 'Returns the cosine of the radians',
+            exampleExpression: '{{cos(7)}}',
             exampleResult: cos(7).toString(),
             parameters: [
               Parameter<num>(name: 'radians', presence: Presence.mandatory())
@@ -92,8 +92,8 @@ class Acos extends ExpressionFunction<num> {
   Acos()
       : super(
             name: 'acos',
-            description: 'returns the values arc cosine in radians',
-            exampleExpression: 'acos(0.5)',
+            description: 'Returns the values arc cosine in radians',
+            exampleExpression: '{{acos(0.5)}}',
             exampleResult: acos(0.5).toString(),
             parameters: [
               Parameter<num>(name: 'value', presence: Presence.mandatory())
@@ -106,8 +106,8 @@ class Tan extends ExpressionFunction<num> {
   Tan()
       : super(
             name: 'tan',
-            description: 'returns the the tangent of the radians',
-            exampleExpression: 'tan(7)',
+            description: 'Returns the the tangent of the radians',
+            exampleExpression: '{{tan(7)}}',
             exampleResult: tan(7).toString(),
             parameters: [
               Parameter<num>(name: 'radians', presence: Presence.mandatory())
@@ -120,11 +120,11 @@ class Atan extends ExpressionFunction<num> {
   Atan()
       : super(
             name: 'atan',
-            description: 'returns the values arc tangent in radians',
-            exampleExpression: 'atan(0.5)',
+            description: 'Returns the values arc tangent in radians',
+            exampleExpression: '{{atan(0.5)}}',
             exampleResult: atan(0.5).toString(),
             parameters: [
-              Parameter(name: 'value', presence: Presence.mandatory())
+              Parameter<num>(name: 'value', presence: Presence.mandatory())
             ],
             function: (renderContext, parameters) =>
                 atan(parameters['value'] as num));
@@ -134,11 +134,11 @@ class Sqrt extends ExpressionFunction<num> {
   Sqrt()
       : super(
             name: 'sqrt',
-            description: 'returns the positive square root of the value.',
-            exampleExpression: 'sqrt(9)',
+            description: 'Returns the positive square root of the value.',
+            exampleExpression: '{{sqrt(9)}}',
             exampleResult: sqrt(9).toString(),
             parameters: [
-              Parameter(name: 'value', presence: Presence.mandatory())
+              Parameter<num>(name: 'value', presence: Presence.mandatory())
             ],
             function: (renderContext, parameters) =>
                 sqrt(parameters['value'] as num));
