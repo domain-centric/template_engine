@@ -157,7 +157,7 @@ class FunctionGroup extends DelegatingList<ExpressionFunction>
   List<String> createMarkdownDocumentation(
           RenderContext renderContext, int titleLevel) =>
       [
-        '${"#" * titleLevel} $name',
+        '\n${"#" * titleLevel} $name\n',
         ...map((function) => function.createMarkdownDocumentation(
             renderContext, titleLevel + 1)).flattened
       ];

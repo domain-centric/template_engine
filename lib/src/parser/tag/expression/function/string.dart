@@ -2,7 +2,7 @@ import 'package:template_engine/template_engine.dart';
 
 class StringFunctions extends FunctionGroup {
   StringFunctions()
-      : super('String', [
+      : super('String Functions', [
           StringLength(),
         ]);
 }

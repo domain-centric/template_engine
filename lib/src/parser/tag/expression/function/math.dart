@@ -4,7 +4,7 @@ import 'package:template_engine/template_engine.dart';
 
 class MathFunctions extends FunctionGroup {
   MathFunctions()
-      : super('Math', [
+      : super('Math Functions', [
           Exp(),
           Log(),
           Sin(),
