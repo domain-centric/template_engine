@@ -3,10 +3,21 @@ import 'package:petitparser/petitparser.dart';
 import 'package:template_engine/src/parser/override_message_parser.dart';
 import 'package:template_engine/template_engine.dart';
 
-abstract class BaseType<T extends Object> {
+abstract class BaseType<T extends Object> implements DocumentationFactory {
   String get name;
+  String get description;
   List<String> get examples;
   Parser<Value<T>> createParser();
+
+  @override
+  List<String> createMarkdownDocumentation(
+      RenderContext renderContext, int titleLevel) {
+    var writer = HtmlTableWriter();
+    writer.addHeaderRow([name], [2]);
+    writer.addRow(['description:', description]);
+    writer.addRow(['examples:', examples.join('\n')]);
+    return writer.toHtmlLines();
+  }
 }
 
 class DefaultBaseTypes extends DelegatingList<BaseType> {
@@ -26,6 +37,10 @@ class Boolean extends BaseType<bool> {
   String get name => 'Boolean';
 
   @override
+  String get description =>
+      'a form of data with only two possible values :"true" and "false"';
+
+  @override
   List<String> get examples =>
       ['true', 'TRUE', 'TRue', 'false', 'FALSE', 'FAlse'];
 
@@ -40,6 +55,9 @@ class Boolean extends BaseType<bool> {
 class Number extends BaseType<num> {
   @override
   String get name => 'Number';
+
+  @override
+  String get description => 'a form of data to count or measure something.';
 
   @override
   List<String> get examples => ["42", "-123", "3.141", "1.2e5", "3.4e-1"];
@@ -58,6 +76,9 @@ class QuotesString extends BaseType<String> {
   @override
   String get name => 'String';
 
+  @override
+  String get description =>
+      'a form of data containing a sequence of characters';
   @override
   List<String> get examples =>
       ["'Hello'", '"world"', "'Hel'+'lo '&\"world\" & \".\""];

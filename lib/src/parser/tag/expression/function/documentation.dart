@@ -5,8 +5,7 @@ class DocumentationFunctions extends FunctionGroup {
   DocumentationFunctions()
       : super('Documentation Functions', [
           TagDocumentation(),
-          // BaseTypeDocumentation(),
-          //TODO basetypes
+          BaseTypeDocumentation(),
           //TODO constants
           //TODO variables
           //TODO operators
@@ -58,6 +57,17 @@ abstract class DocumentationFunction extends ExpressionFunction<String> {
   }
 }
 
+class BaseTypeDocumentation extends DocumentationFunction {
+  BaseTypeDocumentation()
+      : super(
+            name: 'engine.baseType.documentation',
+            description: 'Generates markdown documentation of all the basic '
+                'types that can be used within a ExpressionTag of a '
+                'TemplateEngine',
+            documentationSource: (renderContext) =>
+                renderContext.engine.baseTypes);
+}
+
 class TagDocumentation extends DocumentationFunction {
   TagDocumentation()
       : super(
@@ -66,18 +76,6 @@ class TagDocumentation extends DocumentationFunction {
                 'within a TemplateEngine',
             documentationSource: (renderContext) => renderContext.engine.tags);
 }
-
-// class BasicTypeDocumentation extends ExpressionFunction<String> {
-//   BasicTypeDocumentation()
-//       : super(
-//             name: 'engine.basicType.documentation',
-//             description: 'Generates markdown documentation of all the basic '
-//                 'types that can be used within a ExpressionTag of a '
-//                 'TemplateEngine',
-//             parameters: [TitleLevelParameter()],
-//             function: (renderContext, parameters) => createDocumentation(
-//                 renderContext, renderContext.engine.functionGroups, parameters));
-// }
 
 class FunctionDocumentation extends DocumentationFunction {
   FunctionDocumentation()
@@ -108,7 +106,12 @@ class HtmlTableWriter {
     rows.add(row.toHtml());
   }
 
-  List<String> toHtml() => ['<table>', ...rows, '</table>'];
+  List<String> toHtmlLines() => [
+        '<table>',
+        ...rows,
+        '</table>',
+        '',
+      ];
 }
 
 class HtmlTableRow {

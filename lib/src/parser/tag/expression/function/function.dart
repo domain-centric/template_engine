@@ -98,7 +98,7 @@ class ExpressionFunction<R extends Object> implements DocumentationFactory {
             parameter.createMarkdownDocumentation(renderContext, titleLevel))
         .flattened;
     writer.rows.addAll(parameterRows);
-    return writer.toHtml();
+    return writer.toHtmlLines();
   }
 
   String _createExampleExpression(ExpressionFunction function) {

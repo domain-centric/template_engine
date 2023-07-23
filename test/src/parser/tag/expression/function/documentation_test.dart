@@ -5,9 +5,13 @@ import 'package:template_engine/template_engine.dart';
 void main() {
   given('Template engine', () {
     var engine = TemplateEngine();
+    // simplifying the engine so we have less documentation to check.
     engine.functionGroups.clear();
     engine.functionGroups
         .addAll([DocumentationFunctions(), DummyFunctionGroup()]);
+    engine.baseTypes.clear();
+    engine.baseTypes.add(Boolean());
+
     when(
         "call: engine.parse(const "
         "TextTemplate('{{engine.tag.documentation()}}'))", () {
@@ -30,34 +34,37 @@ void main() {
 
     when(
         "call: engine.parse(const "
+        "TextTemplate('{{engine.baseType.documentation()}}'))", () {
+      var parseResult = engine
+          .parse(const TextTemplate('{{engine.baseType.documentation()}}'));
+      var expected = '<table>\n'
+          '<tr><th colspan="2">Boolean</th></tr>\n'
+          '<tr><td>description:</td><td>a form of data with only two possible values :"true" and "false"</td></tr>\n'
+          '<tr><td>examples:</td><td>true\n'
+          'TRUE\n'
+          'TRue\n'
+          'false\n'
+          'FALSE\n'
+          'FAlse</td></tr>\n'
+          '</table>\n';
+
+      then('parseResult.errors.length should be 0',
+          () => parseResult.errors.length.should.be(0));
+      when('calling: engine.render(parseResult)', () {
+        var renderResult = engine.render(parseResult);
+
+        then('renderResult.text be: "$expected"',
+            () => renderResult.text.should.be(expected));
+      });
+    });
+
+    when(
+        "call: engine.parse(const "
         "TextTemplate('{{engine.function.documentation()}}'))", () {
       var parseResult = engine
           .parse(const TextTemplate('{{engine.function.documentation()}}'));
-      var expected = '# Documentation Functions\n'
-          '<table>\n'
-          '<tr><th colspan="5">engine.tag.documentation</th></tr>\n'
-          '<tr><td>description:</td><td colspan="4">Generates markdown documentation of all the tags within a TemplateEngine</td></tr>\n'
-          '<tr><td>return type:</td><td colspan="4">String</td></tr>\n'
-          '<tr><td>example:</td><td colspan="4">{{ engine.tag.documentation() }}</td></tr>\n'
-          '<tr><td>parameter:</td><td>titleLevel</td><td>number</td><td>optional (default=1)</td><td>The level of the tag title</td></tr>\n'
-          '</table>\n'
-          '<table>\n'
-          '<tr><th colspan="5">engine.function.documentation</th></tr>\n'
-          '<tr><td>description:</td><td colspan="4">Generates markdown documentation of all the functions that can be used within a ExpressionTag of a TemplateEngine</td></tr>\n'
-          '<tr><td>return type:</td><td colspan="4">String</td></tr>\n'
-          '<tr><td>example:</td><td colspan="4">{{ engine.function.documentation() }}</td></tr>\n'
-          '<tr><td>parameter:</td><td>titleLevel</td><td>number</td><td>optional (default=1)</td><td>The level of the tag title</td></tr>\n'
-          '</table>\n'
-          '# Test Functions\n'
-          '<table>\n'
-          '<tr><th colspan="5">testFunction</th></tr>\n'
-          '<tr><td>description:</td><td colspan="4">TestDescription</td></tr>\n'
-          '<tr><td>return type:</td><td colspan="4">Object</td></tr>\n'
-          '<tr><td>example:</td><td colspan="4">{{ testFunction(parameter2=12.34, parameter3=true) }}</td></tr>\n'
-          '<tr><td>parameter:</td><td>parameter1</td><td>String</td><td colspan="2">optional (default="Hello")</td></tr>\n'
-          '<tr><td>parameter:</td><td>parameter2</td><td>double</td><td colspan="2">mandatory</td></tr>\n'
-          '<tr><td>parameter:</td><td>parameter3</td><td>boolean</td><td colspan="2">mandatory</td></tr>\n'
-          '</table>';
+      var expected = FunctionDocumentation()
+          .function(RenderContext(engine), {'titleLevel': 1});
 
       then('parseResult.errors.length should be 0',
           () => parseResult.errors.length.should.be(0));
