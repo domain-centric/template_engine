@@ -40,11 +40,11 @@ void main() {
       var expected = '<table>\n'
           '<tr><th colspan="2">Boolean</th></tr>\n'
           '<tr><td>description:</td><td>a form of data with only two possible values :"true" and "false"</td></tr>\n'
-          '<tr><td>examples:</td><td>true\n'
-          'TRUE\n'
-          'TRue\n'
-          'false\n'
-          'FALSE\n'
+          '<tr><td>examples:</td><td>true<br>\n'
+          'TRUE<br>\n'
+          'TRue<br>\n'
+          'false<br>\n'
+          'FALSE<br>\n'
           'FAlse</td></tr>\n'
           '</table>\n';
 

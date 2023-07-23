@@ -15,7 +15,7 @@ abstract class BaseType<T extends Object> implements DocumentationFactory {
     var writer = HtmlTableWriter();
     writer.addHeaderRow([name], [2]);
     writer.addRow(['description:', description]);
-    writer.addRow(['examples:', examples.join('\n')]);
+    writer.addRow(['examples:', examples.join('<br>\n')]);
     return writer.toHtmlLines();
   }
 }

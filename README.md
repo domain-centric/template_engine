@@ -33,6 +33,7 @@ void main() {
 
 For more see: [Examples](https://pub.dev/packages/template_engine/example)
 
+
 # Tags
 ## ExpressionTag
 Evaluates an expression that can contain values (bool, num, string), operators, functions, constants and variables.
@@ -41,29 +42,29 @@ Example: The cos of 2 pi = {{cos(2 * pi)}}. The volume of a sphere = {{ (3/4) * 
 <table>
 <tr><th colspan="2">String</th></tr>
 <tr><td>description:</td><td>a form of data containing a sequence of characters</td></tr>
-<tr><td>examples:</td><td>'Hello'
-"world"
+<tr><td>examples:</td><td>'Hello'<br>
+"world"<br>
 'Hel'+'lo '&"world" & "."</td></tr>
 </table>
 
 <table>
 <tr><th colspan="2">Number</th></tr>
 <tr><td>description:</td><td>a form of data to count or measure something.</td></tr>
-<tr><td>examples:</td><td>42
--123
-3.141
-1.2e5
+<tr><td>examples:</td><td>42<br>
+-123<br>
+3.141<br>
+1.2e5<br>
 3.4e-1</td></tr>
 </table>
 
 <table>
 <tr><th colspan="2">Boolean</th></tr>
 <tr><td>description:</td><td>a form of data with only two possible values :"true" and "false"</td></tr>
-<tr><td>examples:</td><td>true
-TRUE
-TRue
-false
-FALSE
+<tr><td>examples:</td><td>true<br>
+TRUE<br>
+TRue<br>
+false<br>
+FALSE<br>
 FAlse</td></tr>
 </table>
 
