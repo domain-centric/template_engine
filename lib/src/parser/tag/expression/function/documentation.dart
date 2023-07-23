@@ -94,3 +94,74 @@ abstract class DocumentationFactory {
   List<String> createMarkdownDocumentation(
       RenderContext renderContext, int titleLevel);
 }
+
+class HtmlTableWriter {
+  List<String> rows = [];
+
+  void addHeaderRow(List<String> values, [List<int>? columnSpans]) {
+    var row = HtmlTableRow(values, columnSpans, CellType.tableHeader);
+    rows.add(row.toHtml());
+  }
+
+  void addRow(List<String> values, [List<int>? columnSpans]) {
+    var row = HtmlTableRow(values, columnSpans, CellType.tableData);
+    rows.add(row.toHtml());
+  }
+
+  List<String> toHtml() => ['<table>', ...rows, '</table>'];
+}
+
+class HtmlTableRow {
+  late StringBuffer row;
+
+  HtmlTableRow(
+    List<String> values, [
+    List<int>? columnSpans,
+    CellType cellType = CellType.tableData,
+  ]) {
+    row = StringBuffer();
+    row.write('<tr>');
+    for (int i = 0; i < values.length; i++) {
+      var span = _columnSpan(columnSpans, i);
+      if (span <= 1) {
+        row.write('<${cellType.elementName}>');
+      } else {
+        row.write('<${cellType.elementName} colspan="$span">');
+      }
+      row.write(values[i]);
+      row.write('</${cellType.elementName}>');
+    }
+    row.write('</tr>');
+  }
+
+  int _columnSpan(List<int>? columnSpans, int i) {
+    if (columnSpans == null || i >= columnSpans.length) {
+      return 1;
+    }
+    return columnSpans[i];
+  }
+
+  String toHtml() => row.toString();
+}
+
+enum CellType {
+  tableHeader('th'),
+
+  /// normal cell
+  tableData('td');
+
+  final String elementName;
+  const CellType(this.elementName);
+}
+
+String typeDescription<T>() {
+  switch (T) {
+    case num:
+      return 'number';
+    case bool:
+      return 'boolean';
+
+    default:
+      return T.toString();
+  }
+}

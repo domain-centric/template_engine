@@ -15,6 +15,12 @@
             "type": "dart",
             "request": "launch",
             "program": "test\\src\\variable\\variable_test.dart"
+        },
+        {
+            "name": "Dart (tool\\generate_function_documentation.dart)",
+            "type": "dart",
+            "request": "launch",
+            "program": "tool\\generate_function_documentation.dart"
         }
     ]
 }

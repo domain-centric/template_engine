@@ -1,7 +1,6 @@
 library template_engine;
 
 export 'src/template_engine.dart';
-export 'src/string_util.dart';
 export 'src/template.dart';
 export 'src/render.dart';
 export 'src/parser/parser.dart';

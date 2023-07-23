@@ -80,28 +80,25 @@ class ExpressionFunction<R extends Object> implements DocumentationFactory {
 
   @override
   List<String> createMarkdownDocumentation(
-          RenderContext renderContext, int titleLevel) =>
-      [
-        '<table>',
-        '<tr><th colspan="5">$name</th></tr>',
-        if (description != null)
-          '<tr><td>description:</td><td colspan="4">$description</td></tr>',
-        '<tr><td>return type:</td><td colspan="4">${typeDescription<R>()}</td></tr>',
-        _createExampleLine(),
-        ...parameters
-            .map((parameter) => parameter.createMarkdownDocumentation(
-                renderContext, titleLevel))
-            .flattened,
-        '</table>',
-      ];
-
-  String _createExampleLine() {
+      RenderContext renderContext, int titleLevel) {
+    var writer = HtmlTableWriter();
+    writer.addHeaderRow([name], [5]);
+    if (description != null) {
+      writer.addRow(['description:', description!], [1, 4]);
+    }
+    writer.addRow(['return type:', typeDescription<R>()], [1, 4]);
     var expression = exampleExpression ?? _createExampleExpression(this);
     if (exampleResult == null || exampleResult!.trim().isEmpty) {
-      return '<tr><td>example:</td><td colspan="4">$expression</td><tr>';
+      writer.addRow(['example:', expression], [1, 4]);
+    } else {
+      writer.addRow(['example:', expression, exampleResult!], [1, 2, 2]);
     }
-    return '<tr><td>example:</td><td colspan="2">'
-        '$expression</td><td colspan="2">$exampleResult</td><tr>';
+    var parameterRows = parameters
+        .map((parameter) =>
+            parameter.createMarkdownDocumentation(renderContext, titleLevel))
+        .flattened;
+    writer.rows.addAll(parameterRows);
+    return writer.toHtml();
   }
 
   String _createExampleExpression(ExpressionFunction function) {
@@ -157,7 +154,7 @@ class FunctionGroup extends DelegatingList<ExpressionFunction>
   List<String> createMarkdownDocumentation(
           RenderContext renderContext, int titleLevel) =>
       [
-        '\n${"#" * titleLevel} $name\n',
+        '${"#" * titleLevel} $name',
         ...map((function) => function.createMarkdownDocumentation(
             renderContext, titleLevel + 1)).flattened
       ];
@@ -203,14 +200,19 @@ class Parameter<T> implements DocumentationFactory {
   List<String> createMarkdownDocumentation(
           RenderContext renderContext, int titleLevel) =>
       [
-        '<tr>'
-            '<td>parameter:</td>'
-            '<td>$name</td>'
-            '<td>${typeDescription<T>()}</td>'
-            '<td${description == null ? ' colspan="2"' : ""}>$presence</td>',
-        if (description != null)
-          '<td>$description</td>'
-              '</tr>',
+        HtmlTableRow([
+          'parameter:',
+          name,
+          typeDescription<T>(),
+          presence.toString(),
+          if (description != null) description!
+        ], [
+          1,
+          1,
+          1,
+          description == null ? 2 : 1,
+          1
+        ]).toHtml()
       ];
 }
 
