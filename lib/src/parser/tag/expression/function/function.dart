@@ -88,10 +88,9 @@ class ExpressionFunction<R extends Object> implements DocumentationFactory {
     }
     writer.addRow(['return type:', typeDescription<R>()], [1, 4]);
     var expression = exampleExpression ?? _createExampleExpression(this);
-    if (exampleResult == null || exampleResult!.trim().isEmpty) {
-      writer.addRow(['example:', expression], [1, 4]);
-    } else {
-      writer.addRow(['example:', expression, exampleResult!], [1, 2, 2]);
+    writer.addRow(['example:', expression], [1, 4]);
+    if (exampleResult != null && exampleResult!.trim().isNotEmpty) {
+      writer.addRow(['example result:', exampleResult!], [1, 4]);
     }
     var parameterRows = parameters
         .map((parameter) =>
