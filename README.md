@@ -92,7 +92,6 @@ a named container for some type of information
 (like number, boolean, String etc...)
  
 [//]: # (TODO: This text should be imported from the dart doc of the Variables typedef using document_generator package)
-Variables in the [TemplateEngine]:
 * Variables are stored as key, value pairs in a dart Map<String, Object> where:
   * String=Variable name
   * Object=Variable value

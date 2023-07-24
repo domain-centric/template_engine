@@ -1,16 +1,16 @@
 import 'package:petitparser/petitparser.dart';
 import 'package:template_engine/template_engine.dart';
 
-/// A [Variable](https://en.wikipedia.org/wiki/Variable_(computer_science)) is
+/// A [variable](https://en.wikipedia.org/wiki/Variable_(computer_science)) is
 /// a named container for some type of information
 /// (like [num], [bool], [String] etc...)
 abstract class Variable {
   // documentation only
 }
 
-/// Variables are stored as key, value pairs in a dart Map<String, Object> where:
-/// * String=Variable name
-/// * Object=Variable value
+/// * Variables are stored as key, value pairs in a dart Map<String, Object> where:
+///   * String=Variable name
+///   * Object=Variable value
 /// * Variables be used in an [ExpressionTag]
 /// * Initial variable values are passed to the TemplateEngine.render method
 /// * Variables can be modified during rendering
