@@ -3,11 +3,17 @@ import 'package:template_engine/template_engine.dart';
 
 typedef Variables = Map<String, Object>;
 
-/// a [VariableExpression] is an abstract storage location paired with an associated
+/// a [Variable](https://en.wikipedia.org/wiki/Variable_(computer_science)) is 
+/// an abstract storage location paired with an associated
 /// symbolic name, which contains some known or unknown quantity of information
 /// referred to as a value; or in simpler terms, a [VariableExpression] is a
 /// named container for a particular set of bits or type of data
 /// (like [num], [bool], [String] etc...)
+/// 
+/// Variables in the [TemplateEngine]:
+/// * Variables be used in an [ExpressionTag]:
+/// * Initial variable values are passed to the TemplateEngine.render method
+/// * Variables can be modified during rendering 
 
 class VariableExpression extends Expression {
   final Source source;
@@ -68,9 +74,9 @@ class VariableException implements Exception {
 /// in the [Variables] map.
 ///
 /// The [VariableName]:
-/// * must be unique and does not match a [TagName]
+/// * must be unique and does not match a other [Tag] syntax
 /// * must start with a letter, optionally followed by letters and or digits.
-/// * is case sensitive.
+/// * is case sensitive (convention: use [camelCase](https://en.wikipedia.org/wiki/Camel_case))
 ///
 /// Variables can be nested. Concatenate [VariableName]s separated with dot's
 /// to get the [VariableValue] of a nested [Variable].
@@ -78,6 +84,10 @@ class VariableException implements Exception {
 /// E.g.:
 /// [Variables] map: {'person': {'name': 'John Doe', 'age',30}}
 /// [VariableName] person.name: refers to the [VariableValue] of 'John Doe'
+/// 
+/// Examples of the use of an variable:
+/// * (Variable Example)[https://github.com/domain-centric/template_engine/blob/main/example/tag_variable_simple.dart]
+/// * (Nested Variable Example)[https://github.com/domain-centric/template_engine/blob/main/example/tag_variable_nested.dart]
 class VariableName {
   static final _parser = (letter().plus() & digit().star()).plus();
   static final pathParser = (_parser & (char('.') & _parser).star());
