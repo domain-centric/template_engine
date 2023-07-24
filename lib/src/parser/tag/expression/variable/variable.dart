@@ -1,8 +1,7 @@
 import 'package:petitparser/petitparser.dart';
 import 'package:template_engine/template_engine.dart';
 
-
-/// A [Variable](https://en.wikipedia.org/wiki/Variable_(computer_science)) is 
+/// A [Variable](https://en.wikipedia.org/wiki/Variable_(computer_science)) is
 /// a named container for some type of information
 /// (like [num], [bool], [String] etc...)
 abstract class Variable {
@@ -10,11 +9,11 @@ abstract class Variable {
 }
 
 /// Variables are stored as key, value pairs in a dart Map<String, Object> where:
- /// * String=Variable name
- /// * Object=Variable value
+/// * String=Variable name
+/// * Object=Variable value
 /// * Variables be used in an [ExpressionTag]
 /// * Initial variable values are passed to the TemplateEngine.render method
-/// * Variables can be modified during rendering 
+/// * Variables can be modified during rendering
 typedef Variables = Map<String, Object>;
 
 /// An expression to return a variable value
@@ -84,13 +83,14 @@ class VariableException implements Exception {
 /// Variables can be nested. Concatenate [VariableName]s separated with dot's
 /// to get the [VariableValue] of a nested [Variable].
 ///
-/// E.g.:
-/// [Variables] map: {'person': {'name': 'John Doe', 'age',30}}
-/// [VariableName] person.name: refers to the [VariableValue] of 'John Doe'
-/// 
-/// Examples of the use of an variable:
-/// * (Variable Example)[https://github.com/domain-centric/template_engine/blob/main/example/tag_variable_simple.dart]
-/// * (Nested Variable Example)[https://github.com/domain-centric/template_engine/blob/main/example/tag_variable_nested.dart]
+/// E.g.:<br>
+/// Variable map: {'person': {'name': 'John Doe', 'age',30}}<br>
+/// Variable Name person.name: refers to the variable value of 'John Doe'
+///
+/// Examples:
+/// * [Variable Example](https://github.com/domain-centric/template_engine/blob/main/example/tag_variable_simple.dart)
+/// * [Nested Variable Example](https://github.com/domain-centric/template_engine/blob/main/example/tag_variable_nested.dart)
+
 class VariableName {
   static final _parser = (letter().plus() & digit().star()).plus();
   static final pathParser = (_parser & (char('.') & _parser).star());

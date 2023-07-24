@@ -66,7 +66,7 @@ Variables in the [TemplateEngine]:
 * Variables are stored as key, value pairs in a dart Map<String, Object> where:
   * String=Variable name
   * Object=Variable value
-* Variables be used in an [ExpressionTag]
+* Variables be used in an tag expression
 * Initial variable values are passed to the TemplateEngine.render method
 * Variables can be modified during rendering 
 
@@ -79,11 +79,11 @@ The variable name:
 Variables can be nested. Concatenate variable names separated with dot's
 to get the variable value of a nested variable.
 
-E.g.:
+E.g.:<br>
 Variable map: {'person': {'name': 'John Doe', 'age',30}}<br>
 Variable Name person.name: refers to the variable value of 'John Doe'
  
-Examples of the use of an variable:
+Examples:
 * [Variable Example](https://github.com/domain-centric/template_engine/blob/main/example/tag_variable_simple.dart)
 * [Nested Variable Example](https://github.com/domain-centric/template_engine/blob/main/example/tag_variable_nested.dart)
 

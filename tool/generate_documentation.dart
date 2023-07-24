@@ -1,6 +1,5 @@
 // ignore_for_file: avoid_print
 
-
 import 'package:template_engine/template_engine.dart';
 
 void main(List<String> args) {
