@@ -17,8 +17,10 @@ import 'package:template_engine/template_engine.dart';
 /// [Mustache](http://mustache.github.io/) and
 /// [Handlebars](https://handlebarsjs.com).
 ///
-/// You can also define other Tag brackets in the [TemplateEngine] constructor
-/// parameters. See [TemplateEngine.tagStart] and [TemplateEngine.tagEnd].
+/// You can also define alternative [Tag] brackets in the [TemplateEngine]
+/// constructor parameters. See [TemplateEngine.tagStart] and
+/// [TemplateEngine.tagEnd].
+///
 /// It is recommended to use a start and end combination that is not used
 /// elsewhere in your templates, e.g.: Do not use < > as [Tag] start and end
 /// if your template contains HTML or XML

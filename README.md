@@ -50,6 +50,31 @@ See: [tool/generate_documentation.dart](https://github.com/domain-centric/templa
 For more see: [Examples](https://pub.dev/packages/template_engine/example)
 
 # Tags
+[//]: # (TODO: This text should be imported from the dart doc of the Tag class using document_generator package)
+Tags are specific texts in templates that are replaced by the
+TemplateEngine with other information.
+
+A tag:
+* Starts with some bracket and/or character combination, e.g.: {{
+* Followed by some contents
+* Ends with some closing bracket and/or character combination, e.g.: }}
+
+A tag example: {{customer.name}}
+
+By default the TemplateEngine tags start with {{ and end with }} brackets,
+just like the popular template engines [Mustache](http://mustache.github.io/) 
+and [Handlebars](https://handlebarsjs.com).
+
+You can also define alternative tag brackets in the TemplateEngine constructor
+parameters. See TemplateEngine.tagStart and TemplateEngine.tagEnd.
+
+It is recommended to use a start and end combination that is not used
+elsewhere in your templates, e.g.: Do not use < > as tag start and end
+if your template contains HTML or XML.
+
+The TemplateEngine comes with default tags. You can replace or add your
+own tags by manipulating the the TemplateEngine.tags field.
+
 ## ExpressionTag
 Evaluates an expression that can contain values (bool, num, string), operators, functions, constants and variables.
 Example: The cos of 2 pi = {{cos(2 * pi)}}. The volume of a sphere = {{ (3/4) * pi * (radius ^ 3) }}.
