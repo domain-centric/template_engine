@@ -95,7 +95,7 @@ a named container for some type of information
 * Variables are stored as key, value pairs in a dart Map<String, Object> where:
   * String=Variable name
   * Object=Variable value
-* Variables be used in an tag expression
+* Variables can be used in a tag expression
 * Initial variable values are passed to the TemplateEngine.render method
 * Variables can be modified during rendering 
 

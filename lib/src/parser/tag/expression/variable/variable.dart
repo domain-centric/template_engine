@@ -11,7 +11,7 @@ abstract class Variable {
 /// * Variables are stored as key, value pairs in a dart Map<String, Object> where:
 ///   * String=Variable name
 ///   * Object=Variable value
-/// * Variables be used in an [ExpressionTag]
+/// * Variables can be used in an [ExpressionTag]
 /// * Initial variable values are passed to the TemplateEngine.render method
 /// * Variables can be modified during rendering
 typedef Variables = Map<String, Object>;
