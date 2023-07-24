@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:petitparser/petitparser.dart';
 import 'package:template_engine/template_engine.dart';
 
@@ -27,7 +29,23 @@ class TextTemplate extends Template {
         );
 }
 
-//TODO FileTemplate: gets text from a file on this device
+class FileTemplate extends Template {
+  FileTemplate(File source)
+      : super(source: source.path, text: source.readAsStringSync());
+
+  FileTemplate.fromRelativePath(List<String> relativePath)
+      : this(createRelativeFile(relativePath));
+}
+
+/// creates a file relative to the current path
+File createRelativeFile(List<String> relativePath) {
+  var currentPath = Directory.current.path;
+  var filePath = [
+    ...currentPath.split(Platform.pathSeparator),
+    ...relativePath,
+  ].join(Platform.pathSeparator);
+  return File(filePath);
+}
 //TODO WebTemplate: gets text from a URL
 
 /// A cursor position within the [Template.text]

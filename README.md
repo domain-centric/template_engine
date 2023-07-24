@@ -62,7 +62,7 @@ Example: The cos of 2 pi = {{cos(2 * pi)}}. The volume of a sphere = {{ (3/4) * 
 
 <table>
 <tr><th colspan="2">Number</th></tr>
-<tr><td>description:</td><td>a form of data to count or measure something.</td></tr>
+<tr><td>description:</td><td>a form of data to express the size of something.</td></tr>
 <tr><td>examples:</td><td>42<br>
 -123<br>
 3.141<br>

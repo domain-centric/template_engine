@@ -57,7 +57,7 @@ class Number extends BaseType<num> {
   String get name => 'Number';
 
   @override
-  String get description => 'a form of data to count or measure something.';
+  String get description => 'a form of data to express the size of something.';
 
   @override
   List<String> get examples => ["42", "-123", "3.141", "1.2e5", "3.4e-1"];

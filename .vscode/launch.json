@@ -5,22 +5,10 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Dart (example\\example.dart)",
+            "name": "Dart (tool\\generate_documentation.dart)",
             "type": "dart",
             "request": "launch",
-            "program": "example\\example.dart"
-        },
-        {
-            "name": "Dart (test\\src\\variable\\variable_test.dart)",
-            "type": "dart",
-            "request": "launch",
-            "program": "test\\src\\variable\\variable_test.dart"
-        },
-        {
-            "name": "Dart (tool\\generate_function_documentation.dart)",
-            "type": "dart",
-            "request": "launch",
-            "program": "tool\\generate_function_documentation.dart"
+            "program": "tool\\generate_documentation.dart"
         }
     ]
 }
