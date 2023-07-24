@@ -56,38 +56,36 @@ For more see: [Examples](https://pub.dev/packages/template_engine/example)
 {{engine.baseType.documentation(2)}}
 
 # Variables in tag expressions
-[//]: # (TODO: This text should be imported from the dart doc of the VariableExpression class using document_generator package)
-a [Variable](https://en.wikipedia.org/wiki/Variable_(computer_science)) is 
-an abstract storage location paired with an associated
-symbolic name, which contains some known or unknown quantity of information
-referred to as a value; or in simpler terms, a [VariableExpression] is a
-named container for a particular set of bits or type of data
+[//]: # (TODO: This text should be imported from the dart doc of the Variable class using document_generator package)
+A [Variable](https://en.wikipedia.org/wiki/Variable_(computer_science)) is
+a named container for some type of information 
 (like number, boolean, String etc...)
  
+[//]: # (TODO: This text should be imported from the dart doc of the Variables typedef using document_generator package)
 Variables in the [TemplateEngine]:
-* Variables be used in an [ExpressionTag]:
+* Variables are stored as key, value pairs in a dart Map<String, Object> where:
+  * String=Variable name
+  * Object=Variable value
+* Variables be used in an [ExpressionTag]
 * Initial variable values are passed to the TemplateEngine.render method
 * Variables can be modified during rendering 
 
-The [VariableName] identifies the [Variable] and corresponds with the keys
-in the [Variables] map.
-
 [//]: # (TODO: This text should be imported from the dart doc of the VariableName class using document_generator package)
-The [VariableName]:
+The variable name:
 * must be unique and does not match a other [Tag] syntax
-* must start with a letter, optionally followed by letters and or digits.
+* must start with a letter, optionally followed by letters and or digits
 * is case sensitive (convention: use [camelCase](https://en.wikipedia.org/wiki/Camel_case))
 
-Variables can be nested. Concatenate [VariableName]s separated with dot's
-to get the [VariableValue] of a nested [Variable].
+Variables can be nested. Concatenate variable names separated with dot's
+to get the variable value of a nested variable.
 
 E.g.:
-[Variables] map: {'person': {'name': 'John Doe', 'age',30}}
-[VariableName] person.name: refers to the [VariableValue] of 'John Doe'
+Variable map: {'person': {'name': 'John Doe', 'age',30}}<br>
+Variable Name person.name: refers to the variable value of 'John Doe'
  
 Examples of the use of an variable:
-* (Variable Example)[https://github.com/domain-centric/template_engine/blob/main/example/tag_variable_simple.dart]
-* (Nested Variable Example)[https://github.com/domain-centric/template_engine/blob/main/example/tag_variable_nested.dart]
+* [Variable Example](https://github.com/domain-centric/template_engine/blob/main/example/tag_variable_simple.dart)
+* [Nested Variable Example](https://github.com/domain-centric/template_engine/blob/main/example/tag_variable_nested.dart)
 
 # Functions in tag expressions
 {{engine.function.documentation(2)}}

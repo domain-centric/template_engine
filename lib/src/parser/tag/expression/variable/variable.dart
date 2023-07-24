@@ -1,20 +1,23 @@
 import 'package:petitparser/petitparser.dart';
 import 'package:template_engine/template_engine.dart';
 
-typedef Variables = Map<String, Object>;
 
-/// a [Variable](https://en.wikipedia.org/wiki/Variable_(computer_science)) is 
-/// an abstract storage location paired with an associated
-/// symbolic name, which contains some known or unknown quantity of information
-/// referred to as a value; or in simpler terms, a [VariableExpression] is a
-/// named container for a particular set of bits or type of data
+/// A [Variable](https://en.wikipedia.org/wiki/Variable_(computer_science)) is 
+/// a named container for some type of information
 /// (like [num], [bool], [String] etc...)
-/// 
-/// Variables in the [TemplateEngine]:
-/// * Variables be used in an [ExpressionTag]:
+abstract class Variable {
+  // documentation only
+}
+
+/// Variables are stored as key, value pairs in a dart Map<String, Object> where:
+ /// * String=Variable name
+ /// * Object=Variable value
+/// * Variables be used in an [ExpressionTag]
 /// * Initial variable values are passed to the TemplateEngine.render method
 /// * Variables can be modified during rendering 
+typedef Variables = Map<String, Object>;
 
+/// An expression to return a variable value
 class VariableExpression extends Expression {
   final Source source;
   VariableExpression(this.source, this.namePath);
@@ -75,7 +78,7 @@ class VariableException implements Exception {
 ///
 /// The [VariableName]:
 /// * must be unique and does not match a other [Tag] syntax
-/// * must start with a letter, optionally followed by letters and or digits.
+/// * must start with a letter, optionally followed by letters and or digits
 /// * is case sensitive (convention: use [camelCase](https://en.wikipedia.org/wiki/Camel_case))
 ///
 /// Variables can be nested. Concatenate [VariableName]s separated with dot's
@@ -102,11 +105,6 @@ class VariableName {
   }
 }
 
-/// The [VariableValue]s are initialized when the [Variables] are given
-/// to the [TemplateEngine] as a constructor parameter.
-/// The [VariableValue]s can be manipulated during when
-/// the [TemplateEngine.render] method is called.
-///
 /// [VariableValue]s must be one of the following types:
 /// * [bool]
 /// * [String]
