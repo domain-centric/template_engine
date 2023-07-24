@@ -37,23 +37,36 @@ abstract class Tag<T extends Object> implements DocumentationFactory {
   }
 
   final String name;
-  final String description;
+  final List<String> description;
 
   /// gives an example of the tag, e.g. {{tag}}
-  String example(TemplateEngine engine) => [
-        engine.tagStart,
-        name,
-        engine.tagEnd,
-      ].join();
+  List<String> examples(TemplateEngine engine) => [
+        [
+          engine.tagStart,
+          name,
+          engine.tagEnd,
+        ].join()
+      ];
 
   @override
   List<String> createMarkdownDocumentation(
-          RenderContext renderContext, int titleLevel) =>
-      [
-        '${"#" * titleLevel} $name',
-        description,
-        'Example: ${example(renderContext.engine)}',
-      ];
+      RenderContext renderContext, int titleLevel) {
+    var writer = HtmlTableWriter();
+    writer.addHeaderRow([name], [2]);
+    writer.addRow(['description:', description.join('<br>')]);
+    var exampleLines = examples(renderContext.engine);
+    switch (exampleLines.length) {
+      case 0:
+        break;
+      case 1:
+        writer.addRow(['example:', exampleLines.first]);
+        break;
+
+      default:
+        writer.addRow(['examples:', exampleLines.join('<br>')]);
+    }
+    return writer.toHtmlLines();
+  }
 
   Parser<T> createTagParser(ParserContext context);
 }

@@ -17,11 +17,11 @@ void main() {
         "TextTemplate('{{engine.tag.documentation()}}'))", () {
       var parseResult =
           engine.parse(const TextTemplate('{{engine.tag.documentation()}}'));
-      var expected = '# ExpressionTag\n'
-          'Evaluates an expression that can contain values (bool, num, string),'
-          ' operators, functions, constants and variables.\n'
-          'Example: The cos of 2 pi = {{cos(2 * pi)}}. '
-          'The volume of a sphere = {{ (3/4) * pi * (radius ^ 3) }}.';
+      var expected = '<table>\n'
+          '<tr><th colspan="2">ExpressionTag</th></tr>\n'
+          '<tr><td>description:</td><td>Evaluates an expression that can a contain:<br>* Base Types (e.g. boolean, number or String)<br>* Constants (e.g. pi)<br>* Variables (e.g. person.name )<br>* Operators (e.g. + - * /)<br>* Functions (e.g. cos(7) )<br>* or any combination of the above</td></tr>\n'
+          '<tr><td>examples:</td><td>The cos of 2 pi = {{ cos(2 * pi) }}.<br>The volume of a sphere = {{ (3/4) * pi * (radius ^ 3) }}.</td></tr>\n'
+          '</table>\n';
       then('parseResult.errors.length should be 0',
           () => parseResult.errors.length.should.be(0));
       when('calling: engine.render(parseResult)', () {

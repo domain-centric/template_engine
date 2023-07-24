@@ -7,18 +7,34 @@ import 'package:given_when_then_unit_test/given_when_then_unit_test.dart';
 void main() {
   given('a TemplateEngine and ExpressionTag().example(engine)', () {
     var engine = TemplateEngine();
-    var input = ExpressionTag().example(engine);
-    when('calling: engine.parse(TextTemplate("$input"))', () {
-      var parseResult = engine.parse(TextTemplate(input));
+    var examples = ExpressionTag().examples(engine);
+
+    when('calling: engine.parse(TextTemplate("${examples.first}"))', () {
+      var parseResult = engine.parse(TextTemplate(examples.first));
 
       then('parseResult.errorMessage should be Null Or Empty', () {
         parseResult.errorMessage.should.beNullOrEmpty();
       });
-      when("calling: engine.render(parseResult, {'radius':10})", () {
+      when("calling: engine.render(parseResult)", () {
+        var renderResult = engine.render(parseResult);
+
+        var expected = 'The cos of 2 pi = 1.0.';
+        then('renderResult.text should be: $expected', () {
+          renderResult.text.should.be(expected);
+        });
+      });
+    });
+
+    when('calling: engine.parse(TextTemplate("${examples.last}"))', () {
+      var parseResult = engine.parse(TextTemplate(examples.last));
+
+      then('parseResult.errorMessage should be Null Or Empty', () {
+        parseResult.errorMessage.should.beNullOrEmpty();
+      });
+      when("calling: engine.render(parseResult,{'radius': 10})", () {
         var renderResult = engine.render(parseResult, {'radius': 10});
 
-        var expected = 'The cos of 2 pi = 1.0. '
-            'The volume of a sphere = 2356.194490192345.';
+        var expected = 'The volume of a sphere = 2356.194490192345.';
         then('renderResult.text should be: $expected', () {
           renderResult.text.should.be(expected);
         });

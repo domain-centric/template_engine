@@ -75,9 +75,12 @@ if your template contains HTML or XML.
 The TemplateEngine comes with default tags. You can replace or add your
 own tags by manipulating the the TemplateEngine.tags field.
 
-## ExpressionTag
-Evaluates an expression that can contain values (bool, num, string), operators, functions, constants and variables.
-Example: The cos of 2 pi = {{cos(2 * pi)}}. The volume of a sphere = {{ (3/4) * pi * (radius ^ 3) }}.
+<table>
+<tr><th colspan="2">ExpressionTag</th></tr>
+<tr><td>description:</td><td>Evaluates an expression that can a contain:<br>* Base Types (e.g. boolean, number or String)<br>* Constants (e.g. pi)<br>* Variables (e.g. person.name )<br>* Operators (e.g. + - * /)<br>* Functions (e.g. cos(7) )<br>* or any combination of the above</td></tr>
+<tr><td>examples:</td><td>The cos of 2 pi = {{ cos(2 * pi) }}.<br>The volume of a sphere = {{ (3/4) * pi * (radius ^ 3) }}.</td></tr>
+</table>
+
 
 # Base types in tag expressions
 <table>
