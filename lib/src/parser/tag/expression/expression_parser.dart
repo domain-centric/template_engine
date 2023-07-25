@@ -6,7 +6,7 @@ Parser<Expression> expressionParser(ParserContext parserContext,
   final builder = ExpressionBuilder2<Expression>();
   builder.primitive(
     ChoiceParser([
-      ...baseTypeParsers(parserContext.engine.baseTypes),
+      ...dataTypeParsers(parserContext.engine.dataTypes),
       functionsParser(
           context: parserContext,
           loopback: builder.loopback,

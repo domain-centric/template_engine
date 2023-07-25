@@ -18,7 +18,7 @@ A flexible Dart library to parse templates and render output such as:
 
 # Features
 * You can use expression containing:
-  * Base types
+  * Data types
   * Constants
   * Variables
   * Operators
@@ -77,12 +77,12 @@ own tags by manipulating the the TemplateEngine.tags field.
 
 <table>
 <tr><th colspan="2">ExpressionTag</th></tr>
-<tr><td>description:</td><td>Evaluates an expression that can a contain:<br>* Base Types (e.g. boolean, number or String)<br>* Constants (e.g. pi)<br>* Variables (e.g. person.name )<br>* Operators (e.g. + - * /)<br>* Functions (e.g. cos(7) )<br>* or any combination of the above</td></tr>
+<tr><td>description:</td><td>Evaluates an expression that can a contain:<br>* Data Types (e.g. boolean, number or String)<br>* Constants (e.g. pi)<br>* Variables (e.g. person.name )<br>* Operators (e.g. + - * /)<br>* Functions (e.g. cos(7) )<br>* or any combination of the above</td></tr>
 <tr><td>examples:</td><td>The cos of 2 pi = {{ cos(2 * pi) }}.<br>The volume of a sphere = {{ (3/4) * pi * (radius ^ 3) }}.</td></tr>
 </table>
 
 
-# Base types in tag expressions
+# Data types in tag expressions
 <table>
 <tr><th colspan="2">String</th></tr>
 <tr><td>description:</td><td>a form of data containing a sequence of characters</td></tr>
@@ -247,10 +247,10 @@ Examples:
 </table>
 
 <table>
-<tr><th colspan="5">engine.baseType.documentation</th></tr>
+<tr><th colspan="5">engine.dataType.documentation</th></tr>
 <tr><td>description:</td><td colspan="4">Generates markdown documentation of all the basic types that can be used within a ExpressionTag of a TemplateEngine</td></tr>
 <tr><td>return type:</td><td colspan="4">String</td></tr>
-<tr><td>example:</td><td colspan="4">{{ engine.baseType.documentation() }}</td></tr>
+<tr><td>example:</td><td colspan="4">{{ engine.dataType.documentation() }}</td></tr>
 <tr><td>parameter:</td><td>titleLevel</td><td>number</td><td>optional (default=1)</td><td>The level of the tag title</td></tr>
 </table>
 

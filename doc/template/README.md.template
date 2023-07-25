@@ -18,7 +18,7 @@ A flexible Dart library to parse templates and render output such as:
 
 # Features
 * You can use expression containing:
-  * Base types
+  * Data types
   * Constants
   * Variables
   * Operators
@@ -77,8 +77,8 @@ own tags by manipulating the the TemplateEngine.tags field.
 
 {{engine.tag.documentation(2)}}
 
-# Base types in tag expressions
-{{engine.baseType.documentation(2)}}
+# Data types in tag expressions
+{{engine.dataType.documentation(2)}}
 
 # Variables in tag expressions
 [//]: # (TODO: This text should be imported from the dart doc of the Variable class using document_generator package)

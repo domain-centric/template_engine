@@ -5,7 +5,7 @@ class ExpressionTag extends Tag {
   ExpressionTag()
       : super(name: 'ExpressionTag', description: [
           'Evaluates an expression that can a contain:',
-          '* Base Types (e.g. boolean, number or String)',
+          '* Data Types (e.g. boolean, number or String)',
           '* Constants (e.g. pi)',
           '* Variables (e.g. person.name )',
           '* Operators (e.g. + - * /)',

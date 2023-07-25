@@ -5,7 +5,7 @@ class DocumentationFunctions extends FunctionGroup {
   DocumentationFunctions()
       : super('Documentation Functions', [
           TagDocumentation(),
-          BaseTypeDocumentation(),
+          DataTypeDocumentation(),
           //TODO constants
           //TODO variables
           //TODO operators
@@ -57,15 +57,15 @@ abstract class DocumentationFunction extends ExpressionFunction<String> {
   }
 }
 
-class BaseTypeDocumentation extends DocumentationFunction {
-  BaseTypeDocumentation()
+class DataTypeDocumentation extends DocumentationFunction {
+  DataTypeDocumentation()
       : super(
-            name: 'engine.baseType.documentation',
+            name: 'engine.dataType.documentation',
             description: 'Generates markdown documentation of all the basic '
                 'types that can be used within a ExpressionTag of a '
                 'TemplateEngine',
             documentationSource: (renderContext) =>
-                renderContext.engine.baseTypes);
+                renderContext.engine.dataTypes);
 }
 
 class TagDocumentation extends DocumentationFunction {

@@ -3,7 +3,19 @@ import 'package:petitparser/petitparser.dart';
 import 'package:template_engine/src/parser/override_message_parser.dart';
 import 'package:template_engine/template_engine.dart';
 
-abstract class BaseType<T extends Object> implements DocumentationFactory {
+/// A [data type](https://en.wikipedia.org/wiki/Data_type) defines what the
+/// possible values an expression, such as a variable, operator
+/// or a function call, might take.
+///
+/// The [TemplateEngine] supports several default [DataType]s.
+///
+/// You can adopt or add your custom [DataType]s by manipulating the
+/// [TemplateEngine.dataTypes] field.
+///
+/// Examples
+/// * [Default Data Types]
+/// * [Custom Data Type]
+abstract class DataType<T extends Object> implements DocumentationFactory {
   String get name;
   String get description;
   List<String> get examples;
@@ -20,8 +32,8 @@ abstract class BaseType<T extends Object> implements DocumentationFactory {
   }
 }
 
-class DefaultBaseTypes extends DelegatingList<BaseType> {
-  DefaultBaseTypes()
+class DefaultDataTypes extends DelegatingList<DataType> {
+  DefaultDataTypes()
       : super([
           QuotesString(),
           Number(),
@@ -29,10 +41,10 @@ class DefaultBaseTypes extends DelegatingList<BaseType> {
         ]);
 }
 
-List<Parser<Expression>> baseTypeParsers(List<BaseType> baseTypes) =>
-    baseTypes.map((baseType) => baseType.createParser()).toList();
+List<Parser<Expression>> dataTypeParsers(List<DataType> dataTypes) =>
+    dataTypes.map((dataType) => dataType.createParser()).toList();
 
-class Boolean extends BaseType<bool> {
+class Boolean extends DataType<bool> {
   @override
   String get name => 'Boolean';
 
@@ -52,7 +64,7 @@ class Boolean extends BaseType<bool> {
           .map((value) => Value<bool>(value.toLowerCase() == 'true'));
 }
 
-class Number extends BaseType<num> {
+class Number extends DataType<num> {
   @override
   String get name => 'Number';
 
@@ -72,7 +84,7 @@ class Number extends BaseType<num> {
       .map((value) => Value<num>(num.parse(value)));
 }
 
-class QuotesString extends BaseType<String> {
+class QuotesString extends DataType<String> {
   @override
   String get name => 'String';
 

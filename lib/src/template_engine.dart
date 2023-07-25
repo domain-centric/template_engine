@@ -42,20 +42,20 @@ class TemplateEngine {
   /// * JSP and ASP uses <% %>
   String tagEnd = '}}';
 
-  final List<BaseType> baseTypes;
+  final List<DataType> dataTypes;
   final List<Constant> constants;
   final List<FunctionGroup> functionGroups;
   final List<OperatorGroup> operatorGroups;
 
   TemplateEngine({
-    List<BaseType>? baseTypes,
+    List<DataType>? dataTypes,
     List<Constant>? constants,
     List<OperatorGroup>? operatorGroups,
     List<FunctionGroup>? functionGroups,
     List<Tag>? tags,
     this.tagStart = '{{',
     this.tagEnd = '}}',
-  })  : baseTypes = baseTypes ?? DefaultBaseTypes(),
+  })  : dataTypes = dataTypes ?? DefaultDataTypes(),
         constants = constants ?? DefaultConstants(),
         functionGroups = functionGroups ?? DefaultFunctionGroups(),
         operatorGroups = operatorGroups ?? DefaultOperators(),

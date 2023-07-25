@@ -9,8 +9,8 @@ void main() {
     engine.functionGroups.clear();
     engine.functionGroups
         .addAll([DocumentationFunctions(), DummyFunctionGroup()]);
-    engine.baseTypes.clear();
-    engine.baseTypes.add(Boolean());
+    engine.dataTypes.clear();
+    engine.dataTypes.add(Boolean());
 
     when(
         "call: engine.parse(const "
@@ -19,7 +19,7 @@ void main() {
           engine.parse(const TextTemplate('{{engine.tag.documentation()}}'));
       var expected = '<table>\n'
           '<tr><th colspan="2">ExpressionTag</th></tr>\n'
-          '<tr><td>description:</td><td>Evaluates an expression that can a contain:<br>* Base Types (e.g. boolean, number or String)<br>* Constants (e.g. pi)<br>* Variables (e.g. person.name )<br>* Operators (e.g. + - * /)<br>* Functions (e.g. cos(7) )<br>* or any combination of the above</td></tr>\n'
+          '<tr><td>description:</td><td>Evaluates an expression that can a contain:<br>* Data Types (e.g. boolean, number or String)<br>* Constants (e.g. pi)<br>* Variables (e.g. person.name )<br>* Operators (e.g. + - * /)<br>* Functions (e.g. cos(7) )<br>* or any combination of the above</td></tr>\n'
           '<tr><td>examples:</td><td>The cos of 2 pi = {{ cos(2 * pi) }}.<br>The volume of a sphere = {{ (3/4) * pi * (radius ^ 3) }}.</td></tr>\n'
           '</table>\n';
       then('parseResult.errors.length should be 0',
@@ -34,9 +34,9 @@ void main() {
 
     when(
         "call: engine.parse(const "
-        "TextTemplate('{{engine.baseType.documentation()}}'))", () {
+        "TextTemplate('{{engine.dataType.documentation()}}'))", () {
       var parseResult = engine
-          .parse(const TextTemplate('{{engine.baseType.documentation()}}'));
+          .parse(const TextTemplate('{{engine.dataType.documentation()}}'));
       var expected = '<table>\n'
           '<tr><th colspan="2">Boolean</th></tr>\n'
           '<tr><td>description:</td><td>a form of data with only two possible values :"true" and "false"</td></tr>\n'
