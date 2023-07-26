@@ -16,20 +16,10 @@ Parser<Expression> expressionParser(ParserContext parserContext,
     ], failureJoiner: selectFarthestJoined),
   );
 
-  _addOperators(parserContext, builder);
+  builder.addOperators(parserContext);
 
   var parser = builder.build();
   return parser;
-}
-
-void _addOperators(
-    ParserContext parserContext, ExpressionBuilder2<Expression> builder) {
-  for (var operatorGroup in parserContext.engine.operatorGroups) {
-    var builderGroup = builder.group();
-    for (var operator in operatorGroup) {
-      operator.addParser(parserContext.template, builderGroup);
-    }
-  }
 }
 
 /// A builder that allows the simple definition of expression grammars with
@@ -120,6 +110,18 @@ class ExpressionBuilder2<T> {
     );
     loopback.set(parser);
     return resolve(parser);
+  }
+
+  void addOperators(
+    ParserContext parserContext,
+  ) {
+    for (var operatorGroup in parserContext.engine.operatorGroups) {
+      var builderGroup = group();
+      for (var operator in operatorGroup) {
+        operator.addParser(parserContext.template,
+            builderGroup as ExpressionGroup2<Expression<Object>>);
+      }
+    }
   }
 }
 
