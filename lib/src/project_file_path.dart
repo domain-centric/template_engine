@@ -48,5 +48,5 @@ class ProjectFilePath {
       Uri.parse('https://github.com/domain-centric/template_engine/blob/main'
           '$relativePath');
 
-  String get githubMarkdownLink => '[$fileName]($githubUri)';
+  String get githubMarkdownLink => '<a href="$githubUri">$fileName</a>';
 }

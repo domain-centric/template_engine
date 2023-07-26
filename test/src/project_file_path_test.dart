@@ -54,8 +54,10 @@ void main() {
 
   test('ProjectFilePath.githubMarkdownLink should be the correct URI',
       () async {
-    ProjectFilePath('/README.md').githubMarkdownLink.should.be('[README.md]'
-        '(https://github.com/domain-centric/'
-        'template_engine/blob/main/README.md)');
+    ProjectFilePath('/README.md')
+        .githubMarkdownLink
+        .should
+        .be('<a href="https://github.com/domain-centric/'
+            'template_engine/blob/main/README.md">README.md</a>');
   });
 }

@@ -10,7 +10,7 @@ import 'package:template_engine/template_engine.dart';
 /// The [TemplateEngine] supports several default [DataType]s.
 ///
 /// ## Custom DataTypes
-/// You can adopt existing DataTypes or add your own custom DataTypes by 
+/// You can adopt existing DataTypes or add your own custom DataTypes by
 /// manipulating the TemplateEngine.dataTypes field.
 /// See [Example](https://github.com/domain-centric/template_engine/blob/main/test/src/parser/tag/expression/data_type/custom_test.dart).
 
