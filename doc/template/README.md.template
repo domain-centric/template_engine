@@ -83,15 +83,14 @@ A [data type](https://en.wikipedia.org/wiki/Data_type) defines what the
 possible values an expression, such as a variable, operator
 or a function call, might take.
 
-The [TemplateEngine] supports several default [DataType]s.
+The TemplateEngine supports several default DataTypes.
 
-You can adopt or add your custom [DataType]s by manipulating the
-TemplateEngine.dataTypes field.
+## Custom DataTypes
+You can adopt existing DataTypes or add your own custom DataTypes by 
+manipulating the TemplateEngine.dataTypes field.
+See [Example](https://github.com/domain-centric/template_engine/blob/main/example/expression_data_type_custom.dart). 
 
-Examples
-* [Default Data Types](https://github.com/domain-centric/template_engine/blob/main/example/expression_data_type_default.dart)
-* [Custom Data Type](https://github.com/domain-centric/template_engine/blob/main/example/expression_data_type_custom.dart)
-
+## Available DataTypes
 {{engine.dataType.documentation(2)}}
 
 # Variables in tag expressions
