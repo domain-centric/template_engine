@@ -86,10 +86,6 @@ class VariableException implements Exception {
 /// E.g.:<br>
 /// Variable map: {'person': {'name': 'John Doe', 'age',30}}<br>
 /// Variable Name person.name: refers to the variable value of 'John Doe'
-///
-/// Examples:
-/// * [Variable Example](https://github.com/domain-centric/template_engine/blob/main/example/tag_variable_simple.dart)
-/// * [Nested Variable Example](https://github.com/domain-centric/template_engine/blob/main/example/tag_variable_nested.dart)
 
 class VariableName {
   static final _parser = (letter().plus() & digit().star()).plus();
