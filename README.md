@@ -143,8 +143,8 @@ Variable map: {'person': {'name': 'John Doe', 'age',30}}<br>
 Variable Name person.name: refers to the variable value of 'John Doe'
  
 Examples:
-* [Variable Example](https://github.com/domain-centric/template_engine/blob/main/example/tag_variable_simple.dart)
-* [Nested Variable Example](https://github.com/domain-centric/template_engine/blob/main/example/tag_variable_nested.dart)
+* [Variable Example](https://github.com/domain-centric/template_engine/blob/main/test/src/parser/tag/expression/variable/variable_test.dart)
+* [Nested Variable Example](https://github.com/domain-centric/template_engine/blob/main/test/src/parser/tag/expression/variable/nested_variable_test.dart)
 
 # Functions in tag expressions
 ## Math Functions
