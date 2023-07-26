@@ -10,7 +10,7 @@ void main() {
     renderResult.text.should.be('0');
   });
 
-  test('{{-42}} should be rendered as 42', () {
+  test('{{-42}} should be rendered as -42', () {
     var engine = TemplateEngine();
     var parseResult = engine.parse(const TextTemplate('{{-42}}'));
     var renderResult = engine.render(parseResult);

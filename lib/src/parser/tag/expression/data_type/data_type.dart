@@ -9,12 +9,10 @@ import 'package:template_engine/template_engine.dart';
 ///
 /// The [TemplateEngine] supports several default [DataType]s.
 ///
-/// You can adopt or add your custom [DataType]s by manipulating the
-/// [TemplateEngine.dataTypes] field.
-///
-/// Examples
-/// * [Default Data Types](https://github.com/domain-centric/template_engine/blob/main/example/expression_data_type_default.dart)
-/// * [Custom Data Type](https://github.com/domain-centric/template_engine/blob/main/example/expression_data_type_custom.dart)
+/// ## Custom DataTypes
+/// You can adopt existing DataTypes or add your own custom DataTypes by 
+/// manipulating the TemplateEngine.dataTypes field.
+/// See [Example](https://github.com/domain-centric/template_engine/blob/main/test/src/parser/tag/expression/data_type/custom_test.dart).
 
 abstract class DataType<T extends Object> implements DocumentationFactory {
   String get name;
