@@ -19,7 +19,7 @@ import 'package:template_engine/template_engine.dart';
 abstract class DataType<T extends Object> implements DocumentationFactory {
   String get name;
   String get description;
-  List<String> get examples;
+  List<ProjectFilePath> get examples;
   Parser<Value<T>> createParser();
 
   @override
@@ -28,7 +28,12 @@ abstract class DataType<T extends Object> implements DocumentationFactory {
     var writer = HtmlTableWriter();
     writer.addHeaderRow([name], [2]);
     writer.addRow(['description:', description]);
-    writer.addRow(['examples:', examples.join('<br>\n')]);
+    if (examples.isNotEmpty) {
+      writer.addRow([
+        examples.length == 1 ? 'example:' : 'examples:',
+        examples.map((example) => example.githubMarkdownLink).join('<br>\n')
+      ]);
+    }
     return writer.toHtmlLines();
   }
 }
@@ -54,8 +59,10 @@ class Boolean extends DataType<bool> {
       'a form of data with only two possible values :"true" and "false"';
 
   @override
-  List<String> get examples =>
-      ['true', 'TRUE', 'TRue', 'false', 'FALSE', 'FAlse'];
+  List<ProjectFilePath> get examples => [
+        ProjectFilePath(
+            '/test/src/parser/tag/expression/data_type/bool_test.dart')
+      ];
 
   @override
   Parser<Value<bool>> createParser() =>
@@ -73,7 +80,10 @@ class Number extends DataType<num> {
   String get description => 'a form of data to express the size of something.';
 
   @override
-  List<String> get examples => ["42", "-123", "3.141", "1.2e5", "3.4e-1"];
+  List<ProjectFilePath> get examples => [
+        ProjectFilePath(
+            '/test/src/parser/tag/expression/data_type/num_test.dart')
+      ];
 
   @override
   Parser<Value<num>> createParser() => (digit().plus() &
@@ -93,8 +103,10 @@ class QuotesString extends DataType<String> {
   String get description =>
       'a form of data containing a sequence of characters';
   @override
-  List<String> get examples =>
-      ["'Hello'", '"world"', "'Hel'+'lo '&\"world\" & \".\""];
+  List<ProjectFilePath> get examples => [
+        ProjectFilePath(
+            '/test/src/parser/tag/expression/data_type/string_test.dart')
+      ];
 
   @override
   Parser<Value<String>> createParser() => OverrideMessageParser(

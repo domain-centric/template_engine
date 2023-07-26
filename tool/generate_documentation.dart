@@ -6,11 +6,11 @@ void main(List<String> args) {
   try {
     var engine = TemplateEngine();
     var readMeTemplateFile =
-        createRelativeFile(['doc', 'template', 'README.md.template']);
+        ProjectFilePath('/doc/template/README.md.template').file;
     var readMeTemplate = FileTemplate(readMeTemplateFile);
     var parseResult = engine.parse(readMeTemplate);
     var renderResult = engine.render(parseResult);
-    var readMeFile = createRelativeFile(['README.md']);
+    var readMeFile = ProjectFilePath('/README.md').file;
     readMeFile.writeAsStringSync(renderResult.text);
     print('Generated $readMeFile');
   } on Exception catch (e, stackTrace) {

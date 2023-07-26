@@ -33,19 +33,9 @@ class FileTemplate extends Template {
   FileTemplate(File source)
       : super(source: source.path, text: source.readAsStringSync());
 
-  FileTemplate.fromRelativePath(List<String> relativePath)
-      : this(createRelativeFile(relativePath));
+  FileTemplate.fromProjectFilePath(ProjectFilePath path) : this(path.file);
 }
 
-/// creates a file relative to the current path
-File createRelativeFile(List<String> relativePath) {
-  var currentPath = Directory.current.path;
-  var filePath = [
-    ...currentPath.split(Platform.pathSeparator),
-    ...relativePath,
-  ].join(Platform.pathSeparator);
-  return File(filePath);
-}
 //TODO WebTemplate: gets text from a URL
 
 /// A cursor position within the [Template.text]

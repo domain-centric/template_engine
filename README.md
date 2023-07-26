@@ -99,30 +99,19 @@ See [Example](https://github.com/domain-centric/template_engine/blob/main/exampl
 <table>
 <tr><th colspan="2">String</th></tr>
 <tr><td>description:</td><td>a form of data containing a sequence of characters</td></tr>
-<tr><td>examples:</td><td>'Hello'<br>
-"world"<br>
-'Hel'+'lo '&"world" & "."</td></tr>
+<tr><td>example:</td><td>[string_test.dart](https://github.com/domain-centric/template_engine/blob/main/test/src/parser/tag/expression/data_type/string_test.dart)</td></tr>
 </table>
 
 <table>
 <tr><th colspan="2">Number</th></tr>
 <tr><td>description:</td><td>a form of data to express the size of something.</td></tr>
-<tr><td>examples:</td><td>42<br>
--123<br>
-3.141<br>
-1.2e5<br>
-3.4e-1</td></tr>
+<tr><td>example:</td><td>[num_test.dart](https://github.com/domain-centric/template_engine/blob/main/test/src/parser/tag/expression/data_type/num_test.dart)</td></tr>
 </table>
 
 <table>
 <tr><th colspan="2">Boolean</th></tr>
 <tr><td>description:</td><td>a form of data with only two possible values :"true" and "false"</td></tr>
-<tr><td>examples:</td><td>true<br>
-TRUE<br>
-TRue<br>
-false<br>
-FALSE<br>
-FAlse</td></tr>
+<tr><td>example:</td><td>[bool_test.dart](https://github.com/domain-centric/template_engine/blob/main/test/src/parser/tag/expression/data_type/bool_test.dart)</td></tr>
 </table>
 
 

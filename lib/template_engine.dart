@@ -3,6 +3,7 @@ library template_engine;
 export 'src/template_engine.dart';
 export 'src/template.dart';
 export 'src/render.dart';
+export 'src/project_file_path.dart';
 export 'src/parser/parser.dart';
 export 'src/parser/error.dart';
 export 'src/parser/value_context_map_parser.dart';
