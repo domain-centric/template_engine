@@ -13,8 +13,9 @@ import 'package:template_engine/template_engine.dart';
 /// [TemplateEngine.dataTypes] field.
 ///
 /// Examples
-/// * [Default Data Types]
-/// * [Custom Data Type]
+/// * [Default Data Types](https://github.com/domain-centric/template_engine/blob/main/example/expression_data_type_default.dart)
+/// * [Custom Data Type](https://github.com/domain-centric/template_engine/blob/main/example/expression_data_type_custom.dart)
+
 abstract class DataType<T extends Object> implements DocumentationFactory {
   String get name;
   String get description;

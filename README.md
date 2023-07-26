@@ -83,6 +83,20 @@ own tags by manipulating the the TemplateEngine.tags field.
 
 
 # Data types in tag expressions
+[//]: # (TODO: This text should be imported from the dart doc of the DataType class using document_generator package)
+A [data type](https://en.wikipedia.org/wiki/Data_type) defines what the
+possible values an expression, such as a variable, operator
+or a function call, might take.
+
+The [TemplateEngine] supports several default [DataType]s.
+
+You can adopt or add your custom [DataType]s by manipulating the
+TemplateEngine.dataTypes field.
+
+Examples
+* [Default Data Types](https://github.com/domain-centric/template_engine/blob/main/example/expression_data_type_default.dart)
+* [Custom Data Type](https://github.com/domain-centric/template_engine/blob/main/example/expression_data_type_custom.dart)
+
 <table>
 <tr><th colspan="2">String</th></tr>
 <tr><td>description:</td><td>a form of data containing a sequence of characters</td></tr>

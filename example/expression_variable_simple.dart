@@ -1,5 +1,4 @@
-// ignore_for_file: avoid_print
-
+import 'package:shouldly/shouldly.dart';
 import 'package:template_engine/template_engine.dart';
 
 void main() {
@@ -8,6 +7,6 @@ void main() {
   var engine = TemplateEngine();
   var parseResult = engine.parse(template);
   // Here you could additionally mutate or validate the parseResult if needed.
-  print(engine
-      .render(parseResult, {'name': 'world'})); // should print 'Hello world.';
+  var renderResult = engine.render(parseResult, {'name': 'world'});
+  renderResult.text.should.be('Hello world.');
 }

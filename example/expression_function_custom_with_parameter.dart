@@ -1,14 +1,17 @@
-// ignore_for_file: avoid_print
-
+import 'package:shouldly/shouldly.dart';
 import 'package:template_engine/template_engine.dart';
 
 void main() {
   var engine = TemplateEngine();
   engine.functionGroups.add(FunctionGroup('Greeting', [Greeting()]));
+
   var parseResult = engine.parse(const TextTemplate('{{greeting()}}.'));
-  print(engine.render(parseResult)); // should print 'Hello world.';
+  var renderResult = engine.render(parseResult);
+  renderResult.text.should.be('Hello world.');
+
   parseResult = engine.parse(const TextTemplate('{{greeting("Jane Doe")}}.'));
-  print(engine.render(parseResult)); // should print 'Hello Jane Doe.';
+  renderResult = engine.render(parseResult);
+  renderResult.text.should.be('Hello Jane Doe.');
 }
 
 class Greeting extends ExpressionFunction {
