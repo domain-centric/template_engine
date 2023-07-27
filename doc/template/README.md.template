@@ -17,7 +17,7 @@ A flexible Dart library to parse templates and render output such as:
 * Etc...
 
 # Features
-* You can use expression containing:
+* Template expressions containing:
   * Data types
   * Constants
   * Variables

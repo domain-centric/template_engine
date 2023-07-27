@@ -17,7 +17,7 @@ A flexible Dart library to parse templates and render output such as:
 * Etc...
 
 # Features
-* You can use expression containing:
+* Template expressions containing:
   * Data types
   * Constants
   * Variables
@@ -106,7 +106,7 @@ See [Example](https://github.com/domain-centric/template_engine/blob/main/test/s
 <table>
 <tr><th colspan="2">Number</th></tr>
 <tr><td>description:</td><td>A form of data to express the size of something.</td></tr>
-<tr><td>syntax:</td><td>A boolean is declared with numbers (e.g. 12). A number can have a positive (+) or negative (-) or have no prefix (=positive). A number can have a scientific notation: the letter E is used to mean '10 to the power of.' For example, 1.314E+1 means 1.314 * 10^1 which is 13.14 .</td></tr>
+<tr><td>syntax:</td><td>A number is declared with:<br>* optional: positive (+) or negative (-) prefix. nno prefix =positive (e.g. -12)<br>* one or more digits (e.g. 12)<br>* optional fragments (e.g. 0.12)<br>* optional: scientific notation: the letter E is used to mean"10 to the power of." (e.g. 1.314E+1 means 1.314 * 10^1which is 13.14).<br></td></tr>
 <tr><td>example:</td><td><a href="https://github.com/domain-centric/template_engine/blob/main/test/src/parser/tag/expression/data_type/num_test.dart">num_test.dart</a></td></tr>
 </table>
 

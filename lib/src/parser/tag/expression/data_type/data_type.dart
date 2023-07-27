@@ -86,12 +86,13 @@ class Number extends DataType<num> {
   String get description => 'A form of data to express the size of something.';
 
   @override
-  String get syntaxDescription =>
-      "A boolean is declared with numbers (e.g. 12). A number can have a "
-      "positive (+) or negative (-) or have no prefix (=positive). "
-      "A number can have a scientific notation: the letter E is used to mean "
-      "'10 to the power of.' For example, 1.314E+1 means 1.314 * 10^1 "
-      "which is 13.14 .";
+  String get syntaxDescription => 'A number is declared with:<br>'
+      '* optional: positive (+) or negative (-) prefix. nno prefix =positive (e.g. -12)<br>'
+      '* one or more digits (e.g. 12)<br>'
+      '* optional fragments (e.g. 0.12)<br>'
+      '* optional: scientific notation: the letter E is used to mean'
+      '"10 to the power of." (e.g. 1.314E+1 means 1.314 * 10^1'
+      'which is 13.14).<br>';
 
   @override
   List<ProjectFilePath> get examples => [
