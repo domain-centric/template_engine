@@ -98,19 +98,22 @@ See [Example](https://github.com/domain-centric/template_engine/blob/main/test/s
 ## Available DataTypes
 <table>
 <tr><th colspan="2">String</th></tr>
-<tr><td>description:</td><td>a form of data containing a sequence of characters</td></tr>
+<tr><td>description:</td><td>A form of data containing a sequence of characters</td></tr>
+<tr><td>syntax:</td><td>A string is declared with a chain of characters, surrounded by two single (') or double (") quotes to indicate the start and end of a string.</td></tr>
 <tr><td>example:</td><td><a href="https://github.com/domain-centric/template_engine/blob/main/test/src/parser/tag/expression/data_type/string_test.dart">string_test.dart</a></td></tr>
 </table>
 
 <table>
 <tr><th colspan="2">Number</th></tr>
-<tr><td>description:</td><td>a form of data to express the size of something.</td></tr>
+<tr><td>description:</td><td>A form of data to express the size of something.</td></tr>
+<tr><td>syntax:</td><td>A boolean is declared with numbers (e.g. 12). A number can have a positive (+) or negative (-) or have no prefix (=positive). A number can have a scientific notation: the letter E is used to mean '10 to the power of.' For example, 1.314E+1 means 1.314 * 10^1 which is 13.14 .</td></tr>
 <tr><td>example:</td><td><a href="https://github.com/domain-centric/template_engine/blob/main/test/src/parser/tag/expression/data_type/num_test.dart">num_test.dart</a></td></tr>
 </table>
 
 <table>
 <tr><th colspan="2">Boolean</th></tr>
-<tr><td>description:</td><td>a form of data with only two possible values :"true" and "false"</td></tr>
+<tr><td>description:</td><td>A form of data with only two possible values :"true" and "false"</td></tr>
+<tr><td>syntax:</td><td>A boolean is declared with the word true or false. The letters are case insensitive.</td></tr>
 <tr><td>example:</td><td><a href="https://github.com/domain-centric/template_engine/blob/main/test/src/parser/tag/expression/data_type/bool_test.dart">bool_test.dart</a></td></tr>
 </table>
 

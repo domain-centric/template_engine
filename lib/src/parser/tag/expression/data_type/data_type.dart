@@ -17,6 +17,7 @@ import 'package:template_engine/template_engine.dart';
 abstract class DataType<T extends Object> implements DocumentationFactory {
   String get name;
   String get description;
+  String get syntaxDescription;
   List<ProjectFilePath> get examples;
   Parser<Value<T>> createParser();
 
@@ -26,6 +27,8 @@ abstract class DataType<T extends Object> implements DocumentationFactory {
     var writer = HtmlTableWriter();
     writer.addHeaderRow([name], [2]);
     writer.addRow(['description:', description]);
+    writer.addRow(['syntax:', syntaxDescription]);
+
     if (examples.isNotEmpty) {
       writer.addRow([
         examples.length == 1 ? 'example:' : 'examples:',
@@ -54,7 +57,12 @@ class Boolean extends DataType<bool> {
 
   @override
   String get description =>
-      'a form of data with only two possible values :"true" and "false"';
+      'A form of data with only two possible values :"true" and "false"';
+
+  @override
+  String get syntaxDescription =>
+      'A boolean is declared with the word true or false. '
+      'The letters are case insensitive.';
 
   @override
   List<ProjectFilePath> get examples => [
@@ -75,7 +83,15 @@ class Number extends DataType<num> {
   String get name => 'Number';
 
   @override
-  String get description => 'a form of data to express the size of something.';
+  String get description => 'A form of data to express the size of something.';
+
+  @override
+  String get syntaxDescription =>
+      "A boolean is declared with numbers (e.g. 12). A number can have a "
+      "positive (+) or negative (-) or have no prefix (=positive). "
+      "A number can have a scientific notation: the letter E is used to mean "
+      "'10 to the power of.' For example, 1.314E+1 means 1.314 * 10^1 "
+      "which is 13.14 .";
 
   @override
   List<ProjectFilePath> get examples => [
@@ -99,7 +115,14 @@ class QuotesString extends DataType<String> {
 
   @override
   String get description =>
-      'a form of data containing a sequence of characters';
+      'A form of data containing a sequence of characters';
+
+  @override
+  String get syntaxDescription =>
+      'A string is declared with a chain of characters, surrounded by '
+      'two single (\') or double (") quotes to indicate the '
+      'start and end of a string.';
+
   @override
   List<ProjectFilePath> get examples => [
         ProjectFilePath(
