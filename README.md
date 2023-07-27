@@ -99,7 +99,7 @@ See [Example](https://github.com/domain-centric/template_engine/blob/main/test/s
 <table>
 <tr><th colspan="2">String</th></tr>
 <tr><td>description:</td><td>A form of data containing a sequence of characters</td></tr>
-<tr><td>syntax:</td><td>A string is declared with a chain of characters, surrounded by two single (') or double (") quotes to indicate the start and end of a string.</td></tr>
+<tr><td>syntax:</td><td>A string is declared with a chain of characters, surrounded by two single (') or double (") quotes to indicate the start and end of a string. In example: 'Hello' or "Hello"</td></tr>
 <tr><td>example:</td><td><a href="https://github.com/domain-centric/template_engine/blob/main/test/src/parser/tag/expression/data_type/string_test.dart">string_test.dart</a></td></tr>
 </table>
 
@@ -112,7 +112,7 @@ See [Example](https://github.com/domain-centric/template_engine/blob/main/test/s
 
 <table>
 <tr><th colspan="2">Boolean</th></tr>
-<tr><td>description:</td><td>A form of data with only two possible values :"true" and "false"</td></tr>
+<tr><td>description:</td><td>A form of data with only two possible values: true or false</td></tr>
 <tr><td>syntax:</td><td>A boolean is declared with the word true or false. The letters are case insensitive.</td></tr>
 <tr><td>example:</td><td><a href="https://github.com/domain-centric/template_engine/blob/main/test/src/parser/tag/expression/data_type/bool_test.dart">bool_test.dart</a></td></tr>
 </table>

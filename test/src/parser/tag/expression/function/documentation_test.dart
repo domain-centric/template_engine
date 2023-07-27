@@ -39,7 +39,7 @@ void main() {
           .parse(const TextTemplate('{{engine.dataType.documentation()}}'));
       var expected = '<table>\n'
           '<tr><th colspan="2">Boolean</th></tr>\n'
-          '<tr><td>description:</td><td>A form of data with only two possible values :"true" and "false"</td></tr>\n'
+          '<tr><td>description:</td><td>A form of data with only two possible values: true or false</td></tr>\n'
           '<tr><td>syntax:</td><td>A boolean is declared with the word true or false. The letters are case insensitive.</td></tr>\n'
           '<tr><td>example:</td><td><a href="https://github.com/domain-centric/template_engine/blob/main/test/src/parser/tag/expression/data_type/bool_test.dart">bool_test.dart</a></td></tr>\n'
           '</table>\n';

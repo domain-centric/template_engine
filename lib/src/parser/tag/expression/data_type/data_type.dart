@@ -57,7 +57,7 @@ class Boolean extends DataType<bool> {
 
   @override
   String get description =>
-      'A form of data with only two possible values :"true" and "false"';
+      'A form of data with only two possible values: true or false';
 
   @override
   String get syntaxDescription =>
@@ -121,7 +121,7 @@ class QuotesString extends DataType<String> {
   String get syntaxDescription =>
       'A string is declared with a chain of characters, surrounded by '
       'two single (\') or double (") quotes to indicate the '
-      'start and end of a string.';
+      'start and end of a string. In example: \'Hello\' or "Hello"';
 
   @override
   List<ProjectFilePath> get examples => [
