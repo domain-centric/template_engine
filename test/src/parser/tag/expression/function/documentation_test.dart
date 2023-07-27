@@ -83,6 +83,8 @@ class DummyFunction extends ExpressionFunction {
       : super(
             name: 'testFunction',
             description: 'TestDescription',
+            exampleCode: ProjectFilePath(
+                '/test/src/parser/tag/expression/function/math/exp_test.dart'),
             parameters: [
               Parameter<String>(
                   name: 'parameter1',

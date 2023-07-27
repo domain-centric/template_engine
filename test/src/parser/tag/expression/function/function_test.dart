@@ -91,8 +91,6 @@ class GreetingWithParameter extends ExpressionFunction {
       : super(
           name: 'greeting',
           description: 'A tag that shows a greeting using attribute: name',
-          exampleExpression: 'dummy',
-          exampleResult: 'dummy',
           parameters: [
             Parameter(
                 name: "name",

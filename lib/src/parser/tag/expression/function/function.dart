@@ -66,6 +66,7 @@ class ExpressionFunction<R extends Object> implements DocumentationFactory {
     this.description,
     this.exampleExpression,
     this.exampleResult,
+    this.exampleCode,
     this.parameters = const [],
     required this.function,
   });
@@ -74,6 +75,7 @@ class ExpressionFunction<R extends Object> implements DocumentationFactory {
   final String? description;
   final String? exampleExpression;
   final String? exampleResult;
+  final ProjectFilePath? exampleCode;
   final List<Parameter> parameters;
   final R Function(RenderContext renderContext, Map<String, Object> parameters)
       function;
@@ -88,6 +90,9 @@ class ExpressionFunction<R extends Object> implements DocumentationFactory {
     }
     writer.addRow(['return type:', typeDescription<R>()], [1, 4]);
     writer.addRow(['expression example:', _createExpressionExample()], [1, 4]);
+    if (exampleCode != null) {
+      writer.addRow(['code example:', exampleCode!.githubMarkdownLink], [1, 4]);
+    }
     var parameterRows = parameters
         .map((parameter) =>
             parameter.createMarkdownDocumentation(renderContext, titleLevel))
