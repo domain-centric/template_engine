@@ -87,11 +87,7 @@ class ExpressionFunction<R extends Object> implements DocumentationFactory {
       writer.addRow(['description:', description!], [1, 4]);
     }
     writer.addRow(['return type:', typeDescription<R>()], [1, 4]);
-    var expression = exampleExpression ?? _createExampleExpression(this);
-    writer.addRow(['example:', expression], [1, 4]);
-    if (exampleResult != null && exampleResult!.trim().isNotEmpty) {
-      writer.addRow(['example result:', exampleResult!], [1, 4]);
-    }
+    writer.addRow(['expression example:', _createExpressionExample()], [1, 4]);
     var parameterRows = parameters
         .map((parameter) =>
             parameter.createMarkdownDocumentation(renderContext, titleLevel))
@@ -100,11 +96,11 @@ class ExpressionFunction<R extends Object> implements DocumentationFactory {
     return writer.toHtmlLines();
   }
 
-  String _createExampleExpression(ExpressionFunction function) {
+  String _createExampleExpression() {
     var expression = StringBuffer();
-    expression.write('{{ ${function.name}(');
+    expression.write('{{ $name(');
     var mandatoryParameters =
-        function.parameters.where((parameter) => parameter.presence.mandatory);
+        parameters.where((parameter) => parameter.presence.mandatory);
     if (mandatoryParameters.length == 1) {
       expression.write(
           _createExampleExpressionParameterValue(mandatoryParameters.first));
@@ -123,6 +119,14 @@ class ExpressionFunction<R extends Object> implements DocumentationFactory {
     }
     expression.write(') }}');
     return expression.toString();
+  }
+
+  _createExpressionExample() {
+    var example = exampleExpression ?? _createExampleExpression();
+    if (exampleResult != null && exampleResult!.trim().isNotEmpty) {
+      example += ' should render: $exampleResult';
+    }
+    return example;
   }
 
   String _createExampleExpressionParameterValue(Parameter mandatoryParameter) {
