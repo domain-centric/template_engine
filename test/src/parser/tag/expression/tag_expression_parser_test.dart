@@ -12,7 +12,10 @@ void main() {
     renderResult.text.should.be('The cos of 2 pi = 1.0.');
   });
 
-  test('"" should render ', () {
+  test(
+      '"The volume of a sphere = '
+      '{{ round( (3/4) * pi * (radius ^ 3) )}}." should render: '
+      'The volume of a sphere = 2356.', () {
     var engine = TemplateEngine();
     const template = TextTemplate('The volume of a sphere = '
         '{{ round( (3/4) * pi * (radius ^ 3) )}}.');
