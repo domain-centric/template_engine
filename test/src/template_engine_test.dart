@@ -91,7 +91,11 @@ void main() {
 class TestTag extends Tag {
   TestTag(
     String name,
-  ) : super(name: name, description: ['Tag to test unique tag names']);
+  ) : super(
+            name: name,
+            description: ['Tag to test unique tag names'],
+            exampleExpression: 'dummy',
+            exampleCode: ProjectFilePath('/dummy'));
   @override
   Parser<Object> createTagParser(ParserContext context) {
     throw UnimplementedError();

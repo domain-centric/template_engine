@@ -4,22 +4,22 @@ import 'package:template_engine/template_engine.dart';
 
 class ExpressionTag extends Tag {
   ExpressionTag()
-      : super(name: 'ExpressionTag', description: [
-          'Evaluates an expression that can a contain:',
-          '* Data Types (e.g. boolean, number or String)',
-          '* Constants (e.g. pi)',
-          '* Variables (e.g. person.name )',
-          '* Operators (e.g. + - * /)',
-          '* Functions (e.g. cos(7) )',
-          '* or any combination of the above'
-        ]);
-
-  @override
-  List<String> examples(TemplateEngine engine) => [
-        'The cos of 2 pi = ${engine.tagStart} cos(2 * pi) ${engine.tagEnd}.',
-        'The volume of a sphere = '
-            '${engine.tagStart} (3/4) * pi * (radius ^ 3) ${engine.tagEnd}.'
-      ];
+      : super(
+          name: 'ExpressionTag',
+          description: [
+            'Evaluates an expression that can a contain:',
+            '* Data Types (e.g. boolean, number or String)',
+            '* Constants (e.g. pi)',
+            '* Variables (e.g. person.name )',
+            '* Operators (e.g. + - * /)',
+            '* Functions (e.g. cos(7) )',
+            '* or any combination of the above'
+          ],
+          exampleExpression: 'The volume of a sphere = '
+              '{{ round( (3/4) * pi * (radius ^ 3) )}}.',
+          exampleCode: ProjectFilePath('/test/src/parser/tag/expression/'
+              'tag_expression_parser_test.dart'),
+        );
 
   @override
   Parser<Object> createTagParser(ParserContext context) =>
@@ -35,6 +35,7 @@ class ExpressionTag extends Tag {
           RenderContext renderContext, int titleLevel) =>
       [
         '${'#' * titleLevel} $name',
+        '* ${exampleCode.githubMarkdownLink}',
         ..._createMarkDownExamplesFor(
             renderContext: renderContext,
             title: 'Data Types',

@@ -8,7 +8,7 @@ class DocumentationFunctions extends FunctionGroup {
           TagDocumentation(),
           DataTypeDocumentation(),
           //TODO constants
-          //TODO variables
+          //Note: variable documentation can not be generated (=template text)
           //TODO operators
           FunctionDocumentation(),
           ExampleDocumentation()

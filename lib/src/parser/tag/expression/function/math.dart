@@ -14,6 +14,7 @@ class MathFunctions extends FunctionGroup {
           Tan(),
           Atan(),
           Sqrt(),
+          Round(),
         ]);
 }
 
@@ -160,4 +161,20 @@ class Sqrt extends ExpressionFunction<num> {
             ],
             function: (renderContext, parameters) =>
                 sqrt(parameters['value'] as num));
+}
+
+class Round extends ExpressionFunction<num> {
+  Round()
+      : super(
+            name: 'round',
+            description: 'Returns the a rounded number.',
+            exampleExpression: '{{round(4.445)}}',
+            exampleResult: 4.445.round().toString(),
+            exampleCode: ProjectFilePath(
+                '/test/src/parser/tag/expression/function/math/round_test.dart'),
+            parameters: [
+              Parameter<num>(name: 'value', presence: Presence.mandatory())
+            ],
+            function: (renderContext, parameters) =>
+                (parameters['value'] as num).round());
 }

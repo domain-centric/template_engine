@@ -30,24 +30,19 @@ import 'package:template_engine/template_engine.dart';
 
 abstract class Tag<T extends Object>
     implements DocumentationFactory, ExampleFactory {
-  Tag({
-    required this.name,
-    required this.description,
-  }) {
-    TagName.validate(name);
-  }
-
   final String name;
   final List<String> description;
-
-  /// gives an example of the tag, e.g. {{tag}}
-  List<String> examples(TemplateEngine engine) => [
-        [
-          engine.tagStart,
-          name,
-          engine.tagEnd,
-        ].join()
-      ];
+  final String exampleExpression;
+  final ProjectFilePath exampleCode;
+  final String? exampleResult;
+  Tag(
+      {required this.name,
+      required this.description,
+      required this.exampleExpression,
+      this.exampleResult,
+      required this.exampleCode}) {
+    TagName.validate(name);
+  }
 
   @override
   List<String> createMarkdownDocumentation(
@@ -55,18 +50,17 @@ abstract class Tag<T extends Object>
     var writer = HtmlTableWriter();
     writer.addHeaderRow([name], [2]);
     writer.addRow(['description:', description.join('<br>')]);
-    var exampleLines = examples(renderContext.engine);
-    switch (exampleLines.length) {
-      case 0:
-        break;
-      case 1:
-        writer.addRow(['example:', exampleLines.first]);
-        break;
-
-      default:
-        writer.addRow(['examples:', exampleLines.join('<br>')]);
-    }
+    writer.addRow(['expression example:', _createExpressionExample()], [1, 4]);
+    writer.addRow(['code example:', exampleCode.githubMarkdownLink], [1, 4]);
     return writer.toHtmlLines();
+  }
+
+  _createExpressionExample() {
+    var example = exampleExpression;
+    if (exampleResult != null && exampleResult!.trim().isNotEmpty) {
+      example += ' should render: $exampleResult';
+    }
+    return example;
   }
 
   @override
