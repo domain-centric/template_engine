@@ -28,9 +28,6 @@ class ProjectFilePath {
       throw Exception('Invalid project file path: ${result.message} '
           'at position: ${result.position}');
     }
-    if (!file.existsSync()) {
-      throw Exception('Project file path does not exist: ${file.path}');
-    }
   }
 
   String get fileName => _pathParser().parse(relativePath).value.last.last;

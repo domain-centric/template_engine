@@ -28,7 +28,8 @@ import 'package:template_engine/template_engine.dart';
 /// The [TemplateEngine] comes with [DefaultTags]. You can replace or add your
 /// own [Tag]s by manipulating the the [TemplateEngine.tags] field.
 
-abstract class Tag<T extends Object> implements DocumentationFactory {
+abstract class Tag<T extends Object>
+    implements DocumentationFactory, ExampleFactory {
   Tag({
     required this.name,
     required this.description,
@@ -67,6 +68,9 @@ abstract class Tag<T extends Object> implements DocumentationFactory {
     }
     return writer.toHtmlLines();
   }
+
+  @override
+  createMarkdownExamples(RenderContext renderContext, int titleLevel);
 
   Parser<T> createTagParser(ParserContext context);
 }

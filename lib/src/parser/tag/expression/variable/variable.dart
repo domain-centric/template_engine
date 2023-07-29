@@ -8,6 +8,18 @@ abstract class Variable {
   // documentation only
 }
 
+class VariableExamples implements ExampleFactory {
+  @override
+  List<String> createMarkdownExamples(
+          RenderContext renderContext, int titleLevel) =>
+      [
+        '* ${ProjectFilePath('/test/src/parser/tag/expression/variable/'
+            'variable_test.dart').githubMarkdownLink}',
+        '* ${ProjectFilePath('/test/src/parser/tag/expression/variable/'
+            'nested_variable_test.dart').githubMarkdownLink}',
+      ];
+}
+
 /// * Variables are stored as key, value pairs in a dart Map<String, Object> where:
 ///   * String=Variable name
 ///   * Object=Variable value

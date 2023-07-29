@@ -23,13 +23,6 @@ void main() {
             'end of input expected at position: 9');
   });
 
-  test('ProjectFilePath should exist', () async {
-    Should.throwException(() => ProjectFilePath('/folder/file'))
-        .toString()
-        .should
-        .startWith('Exception: Project file path does not exist: ');
-  });
-
   test('ProjectFilePath in root should be fine', () async {
     Should.notThrowException(() => ProjectFilePath('/README.md'));
   });

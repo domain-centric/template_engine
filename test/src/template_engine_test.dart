@@ -96,6 +96,11 @@ class TestTag extends Tag {
   Parser<Object> createTagParser(ParserContext context) {
     throw UnimplementedError();
   }
+
+  @override
+  List<String> createMarkdownExamples(
+          RenderContext renderContext, int titleLevel) =>
+      [];
 }
 
 class ParserTreeThatRegistersError extends ParserTree {

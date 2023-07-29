@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:petitparser/petitparser.dart';
 import 'package:template_engine/template_engine.dart';
 
@@ -28,4 +29,46 @@ class ExpressionTag extends Tag {
               (whitespace().star()) &
               string(context.engine.tagEnd))
           .valueContextMap((values, parsePosition) => values[2]);
+
+  @override
+  List<String> createMarkdownExamples(
+          RenderContext renderContext, int titleLevel) =>
+      [
+        '${'#' * titleLevel} $name',
+        ..._createMarkDownExamplesFor(
+            renderContext: renderContext,
+            title: 'Data Types',
+            exampleFactories: renderContext.engine.dataTypes,
+            titleLevel: titleLevel + 1),
+        ..._createMarkDownExamplesFor(
+            renderContext: renderContext,
+            title: 'Variables',
+            exampleFactories: [VariableExamples()],
+            titleLevel: titleLevel + 1),
+        //TODO constants
+        //TODO operators
+        ..._createMarkDownExamplesFor(
+            renderContext: renderContext,
+            title: 'Functions',
+            exampleFactories: renderContext.engine.functionGroups,
+            titleLevel: titleLevel + 1)
+      ];
+}
+
+List<String> _createMarkDownExamplesFor(
+    {required RenderContext renderContext,
+    title,
+    required List<ExampleFactory> exampleFactories,
+    required int titleLevel}) {
+  if (exampleFactories.isEmpty) {
+    return [];
+  } else {
+    return [
+      '${'#' * (titleLevel)} $title',
+      ...exampleFactories
+          .map((dataType) =>
+              dataType.createMarkdownExamples(renderContext, titleLevel + 1))
+          .flattened
+    ];
+  }
 }

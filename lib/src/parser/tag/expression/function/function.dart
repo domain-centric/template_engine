@@ -60,7 +60,8 @@ class FunctionExpression<R extends Object> extends Expression<R> {
 /// A function of a [Expression]
 /// It has the [Expression] prefix in the name since [Function]
 /// is already taken by Dart core.
-class ExpressionFunction<R extends Object> implements DocumentationFactory {
+class ExpressionFunction<R extends Object>
+    implements DocumentationFactory, ExampleFactory {
   ExpressionFunction({
     required this.name,
     this.description,
@@ -100,6 +101,11 @@ class ExpressionFunction<R extends Object> implements DocumentationFactory {
     writer.rows.addAll(parameterRows);
     return writer.toHtmlLines();
   }
+
+  @override
+  List<String> createMarkdownExamples(
+          RenderContext renderContext, int titleLevel) =>
+      exampleCode == null ? [] : ['* ${exampleCode!.githubMarkdownLink}'];
 
   String _createExampleExpression() {
     var expression = StringBuffer();
@@ -153,7 +159,7 @@ class ExpressionFunction<R extends Object> implements DocumentationFactory {
 }
 
 class FunctionGroup extends DelegatingList<ExpressionFunction>
-    implements DocumentationFactory {
+    implements DocumentationFactory, ExampleFactory {
   final String name;
 
   FunctionGroup(this.name, super.base);
@@ -166,6 +172,22 @@ class FunctionGroup extends DelegatingList<ExpressionFunction>
         ...map((function) => function.createMarkdownDocumentation(
             renderContext, titleLevel + 1)).flattened
       ];
+
+  @override
+  List<String> createMarkdownExamples(
+      RenderContext renderContext, int titleLevel) {
+    var examples = map((function) =>
+            function.createMarkdownExamples(renderContext, titleLevel + 1))
+        .flattened;
+    if (examples.isEmpty) {
+      return [];
+    } else {
+      return [
+        '${"#" * titleLevel} $name',
+        ...examples,
+      ];
+    }
+  }
 }
 
 /// A [ExpressionFunction] can have 0 or more [Parameter]s.

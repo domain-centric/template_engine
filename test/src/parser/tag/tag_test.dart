@@ -96,4 +96,9 @@ class TagWithInvalidName extends Tag<String> {
   Parser<String> createTagParser(ParserContext context) {
     throw UnimplementedError();
   }
+
+  @override
+  List<String> createMarkdownExamples(
+          RenderContext renderContext, int titleLevel) =>
+      [];
 }

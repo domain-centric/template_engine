@@ -266,3 +266,11 @@ Examples:
 <tr><td>expression example:</td><td colspan="4">{{ engine.function.documentation() }}</td></tr>
 <tr><td>parameter:</td><td>titleLevel</td><td>number</td><td>optional (default=1)</td><td>The level of the tag title</td></tr>
 </table>
+
+<table>
+<tr><th colspan="5">engine.example.documentation</th></tr>
+<tr><td>description:</td><td colspan="4">Generates markdown documentation of all the examples. This could be used to generate example.md file.</td></tr>
+<tr><td>return type:</td><td colspan="4">String</td></tr>
+<tr><td>expression example:</td><td colspan="4">{{ engine.example.documentation() }}</td></tr>
+<tr><td>parameter:</td><td>titleLevel</td><td>number</td><td>optional (default=1)</td><td>The level of the tag title</td></tr>
+</table>

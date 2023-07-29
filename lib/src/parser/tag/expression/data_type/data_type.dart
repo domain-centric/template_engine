@@ -14,7 +14,8 @@ import 'package:template_engine/template_engine.dart';
 /// manipulating the TemplateEngine.dataTypes field.
 /// See [Example](https://github.com/domain-centric/template_engine/blob/main/test/src/parser/tag/expression/data_type/custom_test.dart).
 
-abstract class DataType<T extends Object> implements DocumentationFactory {
+abstract class DataType<T extends Object>
+    implements DocumentationFactory, ExampleFactory {
   String get name;
   String get description;
   String get syntaxDescription;
@@ -37,6 +38,11 @@ abstract class DataType<T extends Object> implements DocumentationFactory {
     }
     return writer.toHtmlLines();
   }
+
+  @override
+  List<String> createMarkdownExamples(
+          RenderContext renderContext, int titleLevel) =>
+      examples.map((e) => '* ${e.githubMarkdownLink}').toList();
 }
 
 class DefaultDataTypes extends DelegatingList<DataType> {
