@@ -233,6 +233,15 @@ Examples:
 <tr><td>parameter:</td><td>value</td><td>number</td><td colspan="2">mandatory</td></tr>
 </table>
 
+<table>
+<tr><th colspan="5">round</th></tr>
+<tr><td>description:</td><td colspan="4">Returns the a rounded number.</td></tr>
+<tr><td>return type:</td><td colspan="4">number</td></tr>
+<tr><td>expression example:</td><td colspan="4">{{round(4.445)}} should render: 4</td></tr>
+<tr><td>code example:</td><td colspan="4"><a href="https://github.com/domain-centric/template_engine/blob/main/test/src/parser/tag/expression/function/math/round_test.dart">round_test.dart</a></td></tr>
+<tr><td>parameter:</td><td>value</td><td>number</td><td colspan="2">mandatory</td></tr>
+</table>
+
 ## String Functions
 <table>
 <tr><th colspan="5">length</th></tr>
