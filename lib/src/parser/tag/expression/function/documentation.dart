@@ -7,7 +7,7 @@ class DocumentationFunctions extends FunctionGroup {
       : super('Documentation Functions', [
           TagDocumentation(),
           DataTypeDocumentation(),
-          //TODO constants
+          ConstantDocumentation(),
           //Note: variable documentation can not be generated (=template text)
           //TODO operators
           FunctionDocumentation(),
@@ -52,21 +52,6 @@ abstract class DocumentationFunction extends ExpressionFunction<String> {
   }
 }
 
-class DataTypeDocumentation extends DocumentationFunction {
-  DataTypeDocumentation()
-      : super(
-            name: 'engine.dataType.documentation',
-            description: 'Generates markdown documentation of all the basic '
-                'types that can be used within a ExpressionTag of a '
-                'TemplateEngine',
-            documentationFunction: (renderContext, titleLevel) => renderContext
-                .engine.dataTypes
-                .map((dataType) => dataType.createMarkdownDocumentation(
-                    renderContext, titleLevel))
-                .flattened
-                .toList());
-}
-
 class TagDocumentation extends DocumentationFunction {
   TagDocumentation()
       : super(
@@ -77,6 +62,36 @@ class TagDocumentation extends DocumentationFunction {
                 .engine.tags
                 .map((tag) =>
                     tag.createMarkdownDocumentation(renderContext, titleLevel))
+                .flattened
+                .toList());
+}
+
+class DataTypeDocumentation extends DocumentationFunction {
+  DataTypeDocumentation()
+      : super(
+            name: 'engine.dataType.documentation',
+            description: 'Generates markdown documentation of all the data '
+                'types that can be used within a ExpressionTag of a '
+                'TemplateEngine',
+            documentationFunction: (renderContext, titleLevel) => renderContext
+                .engine.dataTypes
+                .map((dataType) => dataType.createMarkdownDocumentation(
+                    renderContext, titleLevel))
+                .flattened
+                .toList());
+}
+
+class ConstantDocumentation extends DocumentationFunction {
+  ConstantDocumentation()
+      : super(
+            name: 'engine.constant.documentation',
+            description:
+                'Generates markdown documentation of all the constants '
+                'that can be used within a ExpressionTag of a TemplateEngine',
+            documentationFunction: (renderContext, titleLevel) => renderContext
+                .engine.constants
+                .map((constant) => constant.createMarkdownDocumentation(
+                    renderContext, titleLevel))
                 .flattened
                 .toList());
 }

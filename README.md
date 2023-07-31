@@ -120,6 +120,61 @@ See [Example](https://github.com/domain-centric/template_engine/blob/main/test/s
 </table>
 
 
+# Constants in tag expressions
+[//]: # (TODO: This text should be imported from the dart doc of the Constant class using document_generator package)
+A [Constant] is a value that does not change value over time.
+
+The [TemplateEngine] comes with several mathematical constants.
+
+## Custom Constants
+You can create and add your own [Constant]s by
+manipulating the [TemplateEngine.constants] field.
+See [Example](https://github.com/domain-centric/template_engine/blob/main/test/src/parser/tag/expression/function/custom_function_test.dart).
+
+## Available Constants
+<table>
+<tr><th colspan="2">e</th></tr>
+<tr><td>description:</td><td>Base of the natural logarithms.</td></tr>
+<tr><td>return type:</td><td>double</td></tr>
+<tr><td>code example:</td><td><a href="https://github.com/domain-centric/template_engine/blob/main/test/src/parser/tag/expression/constant/e_test.dart">e_test.dart</a></td></tr>
+</table>
+
+<table>
+<tr><th colspan="2">ln10</th></tr>
+<tr><td>description:</td><td>Natural logarithm of 10.</td></tr>
+<tr><td>return type:</td><td>double</td></tr>
+<tr><td>code example:</td><td><a href="https://github.com/domain-centric/template_engine/blob/main/test/src/parser/tag/expression/constant/ln10_test.dart">ln10_test.dart</a></td></tr>
+</table>
+
+<table>
+<tr><th colspan="2">ln2</th></tr>
+<tr><td>description:</td><td>Natural logarithm of 2.</td></tr>
+<tr><td>return type:</td><td>double</td></tr>
+<tr><td>code example:</td><td><a href="https://github.com/domain-centric/template_engine/blob/main/test/src/parser/tag/expression/constant/ln2_test.dart">ln2_test.dart</a></td></tr>
+</table>
+
+<table>
+<tr><th colspan="2">log10e</th></tr>
+<tr><td>description:</td><td>Base-10 logarithm of e.</td></tr>
+<tr><td>return type:</td><td>double</td></tr>
+<tr><td>code example:</td><td><a href="https://github.com/domain-centric/template_engine/blob/main/test/src/parser/tag/expression/constant/log10e_test.dart">log10e_test.dart</a></td></tr>
+</table>
+
+<table>
+<tr><th colspan="2">log2e</th></tr>
+<tr><td>description:</td><td>Base-2 logarithm of e.</td></tr>
+<tr><td>return type:</td><td>double</td></tr>
+<tr><td>code example:</td><td><a href="https://github.com/domain-centric/template_engine/blob/main/test/src/parser/tag/expression/constant/log2e_test.dart">log2e_test.dart</a></td></tr>
+</table>
+
+<table>
+<tr><th colspan="2">pi</th></tr>
+<tr><td>description:</td><td>The ratio of a circle's circumference to its diameter</td></tr>
+<tr><td>return type:</td><td>double</td></tr>
+<tr><td>code example:</td><td><a href="https://github.com/domain-centric/template_engine/blob/main/test/src/parser/tag/expression/constant/pi_test.dart">pi_test.dart</a></td></tr>
+</table>
+
+
 # Variables in tag expressions
 [//]: # (TODO: This text should be imported from the dart doc of the Variable class using document_generator package)
 A [Variable](https://en.wikipedia.org/wiki/Variable_(computer_science)) is
@@ -279,9 +334,17 @@ See [Example](https://github.com/domain-centric/template_engine/blob/main/test/s
 
 <table>
 <tr><th colspan="5">engine.dataType.documentation</th></tr>
-<tr><td>description:</td><td colspan="4">Generates markdown documentation of all the basic types that can be used within a ExpressionTag of a TemplateEngine</td></tr>
+<tr><td>description:</td><td colspan="4">Generates markdown documentation of all the data types that can be used within a ExpressionTag of a TemplateEngine</td></tr>
 <tr><td>return type:</td><td colspan="4">String</td></tr>
 <tr><td>expression example:</td><td colspan="4">{{ engine.dataType.documentation() }}</td></tr>
+<tr><td>parameter:</td><td>titleLevel</td><td>number</td><td>optional (default=1)</td><td>The level of the tag title</td></tr>
+</table>
+
+<table>
+<tr><th colspan="5">engine.constant.documentation</th></tr>
+<tr><td>description:</td><td colspan="4">Generates markdown documentation of all the constants that can be used within a ExpressionTag of a TemplateEngine</td></tr>
+<tr><td>return type:</td><td colspan="4">String</td></tr>
+<tr><td>expression example:</td><td colspan="4">{{ engine.constant.documentation() }}</td></tr>
 <tr><td>parameter:</td><td>titleLevel</td><td>number</td><td>optional (default=1)</td><td>The level of the tag title</td></tr>
 </table>
 

@@ -94,6 +94,20 @@ See [Example](https://github.com/domain-centric/template_engine/blob/main/test/s
 ## Available DataTypes
 {{engine.dataType.documentation(2)}}
 
+# Constants in tag expressions
+[//]: # (TODO: This text should be imported from the dart doc of the Constant class using document_generator package)
+A [Constant] is a value that does not change value over time.
+
+The [TemplateEngine] comes with several mathematical constants.
+
+## Custom Constants
+You can create and add your own [Constant]s by
+manipulating the [TemplateEngine.constants] field.
+See [Example](https://github.com/domain-centric/template_engine/blob/main/test/src/parser/tag/expression/function/custom_function_test.dart).
+
+## Available Constants
+{{engine.constant.documentation(2)}}
+
 # Variables in tag expressions
 [//]: # (TODO: This text should be imported from the dart doc of the Variable class using document_generator package)
 A [Variable](https://en.wikipedia.org/wiki/Variable_(computer_science)) is

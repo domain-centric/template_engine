@@ -10,6 +10,14 @@
 ## Variables
 * <a href="https://github.com/domain-centric/template_engine/blob/main/test/src/parser/tag/expression/variable/variable_test.dart">variable_test.dart</a>
 * <a href="https://github.com/domain-centric/template_engine/blob/main/test/src/parser/tag/expression/variable/nested_variable_test.dart">nested_variable_test.dart</a>
+## Constants
+* <a href="https://github.com/domain-centric/template_engine/blob/main/test/src/parser/tag/expression/constant/custom_constant_test.dart">custom_constant_test.dart</a>
+* <a href="https://github.com/domain-centric/template_engine/blob/main/test/src/parser/tag/expression/constant/e_test.dart">e_test.dart</a>
+* <a href="https://github.com/domain-centric/template_engine/blob/main/test/src/parser/tag/expression/constant/ln10_test.dart">ln10_test.dart</a>
+* <a href="https://github.com/domain-centric/template_engine/blob/main/test/src/parser/tag/expression/constant/ln2_test.dart">ln2_test.dart</a>
+* <a href="https://github.com/domain-centric/template_engine/blob/main/test/src/parser/tag/expression/constant/log10e_test.dart">log10e_test.dart</a>
+* <a href="https://github.com/domain-centric/template_engine/blob/main/test/src/parser/tag/expression/constant/log2e_test.dart">log2e_test.dart</a>
+* <a href="https://github.com/domain-centric/template_engine/blob/main/test/src/parser/tag/expression/constant/pi_test.dart">pi_test.dart</a>
 ## Functions
 * <a href="https://github.com/domain-centric/template_engine/blob/main/test/src/parser/tag/expression/function/custom_function_test.dart">custom_function_test.dart</a>
 ### Math Functions

@@ -49,7 +49,14 @@ class ExpressionTag extends Tag {
             title: 'Variables',
             exampleFactories: [VariableExamples()],
             titleLevel: titleLevel + 1),
-        //TODO constants
+        ..._createMarkDownExamplesFor(
+            renderContext: renderContext,
+            title: 'Constants',
+            customExample:
+                ProjectFilePath('/test/src/parser/tag/expression/constant/'
+                    'custom_constant_test.dart'),
+            exampleFactories: renderContext.engine.constants,
+            titleLevel: titleLevel + 1),
         //TODO operators
         ..._createMarkDownExamplesFor(
             renderContext: renderContext,
