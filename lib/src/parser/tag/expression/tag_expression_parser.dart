@@ -39,6 +39,9 @@ class ExpressionTag extends Tag {
         ..._createMarkDownExamplesFor(
             renderContext: renderContext,
             title: 'Data Types',
+            customExample:
+                ProjectFilePath('/test/src/parser/tag/expression/data_type/'
+                    'custom_test.dart'),
             exampleFactories: renderContext.engine.dataTypes,
             titleLevel: titleLevel + 1),
         ..._createMarkDownExamplesFor(
@@ -51,6 +54,9 @@ class ExpressionTag extends Tag {
         ..._createMarkDownExamplesFor(
             renderContext: renderContext,
             title: 'Functions',
+            customExample:
+                ProjectFilePath('/test/src/parser/tag/expression/function/'
+                    'custom_function_test.dart'),
             exampleFactories: renderContext.engine.functionGroups,
             titleLevel: titleLevel + 1)
       ];
@@ -59,6 +65,7 @@ class ExpressionTag extends Tag {
 List<String> _createMarkDownExamplesFor(
     {required RenderContext renderContext,
     title,
+    ProjectFilePath? customExample,
     required List<ExampleFactory> exampleFactories,
     required int titleLevel}) {
   if (exampleFactories.isEmpty) {
@@ -66,6 +73,7 @@ List<String> _createMarkDownExamplesFor(
   } else {
     return [
       '${'#' * (titleLevel)} $title',
+      if (customExample != null) '* ${customExample.githubMarkdownLink}',
       ...exampleFactories
           .map((dataType) =>
               dataType.createMarkdownExamples(renderContext, titleLevel + 1))

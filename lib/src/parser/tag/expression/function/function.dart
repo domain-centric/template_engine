@@ -60,14 +60,14 @@ class FunctionExpression<R extends Object> extends Expression<R> {
 /// A function is a piece of dart code that performs a specific task.
 /// So a function can basically do anything that dart code can do.
 ///
-/// A function can then be used anywhere in an tag expression
+/// A function can be used anywhere in an tag expression
 /// wherever that particular task should be performed.
 ///
 /// The TemplateEngine supports several default functions.
 ///
 /// ## Custom DataTypes
 /// You can adopt existing functions or add your own custom functions by
-/// manipulating the TemplateEngine.functionGroup field.
+/// manipulating the TemplateEngine.functionGroups field.
 /// See [Example](https://github.com/domain-centric/template_engine/blob/main/test/src/parser/tag/expression/function/custom_function_test.dart).
 ///
 
