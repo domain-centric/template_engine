@@ -7,7 +7,7 @@ class ExpressionTag extends Tag {
       : super(
           name: 'ExpressionTag',
           description: [
-            'Evaluates an expression that can a contain:',
+            'Evaluates an expression that can contain:',
             '* Data Types (e.g. boolean, number or String)',
             '* Constants (e.g. pi)',
             '* Variables (e.g. person.name )',

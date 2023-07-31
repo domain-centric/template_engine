@@ -93,7 +93,7 @@ class Number extends DataType<num> {
 
   @override
   String get syntaxDescription => 'A number is declared with:<br>'
-      '* optional: positive (+) or negative (-) prefix. nno prefix =positive (e.g. -12)<br>'
+      '* optional: positive (e.g. +12) or negative (e.g. -12) prefix or no prefix (12=positive)<br>'
       '* one or more digits (e.g. 12)<br>'
       '* optional fragments (e.g. 0.12)<br>'
       '* optional: scientific notation: the letter E is used to mean'
