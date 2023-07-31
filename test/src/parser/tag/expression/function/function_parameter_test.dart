@@ -581,6 +581,57 @@ void main() {
       });
     });
   });
+
+  given(
+      'A function with a parameter that contains operators '
+      '(needs to be rendered first)', () {
+    var engine = TemplateEngine();
+    when(
+        "calling: engine.parse(TextTemplate"
+        "('{{length(\"Hello\" + \" \" & \"world.\") + 3}}')) ", () {
+      var parseResult = engine.parse(
+          const TextTemplate('{{length("Hello" + " " & "world.") + 3}}'));
+      when('calling: engine.render(parseResult).text', () {
+        var renderResult = engine.render(parseResult).text;
+        var expected = (('Hello world.'.length) + 3).toString();
+        then('result should be: $expected',
+            () => renderResult.should.be(expected));
+      });
+    });
+  });
+
+  given(
+      'A function with a parameter that contains a function '
+      '(needs to be rendered first)', () {
+    var engine = TemplateEngine();
+    when("calling: engine.parse(TextTemplate('{{sin(asin(0.5))}}'))", () {
+      var parseResult = engine.parse(const TextTemplate('{{sin(asin(0.5))}}'));
+      when('calling: engine.render(parseResult).text', () {
+        var renderResult = engine.render(parseResult).text;
+        var expected = '0.5';
+        then('result should be: $expected',
+            () => renderResult.should.be(expected));
+      });
+    });
+  });
+  given('A function with a missing parameter', () {
+    var engine = TemplateEngine();
+    when("calling: engine.parse(TextTemplate('{{sin()}}'))", () {
+      var parseResult = engine.parse(const TextTemplate('{{sin()}}'));
+      then('parseResult.errors.length should be 1',
+          () => parseResult.errors.length.should.be(1));
+      var expected = 'Parse Error: missing mandatory function parameter: '
+          'radians, position: 1:7, source: Text';
+      then('parseResult.errors.first.message should be "$expected"',
+          () => parseResult.errors.first.toString().should.be(expected));
+      when('calling: engine.render(parseResult).text', () {
+        var renderResult = engine.render(parseResult);
+
+        then('renderResult.text should be: "{{sin()}}"',
+            () => renderResult.text.should.be('{{sin()}}'));
+      });
+    });
+  });
 }
 
 class GreetingWithParameterFunction extends ExpressionFunction {
