@@ -95,7 +95,7 @@ The TemplateEngine supports several default DataTypes.
 ## Custom DataTypes
 You can adopt existing DataTypes or add your own custom DataTypes by 
 manipulating the TemplateEngine.dataTypes field.
-See [Example](https://github.com/domain-centric/template_engine/blob/main/test/src/parser/tag/expression/data_type/custom_test.dart). 
+See [Example](https://github.com/domain-centric/template_engine/blob/main/test/src/parser/tag/expression/data_type/custom_data_type_test.dart). 
 
 ## Available DataTypes
 <table>
@@ -127,8 +127,8 @@ A [Constant] is a value that does not change value over time.
 The [TemplateEngine] comes with several mathematical constants.
 
 ## Custom Constants
-You can create and add your own [Constant]s by
-manipulating the [TemplateEngine.constants] field.
+You can create and add your own Constants by
+manipulating the TemplateEngine.constants field.
 See [Example](https://github.com/domain-centric/template_engine/blob/main/test/src/parser/tag/expression/function/custom_function_test.dart).
 
 ## Available Constants
