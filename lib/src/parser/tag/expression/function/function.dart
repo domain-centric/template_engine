@@ -57,9 +57,25 @@ class FunctionExpression<R extends Object> extends Expression<R> {
   String toString() => 'Function{${tagFunction.name}}';
 }
 
-/// A function of a [Expression]
-/// It has the [Expression] prefix in the name since [Function]
-/// is already taken by Dart core.
+/// A function or subroutine is a piece of dart code that performs a 
+/// specific task. So a function can basically do anything that dart code can
+/// do.
+/// 
+/// An function can then be used anywhere in an tag expression
+/// wherever that particular task should be performed.
+/// 
+/// The TemplateEngine supports several default functions.
+/// 
+/// ## Custom DataTypes
+/// You can adopt existing functions or add your own custom functions by 
+/// manipulating the TemplateEngine.dataTypes field.
+/// See [Example]TODO. 
+/// 
+
+
+// A function of a [Expression]
+// It has the [Expression] prefix in the name since [Function]
+// is already taken by Dart core.
 class ExpressionFunction<R extends Object>
     implements DocumentationFactory, ExampleFactory {
   ExpressionFunction({
