@@ -68,7 +68,7 @@ class FunctionExpression<R extends Object> extends Expression<R> {
 /// ## Custom DataTypes
 /// You can adopt existing functions or add your own custom functions by
 /// manipulating the TemplateEngine.functionGroup field.
-/// See [Example]TODO.
+/// See [Example](https://github.com/domain-centric/template_engine/blob/main/test/src/parser/tag/expression/function/custom_function_test.dart).
 ///
 
 // A function of a [Expression]

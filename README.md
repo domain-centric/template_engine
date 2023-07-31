@@ -8,6 +8,7 @@
 
 ![](https://raw.githubusercontent.com/domain-centric/template_engine/main/doc/template/template_engine.png)
 
+[//]: # (TODO: This text should be imported from the dart doc of the TemplateEngine class using document_generator package)
 # template_engine
 A flexible Dart library to parse templates and render output such as:
 * [Html](https://en.wikipedia.org/wiki/HTML)
@@ -17,7 +18,7 @@ A flexible Dart library to parse templates and render output such as:
 * Etc...
 
 # Features
-* Template expressions containing:
+* Template expressions that can contain (combinations of):
   * Data types
   * Constants
   * Variables
@@ -152,19 +153,18 @@ Examples:
 
 # Functions in tag expressions
 [//]: # (TODO: This text should be imported from the dart doc of the ExpressionFunction class using document_generator package)
-A function or subroutine is a piece of dart code that performs a 
-specific task. So a function can basically do anything that dart code can
-do.
+A function is a piece of dart code that performs a specific task. 
+So a function can basically do anything that dart code can do.
  
-An function can then be used anywhere in an tag expression
+A function can then be used anywhere in an tag expression
 wherever that particular task should be performed.
  
 The TemplateEngine supports several default functions.
  
 ## Custom Functions
 You can adopt existing functions or add your own custom functions by 
-manipulating the TemplateEngine.dataTypes field.
-See [Example]TODO. 
+manipulating the TemplateEngine.functionGroup field.
+See [Example](https://github.com/domain-centric/template_engine/blob/main/test/src/parser/tag/expression/function/custom_function_test.dart). 
 
 ## Available Functions
 ## Math Functions

@@ -13,8 +13,6 @@ import 'package:template_engine/template_engine.dart';
 ///     [Json](https://en.wikipedia.org/wiki/JSON),
 ///     [Yaml](https://en.wikipedia.org/wiki/YAML)
 ///   * Etc...
-///
-/// See the [examples](https://pub.dev/packages/template_engine/example)
 
 class TemplateEngine {
   /// If null it will use [StandardTagParsers]
