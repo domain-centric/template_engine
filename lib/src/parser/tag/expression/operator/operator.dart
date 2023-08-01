@@ -242,11 +242,11 @@ abstract class OperatorWith2Values extends Operator {
   List<String> createMarkdownDocumentation(
       RenderContext renderContext, int titleLevel) {
     var writer = HtmlTableWriter();
-    writer.addHeaderRow([operator], [2]);
+    writer.addHeaderRow(['operator: $operator'], [2]);
     for (var variant in variants) {
-      writer.addHeaderRow([variant.parameterTypeDescription], [2]);
-      writer.addHeaderRow(['description:', variant.description]);
-      writer.addHeaderRow([
+      writer.addHeaderRow(['parameter type: ${variant.parameterTypeDescription}'], [2]);
+      writer.addRow(['description:', variant.description]);
+      writer.addRow([
         'expression example:',
         variant.expressionExampleResult == null
             ? variant.expressionExample
@@ -254,7 +254,7 @@ abstract class OperatorWith2Values extends Operator {
                 'should render: ${variant.expressionExampleResult}'
       ]);
       if (variant.codeExample != null) {
-        writer.addHeaderRow(
+        writer.addRow(
             ['code example:', variant.codeExample!.githubMarkdownLink]);
       }
     }

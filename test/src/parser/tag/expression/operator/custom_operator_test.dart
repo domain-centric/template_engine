@@ -22,7 +22,7 @@ class DivideOperator extends OperatorWith2Values {
           [
             TwoValueOperatorVariant<num>(
                 description: 'Divides 2 numbers',
-                expressionExample: '{{6:4=}}',
+                expressionExample: '{{6:4}}',
                 expressionExampleResult: '1.5',
                 function: (left, right) => left / right)
           ],
