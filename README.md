@@ -378,7 +378,8 @@ See [Example](https://github.com/domain-centric/template_engine/blob/main/test/s
   but differs syntactically or semantically.
 
  Common simple examples include arithmetic (e.g. addition with +) and
- logical operations (e.g. &).
+ logical operations (Fixed #164
+).
 
  An operator can be used anywhere in an tag expression
  wherever that particular Operator should be performed.

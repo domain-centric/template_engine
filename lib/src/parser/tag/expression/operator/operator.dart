@@ -178,7 +178,7 @@ class TwoValueOperatorExpression<T extends Object> extends Expression {
 /// but differs syntactically or semantically.
 ///
 /// Common simple examples include arithmetic (e.g. addition with +) and
-///  logical operations (e.g. &).
+/// logical operations (e.g. logical AND with &).
 ///
 /// An [Operator] can be used anywhere in an tag expression
 /// wherever that particular [Operator] should be performed.
