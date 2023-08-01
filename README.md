@@ -415,78 +415,78 @@ See [Example](https://github.com/domain-centric/template_engine/blob/main/test/s
 
 ## Multiplication
 <table>
-<tr><th colspan="2">^</th></tr>
-<tr><th colspan="2">number</th></tr>
-<tr><th>description:</th><th>Calculates a number to the power of the exponent number</th></tr>
-<tr><th>expression example:</th><th>{{2^3}} should render: 8</th></tr>
-<tr><th>code example:</th><th><a href="https://github.com/domain-centric/template_engine/blob/main/test/src/parser/tag/expression/operator/multiplication/num_power_test.dart">num_power_test.dart</a></th></tr>
-<tr><th colspan="2">boolean</th></tr>
-<tr><th>description:</th><th>Logical XOR with two booleans</th></tr>
-<tr><th>expression example:</th><th>{{true^false}} should render: true</th></tr>
-<tr><th>code example:</th><th><a href="https://github.com/domain-centric/template_engine/blob/main/test/src/parser/tag/expression/operator/multiplication/bool_xor_test.dart">bool_xor_test.dart</a></th></tr>
+<tr><th colspan="2">operator: ^</th></tr>
+<tr><th colspan="2">parameter type: number</th></tr>
+<tr><td>description:</td><td>Calculates a number to the power of the exponent number</td></tr>
+<tr><td>expression example:</td><td>{{2^3}} should render: 8</td></tr>
+<tr><td>code example:</td><td><a href="https://github.com/domain-centric/template_engine/blob/main/test/src/parser/tag/expression/operator/multiplication/num_power_test.dart">num_power_test.dart</a></td></tr>
+<tr><th colspan="2">parameter type: boolean</th></tr>
+<tr><td>description:</td><td>Logical XOR with two booleans</td></tr>
+<tr><td>expression example:</td><td>{{true^false}} should render: true</td></tr>
+<tr><td>code example:</td><td><a href="https://github.com/domain-centric/template_engine/blob/main/test/src/parser/tag/expression/operator/multiplication/bool_xor_test.dart">bool_xor_test.dart</a></td></tr>
 </table>
 
 <table>
-<tr><th colspan="2">*</th></tr>
-<tr><th colspan="2">number</th></tr>
-<tr><th>description:</th><th>Multiplies 2 numbers</th></tr>
-<tr><th>expression example:</th><th>{{2*3}} should render: 6</th></tr>
-<tr><th>code example:</th><th><a href="https://github.com/domain-centric/template_engine/blob/main/test/src/parser/tag/expression/operator/multiplication/num_multiply_test.dart">num_multiply_test.dart</a></th></tr>
+<tr><th colspan="2">operator: *</th></tr>
+<tr><th colspan="2">parameter type: number</th></tr>
+<tr><td>description:</td><td>Multiplies 2 numbers</td></tr>
+<tr><td>expression example:</td><td>{{2*3}} should render: 6</td></tr>
+<tr><td>code example:</td><td><a href="https://github.com/domain-centric/template_engine/blob/main/test/src/parser/tag/expression/operator/multiplication/num_multiply_test.dart">num_multiply_test.dart</a></td></tr>
 </table>
 
 <table>
-<tr><th colspan="2">/</th></tr>
-<tr><th colspan="2">number</th></tr>
-<tr><th>description:</th><th>Divides 2 numbers</th></tr>
-<tr><th>expression example:</th><th>{{6/4}} should render: 1.5</th></tr>
-<tr><th>code example:</th><th><a href="https://github.com/domain-centric/template_engine/blob/main/test/src/parser/tag/expression/operator/multiplication/num_divide_test.dart">num_divide_test.dart</a></th></tr>
+<tr><th colspan="2">operator: /</th></tr>
+<tr><th colspan="2">parameter type: number</th></tr>
+<tr><td>description:</td><td>Divides 2 numbers</td></tr>
+<tr><td>expression example:</td><td>{{6/4}} should render: 1.5</td></tr>
+<tr><td>code example:</td><td><a href="https://github.com/domain-centric/template_engine/blob/main/test/src/parser/tag/expression/operator/multiplication/num_divide_test.dart">num_divide_test.dart</a></td></tr>
 </table>
 
 <table>
-<tr><th colspan="2">%</th></tr>
-<tr><th colspan="2">number</th></tr>
-<tr><th>description:</th><th>Calculates the modulo (rest value of a division)</th></tr>
-<tr><th>expression example:</th><th>{{8%3}} should render: 2</th></tr>
-<tr><th>code example:</th><th><a href="https://github.com/domain-centric/template_engine/blob/main/test/src/parser/tag/expression/operator/multiplication/num_modulo_test.dart">num_modulo_test.dart</a></th></tr>
+<tr><th colspan="2">operator: %</th></tr>
+<tr><th colspan="2">parameter type: number</th></tr>
+<tr><td>description:</td><td>Calculates the modulo (rest value of a division)</td></tr>
+<tr><td>expression example:</td><td>{{8%3}} should render: 2</td></tr>
+<tr><td>code example:</td><td><a href="https://github.com/domain-centric/template_engine/blob/main/test/src/parser/tag/expression/operator/multiplication/num_modulo_test.dart">num_modulo_test.dart</a></td></tr>
 </table>
 
 <table>
-<tr><th colspan="2">&</th></tr>
-<tr><th colspan="2">boolean</th></tr>
-<tr><th>description:</th><th>Logical AND operation on two booleans</th></tr>
-<tr><th>expression example:</th><th>{{true&true}} should render: true</th></tr>
-<tr><th>code example:</th><th><a href="https://github.com/domain-centric/template_engine/blob/main/test/src/parser/tag/expression/operator/multiplication/bool_and_test.dart">bool_and_test.dart</a></th></tr>
-<tr><th colspan="2">String</th></tr>
-<tr><th>description:</th><th>Concatenates two strings</th></tr>
-<tr><th>expression example:</th><th>{{"Hel"&"lo"}} should render: Hello</th></tr>
-<tr><th>code example:</th><th><a href="https://github.com/domain-centric/template_engine/blob/main/test/src/parser/tag/expression/operator/multiplication/string_concatenate_test.dart">string_concatenate_test.dart</a></th></tr>
+<tr><th colspan="2">operator: &</th></tr>
+<tr><th colspan="2">parameter type: boolean</th></tr>
+<tr><td>description:</td><td>Logical AND operation on two booleans</td></tr>
+<tr><td>expression example:</td><td>{{true&true}} should render: true</td></tr>
+<tr><td>code example:</td><td><a href="https://github.com/domain-centric/template_engine/blob/main/test/src/parser/tag/expression/operator/multiplication/bool_and_test.dart">bool_and_test.dart</a></td></tr>
+<tr><th colspan="2">parameter type: String</th></tr>
+<tr><td>description:</td><td>Concatenates two strings</td></tr>
+<tr><td>expression example:</td><td>{{"Hel"&"lo"}} should render: Hello</td></tr>
+<tr><td>code example:</td><td><a href="https://github.com/domain-centric/template_engine/blob/main/test/src/parser/tag/expression/operator/multiplication/string_concatenate_test.dart">string_concatenate_test.dart</a></td></tr>
 </table>
 
 ## Additions
 <table>
-<tr><th colspan="2">+</th></tr>
-<tr><th colspan="2">number</th></tr>
-<tr><th>description:</th><th>Adds two numbers</th></tr>
-<tr><th>expression example:</th><th>{{2+3}} should render: 5</th></tr>
-<tr><th>code example:</th><th><a href="https://github.com/domain-centric/template_engine/blob/main/test/src/parser/tag/expression/operator/addition/num_addition_test.dart">num_addition_test.dart</a></th></tr>
-<tr><th colspan="2">String</th></tr>
-<tr><th>description:</th><th>Concatenates two strings</th></tr>
-<tr><th>expression example:</th><th>{{"Hel"+"lo"}} should render: Hello</th></tr>
-<tr><th>code example:</th><th><a href="https://github.com/domain-centric/template_engine/blob/main/test/src/parser/tag/expression/operator/addition/string_concatenate_test.dart">string_concatenate_test.dart</a></th></tr>
+<tr><th colspan="2">operator: +</th></tr>
+<tr><th colspan="2">parameter type: number</th></tr>
+<tr><td>description:</td><td>Adds two numbers</td></tr>
+<tr><td>expression example:</td><td>{{2+3}} should render: 5</td></tr>
+<tr><td>code example:</td><td><a href="https://github.com/domain-centric/template_engine/blob/main/test/src/parser/tag/expression/operator/addition/num_addition_test.dart">num_addition_test.dart</a></td></tr>
+<tr><th colspan="2">parameter type: String</th></tr>
+<tr><td>description:</td><td>Concatenates two strings</td></tr>
+<tr><td>expression example:</td><td>{{"Hel"+"lo"}} should render: Hello</td></tr>
+<tr><td>code example:</td><td><a href="https://github.com/domain-centric/template_engine/blob/main/test/src/parser/tag/expression/operator/addition/string_concatenate_test.dart">string_concatenate_test.dart</a></td></tr>
 </table>
 
 <table>
-<tr><th colspan="2">-</th></tr>
-<tr><th colspan="2">number</th></tr>
-<tr><th>description:</th><th>Subtracts two numbers</th></tr>
-<tr><th>expression example:</th><th>{{5-3}} should render: 2</th></tr>
-<tr><th>code example:</th><th><a href="https://github.com/domain-centric/template_engine/blob/main/test/src/parser/tag/expression/operator/addition/num_subtract_test.dart">num_subtract_test.dart</a></th></tr>
+<tr><th colspan="2">operator: -</th></tr>
+<tr><th colspan="2">parameter type: number</th></tr>
+<tr><td>description:</td><td>Subtracts two numbers</td></tr>
+<tr><td>expression example:</td><td>{{5-3}} should render: 2</td></tr>
+<tr><td>code example:</td><td><a href="https://github.com/domain-centric/template_engine/blob/main/test/src/parser/tag/expression/operator/addition/num_subtract_test.dart">num_subtract_test.dart</a></td></tr>
 </table>
 
 <table>
-<tr><th colspan="2">|</th></tr>
-<tr><th colspan="2">boolean</th></tr>
-<tr><th>description:</th><th>Logical OR operation on two booleans</th></tr>
-<tr><th>expression example:</th><th>{{false|true}} should render: true</th></tr>
-<tr><th>code example:</th><th><a href="https://github.com/domain-centric/template_engine/blob/main/test/src/parser/tag/expression/operator/addition/bool_or_test.dart">bool_or_test.dart</a></th></tr>
+<tr><th colspan="2">operator: |</th></tr>
+<tr><th colspan="2">parameter type: boolean</th></tr>
+<tr><td>description:</td><td>Logical OR operation on two booleans</td></tr>
+<tr><td>expression example:</td><td>{{false|true}} should render: true</td></tr>
+<tr><td>code example:</td><td><a href="https://github.com/domain-centric/template_engine/blob/main/test/src/parser/tag/expression/operator/addition/bool_or_test.dart">bool_or_test.dart</a></td></tr>
 </table>
