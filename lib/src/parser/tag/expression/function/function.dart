@@ -63,12 +63,12 @@ class FunctionExpression<R extends Object> extends Expression<R> {
 /// A function can be used anywhere in an tag expression
 /// wherever that particular task should be performed.
 ///
-/// The TemplateEngine supports several default functions.
+/// The [TemplateEngine] supports several standard functions.
 ///
-/// ## Custom DataTypes
+/// ## Custom Functions
 /// You can adopt existing functions or add your own custom functions by
-/// manipulating the TemplateEngine.functionGroups field.
-/// See [Example](https://github.com/domain-centric/template_engine/blob/main/test/src/parser/tag/expression/function/custom_function_test.dart).
+/// manipulating the [TemplateEngine.functionGroups] field.
+/// See [custom_function_test.dart](https://github.com/domain-centric/template_engine/blob/main/test/src/parser/tag/expression/function/custom_function_test.dart).
 ///
 
 // A function of a [Expression]

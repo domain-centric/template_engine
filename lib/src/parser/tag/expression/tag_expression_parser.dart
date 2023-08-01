@@ -36,7 +36,6 @@ class ExpressionTag extends Tag {
       [
         '${'#' * titleLevel} $name',
         '* ${exampleCode.githubMarkdownLink}',
-        
         ..._createMarkDownExamplesFor(
             renderContext: renderContext,
             title: 'Data Types',
@@ -45,7 +44,6 @@ class ExpressionTag extends Tag {
                     'custom_data_type_test.dart'),
             exampleFactories: renderContext.engine.dataTypes,
             titleLevel: titleLevel + 1),
-
         ..._createMarkDownExamplesFor(
             renderContext: renderContext,
             title: 'Constants',
@@ -54,14 +52,11 @@ class ExpressionTag extends Tag {
                     'custom_constant_test.dart'),
             exampleFactories: renderContext.engine.constants,
             titleLevel: titleLevel + 1),
-
         ..._createMarkDownExamplesFor(
             renderContext: renderContext,
             title: 'Variables',
             exampleFactories: [VariableExamples()],
             titleLevel: titleLevel + 1),
-        //TODO operators
-
         ..._createMarkDownExamplesFor(
             renderContext: renderContext,
             title: 'Functions',
@@ -69,7 +64,15 @@ class ExpressionTag extends Tag {
                 ProjectFilePath('/test/src/parser/tag/expression/function/'
                     'custom_function_test.dart'),
             exampleFactories: renderContext.engine.functionGroups,
-            titleLevel: titleLevel + 1)
+            titleLevel: titleLevel + 1),
+        ..._createMarkDownExamplesFor(
+            renderContext: renderContext,
+            title: 'Operators',
+            customExample:
+                ProjectFilePath('/test/src/parser/tag/expression/operator/'
+                    'custom_operator_test.dart'),
+            exampleFactories: renderContext.engine.operatorGroups,
+            titleLevel: titleLevel + 1),
       ];
 }
 

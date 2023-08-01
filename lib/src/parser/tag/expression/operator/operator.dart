@@ -126,16 +126,6 @@ class TwoValueOperatorExpression<T extends Object> extends Expression {
       required this.right,
       required this.function});
 
-  String get leftAndRightTypeDescription {
-    if (T is num) {
-      return 'number';
-    } else if (T is bool) {
-      return 'boolean';
-    } else {
-      return T.toString();
-    }
-  }
-
   @override
   Object render(RenderContext context) {
     var leftValue = left.render(context);
@@ -151,21 +141,21 @@ class TwoValueOperatorExpression<T extends Object> extends Expression {
           stage: ErrorStage.render,
           source: source,
           message:
-              'left and right of the $operator operator must be a $leftAndRightTypeDescription'));
+              'left and right of the $operator operator must be a ${typeDescription<T>()}'));
       return operator;
     } else if (!leftTypeOk) {
       context.errors.add(Error.fromSource(
           stage: ErrorStage.render,
           source: source,
           message:
-              'left of the $operator operator must be a $leftAndRightTypeDescription'));
+              'left of the $operator operator must be a ${typeDescription<T>()}'));
       return operator;
     } else {
       context.errors.add(Error.fromSource(
           stage: ErrorStage.render,
           source: source,
           message:
-              'right of the $operator operator must be a $leftAndRightTypeDescription'));
+              'right of the $operator operator must be a ${typeDescription<T>()}'));
       return operator;
     }
   }
@@ -176,7 +166,21 @@ class TwoValueOperatorExpression<T extends Object> extends Expression {
 
 /// An [Operator] behaves generally like functions,
 /// but differs syntactically or semantically.
-abstract class Operator {
+///
+/// Common simple examples include arithmetic (e.g. addition with +) and
+///  logical operations (e.g. &).
+///
+/// A [Operator] can be used anywhere in an tag expression
+/// wherever that particular [Operator] should be performed.
+///
+/// The [TemplateEngine] supports several standard [Operator]s.
+///
+/// ## Custom Operators
+/// You can adopt existing [Operator]s or add your own custom [Operator]s by
+/// manipulating the [TemplateEngine.operatorGroups] field.
+/// See [custom_operator_test.dart](https://github.com/domain-centric/template_engine/blob/main/test/src/parser/tag/expression/operator/custom_operator_test.dart).
+///
+abstract class Operator implements DocumentationFactory, ExampleFactory {
   final String operator;
 
   /// a description and an example for each type.
@@ -191,6 +195,26 @@ abstract class Operator {
   );
 
   addParser(Template template, ExpressionGroup2<Expression> group);
+
+  @override
+  List<String> createMarkdownDocumentation(
+      RenderContext renderContext, int titleLevel) {
+    var writer = HtmlTableWriter();
+    writer.addHeaderRow([operator], [2]);
+    if (descriptions.isNotEmpty) {
+      writer.addRow(['description:', descriptions.join('<br>')]);
+    }
+    // TODO if (exampleCode != null) {
+    //   writer.addRow(['code example:', exampleCode!.githubMarkdownLink], [1, 4]);
+    // }
+    return writer.toHtmlLines();
+  }
+
+  @override
+  List<String> createMarkdownExamples(
+          RenderContext renderContext, int titleLevel) =>
+      [];
+  // TODO exampleCode == null ? [] : ['* ${exampleCode!.githubMarkdownLink}'];
 
   @override
   String toString() => 'Operator{$operator}';
@@ -217,7 +241,33 @@ abstract class OperatorWith2Values extends Operator {
   String toString() => 'Operator{$operator}';
 }
 
-class OperatorGroup extends DelegatingList<Operator> {
+class OperatorGroup extends DelegatingList<Operator>
+    implements DocumentationFactory, ExampleFactory {
   final String name;
   OperatorGroup(this.name, super.base);
+
+  @override
+  List<String> createMarkdownDocumentation(
+          RenderContext renderContext, int titleLevel) =>
+      [
+        '${"#" * titleLevel} $name',
+        ...map((operator) => operator.createMarkdownDocumentation(
+            renderContext, titleLevel + 1)).flattened
+      ];
+
+  @override
+  List<String> createMarkdownExamples(
+      RenderContext renderContext, int titleLevel) {
+    var examples = map((function) =>
+            function.createMarkdownExamples(renderContext, titleLevel + 1))
+        .flattened;
+    if (examples.isEmpty) {
+      return [];
+    } else {
+      return [
+        '${"#" * titleLevel} $name',
+        ...examples,
+      ];
+    }
+  }
 }
