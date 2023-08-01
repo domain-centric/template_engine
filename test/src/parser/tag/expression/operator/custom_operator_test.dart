@@ -20,8 +20,11 @@ class DivideOperator extends OperatorWith2Values {
       : super(
           ':',
           [
-            TwoValueOperatorVariant<num>('Divides 2 numbers, e.g.: 6*4=1.5',
-                (left, right) => left / right)
+            TwoValueOperatorVariant<num>(
+                description: 'Divides 2 numbers',
+                expressionExample: '{{6:4=}}',
+                expressionExampleResult: '1.5',
+                function: (left, right) => left / right)
           ],
         );
 

@@ -49,8 +49,19 @@ class NotExpression extends Expression {
 class TwoValueOperatorVariant<PARAMETER_TYPE extends Object> {
   final String description;
   final Object Function(PARAMETER_TYPE left, PARAMETER_TYPE right) function;
+  final String expressionExample;
+  final String? expressionExampleResult;
+  final ProjectFilePath? codeExample;
 
-  TwoValueOperatorVariant(this.description, this.function);
+  TwoValueOperatorVariant(
+      {required this.description,
+      required this.function,
+      required this.expressionExample,
+      this.expressionExampleResult,
+      this.codeExample});
+
+  String get parameterTypeDescription => typeDescription<PARAMETER_TYPE>();
+
   List<String> validate(String operator, Object leftValue, Object rightValue) {
     var typeDesc = typeDescription<PARAMETER_TYPE>();
     bool leftTypeOk = leftValue is PARAMETER_TYPE;
@@ -227,6 +238,40 @@ abstract class OperatorWith2Values extends Operator {
     this.variants,
   ) : super(operator, variants.map((v) => v.description).toList());
 
+  @override
+  List<String> createMarkdownDocumentation(
+      RenderContext renderContext, int titleLevel) {
+    var writer = HtmlTableWriter();
+    writer.addHeaderRow([operator], [2]);
+    for (var variant in variants) {
+      writer.addHeaderRow([variant.parameterTypeDescription], [2]);
+      writer.addHeaderRow(['description:', variant.description]);
+      writer.addHeaderRow([
+        'expression example:',
+        variant.expressionExampleResult == null
+            ? variant.expressionExample
+            : '${variant.expressionExample} '
+                'should render: ${variant.expressionExampleResult}'
+      ]);
+      if (variant.codeExample != null) {
+        writer.addHeaderRow(
+            ['code example:', variant.codeExample!.githubMarkdownLink]);
+      }
+    }
+    return writer.toHtmlLines();
+  }
+
+  @override
+  List<String> createMarkdownExamples(
+          RenderContext renderContext, int titleLevel) =>
+      variants
+          .where((variant) => variant.codeExample != null)
+          .map((variant) => variant.codeExample!.githubMarkdownLink)
+          .toList();
+
+  @override
+  String toString() => 'Operator{$operator}';
+
   Expression createExpression(
           Source source, Expression left, Expression right) =>
       OperatorVariantExpression(
@@ -236,8 +281,6 @@ abstract class OperatorWith2Values extends Operator {
         left: left,
         right: right,
       );
-  @override
-  String toString() => 'Operator{$operator}';
 }
 
 class OperatorGroup extends DelegatingList<Operator>

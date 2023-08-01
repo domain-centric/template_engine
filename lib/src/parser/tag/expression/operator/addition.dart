@@ -10,10 +10,21 @@ class AddOperator extends OperatorWith2Values {
   AddOperator()
       : super('+', [
           TwoValueOperatorVariant<num>(
-              'Adds two numbers, e.g.: 2+3=5', (left, right) => left + right),
+              description: 'Adds two numbers',
+              expressionExample: '{{2+3}}',
+              expressionExampleResult: '5',
+              codeExample: ProjectFilePath(
+                  '/test/src/parser/tag/expression/operator/addition/'
+                  'num_addition_test.dart'),
+              function: (left, right) => left + right),
           TwoValueOperatorVariant<String>(
-              'Concatenates two strings, e.g.: "Hel"+"lo"="Hello"',
-              (left, right) => '$left$right')
+              description: 'Concatenates two strings',
+              expressionExample: '{{"Hel"+"lo"}}',
+              expressionExampleResult: "Hello",
+              codeExample: ProjectFilePath(
+                  '/test/src/parser/tag/expression/operator/addition/'
+                  'string_concatenate_test.dart'),
+              function: (left, right) => '$left$right')
         ]);
 
   @override
@@ -30,8 +41,14 @@ class SubtractOperator extends OperatorWith2Values {
       : super(
           '-',
           [
-            TwoValueOperatorVariant<num>('Subtracts two numbers, e.g.: 5-3=2',
-                (left, right) => left - right)
+            TwoValueOperatorVariant<num>(
+                description: 'Subtracts two numbers',
+                expressionExample: '{{5-3}}',
+                expressionExampleResult: '2',
+                codeExample: ProjectFilePath(
+                    '/test/src/parser/tag/expression/operator/addition/'
+                    'num_subtract_test.dart'),
+                function: (left, right) => left - right)
           ],
         );
 
@@ -50,8 +67,13 @@ class OrOperator extends OperatorWith2Values {
           '|',
           [
             TwoValueOperatorVariant<bool>(
-                'Logical OR operation on two booleans, e.g.: false|true=true',
-                (left, right) => left | right)
+                description: 'Logical OR operation on two booleans',
+                expressionExample: '{{false|true}}',
+                expressionExampleResult: 'true',
+                codeExample: ProjectFilePath(
+                    '/test/src/parser/tag/expression/operator/addition/'
+                    'bool_or_test.dart'),
+                function: (left, right) => left | right)
           ],
         );
 
