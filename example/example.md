@@ -36,15 +36,15 @@
 ## Operators
 * <a href="https://github.com/domain-centric/template_engine/blob/main/test/src/parser/tag/expression/operator/custom_operator_test.dart">custom_operator_test.dart</a>
 ### Multiplication
-<a href="https://github.com/domain-centric/template_engine/blob/main/test/src/parser/tag/expression/operator/multiplication/num_power_test.dart">num_power_test.dart</a>
-<a href="https://github.com/domain-centric/template_engine/blob/main/test/src/parser/tag/expression/operator/multiplication/bool_xor_test.dart">bool_xor_test.dart</a>
-<a href="https://github.com/domain-centric/template_engine/blob/main/test/src/parser/tag/expression/operator/multiplication/num_multiply_test.dart">num_multiply_test.dart</a>
-<a href="https://github.com/domain-centric/template_engine/blob/main/test/src/parser/tag/expression/operator/multiplication/num_divide_test.dart">num_divide_test.dart</a>
-<a href="https://github.com/domain-centric/template_engine/blob/main/test/src/parser/tag/expression/operator/multiplication/num_modulo_test.dart">num_modulo_test.dart</a>
-<a href="https://github.com/domain-centric/template_engine/blob/main/test/src/parser/tag/expression/operator/multiplication/bool_and_test.dart">bool_and_test.dart</a>
-<a href="https://github.com/domain-centric/template_engine/blob/main/test/src/parser/tag/expression/operator/multiplication/string_concatenate_test.dart">string_concatenate_test.dart</a>
+* <a href="https://github.com/domain-centric/template_engine/blob/main/test/src/parser/tag/expression/operator/multiplication/num_power_test.dart">num_power_test.dart</a>
+* <a href="https://github.com/domain-centric/template_engine/blob/main/test/src/parser/tag/expression/operator/multiplication/bool_xor_test.dart">bool_xor_test.dart</a>
+* <a href="https://github.com/domain-centric/template_engine/blob/main/test/src/parser/tag/expression/operator/multiplication/num_multiply_test.dart">num_multiply_test.dart</a>
+* <a href="https://github.com/domain-centric/template_engine/blob/main/test/src/parser/tag/expression/operator/multiplication/num_divide_test.dart">num_divide_test.dart</a>
+* <a href="https://github.com/domain-centric/template_engine/blob/main/test/src/parser/tag/expression/operator/multiplication/num_modulo_test.dart">num_modulo_test.dart</a>
+* <a href="https://github.com/domain-centric/template_engine/blob/main/test/src/parser/tag/expression/operator/multiplication/bool_and_test.dart">bool_and_test.dart</a>
+* <a href="https://github.com/domain-centric/template_engine/blob/main/test/src/parser/tag/expression/operator/multiplication/string_concatenate_test.dart">string_concatenate_test.dart</a>
 ### Additions
-<a href="https://github.com/domain-centric/template_engine/blob/main/test/src/parser/tag/expression/operator/addition/num_addition_test.dart">num_addition_test.dart</a>
-<a href="https://github.com/domain-centric/template_engine/blob/main/test/src/parser/tag/expression/operator/addition/string_concatenate_test.dart">string_concatenate_test.dart</a>
-<a href="https://github.com/domain-centric/template_engine/blob/main/test/src/parser/tag/expression/operator/addition/num_subtract_test.dart">num_subtract_test.dart</a>
-<a href="https://github.com/domain-centric/template_engine/blob/main/test/src/parser/tag/expression/operator/addition/bool_or_test.dart">bool_or_test.dart</a>
+* <a href="https://github.com/domain-centric/template_engine/blob/main/test/src/parser/tag/expression/operator/addition/num_addition_test.dart">num_addition_test.dart</a>
+* <a href="https://github.com/domain-centric/template_engine/blob/main/test/src/parser/tag/expression/operator/addition/string_concatenate_test.dart">string_concatenate_test.dart</a>
+* <a href="https://github.com/domain-centric/template_engine/blob/main/test/src/parser/tag/expression/operator/addition/num_subtract_test.dart">num_subtract_test.dart</a>
+* <a href="https://github.com/domain-centric/template_engine/blob/main/test/src/parser/tag/expression/operator/addition/bool_or_test.dart">bool_or_test.dart</a>

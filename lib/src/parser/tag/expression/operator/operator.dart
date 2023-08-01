@@ -244,7 +244,8 @@ abstract class OperatorWith2Values extends Operator {
     var writer = HtmlTableWriter();
     writer.addHeaderRow(['operator: $operator'], [2]);
     for (var variant in variants) {
-      writer.addHeaderRow(['parameter type: ${variant.parameterTypeDescription}'], [2]);
+      writer.addHeaderRow(
+          ['parameter type: ${variant.parameterTypeDescription}'], [2]);
       writer.addRow(['description:', variant.description]);
       writer.addRow([
         'expression example:',
@@ -254,8 +255,8 @@ abstract class OperatorWith2Values extends Operator {
                 'should render: ${variant.expressionExampleResult}'
       ]);
       if (variant.codeExample != null) {
-        writer.addRow(
-            ['code example:', variant.codeExample!.githubMarkdownLink]);
+        writer
+            .addRow(['code example:', variant.codeExample!.githubMarkdownLink]);
       }
     }
     return writer.toHtmlLines();
@@ -266,7 +267,7 @@ abstract class OperatorWith2Values extends Operator {
           RenderContext renderContext, int titleLevel) =>
       variants
           .where((variant) => variant.codeExample != null)
-          .map((variant) => variant.codeExample!.githubMarkdownLink)
+          .map((variant) => '* ${variant.codeExample!.githubMarkdownLink}')
           .toList();
 
   @override
