@@ -426,7 +426,7 @@ See [Example](https://github.com/domain-centric/template_engine/blob/main/test/s
 
 <table>
 <tr><th colspan="2">/</th></tr>
-<tr><td>description:</td><td>Divides 2 numbers, e.g.: 6*4=1.5</td></tr>
+<tr><td>description:</td><td>Divides 2 numbers, e.g.: 6/4=1.5</td></tr>
 </table>
 
 <table>

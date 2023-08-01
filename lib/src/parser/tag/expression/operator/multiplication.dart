@@ -56,7 +56,7 @@ class DivideOperator extends OperatorWith2Values {
       : super(
           '/',
           [
-            TwoValueOperatorVariant<num>('Divides 2 numbers, e.g.: 6*4=1.5',
+            TwoValueOperatorVariant<num>('Divides 2 numbers, e.g.: 6/4=1.5',
                 (left, right) => left / right)
           ],
         );

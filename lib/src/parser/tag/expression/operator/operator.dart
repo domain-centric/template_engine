@@ -50,6 +50,7 @@ class TwoValueOperatorVariant<PARAMETER_TYPE extends Object> {
   final String description;
   final Object Function(PARAMETER_TYPE left, PARAMETER_TYPE right) function;
 
+  TwoValueOperatorVariant(this.description, this.function);
   List<String> validate(String operator, Object leftValue, Object rightValue) {
     var typeDesc = typeDescription<PARAMETER_TYPE>();
     bool leftTypeOk = leftValue is PARAMETER_TYPE;
@@ -67,8 +68,6 @@ class TwoValueOperatorVariant<PARAMETER_TYPE extends Object> {
 
   Object eval(Object leftValue, Object rightValue) =>
       function(leftValue as PARAMETER_TYPE, rightValue as PARAMETER_TYPE);
-
-  TwoValueOperatorVariant(this.description, this.function);
 }
 
 /// delegates the work to one of the [variants] that can process
