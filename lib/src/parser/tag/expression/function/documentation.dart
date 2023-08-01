@@ -9,8 +9,8 @@ class DocumentationFunctions extends FunctionGroup {
           DataTypeDocumentation(),
           ConstantDocumentation(),
           //Note: variable documentation can not be generated (=template text)
-          //TODO operators
           FunctionDocumentation(),
+          OperatorDocumentation(),
           ExampleDocumentation()
         ]);
 }
@@ -106,6 +106,21 @@ class FunctionDocumentation extends DocumentationFunction {
             documentationFunction: (renderContext, titleLevel) => renderContext
                 .engine.functionGroups
                 .map((functionGroup) => functionGroup
+                    .createMarkdownDocumentation(renderContext, titleLevel))
+                .flattened
+                .toList());
+}
+
+class OperatorDocumentation extends DocumentationFunction {
+  OperatorDocumentation()
+      : super(
+            name: 'engine.operator.documentation',
+            description:
+                'Generates markdown documentation of all the operators '
+                'that can be used within a ExpressionTag of a TemplateEngine',
+            documentationFunction: (renderContext, titleLevel) => renderContext
+                .engine.operatorGroups
+                .map((operatorGroup) => operatorGroup
                     .createMarkdownDocumentation(renderContext, titleLevel))
                 .flattened
                 .toList());

@@ -357,9 +357,100 @@ See [Example](https://github.com/domain-centric/template_engine/blob/main/test/s
 </table>
 
 <table>
+<tr><th colspan="5">engine.operator.documentation</th></tr>
+<tr><td>description:</td><td colspan="4">Generates markdown documentation of all the operators that can be used within a ExpressionTag of a TemplateEngine</td></tr>
+<tr><td>return type:</td><td colspan="4">String</td></tr>
+<tr><td>expression example:</td><td colspan="4">{{ engine.operator.documentation() }}</td></tr>
+<tr><td>parameter:</td><td>titleLevel</td><td>number</td><td>optional (default=1)</td><td>The level of the tag title</td></tr>
+</table>
+
+<table>
 <tr><th colspan="5">engine.example.documentation</th></tr>
 <tr><td>description:</td><td colspan="4">Generates markdown documentation of all the examples. This could be used to generate example.md file.</td></tr>
 <tr><td>return type:</td><td colspan="4">String</td></tr>
 <tr><td>expression example:</td><td colspan="4">{{ engine.example.documentation() }}</td></tr>
 <tr><td>parameter:</td><td>titleLevel</td><td>number</td><td>optional (default=1)</td><td>The level of the tag title</td></tr>
+</table>
+
+
+# Operator
+ An operator behaves generally like functions,
+  but differs syntactically or semantically.
+
+ Common simple examples include arithmetic (e.g. addition with +) and
+ logical operations (e.g. &).
+
+ An operator can be used anywhere in an tag expression
+ wherever that particular Operator should be performed.
+
+ The TemplateEngine supports several standard operators.
+
+ ## Custom Operators
+ You can adopt existing operators or add your own custom operators by
+ manipulating the TemplateEngine.operatorGroups field.
+ See [custom_operator_test.dart](https://github.com/domain-centric/template_engine/blob/main/test/src/parser/tag/expression/operator/custom_operator_test.dart).
+
+## Available Operators
+## Parentheses
+<table>
+<tr><th colspan="2">()</th></tr>
+<tr><td>description:</td><td>Groups expressions together so that the are calculated first, e.g.: (2+1)*3=9 while 2+1*3=5</td></tr>
+</table>
+
+## Prefixes
+<table>
+<tr><th colspan="2">+</th></tr>
+<tr><td>description:</td><td>Optional prefix for positive numbers, e.g.: +3 =3</td></tr>
+</table>
+
+<table>
+<tr><th colspan="2">-</th></tr>
+<tr><td>description:</td><td>Prefix for a negative number, e.g.: -2 =-2</td></tr>
+</table>
+
+<table>
+<tr><th colspan="2">!</th></tr>
+<tr><td>description:</td><td>Prefix to invert a boolean, e.g.: !true =false</td></tr>
+</table>
+
+## Multiplication
+<table>
+<tr><th colspan="2">^</th></tr>
+<tr><td>description:</td><td>Calculates a number to the power of the exponent number, e.g.: 2^3=8<br>Logical XOR with two booleans, e.g.: true^false=true</td></tr>
+</table>
+
+<table>
+<tr><th colspan="2">*</th></tr>
+<tr><td>description:</td><td>Multiplies 2 numbers, e.g.: 2*3=6</td></tr>
+</table>
+
+<table>
+<tr><th colspan="2">/</th></tr>
+<tr><td>description:</td><td>Divides 2 numbers, e.g.: 6*4=1.5</td></tr>
+</table>
+
+<table>
+<tr><th colspan="2">%</th></tr>
+<tr><td>description:</td><td>Calculates the modulo (rest value of a division), e.g.: 8%3=2</td></tr>
+</table>
+
+<table>
+<tr><th colspan="2">&</th></tr>
+<tr><td>description:</td><td>Logical AND operation on two booleans, e.g.: true&true=true<br>Concatenates two strings, e.g.: "Hel"&"lo"="Hello"</td></tr>
+</table>
+
+## Additions
+<table>
+<tr><th colspan="2">+</th></tr>
+<tr><td>description:</td><td>Adds two numbers, e.g.: 2+3=5<br>Concatenates two strings, e.g.: "Hel"+"lo"="Hello"</td></tr>
+</table>
+
+<table>
+<tr><th colspan="2">-</th></tr>
+<tr><td>description:</td><td>Subtracts two numbers, e.g.: 5-3=2</td></tr>
+</table>
+
+<table>
+<tr><th colspan="2">|</th></tr>
+<tr><td>description:</td><td>Logical OR operation on two booleans, e.g.: false|true=true</td></tr>
 </table>
