@@ -1,4 +1,3 @@
-import 'package:petitparser/petitparser.dart';
 import 'package:shouldly/shouldly.dart';
 import 'package:template_engine/template_engine.dart';
 import 'package:test/test.dart';
@@ -19,6 +18,7 @@ class DivideOperator extends OperatorWith2Values {
   DivideOperator()
       : super(
           ':',
+          OperatorAssociativity.left,
           [
             TwoValueOperatorVariant<num>(
                 description: 'Divides 2 numbers',
@@ -27,12 +27,4 @@ class DivideOperator extends OperatorWith2Values {
                 function: (left, right) => left / right)
           ],
         );
-
-  @override
-  void addParser(Template template, ExpressionGroup2<Expression> group) {
-    group.left(
-        char(operator).trim(),
-        (context, left, op, right) => createExpression(
-            Source.fromContext(template, context), left, right));
-  }
 }

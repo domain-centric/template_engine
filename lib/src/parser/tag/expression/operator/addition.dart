@@ -1,4 +1,3 @@
-import 'package:petitparser/parser.dart';
 import 'package:template_engine/template_engine.dart';
 
 class Additions extends OperatorGroup {
@@ -8,7 +7,7 @@ class Additions extends OperatorGroup {
 
 class AddOperator extends OperatorWith2Values {
   AddOperator()
-      : super('+', [
+      : super('+', OperatorAssociativity.left, [
           TwoValueOperatorVariant<num>(
               description: 'Adds two numbers',
               expressionExample: '{{2+3}}',
@@ -26,20 +25,13 @@ class AddOperator extends OperatorWith2Values {
                   'string_concatenate_test.dart'),
               function: (left, right) => '$left$right')
         ]);
-
-  @override
-  void addParser(Template template, ExpressionGroup2<Expression> group) {
-    group.left(
-        char(operator).trim(),
-        (context, left, op, right) => createExpression(
-            Source.fromContext(template, context), left, right));
-  }
 }
 
 class SubtractOperator extends OperatorWith2Values {
   SubtractOperator()
       : super(
           '-',
+          OperatorAssociativity.left,
           [
             TwoValueOperatorVariant<num>(
                 description: 'Subtracts two numbers',
@@ -51,20 +43,13 @@ class SubtractOperator extends OperatorWith2Values {
                 function: (left, right) => left - right)
           ],
         );
-
-  @override
-  void addParser(Template template, ExpressionGroup2<Expression> group) {
-    group.left(
-        char(operator).trim(),
-        (context, left, op, right) => createExpression(
-            Source.fromContext(template, context), left, right));
-  }
 }
 
 class OrOperator extends OperatorWith2Values {
   OrOperator()
       : super(
           '|',
+          OperatorAssociativity.left,
           [
             TwoValueOperatorVariant<bool>(
                 description: 'Logical OR operation on two booleans',
@@ -76,12 +61,4 @@ class OrOperator extends OperatorWith2Values {
                 function: (left, right) => left | right)
           ],
         );
-
-  @override
-  void addParser(Template template, ExpressionGroup2<Expression> group) {
-    group.left(
-        char(operator).trim(),
-        (context, left, op, right) => createExpression(
-            Source.fromContext(template, context), left, right));
-  }
 }

@@ -1,6 +1,5 @@
 import 'dart:math';
 
-import 'package:petitparser/parser.dart';
 import 'package:template_engine/template_engine.dart';
 
 class Multiplication extends OperatorGroup {
@@ -16,7 +15,7 @@ class Multiplication extends OperatorGroup {
 
 class CaretOperator extends OperatorWith2Values {
   CaretOperator()
-      : super('^', [
+      : super('^', OperatorAssociativity.right, [
           TwoValueOperatorVariant<num>(
               description:
                   'Calculates a number to the power of the exponent number',
@@ -35,19 +34,11 @@ class CaretOperator extends OperatorWith2Values {
                   'bool_xor_test.dart'),
               function: (left, right) => left ^ right)
         ]);
-
-  @override
-  void addParser(Template template, ExpressionGroup2<Expression> group) {
-    group.right(
-        char(operator).trim(),
-        (context, left, op, right) => createExpression(
-            Source.fromContext(template, context), left, right));
-  }
 }
 
 class MultiplyOperator extends OperatorWith2Values {
   MultiplyOperator()
-      : super('*', [
+      : super('*', OperatorAssociativity.left, [
           TwoValueOperatorVariant<num>(
               description: 'Multiplies 2 numbers',
               expressionExample: '{{2*3}}',
@@ -57,20 +48,13 @@ class MultiplyOperator extends OperatorWith2Values {
                   'num_multiply_test.dart'),
               function: (left, right) => left * right)
         ]);
-
-  @override
-  void addParser(Template template, ExpressionGroup2<Expression> group) {
-    group.left(
-        char(operator).trim(),
-        (context, left, op, right) => createExpression(
-            Source.fromContext(template, context), left, right));
-  }
 }
 
 class DivideOperator extends OperatorWith2Values {
   DivideOperator()
       : super(
           '/',
+          OperatorAssociativity.left,
           [
             TwoValueOperatorVariant<num>(
                 description: 'Divides 2 numbers',
@@ -82,20 +66,13 @@ class DivideOperator extends OperatorWith2Values {
                 function: (left, right) => left / right)
           ],
         );
-
-  @override
-  void addParser(Template template, ExpressionGroup2<Expression> group) {
-    group.left(
-        char(operator).trim(),
-        (context, left, op, right) => createExpression(
-            Source.fromContext(template, context), left, right));
-  }
 }
 
 class ModuloOperator extends OperatorWith2Values {
   ModuloOperator()
       : super(
           '%',
+          OperatorAssociativity.left,
           [
             TwoValueOperatorVariant<num>(
                 description: 'Calculates the modulo (rest value of a division)',
@@ -107,20 +84,13 @@ class ModuloOperator extends OperatorWith2Values {
                 function: (left, right) => left % right)
           ],
         );
-
-  @override
-  void addParser(Template template, ExpressionGroup2<Expression> group) {
-    group.left(
-        char(operator).trim(),
-        (context, left, op, right) => createExpression(
-            Source.fromContext(template, context), left, right));
-  }
 }
 
 class AndOperator extends OperatorWith2Values {
   AndOperator()
       : super(
           '&',
+          OperatorAssociativity.left,
           [
             TwoValueOperatorVariant<bool>(
                 description: 'Logical AND operation on two booleans',
@@ -140,12 +110,4 @@ class AndOperator extends OperatorWith2Values {
                 function: (left, right) => '$left$right')
           ],
         );
-
-  @override
-  void addParser(Template template, ExpressionGroup2<Expression> group) {
-    group.left(
-        char(operator).trim(),
-        (context, left, op, right) => createExpression(
-            Source.fromContext(template, context), left, right));
-  }
 }

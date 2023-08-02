@@ -1,4 +1,5 @@
 import 'package:collection/collection.dart';
+import 'package:petitparser/petitparser.dart';
 import 'package:template_engine/template_engine.dart';
 
 class NegativeNumberExpression extends Expression {
@@ -231,10 +232,12 @@ abstract class Operator implements DocumentationFactory, ExampleFactory {
 }
 
 abstract class OperatorWith2Values extends Operator {
+  final OperatorAssociativity associativity;
   final List<TwoValueOperatorVariant> variants;
 
   OperatorWith2Values(
     String operator,
+    this.associativity,
     this.variants,
   ) : super(operator, variants.map((v) => v.description).toList());
 
@@ -273,15 +276,62 @@ abstract class OperatorWith2Values extends Operator {
   @override
   String toString() => 'Operator{$operator}';
 
-  Expression createExpression(
-          Source source, Expression left, Expression right) =>
-      OperatorVariantExpression(
-        source: source,
-        operator: operator,
-        variants: variants,
-        left: left,
-        right: right,
-      );
+  @override
+  addParser(Template template, ExpressionGroup2<Expression<Object>> group) {
+    if (associativity == OperatorAssociativity.right) {
+      group.right(
+          char(operator).trim(),
+          (context, left, op, right) => OperatorVariantExpression(
+                source: Source.fromContext(template, context),
+                operator: operator,
+                variants: variants,
+                left: left,
+                right: right,
+              ));
+    } else {
+      group.left(
+          char(operator).trim(),
+          (context, left, op, right) => OperatorVariantExpression(
+                source: Source.fromContext(template, context),
+                operator: operator,
+                variants: variants,
+                left: left,
+                right: right,
+              ));
+    }
+  }
+}
+
+///  the associativity of an operator is a property that determines how
+/// operators of the same precedence are grouped in the absence of parentheses.
+/// If an operand is both preceded and followed by operators, and those
+///  operators have equal precedence, then the operand may be used as input
+/// to two different operations (i.e. the two operations indicated by the
+/// two operators). The choice of which operations to apply the operand to,
+/// is determined by the associativity of the operators.
+///
+/// Operators may be associative (meaning the operations can be grouped
+/// arbitrarily):
+/// * left-associative (meaning the operations are grouped from the left)
+/// * right-associative (meaning the operations are grouped from the right)
+/// * non-associative (meaning operations cannot be chained,
+///   often because the output type is incompatible with the input types).
+///
+/// The associativity and precedence of an operator is a part of the
+/// definition of the programming language; different programming languages
+/// may have different associativity and precedence for the same type of
+/// operator.
+///
+/// See https://en.wikipedia.org/wiki/Operator_associativity
+///
+enum OperatorAssociativity {
+  /// left-associative (meaning the operations are grouped from the left)
+  /// This is used for the majority of operators
+  left,
+
+  /// right-associative (meaning the operations are grouped from the right)
+  /// This is used for the the power operator, e.g.: 2 ^ 3
+  right,
 }
 
 class OperatorGroup extends DelegatingList<Operator>
