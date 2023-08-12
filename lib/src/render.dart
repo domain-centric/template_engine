@@ -43,7 +43,14 @@ class ParserTree extends Renderer<String> {
 
   String renderNode(RenderContext context, Object node) {
     if (node is Renderer) {
-      return node.render(context).toString();
+      try {
+        return node.render(context).toString();
+      } on Exception catch (e) {
+        if (e is RenderException) {
+          context.errors.add(e.error);
+        }
+        return context.renderAsError;
+      }
     } else if (node is List) {
       return node.map((n) => renderNode(context, n)).join();
     } else {}
@@ -55,9 +62,11 @@ class RenderContext {
   final TemplateEngine engine;
   final Variables variables;
   final List<Error> errors;
-
-  RenderContext(this.engine, [Variables? variables])
+  final String renderAsError;
+  RenderContext(this.engine, {String? renderAsError, Variables? variables})
       : variables = variables ?? {},
+        renderAsError =
+            renderAsError ?? '${engine.tagStart}ERROR${engine.tagEnd}',
         errors = [];
 }
 

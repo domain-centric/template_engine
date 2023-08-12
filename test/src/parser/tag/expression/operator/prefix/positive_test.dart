@@ -13,10 +13,10 @@ void main() {
   test('{{+"text"}} should throw in an error', () {
     var engine = TemplateEngine();
     var parseResult = engine.parse(const TextTemplate('{{+"text"}}'));
-    Should.throwException<RenderException>(() => engine.render(parseResult))!
-        .error
-        .message
-        .should
-        .be('number expected after the + operator');
+    var renderResult = engine.render(parseResult);
+    renderResult.text.should.be('{{ERROR}}');
+    renderResult.errorMessage.should
+        .be('Render Error: number expected after the + operator, '
+            'position: 1:3, source: Text');
   });
 }

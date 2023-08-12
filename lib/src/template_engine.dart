@@ -86,7 +86,7 @@ class TemplateEngine {
   /// to a string (and write it as files when needed)
   RenderResult render(ParserTree renderResult,
       [Map<String, Object> variables = const {}]) {
-    var context = RenderContext(this, variables);
+    var context = RenderContext(this, variables: variables);
     var text = renderResult.render(context);
     return RenderResult(
       text: text,
