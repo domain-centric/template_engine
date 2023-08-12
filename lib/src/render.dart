@@ -9,6 +9,11 @@ abstract class Renderer<T> {
   T render(RenderContext context);
 }
 
+class RenderException implements Exception {
+  final Error error;
+  RenderException(this.error);
+}
+
 /// Types returned by the [Renderer.render] method or
 /// the Type of [ParserTree.nodes] are normally one of the following:
 /// * String
@@ -19,7 +24,6 @@ abstract class Renderer<T> {
 /// * Some other object
 /// * [Renderer]<Generic type is on of the above>
 /// * List<Generic type is on of the above>
-
 abstract class RenderType {
   /// Documentation only
 }

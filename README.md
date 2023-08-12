@@ -378,8 +378,7 @@ See [Example](https://github.com/domain-centric/template_engine/blob/main/test/s
   but differs syntactically or semantically.
 
  Common simple examples include arithmetic (e.g. addition with +) and
- logical operations (Fixed #164
-).
+ logical operations (e.g. &).
 
  An operator can be used anywhere in an tag expression
  wherever that particular Operator should be performed.
@@ -394,24 +393,35 @@ See [Example](https://github.com/domain-centric/template_engine/blob/main/test/s
 ## Available Operators
 ## Parentheses
 <table>
-<tr><th colspan="2">()</th></tr>
-<tr><td>description:</td><td>Groups expressions together so that the are calculated first, e.g.: (2+1)*3=9 while 2+1*3=5</td></tr>
+<tr><th colspan="2">operator: ( ... )</th></tr>
+<tr><td>description:</td><td>Groups expressions together so that the are calculated first</td></tr>
+<tr><td>expression example:</td><td>{{(2+1)*3}} should render: 9</td></tr>
+<tr><td>code example:</td><td><a href="https://github.com/domain-centric/template_engine/blob/main/test/src/parser/tag/expression/operator/parentheses_test.dart">parentheses_test.dart</a></td></tr>
 </table>
 
 ## Prefixes
 <table>
-<tr><th colspan="2">+</th></tr>
-<tr><td>description:</td><td>Optional prefix for positive numbers, e.g.: +3 =3</td></tr>
+<tr><th colspan="2">operator: +</th></tr>
+<tr><th colspan="2">parameter type: number</th></tr>
+<tr><td>description:</td><td>Optional prefix for positive numbers</td></tr>
+<tr><td>expression example:</td><td>{{+3}} should render: 3</td></tr>
+<tr><td>code example:</td><td><a href="https://github.com/domain-centric/template_engine/blob/main/test/src/parser/tag/expression/operator/prefix/positive_test.dart">positive_test.dart</a></td></tr>
 </table>
 
 <table>
-<tr><th colspan="2">-</th></tr>
-<tr><td>description:</td><td>Prefix for a negative number, e.g.: -2 =-2</td></tr>
+<tr><th colspan="2">operator: -</th></tr>
+<tr><th colspan="2">parameter type: number</th></tr>
+<tr><td>description:</td><td>Prefix for a negative number</td></tr>
+<tr><td>expression example:</td><td>{{-3}} should render: -3</td></tr>
+<tr><td>code example:</td><td><a href="https://github.com/domain-centric/template_engine/blob/main/test/src/parser/tag/expression/operator/prefix/negative_test.dart">negative_test.dart</a></td></tr>
 </table>
 
 <table>
-<tr><th colspan="2">!</th></tr>
+<tr><th colspan="2">operator: !</th></tr>
+<tr><th colspan="2">parameter type: boolean</th></tr>
 <tr><td>description:</td><td>Prefix to invert a boolean, e.g.: !true =false</td></tr>
+<tr><td>expression example:</td><td>{{!true}} should render: false</td></tr>
+<tr><td>code example:</td><td><a href="https://github.com/domain-centric/template_engine/blob/main/test/src/parser/tag/expression/operator/prefix/not_test.dart">not_test.dart</a></td></tr>
 </table>
 
 ## Multiplication

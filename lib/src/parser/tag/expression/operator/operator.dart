@@ -2,48 +2,33 @@ import 'package:collection/collection.dart';
 import 'package:petitparser/petitparser.dart';
 import 'package:template_engine/template_engine.dart';
 
-class NegativeNumberExpression extends Expression {
+class PrefixExpression<PARAMETER_TYPE extends Object>
+    extends Expression<PARAMETER_TYPE> {
+  final PrefixOperator<PARAMETER_TYPE> operator;
   final Source source;
   final Expression valueExpression;
 
-  NegativeNumberExpression(this.source, this.valueExpression);
+  PrefixExpression(
+      {required this.operator,
+      required this.source,
+      required this.valueExpression});
 
   @override
-  Object render(RenderContext context) {
+  PARAMETER_TYPE render(RenderContext context) {
     var value = valueExpression.render(context);
-    if (value is num) {
-      return -value;
+    if (value is PARAMETER_TYPE) {
+      return operator.function(value);
     }
-    context.errors.add(Error.fromSource(
+    throw RenderException(Error.fromSource(
         stage: ErrorStage.render,
         source: source,
-        message: 'A number expected after the - operator'));
-    return '-';
+        message:
+            '${typeDescription<PARAMETER_TYPE>()} expected after the ${operator.operator} operator'));
   }
 
   @override
   String toString() {
-    return 'NegativeNumberExpression{$valueExpression}';
-  }
-}
-
-class NotExpression extends Expression {
-  final Source source;
-  final Expression valueExpression;
-
-  NotExpression(this.source, this.valueExpression);
-
-  @override
-  Object render(RenderContext context) {
-    var value = valueExpression.render(context);
-    if (value is bool) {
-      return !value;
-    }
-    context.errors.add(Error.fromSource(
-        stage: ErrorStage.render,
-        source: source,
-        message: 'A boolean expected after the ! operator'));
-    return '!';
+    return 'PrefixExpression{${operator.operator}}';
   }
 }
 
@@ -192,54 +177,77 @@ class TwoValueOperatorExpression<T extends Object> extends Expression {
 /// See [custom_operator_test.dart](https://github.com/domain-centric/template_engine/blob/main/test/src/parser/tag/expression/operator/custom_operator_test.dart).
 ///
 abstract class Operator implements DocumentationFactory, ExampleFactory {
-  final String operator;
-
-  /// a description and an example for each type.
-  /// e.g. example [descriptions] for an + operator:
-  /// * Adds two numbers, e.g.: 2+3=5
-  /// * Concatenates two strings, e.g.: 'Hel'+'lo'="Hello"
-  final List<String> descriptions;
-
-  Operator(
-    this.operator,
-    this.descriptions,
-  );
-
   addParser(Template template, ExpressionGroup2<Expression> group);
+}
+
+class PrefixOperator<PARAMETER_TYPE extends Object> extends Operator {
+  final String operator;
+  final String description;
+  final PARAMETER_TYPE Function(PARAMETER_TYPE value) function;
+  final String expressionExample;
+  final String? expressionExampleResult;
+  final ProjectFilePath? codeExample;
+
+  PrefixOperator({
+    required this.operator,
+    required this.description,
+    required this.function,
+    required this.expressionExample,
+    this.expressionExampleResult,
+    this.codeExample,
+  });
+
+  String get parameterTypeDescription => typeDescription<PARAMETER_TYPE>();
 
   @override
   List<String> createMarkdownDocumentation(
       RenderContext renderContext, int titleLevel) {
     var writer = HtmlTableWriter();
-    writer.addHeaderRow([operator], [2]);
-    if (descriptions.isNotEmpty) {
-      writer.addRow(['description:', descriptions.join('<br>')]);
+    writer.addHeaderRow(['operator: $operator'], [2]);
+    writer.addHeaderRow(['parameter type: $parameterTypeDescription'], [2]);
+    writer.addRow(['description:', description]);
+    writer.addRow([
+      'expression example:',
+      expressionExampleResult == null
+          ? expressionExample
+          : '$expressionExample '
+              'should render: $expressionExampleResult'
+    ]);
+    if (codeExample != null) {
+      writer.addRow(['code example:', codeExample!.githubMarkdownLink]);
     }
-    // TODO if (exampleCode != null) {
-    //   writer.addRow(['code example:', exampleCode!.githubMarkdownLink], [1, 4]);
-    // }
     return writer.toHtmlLines();
   }
 
   @override
   List<String> createMarkdownExamples(
           RenderContext renderContext, int titleLevel) =>
-      [];
-  // TODO exampleCode == null ? [] : ['* ${exampleCode!.githubMarkdownLink}'];
+      codeExample == null ? [] : ['* ${codeExample!.githubMarkdownLink}'];
 
   @override
   String toString() => 'Operator{$operator}';
+
+  @override
+  addParser(Template template, ExpressionGroup2<Expression<Object>> group) {
+    group.prefix(
+        char(operator).trim(),
+        (context, op, value) => PrefixExpression<PARAMETER_TYPE>(
+            operator: this,
+            source: Source.fromContext(template, context),
+            valueExpression: value));
+  }
 }
 
 abstract class OperatorWith2Values extends Operator {
+  final String operator;
   final OperatorAssociativity associativity;
   final List<TwoValueOperatorVariant> variants;
 
   OperatorWith2Values(
-    String operator,
+    this.operator,
     this.associativity,
     this.variants,
-  ) : super(operator, variants.map((v) => v.description).toList());
+  );
 
   @override
   List<String> createMarkdownDocumentation(

@@ -1,4 +1,3 @@
-import 'package:petitparser/petitparser.dart';
 import 'package:template_engine/template_engine.dart';
 
 class Prefixes extends OperatorGroup {
@@ -7,38 +6,41 @@ class Prefixes extends OperatorGroup {
             [PositiveOperator(), NegativeOperator(), NotOperator()]);
 }
 
-class PositiveOperator extends Operator {
+class PositiveOperator extends PrefixOperator<num> {
   PositiveOperator()
-      : super('+', ['Optional prefix for positive numbers, e.g.: +3 =3']);
-
-  @override
-  addParser(Template template, ExpressionGroup2<Expression<Object>> group) {
-    group.prefix(char(operator).trim(), (context, op, a) => a);
-  }
+      : super(
+          operator: '+',
+          description: 'Optional prefix for positive numbers',
+          expressionExample: '{{+3}}',
+          expressionExampleResult: '3',
+          codeExample: ProjectFilePath(
+              '/test/src/parser/tag/expression/operator/prefix/positive_test.dart'),
+          function: (number) => number,
+        );
 }
 
-class NegativeOperator extends Operator {
+class NegativeOperator extends PrefixOperator<num> {
   NegativeOperator()
-      : super('-', ['Prefix for a negative number, e.g.: -2 =-2']);
-
-  @override
-  addParser(Template template, ExpressionGroup2<Expression<Object>> group) {
-    group.prefix(
-        char(operator).trim(),
-        (context, op, a) =>
-            NegativeNumberExpression(Source.fromContext(template, context), a));
-  }
+      : super(
+          operator: '-',
+          description: 'Prefix for a negative number',
+          expressionExample: '{{-3}}',
+          expressionExampleResult: '-3',
+          codeExample: ProjectFilePath(
+              '/test/src/parser/tag/expression/operator/prefix/negative_test.dart'),
+          function: (number) => -number,
+        );
 }
 
-class NotOperator extends Operator {
+class NotOperator extends PrefixOperator<bool> {
   NotOperator()
-      : super('!', ['Prefix to invert a boolean, e.g.: !true =false']);
-
-  @override
-  addParser(Template template, ExpressionGroup2<Expression<Object>> group) {
-    group.prefix(
-        char(operator).trim(),
-        (context, op, a) =>
-            NotExpression(Source.fromContext(template, context), a));
-  }
+      : super(
+          operator: '!',
+          description: 'Prefix to invert a boolean, e.g.: !true =false',
+          expressionExample: '{{!true}}',
+          expressionExampleResult: 'false',
+          codeExample: ProjectFilePath(
+              '/test/src/parser/tag/expression/operator/prefix/not_test.dart'),
+          function: (boolean) => !boolean,
+        );
 }

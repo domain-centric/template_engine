@@ -35,6 +35,12 @@
 * <a href="https://github.com/domain-centric/template_engine/blob/main/test/src/parser/tag/expression/function/string/length_test.dart">length_test.dart</a>
 ## Operators
 * <a href="https://github.com/domain-centric/template_engine/blob/main/test/src/parser/tag/expression/operator/custom_operator_test.dart">custom_operator_test.dart</a>
+### Parentheses
+* <a href="https://github.com/domain-centric/template_engine/blob/main/test/src/parser/tag/expression/operator/parentheses_test.dart">parentheses_test.dart</a>
+### Prefixes
+* <a href="https://github.com/domain-centric/template_engine/blob/main/test/src/parser/tag/expression/operator/prefix/positive_test.dart">positive_test.dart</a>
+* <a href="https://github.com/domain-centric/template_engine/blob/main/test/src/parser/tag/expression/operator/prefix/negative_test.dart">negative_test.dart</a>
+* <a href="https://github.com/domain-centric/template_engine/blob/main/test/src/parser/tag/expression/operator/prefix/not_test.dart">not_test.dart</a>
 ### Multiplication
 * <a href="https://github.com/domain-centric/template_engine/blob/main/test/src/parser/tag/expression/operator/multiplication/num_power_test.dart">num_power_test.dart</a>
 * <a href="https://github.com/domain-centric/template_engine/blob/main/test/src/parser/tag/expression/operator/multiplication/bool_xor_test.dart">bool_xor_test.dart</a>

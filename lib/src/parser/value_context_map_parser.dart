@@ -13,7 +13,7 @@ extension ValueContextMapParserExtension<R> on Parser<R> {
   Parser<S> valueContextMap<S>(
     Callback2<R, S> callback, {
     @Deprecated('All callbacks are considered to have side-effects')
-        bool hasSideEffects = true,
+    bool hasSideEffects = true,
   }) =>
       ValueContextMapParser<R, S>(this, callback);
 }
