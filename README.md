@@ -122,9 +122,9 @@ See [Example](https://github.com/domain-centric/template_engine/blob/main/test/s
 
 # Constants in tag expressions
 [//]: # (TODO: This text should be imported from the dart doc of the Constant class using document_generator package)
-A [Constant] is a value that does not change value over time.
+A Constant is a value that does not change value over time.
 
-The [TemplateEngine] comes with several mathematical constants.
+The TemplateEngine comes with several mathematical constants.
 
 ## Custom Constants
 You can create and add your own Constants by

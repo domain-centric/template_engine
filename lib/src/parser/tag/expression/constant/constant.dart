@@ -89,7 +89,8 @@ class DefaultConstants extends DelegatingList<Constant> {
 }
 
 Parser<Expression> constantParser(List<Constant> constants) {
-  return ChoiceParser(constants.map((constant) => string(constant.name)))
+  return ChoiceParser(constants.map(
+          (constant) => string(constant.name) & (letter() | digit()).not()))
       .flatten('constant expected')
       .trim()
       .map((name) => Value(
