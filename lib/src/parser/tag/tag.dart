@@ -14,7 +14,7 @@ import 'package:template_engine/template_engine.dart';
 ///
 /// By default the TemplateEngine [Tag]s start with {{ and end with }} brackets,
 /// just like the popular template engines
-/// [Mustache](http://mustache.github.io/) and
+/// [Mustache](https://mustache.github.io/) and
 /// [Handlebars](https://handlebarsjs.com).
 ///
 /// You can also define alternative [Tag] brackets in the [TemplateEngine]

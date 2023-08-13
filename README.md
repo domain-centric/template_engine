@@ -36,7 +36,7 @@ See: [Installing](https://pub.dev/packages/template_engine/install)
 import 'package:template_engine/template_engine.dart';
 
 void main() {
-  var template = TextTemplate('Hello name.');
+  var template = TextTemplate('Hello {{ERROR}}.');
   // See also FileTemplate and WebTemplate
   var engine = TemplateEngine();
   var parseResult = engine.parse(template, {'name': 'world'});
@@ -63,7 +63,7 @@ A tag:
 A tag example: {{customer.name}}
 
 By default the TemplateEngine tags start with {{ and end with }} brackets,
-just like the popular template engines [Mustache](http://mustache.github.io/) 
+just like the popular template engines [Mustache](https://mustache.github.io/) 
 and [Handlebars](https://handlebarsjs.com).
 
 You can also define alternative tag brackets in the TemplateEngine constructor
