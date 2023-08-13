@@ -42,4 +42,13 @@ void main() {
     var renderResult = engine.render(parseResult);
     renderResult.text.should.be('true');
   });
+  test('{{"text"|"text"}} should result in an error', () {
+    var engine = TemplateEngine();
+    var parseResult = engine.parse(const TextTemplate('{{"text"|"text"}}'));
+    var renderResult = engine.render(parseResult);
+    //renderResult.text.should.be('{{ERROR}}');
+    renderResult.errorMessage.should
+        .be('Render Error: left and right of the | operator must be a boolean, '
+            'position: 1:9, source: Text');
+  });
 }

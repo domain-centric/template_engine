@@ -63,9 +63,7 @@ class VariableExpression extends Expression {
     try {
       return _findVariableValue(context.variables, namePath.split('.'), 0);
     } on VariableException catch (e) {
-      context.errors.add(Error.fromSource(
-          stage: ErrorStage.render, source: source, message: e.message));
-      return namePath;
+      throw RenderException(source, e.message);
     }
   }
 }

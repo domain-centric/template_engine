@@ -67,25 +67,6 @@ void main() {
       });
     });
   });
-
-  given('object: A RendererThatRegistersError and a TemplateEngine', () {
-    var parseResult = ParserTreeThatRegistersError();
-    var engine = TemplateEngine();
-
-    when('call: render(parseResult)', () {
-      var result = engine.render(parseResult);
-      then('expect: 1 error', () {
-        return result.errors.length.should.be(1);
-      });
-
-      var expected = 'Render Error: something went wrong, '
-          'position: 1:4, source: Text';
-
-      then('expect: an errorMessage: "$expected"', () {
-        return result.errorMessage.should.be(expected);
-      });
-    });
-  });
 }
 
 class TestTag extends Tag {
@@ -105,19 +86,6 @@ class TestTag extends Tag {
   List<String> createMarkdownExamples(
           RenderContext renderContext, int titleLevel) =>
       [];
-}
-
-class ParserTreeThatRegistersError extends ParserTree {
-  @override
-  String render(RenderContext context) {
-    var template = DummyTemplate();
-    context.errors.add(Error.fromContext(
-        stage: ErrorStage.render,
-        context: Context(template.text, 3),
-        message: 'something went wrong',
-        template: template));
-    return "";
-  }
 }
 
 class DummyTemplate extends TextTemplate {

@@ -19,11 +19,8 @@ class PrefixExpression<PARAMETER_TYPE extends Object>
     if (value is PARAMETER_TYPE) {
       return operator.function(value);
     }
-    throw RenderException(Error.fromSource(
-        stage: ErrorStage.render,
-        source: source,
-        message:
-            '${typeDescription<PARAMETER_TYPE>()} expected after the ${operator.operator} operator'));
+    throw RenderException(source,
+        '${typeDescription<PARAMETER_TYPE>()} expected after the ${operator.operator} operator');
   }
 
   @override
@@ -98,11 +95,7 @@ class OperatorVariantExpression extends Expression {
         errors.addAll(variantErrors);
       }
     }
-    context.errors.add(Error.fromSource(
-        stage: ErrorStage.render,
-        source: source,
-        message: errors.join(', or ')));
-    return operator;
+    throw RenderException(source, errors.join(', or '));
   }
 }
 
@@ -133,26 +126,14 @@ class TwoValueOperatorExpression<T extends Object> extends Expression {
     }
 
     if (!leftTypeOk && !rightTypeOk) {
-      context.errors.add(Error.fromSource(
-          stage: ErrorStage.render,
-          source: source,
-          message:
-              'left and right of the $operator operator must be a ${typeDescription<T>()}'));
-      return operator;
+      throw RenderException(source,
+          'left and right of the $operator operator must be a ${typeDescription<T>()}');
     } else if (!leftTypeOk) {
-      context.errors.add(Error.fromSource(
-          stage: ErrorStage.render,
-          source: source,
-          message:
-              'left of the $operator operator must be a ${typeDescription<T>()}'));
-      return operator;
+      throw RenderException(source,
+          'left of the $operator operator must be a ${typeDescription<T>()}');
     } else {
-      context.errors.add(Error.fromSource(
-          stage: ErrorStage.render,
-          source: source,
-          message:
-              'right of the $operator operator must be a ${typeDescription<T>()}'));
-      return operator;
+      throw RenderException(source,
+          'right of the $operator operator must be a ${typeDescription<T>()}');
     }
   }
 
