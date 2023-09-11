@@ -7,7 +7,7 @@ class Parentheses extends OperatorGroup {
 
 class ParenthesesOperator extends Operator {
   static final codeExample = ProjectFilePath(
-      '/test/src/parser/tag/expression/operator/parentheses_test.dart');
+      'test/src/parser/tag/expression/operator/parentheses_test.dart');
 
   @override
   addParser(Template template, ExpressionGroup2<Expression<Object>> group) {

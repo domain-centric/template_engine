@@ -29,7 +29,7 @@ class ValueContextMapParser<R, S> extends DelegateParser<R, S> {
   @override
   Result<S> parseOn(Context context) {
     final result = delegate.parseOn(context);
-    if (result.isSuccess) {
+    if (result is Success) {
       var callbackResults = callback(result.value, context);
       return result.success(callbackResults);
     } else {

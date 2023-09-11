@@ -12,12 +12,7 @@ class OverrideMessageParser<R> extends Parser<R> {
   @override
   Result<R> parseOn(Context context) {
     // If we have a message we can switch to fast mode.
-    var result = delegate.parseOn(context);
-    if (result.isFailure) {
-      return context.failure(message);
-    } else {
-      return result;
-    }
+    return delegate.parseOn(context);
   }
 
   @override

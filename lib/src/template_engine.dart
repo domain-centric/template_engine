@@ -72,10 +72,10 @@ class TemplateEngine {
     var parser = templateParser(context);
     var result = parser.parse(template.text);
 
-    if (result.isFailure) {
+    if (result is Failure) {
       context.errors.add(Error.fromFailure(
         stage: ErrorStage.parse,
-        failure: result as Failure,
+        failure: result,
         template: template,
       ));
     }

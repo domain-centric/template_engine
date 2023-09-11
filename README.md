@@ -36,7 +36,7 @@ See: [Installing](https://pub.dev/packages/template_engine/install)
 import 'package:template_engine/template_engine.dart';
 
 void main() {
-  var template = TextTemplate('Hello {{ERROR}}.');
+  var template = TextTemplate('Hello {{name}}.');
   // See also FileTemplate and WebTemplate
   var engine = TemplateEngine();
   var parseResult = engine.parse(template, {'name': 'world'});

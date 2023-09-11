@@ -13,9 +13,9 @@ class VariableExamples implements ExampleFactory {
   List<String> createMarkdownExamples(
           RenderContext renderContext, int titleLevel) =>
       [
-        '* ${ProjectFilePath('/test/src/parser/tag/expression/variable/'
+        '* ${ProjectFilePath('test/src/parser/tag/expression/variable/'
             'variable_test.dart').githubMarkdownLink}',
-        '* ${ProjectFilePath('/test/src/parser/tag/expression/variable/'
+        '* ${ProjectFilePath('test/src/parser/tag/expression/variable/'
             'nested_variable_test.dart').githubMarkdownLink}',
       ];
 }
@@ -103,7 +103,7 @@ class VariableName {
 
   static validate(String namePath) {
     var result = pathParser.end().parse(namePath);
-    if (result.isFailure) {
+    if (result is Failure) {
       throw VariableException(
           'Variable name: "$namePath" is invalid: ${result.message} '
           'at position: ${result.position}');

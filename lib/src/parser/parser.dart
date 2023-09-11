@@ -63,13 +63,13 @@ Parser<String> untilEndOfTagParser(String tagStart, String tagEnd) => any()
 
 Parser<String> untilEndParser() => any().plus().flatten();
 
-/// Replaces an escaped [Tag] start (e.g. : /{{ )
+/// Replaces an escaped [Tag] start (e.g. : \{{ )
 /// to a [String] e.g. containing:  {{ (without escape)
 /// so that it is not parsed as a [Tag] or [Variable]
 Parser<String> escapedTagStartParser(String tagStart) =>
     string('\\$tagStart').map((value) => tagStart);
 
-/// Replaces an escaped [Tag] end (e.g. : /}} )
+/// Replaces an escaped [Tag] end (e.g. : \}} )
 /// to a [String] e.g. containing: }} (without escape)
 /// so that it is not parsed as a [Tag] or [Variable]
 Parser<String> escapedTagEndParser(String tagEnd) =>

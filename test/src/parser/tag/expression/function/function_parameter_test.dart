@@ -42,8 +42,10 @@ void main() {
       var result = parser.parse(input);
       var expected = 'MapEntry(parameter: PrefixExpression{-})';
 
-      then('result should have no failures',
-          () => result.isFailure.should.beFalse());
+      then(
+          'result should be of type Success',
+          () => result.should
+              .beOfType<Success<MapEntry<String, Expression<Object>>>>());
       then('result.value should be: $expected',
           () => result.value.toString().should.be(expected));
     });
@@ -53,8 +55,10 @@ void main() {
       var result = parser.parse(input);
       var expected = MapEntry('parameter', Value(true)).toString();
 
-      then('result should have no failures',
-          () => result.isFailure.should.beFalse());
+      then(
+          'result should be of type Success',
+          () => result.should
+              .beOfType<Success<MapEntry<String, Expression<Object>>>>());
       then('result.value should be: $expected',
           () => result.value.toString().should.be(expected));
     });
@@ -64,8 +68,10 @@ void main() {
       var result = parser.parse(input);
       var expected = MapEntry('parameter', Value(false)).toString();
 
-      then('result should have no failures',
-          () => result.isFailure.should.beFalse());
+      then(
+          'result should be of type Success',
+          () => result.should
+              .beOfType<Success<MapEntry<String, Expression<Object>>>>());
       then('result.value should be: $expected',
           () => result.value.toString().should.be(expected));
     });
@@ -74,8 +80,10 @@ void main() {
     when('calling parser.parse("$input")', () {
       var result = parser.parse(input);
 
-      then('result should not be a failure',
-          () => result.isFailure.should.beFalse());
+      then(
+          'result should not be of type Success',
+          () => result.should
+              .beOfType<Success<MapEntry<String, Expression<Object>>>>());
 
       var expected = MapEntry('parameter', Value('Hello')).toString();
       then('result.value should be: $expected',
@@ -87,8 +95,10 @@ void main() {
       var result = parser.parse(input);
       var expected = MapEntry('parameter', Value('Hello')).toString();
 
-      then('result should have no failures',
-          () => result.isFailure.should.beFalse());
+      then(
+          'result should be of type Success',
+          () => result.should
+              .beOfType<Success<MapEntry<String, Expression<Object>>>>());
       then('result.value should be: $expected',
           () => result.value.toString().should.be(expected));
     });
@@ -117,8 +127,10 @@ void main() {
       var result = parser.parse(input);
       var expected = 'MapEntry(parameter: PrefixExpression{-})';
 
-      then('result should have no failures',
-          () => result.isFailure.should.beFalse());
+      then(
+          'result should be of type Success',
+          () => result.should
+              .beOfType<Success<MapEntry<String, Expression<Object>>>>());
       then('result.value should be: $expected',
           () => result.value.toString().should.be(expected));
     });
@@ -128,8 +140,10 @@ void main() {
       var result = parser.parse(input);
       var expected = MapEntry('parameter', Value(true)).toString();
 
-      then('result should have no failures',
-          () => result.isFailure.should.beFalse());
+      then(
+          'result should be of type Success',
+          () => result.should
+              .beOfType<Success<MapEntry<String, Expression<Object>>>>());
       then('result.value should be: $expected',
           () => result.value.toString().should.be(expected));
     });
@@ -139,8 +153,10 @@ void main() {
       var result = parser.parse(input);
       var expected = MapEntry('parameter', Value(false)).toString();
 
-      then('result should have no failures',
-          () => result.isFailure.should.beFalse());
+      then(
+          'result should be of type Success',
+          () => result.should
+              .beOfType<Success<MapEntry<String, Expression<Object>>>>());
       then('result.value should be: $expected',
           () => result.value.toString().should.be(expected));
     });
@@ -149,8 +165,8 @@ void main() {
     when('calling parser.parse("$input")', () {
       var result = parser.parse(input);
 
-      then(
-          'result should be a failure', () => result.isFailure.should.beTrue());
+      then('result should be of type Failure',
+          () => result.should.beOfType<Failure>());
 
       var expected = '"parameter" expected';
       then('result.value should be: $expected',
@@ -162,8 +178,10 @@ void main() {
       var result = parser.parse(input);
       var expected = MapEntry('parameter', Value('Hello')).toString();
 
-      then('result should have no failures',
-          () => result.isFailure.should.beFalse());
+      then(
+          'result should be of type Success',
+          () => result.should
+              .beOfType<Success<MapEntry<String, Expression<Object>>>>());
       then('result.value should be: $expected',
           () => result.value.toString().should.be(expected));
     });
@@ -173,8 +191,8 @@ void main() {
       var result = parser.parse(input);
       var expected = '"parameter" expected';
 
-      then('result should have failures',
-          () => result.isFailure.should.beTrue());
+      then('result should be of type Failure',
+          () => result.should.beOfType<Failure>());
       then('result.message should be: $expected',
           () => result.message.should.be(expected));
     });
@@ -184,8 +202,8 @@ void main() {
       var result = parser.parse(input);
       var expected = '"=" expected';
 
-      then('result should have failures',
-          () => result.isFailure.should.beTrue());
+      then('result should be of type Failure',
+          () => result.should.beOfType<Failure>());
       then('result.message should be: $expected',
           () => result.message.should.be(expected));
     });

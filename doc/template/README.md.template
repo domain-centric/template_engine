@@ -36,7 +36,7 @@ See: [Installing](https://pub.dev/packages/template_engine/install)
 import 'package:template_engine/template_engine.dart';
 
 void main() {
-  var template = TextTemplate('Hello {{name}}.');
+  var template = TextTemplate('Hello \{{name\}}.');
   // See also FileTemplate and WebTemplate
   var engine = TemplateEngine();
   var parseResult = engine.parse(template, {'name': 'world'});
@@ -56,13 +56,13 @@ Tags are specific texts in templates that are replaced by the
 TemplateEngine with other information.
 
 A tag:
-* Starts with some bracket and/or character combination, e.g.: {{
+* Starts with some bracket and/or character combination, e.g.: \{{
 * Followed by some contents
-* Ends with some closing bracket and/or character combination, e.g.: }}
+* Ends with some closing bracket and/or character combination, e.g.: \}}
 
 A tag example: \{{customer.name\}}
 
-By default the TemplateEngine tags start with {{ and end with }} brackets,
+By default the TemplateEngine tags start with \{{ and end with \}} brackets,
 just like the popular template engines [Mustache](https://mustache.github.io/) 
 and [Handlebars](https://handlebarsjs.com).
 
@@ -132,7 +132,7 @@ Variables can be nested. Concatenate variable names separated with dot's
 to get the variable value of a nested variable.
 
 E.g.:<br>
-Variable map: {'person': {'name': 'John Doe', 'age',30}}<br>
+Variable map: {'person': {'name': 'John Doe', 'age',30\}}<br>
 Variable Name person.name: refers to the variable value of 'John Doe'
  
 Examples:

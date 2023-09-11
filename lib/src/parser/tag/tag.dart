@@ -1,5 +1,5 @@
 import 'package:collection/collection.dart';
-import 'package:petitparser/parser.dart';
+import 'package:petitparser/petitparser.dart';
 import 'package:template_engine/template_engine.dart';
 
 /// [Tag]s are specific texts in [Template]s that are replaced by the
@@ -81,7 +81,7 @@ class TagName {
 
   static validate(String namePath) {
     var result = namePathParserUntilEnd.parse(namePath);
-    if (result.isFailure) {
+    if (result is Failure) {
       throw TagException('Tag name: "$namePath" is invalid: ${result.message} '
           'at position: ${result.position}');
     }

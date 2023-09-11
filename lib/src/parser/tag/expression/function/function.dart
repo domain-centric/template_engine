@@ -300,7 +300,7 @@ class ParameterName {
 
   static validate(String name) {
     var result = parser.end().parse(name);
-    if (result.isFailure) {
+    if (result is Failure) {
       throw ParameterException(
           'Parameter name: "$name" is invalid: ${result.message} at position: ${result.position}');
     }
@@ -358,7 +358,7 @@ class ParametersParser extends Parser<Map<String, Expression>> {
       for (var parser in unUsedParameterParsers) {
         if (parserWithSuccess == null) {
           var result = parser.parseOn(current);
-          if (result.isSuccess) {
+          if (result is Success) {
             parserWithSuccess = parser;
             parameterMap.addEntries([result.value]);
             current = result;
@@ -381,7 +381,7 @@ class ParametersParser extends Parser<Map<String, Expression>> {
     } while (parserWithSuccess != null && unUsedParameterParsers.isNotEmpty);
 
     var result = _remainingParser.parseOn(current);
-    if (result.isSuccess) {
+    if (result is Success) {
       var remainingText = result.value;
       if (remainingText.isNotEmpty) {
         return current

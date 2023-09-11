@@ -32,7 +32,7 @@ class ProjectFilePath {
 
   void validate(String path) {
     var result = _pathParser().parse(path);
-    if (result.isFailure) {
+    if (result is Failure) {
       throw Exception("Invalid project file path: '$path': ${result.message} "
           "at position: ${result.position + 1}");
     }

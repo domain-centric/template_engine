@@ -24,16 +24,16 @@ class InvalidTagParser extends Parser<Object> {
   Result<Object> parseOn(Context context) {
     var errors = <Error>[];
     var tagStartResult = tagStartParser.parseOn(context);
-    if (tagStartResult.isFailure) {
+    if (tagStartResult is Failure) {
       return tagStartResult;
     }
     var expressionResult = expressionParser(parserContext, verboseErrors: true)
         .parseOn(tagStartResult);
     if (expressionResult.position > tagStartResult.position) {
-      if (expressionResult.isFailure) {
+      if (expressionResult is Failure) {
         errors.add(Error.fromFailure(
           stage: ErrorStage.parse,
-          failure: expressionResult as Failure,
+          failure: expressionResult,
           template: parserContext.template,
         ));
       }
@@ -42,7 +42,7 @@ class InvalidTagParser extends Parser<Object> {
     var anythingBeforeEndResult =
         anythingBeforeEndParser.parseOn(expressionResult);
     if (errors.isEmpty &&
-        anythingBeforeEndResult.isSuccess &&
+        anythingBeforeEndResult is Success &&
         anythingBeforeEndResult.value.isNotEmpty) {
       errors.add(Error.fromContext(
         stage: ErrorStage.parse,
@@ -53,7 +53,7 @@ class InvalidTagParser extends Parser<Object> {
     }
 
     var tagEndResult = tagEndParser.parseOn(anythingBeforeEndResult);
-    if (tagEndResult.isFailure) {
+    if (tagEndResult is Failure) {
       return tagEndResult;
     }
 
