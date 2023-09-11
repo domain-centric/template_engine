@@ -15,7 +15,7 @@ class StringLength extends ExpressionFunction<num> {
             exampleExpression: '{{length("Hello")}}',
             exampleResult: "Hello".length.toString(),
             exampleCode: ProjectFilePath(
-                '/test/src/parser/tag/expression/function/string/length_test.dart'),
+                'test/src/parser/tag/expression/function/string/length_test.dart'),
             parameters: [
               Parameter<String>(name: 'string', presence: Presence.mandatory())
             ],

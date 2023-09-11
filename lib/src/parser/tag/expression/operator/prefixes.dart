@@ -14,7 +14,7 @@ class PositiveOperator extends PrefixOperator<num> {
           expressionExample: '{{+3}}',
           expressionExampleResult: '3',
           codeExample: ProjectFilePath(
-              '/test/src/parser/tag/expression/operator/prefix/positive_test.dart'),
+              'test/src/parser/tag/expression/operator/prefix/positive_test.dart'),
           function: (number) => number,
         );
 }
@@ -27,7 +27,7 @@ class NegativeOperator extends PrefixOperator<num> {
           expressionExample: '{{-3}}',
           expressionExampleResult: '-3',
           codeExample: ProjectFilePath(
-              '/test/src/parser/tag/expression/operator/prefix/negative_test.dart'),
+              'test/src/parser/tag/expression/operator/prefix/negative_test.dart'),
           function: (number) => -number,
         );
 }
@@ -40,7 +40,7 @@ class NotOperator extends PrefixOperator<bool> {
           expressionExample: '{{!true}}',
           expressionExampleResult: 'false',
           codeExample: ProjectFilePath(
-              '/test/src/parser/tag/expression/operator/prefix/not_test.dart'),
+              'test/src/parser/tag/expression/operator/prefix/not_test.dart'),
           function: (boolean) => !boolean,
         );
 }

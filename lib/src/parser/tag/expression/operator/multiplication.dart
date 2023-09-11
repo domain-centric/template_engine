@@ -22,7 +22,7 @@ class CaretOperator extends OperatorWith2Values {
               expressionExample: '{{2^3}}',
               expressionExampleResult: '8',
               codeExample: ProjectFilePath(
-                  '/test/src/parser/tag/expression/operator/multiplication/'
+                  'test/src/parser/tag/expression/operator/multiplication/'
                   'num_power_test.dart'),
               function: pow),
           TwoValueOperatorVariant<bool>(
@@ -30,7 +30,7 @@ class CaretOperator extends OperatorWith2Values {
               expressionExample: '{{true^false}}',
               expressionExampleResult: 'true',
               codeExample: ProjectFilePath(
-                  '/test/src/parser/tag/expression/operator/multiplication/'
+                  'test/src/parser/tag/expression/operator/multiplication/'
                   'bool_xor_test.dart'),
               function: (left, right) => left ^ right)
         ]);
@@ -44,7 +44,7 @@ class MultiplyOperator extends OperatorWith2Values {
               expressionExample: '{{2*3}}',
               expressionExampleResult: '6',
               codeExample: ProjectFilePath(
-                  '/test/src/parser/tag/expression/operator/multiplication/'
+                  'test/src/parser/tag/expression/operator/multiplication/'
                   'num_multiply_test.dart'),
               function: (left, right) => left * right)
         ]);
@@ -61,7 +61,7 @@ class DivideOperator extends OperatorWith2Values {
                 expressionExample: '{{6/4}}',
                 expressionExampleResult: '1.5',
                 codeExample: ProjectFilePath(
-                    '/test/src/parser/tag/expression/operator/multiplication/'
+                    'test/src/parser/tag/expression/operator/multiplication/'
                     'num_divide_test.dart'),
                 function: (left, right) => left / right)
           ],
@@ -79,7 +79,7 @@ class ModuloOperator extends OperatorWith2Values {
                 expressionExample: '{{8%3}}',
                 expressionExampleResult: '2',
                 codeExample: ProjectFilePath(
-                    '/test/src/parser/tag/expression/operator/multiplication/'
+                    'test/src/parser/tag/expression/operator/multiplication/'
                     'num_modulo_test.dart'),
                 function: (left, right) => left % right)
           ],
@@ -97,7 +97,7 @@ class AndOperator extends OperatorWith2Values {
                 expressionExample: '{{true&true}}',
                 expressionExampleResult: 'true',
                 codeExample: ProjectFilePath(
-                    '/test/src/parser/tag/expression/operator/multiplication/'
+                    'test/src/parser/tag/expression/operator/multiplication/'
                     'bool_and_test.dart'),
                 function: (left, right) => left & right),
             TwoValueOperatorVariant<String>(
@@ -105,7 +105,7 @@ class AndOperator extends OperatorWith2Values {
                 expressionExample: '{{"Hel"&"lo"}}',
                 expressionExampleResult: "Hello",
                 codeExample: ProjectFilePath(
-                    '/test/src/parser/tag/expression/operator/multiplication/'
+                    'test/src/parser/tag/expression/operator/multiplication/'
                     'string_concatenate_test.dart'),
                 function: (left, right) => '$left$right')
           ],

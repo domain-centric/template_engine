@@ -92,7 +92,7 @@ class TagWithInvalidName extends Tag<String> {
             name: 'inv@lid',
             description: ['A tag with an invalid name for testing'],
             exampleExpression: 'dummy',
-            exampleCode: ProjectFilePath('/dummy'));
+            exampleCode: ProjectFilePath('dummy'));
 
   @override
   Parser<String> createTagParser(ParserContext context) {

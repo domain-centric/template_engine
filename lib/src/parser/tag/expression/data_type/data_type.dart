@@ -73,7 +73,7 @@ class Boolean extends DataType<bool> {
   @override
   List<ProjectFilePath> get examples => [
         ProjectFilePath(
-            '/test/src/parser/tag/expression/data_type/bool_test.dart')
+            'test/src/parser/tag/expression/data_type/bool_test.dart')
       ];
 
   @override
@@ -103,7 +103,7 @@ class Number extends DataType<num> {
   @override
   List<ProjectFilePath> get examples => [
         ProjectFilePath(
-            '/test/src/parser/tag/expression/data_type/num_test.dart')
+            'test/src/parser/tag/expression/data_type/num_test.dart')
       ];
 
   @override
@@ -133,7 +133,7 @@ class QuotesString extends DataType<String> {
   @override
   List<ProjectFilePath> get examples => [
         ProjectFilePath(
-            '/test/src/parser/tag/expression/data_type/string_test.dart')
+            'test/src/parser/tag/expression/data_type/string_test.dart')
       ];
 
   @override

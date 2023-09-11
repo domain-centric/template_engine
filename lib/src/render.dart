@@ -14,8 +14,6 @@ class RenderException implements Exception {
   RenderException(Source source, String message)
       : error = Error.fromSource(
             stage: ErrorStage.render, source: source, message: message);
-
-  ///TODO RenderException.fromContext(RenderContext context, String message):  error=Error.fromContext(stage: ErrorStage.render, context:context, message:message);
 }
 
 /// Types returned by the [Renderer.render] method or

@@ -26,7 +26,7 @@ class Exp extends ExpressionFunction<num> {
                 'to the power of the value',
             exampleExpression: '{{exp(7)}}',
             exampleCode: ProjectFilePath(
-                '/test/src/parser/tag/expression/function/math/exp_test.dart'),
+                'test/src/parser/tag/expression/function/math/exp_test.dart'),
             exampleResult: exp(7).toString(),
             parameters: [
               Parameter<num>(name: 'value', presence: Presence.mandatory())
@@ -43,7 +43,7 @@ class Log extends ExpressionFunction<num> {
             exampleExpression: '{{log(7)}}',
             exampleResult: log(7).toString(),
             exampleCode: ProjectFilePath(
-                '/test/src/parser/tag/expression/function/math/log_test.dart'),
+                'test/src/parser/tag/expression/function/math/log_test.dart'),
             parameters: [
               Parameter<num>(name: 'value', presence: Presence.mandatory())
             ],
@@ -59,7 +59,7 @@ class Sin extends ExpressionFunction<num> {
             exampleExpression: '{{sin(7)}}',
             exampleResult: sin(7).toString(),
             exampleCode: ProjectFilePath(
-                '/test/src/parser/tag/expression/function/math/sin_test.dart'),
+                'test/src/parser/tag/expression/function/math/sin_test.dart'),
             parameters: [
               Parameter<num>(name: 'radians', presence: Presence.mandatory())
             ],
@@ -75,7 +75,7 @@ class Asin extends ExpressionFunction<num> {
             exampleExpression: '{{asin(0.5)}}',
             exampleResult: asin(0.5).toString(),
             exampleCode: ProjectFilePath(
-                '/test/src/parser/tag/expression/function/math/asin_test.dart'),
+                'test/src/parser/tag/expression/function/math/asin_test.dart'),
             parameters: [
               Parameter<num>(name: 'value', presence: Presence.mandatory())
             ],
@@ -91,7 +91,7 @@ class Cos extends ExpressionFunction<num> {
             exampleExpression: '{{cos(7)}}',
             exampleResult: cos(7).toString(),
             exampleCode: ProjectFilePath(
-                '/test/src/parser/tag/expression/function/math/cos_test.dart'),
+                'test/src/parser/tag/expression/function/math/cos_test.dart'),
             parameters: [
               Parameter<num>(name: 'radians', presence: Presence.mandatory())
             ],
@@ -107,7 +107,7 @@ class Acos extends ExpressionFunction<num> {
             exampleExpression: '{{acos(0.5)}}',
             exampleResult: acos(0.5).toString(),
             exampleCode: ProjectFilePath(
-                '/test/src/parser/tag/expression/function/math/acos_test.dart'),
+                'test/src/parser/tag/expression/function/math/acos_test.dart'),
             parameters: [
               Parameter<num>(name: 'value', presence: Presence.mandatory())
             ],
@@ -123,7 +123,7 @@ class Tan extends ExpressionFunction<num> {
             exampleExpression: '{{tan(7)}}',
             exampleResult: tan(7).toString(),
             exampleCode: ProjectFilePath(
-                '/test/src/parser/tag/expression/function/math/tan_test.dart'),
+                'test/src/parser/tag/expression/function/math/tan_test.dart'),
             parameters: [
               Parameter<num>(name: 'radians', presence: Presence.mandatory())
             ],
@@ -138,7 +138,7 @@ class Atan extends ExpressionFunction<num> {
             description: 'Returns the values arc tangent in radians',
             exampleExpression: '{{atan(0.5)}}',
             exampleCode: ProjectFilePath(
-                '/test/src/parser/tag/expression/function/math/atan_test.dart'),
+                'test/src/parser/tag/expression/function/math/atan_test.dart'),
             exampleResult: atan(0.5).toString(),
             parameters: [
               Parameter<num>(name: 'value', presence: Presence.mandatory())
@@ -155,7 +155,7 @@ class Sqrt extends ExpressionFunction<num> {
             exampleExpression: '{{sqrt(9)}}',
             exampleResult: sqrt(9).toString(),
             exampleCode: ProjectFilePath(
-                '/test/src/parser/tag/expression/function/math/sqrt_test.dart'),
+                'test/src/parser/tag/expression/function/math/sqrt_test.dart'),
             parameters: [
               Parameter<num>(name: 'value', presence: Presence.mandatory())
             ],
@@ -171,7 +171,7 @@ class Round extends ExpressionFunction<num> {
             exampleExpression: '{{round(4.445)}}',
             exampleResult: 4.445.round().toString(),
             exampleCode: ProjectFilePath(
-                '/test/src/parser/tag/expression/function/math/round_test.dart'),
+                'test/src/parser/tag/expression/function/math/round_test.dart'),
             parameters: [
               Parameter<num>(name: 'value', presence: Presence.mandatory())
             ],

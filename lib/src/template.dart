@@ -19,6 +19,13 @@ abstract class Template {
     required this.source,
     required this.text,
   });
+
+  @override
+  bool operator ==(Object other) =>
+      other is Template && other.source.toLowerCase() == source.toLowerCase();
+
+  @override
+  int get hashCode => source.toLowerCase().hashCode;
 }
 
 class TextTemplate extends Template {

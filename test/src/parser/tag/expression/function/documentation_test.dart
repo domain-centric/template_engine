@@ -47,9 +47,12 @@ void main() {
 
       then('parseResult.errors.length should be 0',
           () => parseResult.errors.length.should.be(0));
+
       when('calling: engine.render(parseResult)', () {
         var renderResult = engine.render(parseResult);
 
+        then('renderResult.errors.length should be 0',
+            () => renderResult.errors.length.should.be(0));
         then('renderResult.text be: "$expected"',
             () => renderResult.text.should.be(expected));
       });
@@ -85,7 +88,7 @@ class DummyFunction extends ExpressionFunction {
             name: 'testFunction',
             description: 'TestDescription',
             exampleCode: ProjectFilePath(
-                '/test/src/parser/tag/expression/function/math/exp_test.dart'),
+                'test/src/parser/tag/expression/function/math/exp_test.dart'),
             parameters: [
               Parameter<String>(
                   name: 'parameter1',

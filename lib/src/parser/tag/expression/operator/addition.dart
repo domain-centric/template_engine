@@ -13,7 +13,7 @@ class AddOperator extends OperatorWith2Values {
               expressionExample: '{{2+3}}',
               expressionExampleResult: '5',
               codeExample: ProjectFilePath(
-                  '/test/src/parser/tag/expression/operator/addition/'
+                  'test/src/parser/tag/expression/operator/addition/'
                   'num_addition_test.dart'),
               function: (left, right) => left + right),
           TwoValueOperatorVariant<String>(
@@ -21,7 +21,7 @@ class AddOperator extends OperatorWith2Values {
               expressionExample: '{{"Hel"+"lo"}}',
               expressionExampleResult: "Hello",
               codeExample: ProjectFilePath(
-                  '/test/src/parser/tag/expression/operator/addition/'
+                  'test/src/parser/tag/expression/operator/addition/'
                   'string_concatenate_test.dart'),
               function: (left, right) => '$left$right')
         ]);
@@ -38,7 +38,7 @@ class SubtractOperator extends OperatorWith2Values {
                 expressionExample: '{{5-3}}',
                 expressionExampleResult: '2',
                 codeExample: ProjectFilePath(
-                    '/test/src/parser/tag/expression/operator/addition/'
+                    'test/src/parser/tag/expression/operator/addition/'
                     'num_subtract_test.dart'),
                 function: (left, right) => left - right)
           ],
@@ -56,7 +56,7 @@ class OrOperator extends OperatorWith2Values {
                 expressionExample: '{{false|true}}',
                 expressionExampleResult: 'true',
                 codeExample: ProjectFilePath(
-                    '/test/src/parser/tag/expression/operator/addition/'
+                    'test/src/parser/tag/expression/operator/addition/'
                     'bool_or_test.dart'),
                 function: (left, right) => left | right)
           ],

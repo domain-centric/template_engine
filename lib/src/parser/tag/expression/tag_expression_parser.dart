@@ -17,7 +17,7 @@ class ExpressionTag extends Tag {
           ],
           exampleExpression: 'The volume of a sphere = '
               '{{ round( (3/4) * pi * (radius ^ 3) )}}.',
-          exampleCode: ProjectFilePath('/test/src/parser/tag/expression/'
+          exampleCode: ProjectFilePath('test/src/parser/tag/expression/'
               'tag_expression_parser_test.dart'),
         );
 
@@ -40,7 +40,7 @@ class ExpressionTag extends Tag {
             renderContext: renderContext,
             title: 'Data Types',
             customExample:
-                ProjectFilePath('/test/src/parser/tag/expression/data_type/'
+                ProjectFilePath('test/src/parser/tag/expression/data_type/'
                     'custom_data_type_test.dart'),
             exampleFactories: renderContext.engine.dataTypes,
             titleLevel: titleLevel + 1),
@@ -48,7 +48,7 @@ class ExpressionTag extends Tag {
             renderContext: renderContext,
             title: 'Constants',
             customExample:
-                ProjectFilePath('/test/src/parser/tag/expression/constant/'
+                ProjectFilePath('test/src/parser/tag/expression/constant/'
                     'custom_constant_test.dart'),
             exampleFactories: renderContext.engine.constants,
             titleLevel: titleLevel + 1),
@@ -61,7 +61,7 @@ class ExpressionTag extends Tag {
             renderContext: renderContext,
             title: 'Functions',
             customExample:
-                ProjectFilePath('/test/src/parser/tag/expression/function/'
+                ProjectFilePath('test/src/parser/tag/expression/function/'
                     'custom_function_test.dart'),
             exampleFactories: renderContext.engine.functionGroups,
             titleLevel: titleLevel + 1),
@@ -69,7 +69,7 @@ class ExpressionTag extends Tag {
             renderContext: renderContext,
             title: 'Operators',
             customExample:
-                ProjectFilePath('/test/src/parser/tag/expression/operator/'
+                ProjectFilePath('test/src/parser/tag/expression/operator/'
                     'custom_operator_test.dart'),
             exampleFactories: renderContext.engine.operatorGroups,
             titleLevel: titleLevel + 1),

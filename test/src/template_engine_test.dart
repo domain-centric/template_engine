@@ -76,7 +76,7 @@ class TestTag extends Tag {
             name: name,
             description: ['Tag to test unique tag names'],
             exampleExpression: 'dummy',
-            exampleCode: ProjectFilePath('/dummy'));
+            exampleCode: ProjectFilePath('dummy'));
   @override
   Parser<Object> createTagParser(ParserContext context) {
     throw UnimplementedError();
