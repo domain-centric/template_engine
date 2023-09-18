@@ -33,7 +33,7 @@ class InvalidTagParser extends Parser<Object> {
       if (expressionResult is Failure) {
         errors.add(Error.fromFailure(
           stage: ErrorStage.parse,
-          failure: expressionResult,
+          failure: expressionResult as Failure,
           template: parserContext.template,
         ));
       }

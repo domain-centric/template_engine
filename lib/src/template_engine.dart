@@ -75,7 +75,7 @@ class TemplateEngine {
     if (result is Failure) {
       context.errors.add(Error.fromFailure(
         stage: ErrorStage.parse,
-        failure: result,
+        failure: result as Failure,
         template: template,
       ));
     }
