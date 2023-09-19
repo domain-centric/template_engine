@@ -93,9 +93,10 @@ class ParseResult extends ParserTree {
   final List<Error> errors;
 
   ParseResult({
+    required Template template,
     required List<Object> children,
     this.errors = const [],
-  }) : super(children);
+  }) : super(template, children);
 
   String get errorMessage => errors.map((error) => error.toString()).join('\n');
 }

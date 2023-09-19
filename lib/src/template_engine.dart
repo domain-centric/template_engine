@@ -61,6 +61,8 @@ class TemplateEngine {
     validateNamesAreUnique();
   }
 
+  ParseResult parseText(String text) => parse(TextTemplate(text));
+
   /// Parse the [Template] text into a
   /// [parser tree](https://en.wikipedia.org/wiki/Parse_tree).
   /// See [Renderer]
@@ -79,14 +81,16 @@ class TemplateEngine {
         template: template,
       ));
     }
-    return ParseResult(children: result.value, errors: context.errors);
+    return ParseResult(
+        template: template, children: result.value, errors: context.errors);
   }
 
   /// Render the [parser tree](https://en.wikipedia.org/wiki/Parse_tree)
   /// to a string (and write it as files when needed)
   RenderResult render(ParserTree renderResult,
       [Map<String, Object> variables = const {}]) {
-    var context = RenderContext(this, variables: variables);
+    var context = RenderContext(
+        engine: this, template: renderResult.template, variables: variables);
     var text = renderResult.render(context);
     return RenderResult(
       text: text,

@@ -31,13 +31,16 @@ abstract class RenderType {
 }
 
 /// The [ParserTree](https://en.wikipedia.org/wiki/Parse_tree) contains
-/// parsed nodes that can be rendered to a [String].
+/// parsed nodes from a [Template] that can be rendered to a [String].
 class ParserTree extends Renderer<String> {
+  /// The source
+  final Template template;
+
   /// The nodes that where parsed and can be rendered to a [String].
   /// The nodes are of type [RenderType]
   List<Object> nodes;
 
-  ParserTree([this.nodes = const []]);
+  ParserTree(this.template, [this.nodes = const []]);
 
   @override
   String render(RenderContext context) =>
@@ -65,7 +68,16 @@ class RenderContext {
   final Variables variables;
   final List<Error> errors;
   final String renderAsError;
-  RenderContext(this.engine, {String? renderAsError, Variables? variables})
+
+  /// the Template being rendered
+  final Template template;
+  RenderContext(
+      {required this.engine,
+      required this.template,
+
+      /// How errors need to be rendered
+      String? renderAsError,
+      Variables? variables})
       : variables = variables ?? {},
         renderAsError =
             renderAsError ?? '${engine.tagStart}ERROR${engine.tagEnd}',

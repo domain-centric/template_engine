@@ -61,10 +61,10 @@ void main() {
     when(
         "call: engine.parse(const "
         "TextTemplate('{{engine.function.documentation()}}'))", () {
-      var parseResult = engine
-          .parse(const TextTemplate('{{engine.function.documentation()}}'));
-      var expected = FunctionDocumentation()
-          .function(RenderContext(engine), {'titleLevel': 1});
+      const template = TextTemplate('{{engine.function.documentation()}}');
+      var parseResult = engine.parse(template);
+      var expected = FunctionDocumentation().function(
+          RenderContext(engine: engine, template: template), {'titleLevel': 1});
 
       then('parseResult.errors.length should be 0',
           () => parseResult.errors.length.should.be(0));
