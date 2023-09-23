@@ -22,7 +22,7 @@ class InvalidTagParser extends Parser<Object> {
   /// see dart doc if this class.
   @override
   Result<Object> parseOn(Context context) {
-    var errors = <Error>[];
+    var errors = <ParseError>[];
     var tagStartResult = tagStartParser.parseOn(context);
     if (tagStartResult is Failure) {
       return tagStartResult;
@@ -31,11 +31,7 @@ class InvalidTagParser extends Parser<Object> {
         .parseOn(tagStartResult);
     if (expressionResult.position > tagStartResult.position) {
       if (expressionResult is Failure) {
-        errors.add(Error.fromFailure(
-          stage: ErrorStage.parse,
-          failure: expressionResult as Failure,
-          template: parserContext.template,
-        ));
+        errors.add(ParseError.fromFailure(expressionResult as Failure));
       }
     }
 
@@ -44,11 +40,9 @@ class InvalidTagParser extends Parser<Object> {
     if (errors.isEmpty &&
         anythingBeforeEndResult is Success &&
         anythingBeforeEndResult.value.isNotEmpty) {
-      errors.add(Error.fromContext(
-        stage: ErrorStage.parse,
+      errors.add(ParseError(
         message: 'invalid tag syntax',
-        context: expressionResult,
-        template: parserContext.template,
+        position: expressionResult.toPositionString(),
       ));
     }
 
@@ -72,13 +66,12 @@ class InvalidTagParser extends Parser<Object> {
 /// It replaces the [Tag] end to a [String] e.g. containing: }}
 Parser<String> missingTagStartParser(ParserContext parserContext) =>
     string(parserContext.engine.tagEnd).valueContextMap((value, context) {
-      parserContext.errors.add(Error.fromContext(
-          stage: ErrorStage.parse,
-          context: context,
+      parserContext.errors.add(ParseError(
+          
           message: 'Found tag end: ${parserContext.engine.tagEnd}, '
               'but it was not preceded with a tag start: '
               '${parserContext.engine.tagStart}',
-          template: parserContext.template));
+          position: context.toPositionString()));
       return value;
     });
 
@@ -90,12 +83,10 @@ Parser<String> missingTagEndParser(ParserContext parserContext) =>
             any().star() &
             string(parserContext.engine.tagEnd).not())
         .valueContextMap((values, context) {
-      parserContext.errors.add(Error.fromContext(
-          stage: ErrorStage.parse,
-          context: context,
+      parserContext.errors.add(ParseError(
           message: 'Found tag start: ${parserContext.engine.tagStart}, '
               'but it was not followed with a tag end: '
               '${parserContext.engine.tagEnd}',
-          template: parserContext.template));
+          position: context.toPositionString()));
       return values.first;
     });

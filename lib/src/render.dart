@@ -1,3 +1,4 @@
+
 import 'package:template_engine/template_engine.dart';
 
 /// Renders some value depending on the implementation of the [Renderer]
@@ -9,11 +10,8 @@ abstract class Renderer<T> {
   T render(RenderContext context);
 }
 
-class RenderException implements Exception {
-  final Error error;
-  RenderException(Source source, String message)
-      : error = Error.fromSource(
-            stage: ErrorStage.render, source: source, message: message);
+class RenderException extends RenderError implements Exception {
+  RenderException({required super.message, required super.position});
 }
 
 /// Types returned by the [Renderer.render] method or
@@ -52,9 +50,9 @@ class ParserTree extends Renderer<String> {
         return node.render(context).toString();
       } on Exception catch (e) {
         if (e is RenderException) {
-          context.errors.add(e.error);
+          context.errors.add(e);
         }
-        return context.renderAsError;
+        return context.renderedError;
       }
     } else if (node is List) {
       return node.map((n) => renderNode(context, n)).join();
@@ -66,8 +64,8 @@ class ParserTree extends Renderer<String> {
 class RenderContext {
   final TemplateEngine engine;
   final Variables variables;
-  final List<Error> errors;
-  final String renderAsError;
+  final List<RenderError> errors;
+  final String renderedError;
 
   /// the Template being rendered
   final Template template;
@@ -76,16 +74,16 @@ class RenderContext {
       required this.template,
 
       /// How errors need to be rendered
-      String? renderAsError,
+      String? renderedError,
       Variables? variables})
       : variables = variables ?? {},
-        renderAsError =
-            renderAsError ?? '${engine.tagStart}ERROR${engine.tagEnd}',
+        renderedError =
+            renderedError ?? '${engine.tagStart}ERROR${engine.tagEnd}',
         errors = [];
 }
 
 class RenderResult {
-  final List<Error> errors;
+  final List<RenderError> errors;
   final String text;
 
   RenderResult({
@@ -93,8 +91,28 @@ class RenderResult {
     this.errors = const [],
   });
 
-  String get errorMessage => errors.map((error) => error.toString()).join('\n');
+  String get errorMessage => errors.map((error) => '  $error').join('\n');
 
   @override
   String toString() => text;
+}
+
+/// contains the [RenderResult] of a [Template]
+class TemplateRenderResult extends RenderResult {
+  final Template template;
+
+  TemplateRenderResult(
+      {required this.template, required super.text, super.errors});
+
+  @override
+  String get errorMessage {
+    switch (errors.length) {
+      case 0:
+        return '';
+      case 1:
+        return 'Render error in: ${template.source}:\n${super.errorMessage}';
+      default:
+        return 'Render errors in: ${template.source}:\n${super.errorMessage}';
+    }
+  }
 }

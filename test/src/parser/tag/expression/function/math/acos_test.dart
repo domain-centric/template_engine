@@ -7,7 +7,7 @@ import 'package:test/test.dart';
 void main() {
   test('{{acos(0.5)}} should render as: ${acos(0.5).toString()}', () {
     var engine = TemplateEngine();
-    var parseResult = engine.parse(const TextTemplate('{{acos(0.5)}}'));
+    var parseResult = engine.parse(TextTemplate('{{acos(0.5)}}'));
     var renderResult = engine.render(parseResult);
     renderResult.text.should.be(acos(0.5).toString());
   });

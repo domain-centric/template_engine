@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:petitparser/petitparser.dart';
 import 'package:template_engine/template_engine.dart';
 
 /// A template is a text that can contain [Tag]s.
@@ -29,11 +28,25 @@ abstract class Template {
 }
 
 class TextTemplate extends Template {
-  const TextTemplate(String text)
+   TextTemplate(String text)
       : super(
-          source: 'Text',
+          source: createSource(text),
           text: text,
         );
+
+  static createSource(String text) {
+    String textToShow = text.split(RegExp('\\n')).first;
+
+    if (textToShow.length >40 ) {
+      textToShow = textToShow.substring(0, 40);
+    }
+
+    if (text.length > textToShow.length) {
+      return "'$textToShow...'";
+    } else {
+      return "'$textToShow'";
+    }
+  }
 }
 
 class FileTemplate extends Template {
@@ -44,17 +57,3 @@ class FileTemplate extends Template {
 }
 
 //TODO WebTemplate: gets text from a URL
-
-/// A cursor position within the [Template.text]
-/// where [RenderContext.errors] or [ParserContext.errors] occurred.
-class Source {
-  final Template template;
-
-  /// A cursor position within the [Template.text] in format <row>, <column>
-  final String position;
-
-  Source.fromContext(this.template, Context context)
-      : position = context.toPositionString();
-
-  Source.fromPosition(this.template, this.position);
-}

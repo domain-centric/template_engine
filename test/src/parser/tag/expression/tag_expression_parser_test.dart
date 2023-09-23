@@ -6,7 +6,7 @@ import 'package:test/test.dart';
 void main() {
   test('"The cos of 2 pi = {{cos(2 * pi)}}." should render : 1', () {
     var engine = TemplateEngine();
-    const template = TextTemplate('The cos of 2 pi = {{cos(2 * pi)}}.');
+    var template = TextTemplate('The cos of 2 pi = {{cos(2 * pi)}}.');
     var parseResult = engine.parse(template);
     var renderResult = engine.render(parseResult);
     renderResult.text.should.be('The cos of 2 pi = 1.0.');
@@ -17,7 +17,7 @@ void main() {
       '{{ round( (3/4) * pi * (radius ^ 3) )}}." should render: '
       'The volume of a sphere = 2356.', () {
     var engine = TemplateEngine();
-    const template = TextTemplate('The volume of a sphere = '
+    var template = TextTemplate('The volume of a sphere = '
         '{{ round( (3/4) * pi * (radius ^ 3) )}}.');
     var parseResult = engine.parse(template);
     var renderResult = engine.render(parseResult, {'radius': 10});

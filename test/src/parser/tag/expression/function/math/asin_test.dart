@@ -7,7 +7,7 @@ import 'package:test/test.dart';
 void main() {
   test('{{asin(0.5)}} should render as: ${asin(0.5).toString()}', () {
     var engine = TemplateEngine();
-    var parseResult = engine.parse(const TextTemplate('{{asin(0.5)}}'));
+    var parseResult = engine.parse(TextTemplate('{{asin(0.5)}}'));
     var renderResult = engine.render(parseResult);
     renderResult.text.should.be(asin(0.5).toString());
   });

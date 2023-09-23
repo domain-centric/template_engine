@@ -15,7 +15,7 @@ void main() {
         }
       }
     };
-    var parseResult = engine.parse(const TextTemplate('{{person}}'));
+    var parseResult = engine.parse(TextTemplate('{{person}}'));
     var renderResult = engine.render(parseResult, variables);
     renderResult.text.should
         .be('{name: John Doe, age: 30, child: {name: Jane Doe, age: 5}}');
@@ -33,7 +33,7 @@ void main() {
         }
       }
     };
-    var parseResult = engine.parse(const TextTemplate('{{person.name}}'));
+    var parseResult = engine.parse(TextTemplate('{{person.name}}'));
     var renderResult = engine.render(parseResult, variables);
     renderResult.text.should.be('John Doe');
   });
@@ -52,7 +52,7 @@ void main() {
         }
       }
     };
-    var parseResult = engine.parse(const TextTemplate('{{person.child.name}}'));
+    var parseResult = engine.parse(TextTemplate('{{person.child.name}}'));
     var renderResult = engine.render(parseResult, variables);
     renderResult.text.should.be('Jane Doe');
   });
@@ -71,7 +71,7 @@ void main() {
         }
       }
     };
-    var parseResult = engine.parse(const TextTemplate('{{person.child.age}}'));
+    var parseResult = engine.parse(TextTemplate('{{person.child.age}}'));
     var renderResult = engine.render(parseResult, variables);
     renderResult.text.should.be('5');
   });
@@ -89,7 +89,7 @@ void main() {
       }
     };
     var parseResult =
-        engine.parse(const TextTemplate('Hello {{person.child.name}}.'));
+        engine.parse(TextTemplate('Hello {{person.child.name}}.'));
     var renderResult = engine.render(parseResult, variables);
     renderResult.text.should.be('Hello Jane Doe.');
   });

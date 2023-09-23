@@ -7,7 +7,7 @@ import 'package:test/test.dart';
 void main() {
   test('{{tan(7)}} should render as: ${tan(7).toString()}', () {
     var engine = TemplateEngine();
-    var parseResult = engine.parse(const TextTemplate('{{tan(7)}}'));
+    var parseResult = engine.parse(TextTemplate('{{tan(7)}}'));
     var renderResult = engine.render(parseResult);
     renderResult.text.should.be(tan(7).toString());
   });

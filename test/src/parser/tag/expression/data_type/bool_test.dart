@@ -6,35 +6,35 @@ void main() {
   group('test: true', () {
     test('{{true}} should be rendered as true', () {
       var engine = TemplateEngine();
-      var parserResult = engine.parse(const TextTemplate('{{true}}'));
+      var parserResult = engine.parse(TextTemplate('{{true}}'));
       var renderResult = engine.render(parserResult);
       renderResult.text.should.be('true');
     });
 
     test('{{TRUE}} should be rendered as true', () {
       var engine = TemplateEngine();
-      var parserResult = engine.parse(const TextTemplate('{{TRUE}}'));
+      var parserResult = engine.parse(TextTemplate('{{TRUE}}'));
       var renderResult = engine.render(parserResult);
       renderResult.text.should.be('true');
     });
 
     test('{{   TRue}} should be rendered as true', () {
       var engine = TemplateEngine();
-      var parserResult = engine.parse(const TextTemplate('{{   TRue}}'));
+      var parserResult = engine.parse(TextTemplate('{{   TRue}}'));
       var renderResult = engine.render(parserResult);
       renderResult.text.should.be('true');
     });
 
     test('{{trUE  }} should be rendered as true', () {
       var engine = TemplateEngine();
-      var parserResult = engine.parse(const TextTemplate('{{trUE   }}'));
+      var parserResult = engine.parse(TextTemplate('{{trUE   }}'));
       var renderResult = engine.render(parserResult);
       renderResult.text.should.be('true');
     });
 
     test('{{  true  }} should be rendered as true', () {
       var engine = TemplateEngine();
-      var parserResult = engine.parse(const TextTemplate('{{  true  }}'));
+      var parserResult = engine.parse(TextTemplate('{{  true  }}'));
       var renderResult = engine.render(parserResult);
       renderResult.text.should.be('true');
     });
@@ -42,35 +42,35 @@ void main() {
   group('test: false', () {
     test('{{false}} should be rendered as false', () {
       var engine = TemplateEngine();
-      var parserResult = engine.parse(const TextTemplate('{{false}}'));
+      var parserResult = engine.parse(TextTemplate('{{false}}'));
       var renderResult = engine.render(parserResult);
       renderResult.text.should.be('false');
     });
 
     test('{{FALSE}} should be rendered as false', () {
       var engine = TemplateEngine();
-      var parserResult = engine.parse(const TextTemplate('{{FALSE}}'));
+      var parserResult = engine.parse(TextTemplate('{{FALSE}}'));
       var renderResult = engine.render(parserResult);
       renderResult.text.should.be('false');
     });
 
     test('{{   FAlse}} should be rendered as false', () {
       var engine = TemplateEngine();
-      var parserResult = engine.parse(const TextTemplate('{{   FAlse}}'));
+      var parserResult = engine.parse(TextTemplate('{{   FAlse}}'));
       var renderResult = engine.render(parserResult);
       renderResult.text.should.be('false');
     });
 
     test('{{faLSE  }} should be rendered as false', () {
       var engine = TemplateEngine();
-      var parserResult = engine.parse(const TextTemplate('{{faLSE   }}'));
+      var parserResult = engine.parse(TextTemplate('{{faLSE   }}'));
       var renderResult = engine.render(parserResult);
       renderResult.text.should.be('false');
     });
 
     test('{{  false  }} should be rendered as false', () {
       var engine = TemplateEngine();
-      var parserResult = engine.parse(const TextTemplate('{{  false  }}'));
+      var parserResult = engine.parse(TextTemplate('{{  false  }}'));
       var renderResult = engine.render(parserResult);
       renderResult.text.should.be('false');
     });

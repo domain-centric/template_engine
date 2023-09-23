@@ -3,8 +3,6 @@ import 'package:petitparser/petitparser.dart';
 import 'package:shouldly/shouldly.dart';
 import 'package:template_engine/template_engine.dart';
 
-import '../../../../template_engine_test.dart';
-
 void main() {
   given('Parameter', () {
     when('Calling constructor', () {
@@ -19,7 +17,7 @@ void main() {
   });
 
   given('ParameterNameAndValueParser with a nameless parameter', () {
-    var parserContext = ParserContext(TemplateEngine());
+    var parserContext = ParserContext(TemplateEngine(), TextTemplate(''));
     var loopBackParser = SettableParser(expressionParser(parserContext));
     var parser = parameterParser(
             parserContext: parserContext,
@@ -105,7 +103,7 @@ void main() {
   });
 
   given('ParameterNameAndValueParser with parameter: parameter', () {
-    var parserContext = ParserContext(TemplateEngine());
+    var parserContext = ParserContext(TemplateEngine(), TextTemplate(''));
     var loopBackParser = SettableParser(expressionParser(parserContext));
     var parser = parameterParser(
             parserContext: parserContext,
@@ -261,8 +259,8 @@ void main() {
 
       then('result.errors should contain 1 error',
           () => parseResult.errors.length.should.be(1));
-      String expected = 'Parse Error: invalid function parameter syntax: '
-          ', invalidParameter=invalidValue, position: 1:22, source: Text';
+      String expected = '1:22: invalid function parameter syntax: '
+          ', invalidParameter=invalidValue';
       then('result.errorMessage should be "$expected"',
           () => parseResult.errorMessage.should.be(expected));
 
@@ -280,8 +278,7 @@ void main() {
       then('result.errors should contain 1 error',
           () => parseResult.errors.length.should.be(1));
 
-      String expected = 'Parse Error: invalid tag syntax, '
-          'position: 1:12, source: Text';
+      String expected = '1:12: invalid tag syntax';
       then('result.errorMessage should be "$expected"',
           () => parseResult.errorMessage.should.be(expected));
 
@@ -304,8 +301,7 @@ void main() {
       then('result should have 1 error',
           () => result.errors.length.should.be(1));
 
-      var expected = 'Parse Error: invalid tag syntax, '
-          'position: 1:6, source: Text';
+      var expected = '1:6: invalid tag syntax';
       then('result.errorMessage should be: "$expected"',
           () => result.errorMessage.should.be(expected));
     });
@@ -402,8 +398,8 @@ void main() {
       then('result should have 1 error',
           () => result.errors.length.should.be(1));
 
-      var expected = 'Parse Error: invalid function parameter syntax: '
-          'parameter2="Test", position: 1:23, source: Text';
+      var expected = '1:23: invalid function parameter syntax: '
+          'parameter2="Test"';
       then('result.errorMessage should be: "$expected"',
           () => result.errorMessage.should.be(expected));
     });
@@ -415,8 +411,7 @@ void main() {
       then('result should have 1 error',
           () => result.errors.length.should.be(1));
 
-      var expected = 'Parse Error: missing mandatory function parameter: '
-          'parameter2, position: 1:43, source: Text';
+      var expected = '1:43: missing mandatory function parameter: parameter2';
       then('result.errorMessage should be: "$expected"',
           () => result.errorMessage.should.be(expected));
     });
@@ -427,8 +422,8 @@ void main() {
       then('result should have 1 error',
           () => result.errors.length.should.be(1));
 
-      var expected = 'Parse Error: missing mandatory function parameters: '
-          'parameter1, parameter2, position: 1:28, source: Text';
+      var expected = '1:28: missing mandatory function parameters: '
+          'parameter1, parameter2';
       then('result.errorMessage should be: "$expected"',
           () => result.errorMessage.should.be(expected));
     });
@@ -439,8 +434,7 @@ void main() {
       then('result should have 1 error',
           () => result.errors.length.should.be(1));
 
-      var expected = 'Parse Error: missing mandatory function parameter: '
-          'parameter3, position: 1:43, source: Text';
+      var expected = '1:43: missing mandatory function parameter: parameter3';
       then('result.errorMessage should be: "$expected"',
           () => result.errorMessage.should.be(expected));
     });
@@ -452,8 +446,7 @@ void main() {
       then('result should have 1 error',
           () => result.errors.length.should.be(1));
 
-      var expected = 'Parse Error: missing mandatory function parameter: '
-          'parameter2, position: 1:47, source: Text';
+      var expected = '1:47: missing mandatory function parameter: parameter2';
       then('result.errorMessage should be: "$expected"',
           () => result.errorMessage.should.be(expected));
     });
@@ -507,8 +500,7 @@ void main() {
       then('result should have 1 error',
           () => result.errors.length.should.be(1));
 
-      var expected = 'Parse Error: invalid tag syntax, '
-          'position: 1:8, source: Text';
+      var expected = '1:8: invalid tag syntax';
       then('result.errorMessage should be: "$expected"',
           () => result.errorMessage.should.be(expected));
     });
@@ -520,8 +512,7 @@ void main() {
       then('result should have 1 error',
           () => result.errors.length.should.be(1));
 
-      var expected = 'Parse Error: missing mandatory function parameter: '
-          'parameter4, position: 1:43, source: Text';
+      var expected = '1:43: missing mandatory function parameter: parameter4';
       then('result.errorMessage should be: "$expected"',
           () => result.errorMessage.should.be(expected));
     });
@@ -533,8 +524,8 @@ void main() {
       then('result should have 1 error',
           () => result.errors.length.should.be(1));
 
-      var expected = 'Parse Error: missing mandatory function parameters: '
-          'parameter3, parameter4, position: 1:42, source: Text';
+      var expected = '1:42: missing mandatory function parameters: '
+      'parameter3, parameter4';
       then('result.errorMessage should be: "$expected"',
           () => result.errorMessage.should.be(expected));
     });
@@ -546,8 +537,7 @@ void main() {
       then('result should have 1 error',
           () => result.errors.length.should.be(1));
 
-      var expected = 'Parse Error: missing mandatory function parameter: '
-          'parameter4, position: 1:49, source: Text';
+      var expected = '1:49: missing mandatory function parameter: parameter4';
       then('result.errorMessage should be: "$expected"',
           () => result.errorMessage.should.be(expected));
     });
@@ -605,7 +595,7 @@ void main() {
         "calling: engine.parse(TextTemplate"
         "('{{length(\"Hello\" + \" \" & \"world.\") + 3}}')) ", () {
       var parseResult = engine.parse(
-          const TextTemplate('{{length("Hello" + " " & "world.") + 3}}'));
+          TextTemplate('{{length("Hello" + " " & "world.") + 3}}'));
       when('calling: engine.render(parseResult).text', () {
         var renderResult = engine.render(parseResult).text;
         var expected = (('Hello world.'.length) + 3).toString();
@@ -620,7 +610,7 @@ void main() {
       '(needs to be rendered first)', () {
     var engine = TemplateEngine();
     when("calling: engine.parse(TextTemplate('{{sin(asin(0.5))}}'))", () {
-      var parseResult = engine.parse(const TextTemplate('{{sin(asin(0.5))}}'));
+      var parseResult = engine.parse(TextTemplate('{{sin(asin(0.5))}}'));
       when('calling: engine.render(parseResult).text', () {
         var renderResult = engine.render(parseResult).text;
         var expected = '0.5';
@@ -632,11 +622,10 @@ void main() {
   given('A function with a missing parameter', () {
     var engine = TemplateEngine();
     when("calling: engine.parse(TextTemplate('{{sin()}}'))", () {
-      var parseResult = engine.parse(const TextTemplate('{{sin()}}'));
+      var parseResult = engine.parse(TextTemplate('{{sin()}}'));
       then('parseResult.errors.length should be 1',
           () => parseResult.errors.length.should.be(1));
-      var expected = 'Parse Error: missing mandatory function parameter: '
-          'radians, position: 1:7, source: Text';
+      var expected = '1:7: missing mandatory function parameter: radians';
       then('parseResult.errors.first.message should be "$expected"',
           () => parseResult.errors.first.toString().should.be(expected));
       when('calling: engine.render(parseResult).text', () {
@@ -677,8 +666,4 @@ class ParameterTestFunction extends ExpressionFunction<Map<String, Object>> {
             exampleResult: 'dummy',
             parameters: parameters,
             function: (renderContext, parameters) => parameters);
-}
-
-class DummySource extends Source {
-  DummySource() : super.fromPosition(DummyTemplate(), '1,1');
 }

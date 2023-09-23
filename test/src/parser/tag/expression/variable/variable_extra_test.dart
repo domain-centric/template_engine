@@ -9,16 +9,17 @@ void main() {
       '"Hello {{name}}." should render a an error '
       'if the variable does not exist', () {
     var engine = TemplateEngine();
-    var parseResult = engine.parse(const TextTemplate('Hello {{name}}.'));
+    var parseResult = engine.parse(TextTemplate('Hello {{name}}.'));
     var renderResult = engine.render(parseResult);
     renderResult.errorMessage.should
-        .be('Render Error: Variable does not exist: name,'
-            ' position: 1:9, source: Text');
+        .be(
+          'Render error in: \'Hello {{name}}.\':\n'
+          '  1:9: Variable does not exist: name');
   });
 
   test('"Hello {{  \t name}}." should render a proper greeting', () {
     var engine = TemplateEngine();
-    var parseResult = engine.parse(const TextTemplate('Hello {{  \t name}}.'));
+    var parseResult = engine.parse(TextTemplate('Hello {{  \t name}}.'));
     var renderResult = engine.render(parseResult, {'name': 'world'});
     renderResult.text.should.be('Hello world.');
   });
@@ -26,7 +27,7 @@ void main() {
   test('"Hello {{name  \t\n }}." should render a proper greeting', () {
     var engine = TemplateEngine();
     var parseResult =
-        engine.parse(const TextTemplate('Hello {{name  \t\n }}.'));
+        engine.parse(TextTemplate('Hello {{name  \t\n }}.'));
     var renderResult = engine.render(parseResult, {'name': 'world'});
     renderResult.text.should.be('Hello world.');
   });
@@ -34,7 +35,7 @@ void main() {
   test('"Hello {{   name  \t\n }}." should render a proper greeting', () {
     var engine = TemplateEngine();
     var parseResult =
-        engine.parse(const TextTemplate('Hello {{   name  \t\n }}.'));
+        engine.parse(TextTemplate('Hello {{   name  \t\n }}.'));
     var renderResult = engine.render(parseResult, {'name': 'world'});
     renderResult.text.should.be('Hello world.');
   });

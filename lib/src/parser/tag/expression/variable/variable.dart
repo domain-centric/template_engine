@@ -30,10 +30,9 @@ typedef Variables = Map<String, Object>;
 
 /// An expression to return a variable value
 class VariableExpression extends Expression {
-  final Source source;
-  VariableExpression(this.source, this.namePath);
-
   final String namePath;
+  final String position;
+  VariableExpression({required this.position, required this.namePath});
 
   @override
   String toString() => 'Variable{$namePath}';
@@ -63,7 +62,7 @@ class VariableExpression extends Expression {
     try {
       return _findVariableValue(context.variables, namePath.split('.'), 0);
     } on VariableException catch (e) {
-      throw RenderException(source, e.message);
+      throw RenderException(message: e.message, position: position);
     }
   }
 }
@@ -72,8 +71,8 @@ Parser<Expression<Object>> variableParser(Template template) {
   return (VariableName.pathParser & char('(').trim().not())
       .flatten('variable expected')
       .trim()
-      .valueContextMap((name, context) =>
-          VariableExpression(Source.fromContext(template, context), name));
+      .valueContextMap((name, context) => VariableExpression(
+          namePath: name, position: context.toPositionString()));
 }
 
 class VariableException implements Exception {

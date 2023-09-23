@@ -1,6 +1,5 @@
 import 'package:petitparser/petitparser.dart';
 import 'package:template_engine/src/template.dart';
-import 'package:recase/recase.dart';
 
 /// Parser or Render error or warnings are collected as [Error]s instead
 /// of being thrown so that the parser and rendering process can continue.
@@ -8,38 +7,25 @@ import 'package:recase/recase.dart';
 /// recall the [TemplateEngine.parse] and [TemplateEngine.render] methods
 /// for each [Error]
 
-class Error {
-  final ErrorStage stage;
+abstract class Error {
   final String message;
-  final Source source;
 
-  Error.fromFailure({
-    required this.stage,
-    required Failure failure,
-    required Template template,
-  })  : message = failure.message,
-        source = Source.fromContext(template, failure);
+  /// A cursor position within the [Template.text] in format <row>, <column>
+  final String position;
 
-  Error.fromContext({
-    required this.stage,
-    required Context context,
-    required this.message,
-    required Template template,
-  }) : source = Source.fromContext(template, context);
-
-  Error.fromSource({
-    required this.stage,
-    required this.source,
-    required this.message,
-  });
+  Error({required this.message, required this.position});
 
   @override
-  String toString() => '${stage.name.titleCase} Error: $message, '
-      'position: ${source.position}, '
-      'source: ${source.template.source}';
+  String toString() => '$position: $message';
 }
 
-enum ErrorStage {
-  parse,
-  render,
+class RenderError extends Error {
+  RenderError({required super.message, required super.position});
+}
+
+class ParseError extends Error {
+  ParseError({required super.message, required super.position});
+
+  ParseError.fromFailure(Failure failure)
+      : super(message: failure.message, position: failure.toPositionString());
 }

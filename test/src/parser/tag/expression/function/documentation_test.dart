@@ -16,7 +16,7 @@ void main() {
         "call: engine.parse(const "
         "TextTemplate('{{engine.tag.documentation()}}'))", () {
       var parseResult =
-          engine.parse(const TextTemplate('{{engine.tag.documentation()}}'));
+          engine.parse(TextTemplate('{{engine.tag.documentation()}}'));
       var expected = '<table>\n'
           '<tr><th colspan="2">ExpressionTag</th></tr>\n'
           '<tr><td>description:</td><td>Evaluates an expression that can contain:<br>* Data Types (e.g. boolean, number or String)<br>* Constants (e.g. pi)<br>* Variables (e.g. person.name )<br>* Operators (e.g. + - * /)<br>* Functions (e.g. cos(7) )<br>* or any combination of the above</td></tr>\n'
@@ -37,7 +37,7 @@ void main() {
         "call: engine.parse(const "
         "TextTemplate('{{engine.dataType.documentation()}}'))", () {
       var parseResult = engine
-          .parse(const TextTemplate('{{engine.dataType.documentation()}}'));
+          .parse(TextTemplate('{{engine.dataType.documentation()}}'));
       var expected = '<table>\n'
           '<tr><th colspan="2">Boolean</th></tr>\n'
           '<tr><td>description:</td><td>A form of data with only two possible values: true or false</td></tr>\n'
@@ -61,7 +61,7 @@ void main() {
     when(
         "call: engine.parse(const "
         "TextTemplate('{{engine.function.documentation()}}'))", () {
-      const template = TextTemplate('{{engine.function.documentation()}}');
+      var template = TextTemplate('{{engine.function.documentation()}}');
       var parseResult = engine.parse(template);
       var expected = FunctionDocumentation().function(
           RenderContext(engine: engine, template: template), {'titleLevel': 1});

@@ -5,7 +5,7 @@ import 'package:test/test.dart';
 void main() {
   test('{{length(\'Hello\'}} should render: 5', () {
     var engine = TemplateEngine();
-    var parseResult = engine.parse(const TextTemplate('{{length(\'Hello\')}}'));
+    var parseResult = engine.parse(TextTemplate('{{length(\'Hello\')}}'));
     var renderResult = engine.render(parseResult);
     renderResult.text.should.be('5');
   });
@@ -13,7 +13,7 @@ void main() {
   test('{{length(\'Hello\' + " world"}} should render: 5', () {
     var engine = TemplateEngine();
     var parseResult =
-        engine.parse(const TextTemplate('{{length(\'Hello\' + " world")}}'));
+        engine.parse(TextTemplate('{{length(\'Hello\' + " world")}}'));
     var renderResult = engine.render(parseResult);
     renderResult.text.should.be('11');
   });

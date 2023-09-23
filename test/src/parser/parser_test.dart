@@ -5,7 +5,7 @@ import 'package:template_engine/template_engine.dart';
 void main() {
   given('escapedTagStartParser and escapedTagEndParser', () {
     given('object: Template("Hello \\{{ world.")', () {
-      var template = const TextTemplate('Hello \\{{ world.');
+      var template = TextTemplate('Hello \\{{ world.');
       var engine = TemplateEngine();
 
       when('call: parse(template)', () {
@@ -45,7 +45,7 @@ void main() {
     });
 
     given('object: Template("Hello \\}} world.")', () {
-      var template = const TextTemplate('Hello \\}} world.');
+      var template = TextTemplate('Hello \\}} world.');
       var engine = TemplateEngine();
 
       when('call: parse(template)', () {
@@ -86,7 +86,7 @@ void main() {
 
     given('object: Template("\\{{ this is not a tag or variable \\}}")', () {
       var template =
-          const TextTemplate('\\{{ this is not a tag or variable \\}}');
+          TextTemplate('\\{{ this is not a tag or variable \\}}');
       var engine = TemplateEngine();
 
       when('call: parse(template)', () {

@@ -5,12 +5,12 @@ import 'package:template_engine/template_engine.dart';
 class PrefixExpression<PARAMETER_TYPE extends Object>
     extends Expression<PARAMETER_TYPE> {
   final PrefixOperator<PARAMETER_TYPE> operator;
-  final Source source;
   final Expression valueExpression;
+  final String position;
 
   PrefixExpression(
       {required this.operator,
-      required this.source,
+      required this.position,
       required this.valueExpression});
 
   @override
@@ -19,8 +19,10 @@ class PrefixExpression<PARAMETER_TYPE extends Object>
     if (value is PARAMETER_TYPE) {
       return operator.function(value);
     }
-    throw RenderException(source,
-        '${typeDescription<PARAMETER_TYPE>()} expected after the ${operator.operator} operator');
+    throw RenderException(
+        message:
+            '${typeDescription<PARAMETER_TYPE>()} expected after the ${operator.operator} operator',
+        position: position);
   }
 
   @override
@@ -67,14 +69,14 @@ class TwoValueOperatorVariant<PARAMETER_TYPE extends Object> {
 /// delegates the work to one of the [variants] that can process
 /// the correct types of the evaluated [left] and [right] values.
 class OperatorVariantExpression extends Expression {
-  final Source source;
+  final String position;
   final List<TwoValueOperatorVariant> variants;
   final String operator;
   final Expression left;
   final Expression right;
 
   OperatorVariantExpression(
-      {required this.source,
+      {required this.position,
       required this.operator,
       required this.variants,
       required this.left,
@@ -95,21 +97,21 @@ class OperatorVariantExpression extends Expression {
         errors.addAll(variantErrors);
       }
     }
-    throw RenderException(source, errors.join(', or '));
+    throw RenderException(message: errors.join(', or '), position: position);
   }
 }
 
 /// A value that needs to be calculated (evaluated)
 /// from 2 expressions that return a object of type [T]
 class TwoValueOperatorExpression<T extends Object> extends Expression {
-  final Source source;
+  final String position;
   final String operator;
   final Expression left;
   final Expression right;
   final T Function(T left, T right) function;
 
   TwoValueOperatorExpression(
-      {required this.source,
+      {required this.position,
       required this.operator,
       required this.left,
       required this.right,
@@ -126,14 +128,20 @@ class TwoValueOperatorExpression<T extends Object> extends Expression {
     }
 
     if (!leftTypeOk && !rightTypeOk) {
-      throw RenderException(source,
-          'left and right of the $operator operator must be a ${typeDescription<T>()}');
+      throw RenderException(
+          message: 'left and right of the $operator operator '
+              'must be a ${typeDescription<T>()}',
+          position: position);
     } else if (!leftTypeOk) {
-      throw RenderException(source,
-          'left of the $operator operator must be a ${typeDescription<T>()}');
+      throw RenderException(
+          message: 'left of the $operator operator '
+              'must be a ${typeDescription<T>()}',
+          position: position);
     } else {
-      throw RenderException(source,
-          'right of the $operator operator must be a ${typeDescription<T>()}');
+      throw RenderException(
+          message: 'right of the $operator operator '
+              'must be a ${typeDescription<T>()}',
+          position: position);
     }
   }
 
@@ -214,7 +222,7 @@ class PrefixOperator<PARAMETER_TYPE extends Object> extends Operator {
         char(operator).trim(),
         (context, op, value) => PrefixExpression<PARAMETER_TYPE>(
             operator: this,
-            source: Source.fromContext(template, context),
+            position: context.toPositionString(),
             valueExpression: value));
   }
 }
@@ -271,7 +279,7 @@ abstract class OperatorWith2Values extends Operator {
       group.right(
           char(operator).trim(),
           (context, left, op, right) => OperatorVariantExpression(
-                source: Source.fromContext(template, context),
+                position: context.toPositionString(),
                 operator: operator,
                 variants: variants,
                 left: left,
@@ -281,7 +289,7 @@ abstract class OperatorWith2Values extends Operator {
       group.left(
           char(operator).trim(),
           (context, left, op, right) => OperatorVariantExpression(
-                source: Source.fromContext(template, context),
+                position: context.toPositionString(),
                 operator: operator,
                 variants: variants,
                 left: left,

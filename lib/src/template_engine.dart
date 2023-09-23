@@ -75,10 +75,8 @@ class TemplateEngine {
     var result = parser.parse(template.text);
 
     if (result is Failure) {
-      context.errors.add(Error.fromFailure(
-        stage: ErrorStage.parse,
-        failure: result as Failure,
-        template: template,
+      context.errors.add(ParseError.fromFailure(
+         result as Failure,
       ));
     }
     return ParseResult(
@@ -87,12 +85,13 @@ class TemplateEngine {
 
   /// Render the [parser tree](https://en.wikipedia.org/wiki/Parse_tree)
   /// to a string (and write it as files when needed)
-  RenderResult render(ParserTree renderResult,
+  RenderResult render(ParserTree parseResult,
       [Map<String, Object> variables = const {}]) {
     var context = RenderContext(
-        engine: this, template: renderResult.template, variables: variables);
-    var text = renderResult.render(context);
-    return RenderResult(
+        engine: this, template: parseResult.template, variables: variables);
+    var text = parseResult.render(context);
+    return TemplateRenderResult(
+      template: parseResult.template,
       text: text,
       errors: context.errors,
     );
