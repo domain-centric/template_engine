@@ -6,15 +6,13 @@ void main() {
   test("{{'Hello}} should return a correct error message", () {
     var engine = TemplateEngine();
     var parseResult = engine.parse(TextTemplate("{{'Hello}}"));
-    parseResult.errorMessage.should
-        .be('1:3: invalid tag syntax');
+    parseResult.errorMessage.should.be('1:3: invalid tag syntax');
   });
 
   test('{{Hello"}} should return a correct error message', () {
     var engine = TemplateEngine();
     var parseResult = engine.parse(TextTemplate('{{Hello"}}'));
-    parseResult.errorMessage.should
-        .be('1:8: invalid tag syntax');
+    parseResult.errorMessage.should.be('1:8: invalid tag syntax');
   });
 
   test("{{'Hello'}} should render: 'Hello'", () {
@@ -47,8 +45,7 @@ void main() {
 
   test('{{\'Hel\' + \'l\' & "o"}} should render: \'Hello\'', () {
     var engine = TemplateEngine();
-    var parseResult =
-        engine.parse(TextTemplate('{{\'Hel\' + \'l\' & "o"}}'));
+    var parseResult = engine.parse(TextTemplate('{{\'Hel\' + \'l\' & "o"}}'));
     var renderResult = engine.render(parseResult);
     renderResult.text.should.be('Hello');
   });

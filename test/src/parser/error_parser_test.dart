@@ -5,7 +5,7 @@ import 'package:template_engine/template_engine.dart';
 void main() {
   given('unknownTagOrVariableParser', () {
     given('object: Template with none defined tag', () {
-      var template =  TextTemplate('Hello {{notDefined attribute="1"}}.');
+      var template = TextTemplate('Hello {{notDefined attribute="1"}}.');
       var engine = TemplateEngine();
 
       when('call: parse(template)', () {
@@ -19,7 +19,7 @@ void main() {
     });
 
     given('object: Template with 2 none defined tags', () {
-      var template =  TextTemplate(
+      var template = TextTemplate(
           'Hello {{notDefined1 attribute="1"}} {{notDefined2 attribute="1"}}.');
       var engine = TemplateEngine();
 
@@ -37,7 +37,7 @@ void main() {
 
   given('missingTagStartParser', () {
     given('object: Template("Hello {{ world.")', () {
-      var template =  TextTemplate('Hello {{ world.');
+      var template = TextTemplate('Hello {{ world.');
       var engine = TemplateEngine();
 
       when('call: parse(template)', () {
@@ -54,7 +54,7 @@ void main() {
     });
 
     given('object: Template("Hello \\{{ {{ world.")', () {
-      var template =  TextTemplate('Hello \\{{ {{ world.');
+      var template = TextTemplate('Hello \\{{ {{ world.');
       var engine = TemplateEngine();
 
       when('call: parse(template)', () {
@@ -115,7 +115,7 @@ void main() {
         then('expect: 1 error', () => result.errors.length.should.be(1));
 
         var expected = '1:11: Found tag end: }}, '
-        'but it was not preceded with a tag start: {{';
+            'but it was not preceded with a tag start: {{';
         then('expect: errorMessage to be "$expected"', () {
           return result.errorMessage.should.be(expected);
         });

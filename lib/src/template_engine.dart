@@ -76,7 +76,7 @@ class TemplateEngine {
 
     if (result is Failure) {
       context.errors.add(ParseError.fromFailure(
-         result as Failure,
+        result as Failure,
       ));
     }
     return ParseResult(

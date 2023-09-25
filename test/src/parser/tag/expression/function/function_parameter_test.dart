@@ -525,7 +525,7 @@ void main() {
           () => result.errors.length.should.be(1));
 
       var expected = '1:42: missing mandatory function parameters: '
-      'parameter3, parameter4';
+          'parameter3, parameter4';
       then('result.errorMessage should be: "$expected"',
           () => result.errorMessage.should.be(expected));
     });
@@ -594,8 +594,8 @@ void main() {
     when(
         "calling: engine.parse(TextTemplate"
         "('{{length(\"Hello\" + \" \" & \"world.\") + 3}}')) ", () {
-      var parseResult = engine.parse(
-          TextTemplate('{{length("Hello" + " " & "world.") + 3}}'));
+      var parseResult = engine
+          .parse(TextTemplate('{{length("Hello" + " " & "world.") + 3}}'));
       when('calling: engine.render(parseResult).text', () {
         var renderResult = engine.render(parseResult).text;
         var expected = (('Hello world.'.length) + 3).toString();

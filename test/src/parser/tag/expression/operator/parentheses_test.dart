@@ -19,8 +19,7 @@ void main() {
 
   test('{{true & (false | true)}} should render: true', () {
     var engine = TemplateEngine();
-    var parseResult =
-        engine.parse(TextTemplate("{{true & (false | true)}}"));
+    var parseResult = engine.parse(TextTemplate("{{true & (false | true)}}"));
     var renderResult = engine.render(parseResult);
     renderResult.text.should.be('true');
   });

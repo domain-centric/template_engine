@@ -30,15 +30,13 @@ void main() {
 
   test('{{false | FALSE | falsE}} should render: false', () {
     var engine = TemplateEngine();
-    var parseResult =
-        engine.parse(TextTemplate('{{false | FALSE | falsE}}'));
+    var parseResult = engine.parse(TextTemplate('{{false | FALSE | falsE}}'));
     var renderResult = engine.render(parseResult);
     renderResult.text.should.be('false');
   });
   test('{{ true | FALSE | truE }} should render: true', () {
     var engine = TemplateEngine();
-    var parseResult =
-        engine.parse(TextTemplate('{{ true | FALSE | truE }}'));
+    var parseResult = engine.parse(TextTemplate('{{ true | FALSE | truE }}'));
     var renderResult = engine.render(parseResult);
     renderResult.text.should.be('true');
   });
@@ -49,6 +47,6 @@ void main() {
     renderResult.text.should.be('{{ERROR}}');
     renderResult.errorMessage.should
         .be('Render error in: \'{{"text"|"text"}}\':\n'
-  '  1:9: left and right of the | operator must be a boolean');
+            '  1:9: left and right of the | operator must be a boolean');
   });
 }

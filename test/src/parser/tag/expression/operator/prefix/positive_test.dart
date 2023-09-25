@@ -15,9 +15,7 @@ void main() {
     var parseResult = engine.parse(TextTemplate('{{+"text"}}'));
     var renderResult = engine.render(parseResult);
     renderResult.text.should.be('{{ERROR}}');
-    renderResult.errorMessage.should
-        .be(
-          'Render error in: \'{{+"text"}}\':\n'
-          '  1:3: number expected after the + operator');
+    renderResult.errorMessage.should.be('Render error in: \'{{+"text"}}\':\n'
+        '  1:3: number expected after the + operator');
   });
 }

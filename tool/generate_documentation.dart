@@ -29,7 +29,7 @@ void generate(
   if (parseResult.errors.isNotEmpty) {
     print(parseResult.errorMessage);
   }
-  if (renderResult.errors.isNotEmpty) {
+  if (renderResult.errorMessage.isNotEmpty) {
     print(renderResult.errorMessage);
   }
   outputPath.file.writeAsStringSync(renderResult.text);

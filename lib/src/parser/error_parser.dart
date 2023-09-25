@@ -67,7 +67,6 @@ class InvalidTagParser extends Parser<Object> {
 Parser<String> missingTagStartParser(ParserContext parserContext) =>
     string(parserContext.engine.tagEnd).valueContextMap((value, context) {
       parserContext.errors.add(ParseError(
-          
           message: 'Found tag end: ${parserContext.engine.tagEnd}, '
               'but it was not preceded with a tag start: '
               '${parserContext.engine.tagStart}',

@@ -36,8 +36,8 @@ void main() {
     when(
         "call: engine.parse(const "
         "TextTemplate('{{engine.dataType.documentation()}}'))", () {
-      var parseResult = engine
-          .parse(TextTemplate('{{engine.dataType.documentation()}}'));
+      var parseResult =
+          engine.parse(TextTemplate('{{engine.dataType.documentation()}}'));
       var expected = '<table>\n'
           '<tr><th colspan="2">Boolean</th></tr>\n'
           '<tr><td>description:</td><td>A form of data with only two possible values: true or false</td></tr>\n'
@@ -51,8 +51,8 @@ void main() {
       when('calling: engine.render(parseResult)', () {
         var renderResult = engine.render(parseResult);
 
-        then('renderResult.errors.length should be 0',
-            () => renderResult.errors.length.should.be(0));
+        then('renderResult.errorMessage should be empty',
+            () => renderResult.errorMessage.should.beNullOrEmpty());
         then('renderResult.text be: "$expected"',
             () => renderResult.text.should.be(expected));
       });

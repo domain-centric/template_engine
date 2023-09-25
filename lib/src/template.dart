@@ -28,7 +28,7 @@ abstract class Template {
 }
 
 class TextTemplate extends Template {
-   TextTemplate(String text)
+  TextTemplate(String text)
       : super(
           source: createSource(text),
           text: text,
@@ -37,7 +37,7 @@ class TextTemplate extends Template {
   static createSource(String text) {
     String textToShow = text.split(RegExp('\\n')).first;
 
-    if (textToShow.length >40 ) {
+    if (textToShow.length > 40) {
       textToShow = textToShow.substring(0, 40);
     }
 

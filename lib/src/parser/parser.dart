@@ -4,6 +4,7 @@ import 'package:petitparser/parser.dart';
 import 'package:template_engine/template_engine.dart';
 
 import 'error_parser.dart';
+
 Parser<String> optionalWhiteSpace() => whitespace().star().flatten();
 
 /// Creates a parser that can convert a [Template] text to a
@@ -83,7 +84,7 @@ class ParserContext {
   final List<ParseError> errors;
 
   ParserContext(
-    this.engine, 
+    this.engine,
     this.template,
   ) : errors = [];
 }

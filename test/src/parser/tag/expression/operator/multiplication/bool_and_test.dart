@@ -30,15 +30,13 @@ void main() {
 
   test('{{false & true & false}} should render: false', () {
     var engine = TemplateEngine();
-    var parseResult =
-        engine.parse(TextTemplate('{{false & true & false}}'));
+    var parseResult = engine.parse(TextTemplate('{{false & true & false}}'));
     var renderResult = engine.render(parseResult);
     renderResult.text.should.be('false');
   });
   test('{{ true & TRUE & truE }} should render: true', () {
     var engine = TemplateEngine();
-    var parseResult =
-        engine.parse(TextTemplate('{{ true & TRUE & truE }}'));
+    var parseResult = engine.parse(TextTemplate('{{ true & TRUE & truE }}'));
     var renderResult = engine.render(parseResult);
     renderResult.text.should.be('true');
   });

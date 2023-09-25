@@ -85,8 +85,7 @@ void main() {
     });
 
     given('object: Template("\\{{ this is not a tag or variable \\}}")', () {
-      var template =
-          TextTemplate('\\{{ this is not a tag or variable \\}}');
+      var template = TextTemplate('\\{{ this is not a tag or variable \\}}');
       var engine = TemplateEngine();
 
       when('call: parse(template)', () {

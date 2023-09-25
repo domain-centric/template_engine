@@ -1,4 +1,3 @@
-
 import 'package:template_engine/template_engine.dart';
 
 /// Renders some value depending on the implementation of the [Renderer]
@@ -82,16 +81,14 @@ class RenderContext {
         errors = [];
 }
 
-class RenderResult {
-  final List<RenderError> errors;
+abstract class RenderResult {
   final String text;
 
   RenderResult({
     required this.text,
-    this.errors = const [],
   });
 
-  String get errorMessage => errors.map((error) => '  $error').join('\n');
+  String get errorMessage;
 
   @override
   String toString() => text;
@@ -100,9 +97,10 @@ class RenderResult {
 /// contains the [RenderResult] of a [Template]
 class TemplateRenderResult extends RenderResult {
   final Template template;
+  final List<RenderError> errors;
 
   TemplateRenderResult(
-      {required this.template, required super.text, super.errors});
+      {required this.template, required super.text, this.errors = const []});
 
   @override
   String get errorMessage {
@@ -110,9 +108,9 @@ class TemplateRenderResult extends RenderResult {
       case 0:
         return '';
       case 1:
-        return 'Render error in: ${template.source}:\n${super.errorMessage}';
+        return 'Render error in: ${template.source}:\n${errors.map((error) => '  $error').join('\n')}';
       default:
-        return 'Render errors in: ${template.source}:\n${super.errorMessage}';
+        return 'Render errors in: ${template.source}:\n${errors.map((error) => '  $error').join('\n')}';
     }
   }
 }
