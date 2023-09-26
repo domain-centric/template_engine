@@ -61,12 +61,12 @@ class TemplateEngine {
     validateNamesAreUnique();
   }
 
-  ParseResult parseText(String text) => parse(TextTemplate(text));
+  TemplateParseResult parseText(String text) => parse(TextTemplate(text));
 
   /// Parse the [Template] text into a
   /// [parser tree](https://en.wikipedia.org/wiki/Parse_tree).
   /// See [Renderer]
-  ParseResult parse(Template template) {
+  TemplateParseResult parse(Template template) {
     var context = ParserContext(
       this,
       template,
@@ -79,7 +79,7 @@ class TemplateEngine {
         result as Failure,
       ));
     }
-    return ParseResult(
+    return TemplateParseResult(
         template: template, children: result.value, errors: context.errors);
   }
 

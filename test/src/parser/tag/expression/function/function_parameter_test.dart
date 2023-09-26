@@ -259,7 +259,9 @@ void main() {
 
       then('result.errors should contain 1 error',
           () => parseResult.errors.length.should.be(1));
-      String expected = '1:22: invalid function parameter syntax: '
+      String expected =
+          'Render error in: \'{{greeting("Jane Doe", invalidParameter=...\':\n'
+          '  1:22: invalid function parameter syntax: '
           ', invalidParameter=invalidValue';
       then('result.errorMessage should be "$expected"',
           () => parseResult.errorMessage.should.be(expected));
@@ -278,7 +280,9 @@ void main() {
       then('result.errors should contain 1 error',
           () => parseResult.errors.length.should.be(1));
 
-      String expected = '1:12: invalid tag syntax';
+      String expected =
+          'Render error in: \'{{greeting name= "Jane Doe" invalidParam...\':\n'
+          '  1:12: invalid tag syntax';
       then('result.errorMessage should be "$expected"',
           () => parseResult.errorMessage.should.be(expected));
 
@@ -301,7 +305,8 @@ void main() {
       then('result should have 1 error',
           () => result.errors.length.should.be(1));
 
-      var expected = '1:6: invalid tag syntax';
+      var expected = 'Render error in: \'{{123true}}\':\n'
+          '  1:6: invalid tag syntax';
       then('result.errorMessage should be: "$expected"',
           () => result.errorMessage.should.be(expected));
     });
@@ -398,7 +403,9 @@ void main() {
       then('result should have 1 error',
           () => result.errors.length.should.be(1));
 
-      var expected = '1:23: invalid function parameter syntax: '
+      var expected =
+          'Render error in: \'{{test(parameter1=trueparameter2="Test")...\':\n'
+          '  1:23: invalid function parameter syntax: '
           'parameter2="Test"';
       then('result.errorMessage should be: "$expected"',
           () => result.errorMessage.should.be(expected));
@@ -411,7 +418,9 @@ void main() {
       then('result should have 1 error',
           () => result.errors.length.should.be(1));
 
-      var expected = '1:43: missing mandatory function parameter: parameter2';
+      var expected =
+          'Render error in: \'{{test (parameter1=true, parameter3="Tes...\':\n'
+          '  1:43: missing mandatory function parameter: parameter2';
       then('result.errorMessage should be: "$expected"',
           () => result.errorMessage.should.be(expected));
     });
@@ -422,7 +431,8 @@ void main() {
       then('result should have 1 error',
           () => result.errors.length.should.be(1));
 
-      var expected = '1:28: missing mandatory function parameters: '
+      var expected = 'Render error in: \'{{test ( parameter3="Test" )}}\':\n'
+          '  1:28: missing mandatory function parameters: '
           'parameter1, parameter2';
       then('result.errorMessage should be: "$expected"',
           () => result.errorMessage.should.be(expected));
@@ -434,7 +444,9 @@ void main() {
       then('result should have 1 error',
           () => result.errors.length.should.be(1));
 
-      var expected = '1:43: missing mandatory function parameter: parameter3';
+      var expected =
+          'Render error in: \'{{test(parameter2="Test" ,parameter1=fal...\':\n'
+          '  1:43: missing mandatory function parameter: parameter3';
       then('result.errorMessage should be: "$expected"',
           () => result.errorMessage.should.be(expected));
     });
@@ -446,7 +458,9 @@ void main() {
       then('result should have 1 error',
           () => result.errors.length.should.be(1));
 
-      var expected = '1:47: missing mandatory function parameter: parameter2';
+      var expected =
+          'Render error in: \'{{test  (parameter3=-123e-1, parameter1=...\':\n'
+          '  1:47: missing mandatory function parameter: parameter2';
       then('result.errorMessage should be: "$expected"',
           () => result.errorMessage.should.be(expected));
     });
@@ -500,7 +514,9 @@ void main() {
       then('result should have 1 error',
           () => result.errors.length.should.be(1));
 
-      var expected = '1:8: invalid tag syntax';
+      var expected =
+          'Render error in: \'{{test parameter1=trueparameter2="Test"}...\':\n'
+          '  1:8: invalid tag syntax';
       then('result.errorMessage should be: "$expected"',
           () => result.errorMessage.should.be(expected));
     });
@@ -512,7 +528,9 @@ void main() {
       then('result should have 1 error',
           () => result.errors.length.should.be(1));
 
-      var expected = '1:43: missing mandatory function parameter: parameter4';
+      var expected =
+          'Render error in: \'{{test( parameter1=true, parameter3="Tes...\':\n'
+          '  1:43: missing mandatory function parameter: parameter4';
       then('result.errorMessage should be: "$expected"',
           () => result.errorMessage.should.be(expected));
     });
@@ -524,7 +542,9 @@ void main() {
       then('result should have 1 error',
           () => result.errors.length.should.be(1));
 
-      var expected = '1:42: missing mandatory function parameters: '
+      var expected =
+          'Render error in: \'{{test(parameter2="Test",parameter1=fals...\':\n'
+          '  1:42: missing mandatory function parameters: '
           'parameter3, parameter4';
       then('result.errorMessage should be: "$expected"',
           () => result.errorMessage.should.be(expected));
@@ -537,7 +557,9 @@ void main() {
       then('result should have 1 error',
           () => result.errors.length.should.be(1));
 
-      var expected = '1:49: missing mandatory function parameter: parameter4';
+      var expected =
+          'Render error in: \'{{test ( parameter3=-123e-1 ,parameter1=...\':\n'
+          '  1:49: missing mandatory function parameter: parameter4';
       then('result.errorMessage should be: "$expected"',
           () => result.errorMessage.should.be(expected));
     });

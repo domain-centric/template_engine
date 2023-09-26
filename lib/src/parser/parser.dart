@@ -13,7 +13,7 @@ Parser<String> optionalWhiteSpace() => whitespace().star().flatten();
 ///
 /// Note that:
 /// * Errors or warnings are stored in [ParserContext.errors]
-///   and are can be later accessed in the [ParseResult].
+///   and are can be later accessed in the [TemplateParseResult].
 /// * The start en end of a [Tag] or [Variable] can be escaped so that you
 ///   can use them in a [Template] without being parsed as [Tag] or [Variable].
 ///   e.g. \{{ this is not a tag or variable and does not throw errors \}}
@@ -89,14 +89,24 @@ class ParserContext {
   ) : errors = [];
 }
 
-class ParseResult extends ParserTree {
-  final List<Error> errors;
+/// The result of parsing a single [Template]
+class TemplateParseResult extends ParserTree {
+  final List<ParseError> errors;
 
-  ParseResult({
+  TemplateParseResult({
     required Template template,
     required List<Object> children,
     this.errors = const [],
   }) : super(template, children);
 
-  String get errorMessage => errors.map((error) => error.toString()).join('\n');
+  String get errorMessage {
+    switch (errors.length) {
+      case 0:
+        return '';
+      case 1:
+        return 'Render error in: ${template.source}:\n${errors.map((error) => '  $error').join('\n')}';
+      default:
+        return 'Render errors in: ${template.source}:\n${errors.map((error) => '  $error').join('\n')}';
+    }
+  }
 }
