@@ -6,14 +6,14 @@ void main() {
   test("{{'Hello}} should return a correct error message", () {
     var engine = TemplateEngine();
     var parseResult = engine.parseText("{{'Hello}}");
-    parseResult.errorMessage.should.be('Render error in: \'{{\'Hello}}\':\n'
+    parseResult.errorMessage.should.be('Parse error in: \'{{\'Hello}}\':\n'
         '  1:3: invalid tag syntax');
   });
 
   test('{{Hello"}} should return a correct error message', () {
     var engine = TemplateEngine();
     var parseResult = engine.parseText('{{Hello"}}');
-    parseResult.errorMessage.should.be('Render error in: \'{{Hello"}}\':\n'
+    parseResult.errorMessage.should.be('Parse error in: \'{{Hello"}}\':\n'
         '  1:8: invalid tag syntax');
   });
 

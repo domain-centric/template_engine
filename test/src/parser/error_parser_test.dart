@@ -13,7 +13,7 @@ void main() {
 
         then('expect: no 1 error', () => result.errors.length.should.be(1));
         var expected =
-            'Render error in: \'Hello {{notDefined attribute="1"}}.\':\n'
+            'Parse error in: \'Hello {{notDefined attribute="1"}}.\':\n'
             '  1:20: invalid tag syntax';
         then('expect: errorMessage to be "$expected"',
             () => result.errorMessage.should.be(expected));
@@ -30,7 +30,7 @@ void main() {
 
         then('expect: no 2 error', () => result.errors.length.should.be(2));
         var expected =
-            'Render errors in: \'Hello {{notDefined1 attribute="1"}} {{no...\':\n'
+            'Parse errors in: \'Hello {{notDefined1 attribute="1"}} {{no...\':\n'
             '  1:21: invalid tag syntax\n'
             '  1:51: invalid tag syntax';
         then('expect: errorMessage to be "$expected"',
@@ -49,7 +49,7 @@ void main() {
 
         then('expect: 1 error', () => result.errors.length.should.be(1));
 
-        var expected = 'Render error in: \'Hello {{ world.\':\n'
+        var expected = 'Parse error in: \'Hello {{ world.\':\n'
             '  1:7: Found tag start: {{, '
             'but it was not followed with a tag end: }}';
         then('expect: errorMessage to be "$expected"', () {
@@ -67,7 +67,7 @@ void main() {
 
         then('expect: 1 error', () => result.errors.length.should.be(1));
 
-        var expected = 'Render error in: \'Hello \\{{ {{ world.\':\n'
+        var expected = 'Parse error in: \'Hello \\{{ {{ world.\':\n'
             '  1:11: Found tag start: {{, '
             'but it was not followed with a tag end: }}';
         then('expect: errorMessage to be "$expected"', () {
@@ -85,7 +85,7 @@ void main() {
 
         then('expect: 1 error', () => result.errors.length.should.be(1));
 
-        var expected = 'Render error in: \'Hello {{name}} {{.\':\n'
+        var expected = 'Parse error in: \'Hello {{name}} {{.\':\n'
             '  1:16: Found tag start: {{, '
             'but it was not followed with a tag end: }}';
         then('expect: errorMessage to be "$expected"', () {
@@ -105,7 +105,7 @@ void main() {
 
         then('expect: 1 error', () => result.errors.length.should.be(1));
 
-        var expected = 'Render error in: \'Hello }} world.\':\n'
+        var expected = 'Parse error in: \'Hello }} world.\':\n'
             '  1:7: Found tag end: }}, '
             'but it was not preceded with a tag start: {{';
         then('expect: errorMessage to be "$expected"', () {
@@ -122,7 +122,7 @@ void main() {
         var result = engine.parse(template);
         then('expect: 1 error', () => result.errors.length.should.be(1));
 
-        var expected = 'Render error in: \'Hello \\}} }} world.\':\n'
+        var expected = 'Parse error in: \'Hello \\}} }} world.\':\n'
             '  1:11: Found tag end: }}, '
             'but it was not preceded with a tag start: {{';
         then('expect: errorMessage to be "$expected"', () {
@@ -139,7 +139,7 @@ void main() {
         var result = engine.parse(template);
         then('expect: 1 error', () => result.errors.length.should.be(1));
 
-        var expected = 'Render error in: \'Hello {{name}} }}.\':\n'
+        var expected = 'Parse error in: \'Hello {{name}} }}.\':\n'
             '  1:16: Found tag end: }}, '
             'but it was not preceded with a tag start: {{';
         then('expect: errorMessage to be "$expected"', () {
