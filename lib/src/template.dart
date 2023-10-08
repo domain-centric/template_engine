@@ -57,3 +57,8 @@ class FileTemplate extends Template {
 }
 
 //TODO WebTemplate: gets text from a URL
+
+class ImportedTemplate extends FileTemplate {
+  ImportedTemplate.fromProjectFilePath(super.path)
+      : super.fromProjectFilePath();
+}

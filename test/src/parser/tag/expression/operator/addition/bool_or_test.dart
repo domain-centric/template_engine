@@ -5,44 +5,46 @@ import 'package:test/test.dart';
 void main() {
   test('{{false|false}} should render: false', () {
     var engine = TemplateEngine();
-    var parseResult = engine.parse(TextTemplate('{{false|false}}'));
+    var parseResult = engine.parseTemplate(TextTemplate('{{false|false}}'));
     var renderResult = engine.render(parseResult);
     renderResult.text.should.be('false');
   });
   test('{{false|true}} should render: true', () {
     var engine = TemplateEngine();
-    var parseResult = engine.parse(TextTemplate('{{false|true}}'));
+    var parseResult = engine.parseTemplate(TextTemplate('{{false|true}}'));
     var renderResult = engine.render(parseResult);
     renderResult.text.should.be('true');
   });
   test('{{true|false}} should render: true', () {
     var engine = TemplateEngine();
-    var parseResult = engine.parse(TextTemplate('{{true|false}}'));
+    var parseResult = engine.parseTemplate(TextTemplate('{{true|false}}'));
     var renderResult = engine.render(parseResult);
     renderResult.text.should.be('true');
   });
   test('{{true|true}} should render: true', () {
     var engine = TemplateEngine();
-    var parseResult = engine.parse(TextTemplate('{{true|true}}'));
+    var parseResult = engine.parseTemplate(TextTemplate('{{true|true}}'));
     var renderResult = engine.render(parseResult);
     renderResult.text.should.be('true');
   });
 
   test('{{false | FALSE | falsE}} should render: false', () {
     var engine = TemplateEngine();
-    var parseResult = engine.parse(TextTemplate('{{false | FALSE | falsE}}'));
+    var parseResult =
+        engine.parseTemplate(TextTemplate('{{false | FALSE | falsE}}'));
     var renderResult = engine.render(parseResult);
     renderResult.text.should.be('false');
   });
   test('{{ true | FALSE | truE }} should render: true', () {
     var engine = TemplateEngine();
-    var parseResult = engine.parse(TextTemplate('{{ true | FALSE | truE }}'));
+    var parseResult =
+        engine.parseTemplate(TextTemplate('{{ true | FALSE | truE }}'));
     var renderResult = engine.render(parseResult);
     renderResult.text.should.be('true');
   });
   test('{{"text"|"text"}} should result in an error', () {
     var engine = TemplateEngine();
-    var parseResult = engine.parse(TextTemplate('{{"text"|"text"}}'));
+    var parseResult = engine.parseTemplate(TextTemplate('{{"text"|"text"}}'));
     var renderResult = engine.render(parseResult);
     renderResult.text.should.be('{{ERROR}}');
     renderResult.errorMessage.should

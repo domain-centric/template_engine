@@ -14,7 +14,7 @@ class RenderException extends RenderError implements Exception {
 }
 
 /// Types returned by the [Renderer.render] method or
-/// the Type of [ParserTree.nodes] are normally one of the following:
+/// the Type of [ParserTree.children] are normally one of the following:
 /// * String
 /// * int
 /// * double
@@ -29,21 +29,18 @@ abstract class RenderType {
 
 /// The [ParserTree](https://en.wikipedia.org/wiki/Parse_tree) contains
 /// parsed nodes from a [Template] that can be rendered to a [String].
-class ParserTree extends Renderer<String> {
-  /// The source
-  final Template template;
+class ParserTree<T> extends Renderer<String> {
+  /// The [children] that where parsed and can be rendered to a [String].
+  /// The [children] are of type [RenderType]
+  final List<T> children;
 
-  /// The nodes that where parsed and can be rendered to a [String].
-  /// The nodes are of type [RenderType]
-  List<Object> nodes;
-
-  ParserTree(this.template, [this.nodes = const []]);
+  ParserTree([this.children = const []]);
 
   @override
   String render(RenderContext context) =>
-      nodes.map((node) => renderNode(context, node)).join();
+      children.map((node) => renderNode(context, node)).join();
 
-  String renderNode(RenderContext context, Object node) {
+  String renderNode(RenderContext context, T node) {
     if (node is Renderer) {
       try {
         return node.render(context).toString();
@@ -67,10 +64,13 @@ class RenderContext {
   final String renderedError;
 
   /// the Template being rendered
-  final Template template;
+  final Template templateBeingRendered;
+
+  final List<TemplateParseResult> parsedTemplates;
   RenderContext(
       {required this.engine,
-      required this.template,
+      required this.parsedTemplates,
+      required this.templateBeingRendered,
 
       /// How errors need to be rendered
       String? renderedError,
@@ -97,20 +97,56 @@ abstract class RenderResult {
 /// contains the [RenderResult] of a [Template]
 class TemplateRenderResult extends RenderResult {
   final Template template;
-  final List<RenderError> errors;
+  final List<Error> errors;
 
   TemplateRenderResult(
       {required this.template, required super.text, this.errors = const []});
 
   @override
   String get errorMessage {
-    switch (errors.length) {
-      case 0:
-        return '';
-      case 1:
-        return 'Render error in: ${template.source}:\n${errors.map((error) => '  $error').join('\n')}';
-      default:
-        return 'Render errors in: ${template.source}:\n${errors.map((error) => '  $error').join('\n')}';
+    if (errors.isEmpty) {
+      return "";
     }
+    var parseErrors = errors.whereType<ParseError>();
+    var renderErrors = errors.whereType<RenderError>();
+    if (parseErrors.isNotEmpty && renderErrors.isNotEmpty) {
+      return 'Errors in: ${template.source}:\n'
+          '  Parse error${parseErrors.length > 1 ? "s" : ""}:\n'
+          '${parseErrors.map((error) => '    $error').join('\n')}\n'
+          '  Render error${renderErrors.length > 1 ? "s" : ""}:\n'
+          '${renderErrors.map((error) => '    $error').join('\n')}';
+    } else if (parseErrors.isNotEmpty) {
+      return 'Parse error${parseErrors.length > 1 ? "s" : ""} '
+          'in: ${template.source}:\n'
+          '${parseErrors.map((error) => '  $error').join('\n')}';
+    } else {
+      return 'Render error${renderErrors.length > 1 ? "s" : ""} '
+          'in: ${template.source}:\n'
+          '${renderErrors.map((error) => '  $error').join('\n')}';
+    }
+  }
+}
+
+/// contains the [RenderResult] of one or more [Template]
+class TemplatesRenderResult extends RenderResult {
+  final List<TemplateRenderResult> renderResults;
+
+  TemplatesRenderResult(this.renderResults)
+      : super(
+            text: renderResults
+                .where((renderResult) =>
+                    renderResult.template is! ImportedTemplate)
+                .map((renderResult) => renderResult.text)
+                .join());
+
+  @override
+  String get errorMessage => renderResults
+      .where((renderResult) => renderResult.errorMessage.isNotEmpty)
+      .map((renderResult) => renderResult.errorMessage)
+      .join('\n');
+
+  TemplatesRenderResult add(TemplateRenderResult renderResult) {
+    var newRenderResults = [...renderResults, renderResult];
+    return TemplatesRenderResult(newRenderResults);
   }
 }

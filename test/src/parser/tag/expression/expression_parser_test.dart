@@ -7,7 +7,8 @@ void main() {
     var engine = TemplateEngine();
     var template = TextTemplate('');
     var parser = expressionParser(ParserContext(engine, template)); //.end();
-    var context = RenderContext(engine: engine, template: template);
+    var context = RenderContext(
+        engine: engine, templateBeingRendered: template, parsedTemplates: []);
     when('calling parser.parse("\'Hello\'")', () {
       var result = parser.parse("'Hello'");
       then('result.value should be an Expression<String>', () {

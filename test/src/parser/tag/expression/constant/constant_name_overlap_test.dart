@@ -5,7 +5,7 @@ import 'package:test/test.dart';
 void main() {
   test('Variable "east" to be found and not taken hostage by constant "e"', () {
     var engine = TemplateEngine();
-    var parseResult = engine.parse(TextTemplate('{{east}}'));
+    var parseResult = engine.parseTemplate(TextTemplate('{{east}}'));
     parseResult.errorMessage.should.beBlank();
     var renderResult = engine
         .render(parseResult, {'east': 'Direction of where the sun rises.'});

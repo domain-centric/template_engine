@@ -5,9 +5,8 @@ void main() {
   var template = TextTemplate('Hello {{world}}.');
   var engine = TemplateEngine();
 
-  var result = engine.parse(template);
+  var result = engine.parseTemplate(template);
 
-  result.errors.length.should.be(1);
   var expected = 'Parse Error: Unknown tag or variable. '
       'position: 1:7 source: Text';
   result.errorMessage.should.be(expected);

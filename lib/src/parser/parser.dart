@@ -90,14 +90,15 @@ class ParserContext {
 }
 
 /// The result of parsing a single [Template]
-class TemplateParseResult extends ParserTree {
+class TemplateParseResult extends ParserTree<Object> {
   final List<ParseError> errors;
+  final Template template;
 
   TemplateParseResult({
-    required Template template,
+    required this.template,
     required List<Object> children,
     this.errors = const [],
-  }) : super(template, children);
+  }) : super(children);
 
   String get errorMessage {
     switch (errors.length) {
@@ -109,4 +110,16 @@ class TemplateParseResult extends ParserTree {
         return 'Parse errors in: ${template.source}:\n${errors.map((error) => '  $error').join('\n')}';
     }
   }
+}
+
+/// The result of parsing one or more [Template]s
+class ParseResult extends ParserTree<TemplateParseResult> {
+  ParseResult(
+    List<TemplateParseResult> templateParseResults,
+  ) : super(templateParseResults);
+
+  String get errorMessage => children
+      .where((result) => result.errorMessage.isNotEmpty)
+      .map((result) => result.errorMessage)
+      .join('\n');
 }

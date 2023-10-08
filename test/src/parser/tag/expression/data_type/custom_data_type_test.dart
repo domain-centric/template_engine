@@ -7,7 +7,7 @@ void main() {
   test('{{1110b}} should be rendered as 14 by a custom binary data type', () {
     var engine = TemplateEngine();
     engine.dataTypes.insert(0, Binary());
-    var parseResult = engine.parse(TextTemplate('{{1110b}}'));
+    var parseResult = engine.parseTemplate(TextTemplate('{{1110b}}'));
     var renderResult = engine.render(parseResult);
     renderResult.text.should.be('14');
   });

@@ -4,8 +4,6 @@ import 'package:given_when_then_unit_test/given_when_then_unit_test.dart';
 import 'package:template_engine/template_engine.dart';
 
 void main() {
-  // See also other .._parser_test_files
-
   given('TemplateEngine with unique tag names', () {
     when('calling constructor', () {
       then('should not throw an exception', () {});

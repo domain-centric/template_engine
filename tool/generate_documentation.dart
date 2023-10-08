@@ -24,9 +24,9 @@ void generate(
     required ProjectFilePath templatePath,
     required ProjectFilePath outputPath}) {
   var template = FileTemplate(templatePath.file);
-  var parseResult = engine.parse(template);
+  var parseResult = engine.parseTemplate(template);
   var renderResult = engine.render(parseResult);
-  if (parseResult.errors.isNotEmpty) {
+  if (parseResult.errorMessage.isNotEmpty) {
     print(parseResult.errorMessage);
   }
   if (renderResult.errorMessage.isNotEmpty) {

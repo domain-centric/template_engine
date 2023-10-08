@@ -372,6 +372,14 @@ See [Example](https://github.com/domain-centric/template_engine/blob/main/test/s
 <tr><td>parameter:</td><td>titleLevel</td><td>number</td><td>optional (default=1)</td><td>The level of the tag title</td></tr>
 </table>
 
+## Template
+<table>
+<tr><th colspan="5">template.source</th></tr>
+<tr><td>description:</td><td colspan="4">Gives the relative path of the current template</td></tr>
+<tr><td>return type:</td><td colspan="4">String</td></tr>
+<tr><td>expression example:</td><td colspan="4">{{ template.source() }}</td></tr>
+</table>
+
 
 # Operator
  An operator behaves generally like functions,

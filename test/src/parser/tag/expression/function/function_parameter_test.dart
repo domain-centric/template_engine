@@ -220,17 +220,23 @@ void main() {
 
     var input = '{{greeting()}}.';
     when('calling: engine.parse(TextTemplate("$input"))', () {
-      var result = engine.parse(TextTemplate(input));
+      var result = engine.parseTemplate(TextTemplate(input));
+      var templateParseResult = result.children.first;
 
-      then('result.errors should be empty',
-          () => result.errors.should.beEmpty());
+      then('result.errorMessage should be empty',
+          () => result.errorMessage.should.beNullOrEmpty());
       then('result should contain 2 nodes',
-          () => result.nodes.length.should.be(2));
+          () => templateParseResult.children.length.should.be(2));
 
-      then('result 1st node : "Function{greeting}"',
-          () => result.nodes[0].toString().should.be('Function{greeting}'));
+      then(
+          'result 1st node : "Function{greeting}"',
+          () => templateParseResult.children[0]
+              .toString()
+              .should
+              .be('Function{greeting}'));
 
-      then('result 2nd node : "."', () => result.nodes[1].should.be('.'));
+      then('result 2nd node : "."',
+          () => templateParseResult.children[1].should.be('.'));
 
       then('engine.render(result).text should be "Hello world."', () {
         engine.render(result).text.should.be("Hello world.");
@@ -239,26 +245,30 @@ void main() {
 
     input = '{{greeting("Jane Doe") }}.';
     when('calling: engine.parse(TextTemplate("$input"))', () {
-      var result = engine.parse(TextTemplate(input));
+      var result = engine.parseTemplate(TextTemplate(input));
+      var templateParseResult = result.children.first;
 
-      then('result.errors should be empty',
-          () => result.errors.should.beEmpty());
+      then('result.errorMessage should be empty',
+          () => result.errorMessage.should.beNullOrEmpty());
       then('result should contain 2 node',
-          () => result.nodes.length.should.be(2));
+          () => templateParseResult.children.length.should.be(2));
 
-      then('result 1st node : Function{greeting}',
-          () => result.nodes[0].toString().should.be('Function{greeting}'));
-      then('result 2nd node : "."', () => result.nodes[1].should.be('.'));
+      then(
+          'result 1st node : Function{greeting}',
+          () => templateParseResult.children[0]
+              .toString()
+              .should
+              .be('Function{greeting}'));
+      then('result 2nd node : "."',
+          () => templateParseResult.children[1].should.be('.'));
       then('', () => engine.render(result).text.should.be("Hello Jane Doe."));
     });
 
     var inputTag1 = '{{greeting("Jane Doe", invalidParameter=invalidValue)}}';
     var input1 = '$inputTag1.';
     when('calling: engine.parse(TextTemplate("$input1"))', () {
-      var parseResult = engine.parse(TextTemplate(input1));
-
-      then('result.errors should contain 1 error',
-          () => parseResult.errors.length.should.be(1));
+      var parseResult = engine.parseTemplate(TextTemplate(input1));
+      var templateParseResult = parseResult.children.first;
       String expected =
           'Parse error in: \'{{greeting("Jane Doe", invalidParameter=...\':\n'
           '  1:22: invalid function parameter syntax: '
@@ -267,18 +277,17 @@ void main() {
           () => parseResult.errorMessage.should.be(expected));
 
       then('result 1st node : "$inputTag1"',
-          () => parseResult.nodes[0].should.be(inputTag1));
-      then('result 2nd node : "."', () => parseResult.nodes[1].should.be('.'));
+          () => templateParseResult.children[0].should.be(inputTag1));
+      then('result 2nd node : "."',
+          () => templateParseResult.children[1].should.be('.'));
     });
 
     var inputTag2 =
         '{{greeting name= "Jane Doe" invalidParameter"invalidValue" }}';
     var input2 = '$inputTag2.';
     when('calling: engine.parse(TextTemplate("$input2"))', () {
-      var parseResult = engine.parse(TextTemplate(input2));
-
-      then('result.errors should contain 1 error',
-          () => parseResult.errors.length.should.be(1));
+      var parseResult = engine.parseTemplate(TextTemplate(input2));
+      var templateParseResult = parseResult.children.first;
 
       String expected =
           'Parse error in: \'{{greeting name= "Jane Doe" invalidParam...\':\n'
@@ -287,8 +296,9 @@ void main() {
           () => parseResult.errorMessage.should.be(expected));
 
       then('result 1st node : "$inputTag2"',
-          () => parseResult.nodes[0].should.be(inputTag2));
-      then('result 2nd node : "."', () => parseResult.nodes[1].should.be('.'));
+          () => templateParseResult.children[0].should.be(inputTag2));
+      then('result 2nd node : "."',
+          () => templateParseResult.children[1].should.be('.'));
     });
   });
 
@@ -301,9 +311,7 @@ void main() {
 
     var input = '{{123true}}';
     when('calling engine.parse(TextTemplate("$input"))', () {
-      var result = engine.parse(TextTemplate(input));
-      then('result should have 1 error',
-          () => result.errors.length.should.be(1));
+      var result = engine.parseTemplate(TextTemplate(input));
 
       var expected = 'Parse error in: \'{{123true}}\':\n'
           '  1:6: invalid tag syntax';
@@ -313,12 +321,12 @@ void main() {
 
     input = '{{${ParameterTestFunction.tagName}(-123e-1)}}';
     when('calling engine.parse(TextTemplate("$input"))', () {
-      var parserResult = engine.parse(TextTemplate(input));
+      var parserResult = engine.parseTemplate(TextTemplate(input));
 
-      then('parserResult should have no errors',
-          () => parserResult.errors.should.beEmpty());
+      then('parserResult.errorMessage should be empty',
+          () => parserResult.errorMessage.should.beNullOrEmpty());
       then('parserResult should have 1 node',
-          () => parserResult.nodes.length.should.be(1));
+          () => parserResult.children.length.should.be(1));
       when('calling: engine.render(parserResult)', () {
         var renderResult = engine.render(parserResult);
         var expected = {parameterName: -12.3};
@@ -330,12 +338,12 @@ void main() {
 
     input = '{{${ParameterTestFunction.tagName}(true)}}';
     when('calling engine.parse(TextTemplate("$input"))', () {
-      var parseResult = engine.parse(TextTemplate(input));
+      var parseResult = engine.parseTemplate(TextTemplate(input));
 
-      then('parseResult should have no errors',
-          () => parseResult.errors.should.beEmpty());
+      then('parseResult.errorMessage should be empty',
+          () => parseResult.errorMessage.should.beNullOrEmpty());
       then('parseResult should have 1 node',
-          () => parseResult.nodes.length.should.be(1));
+          () => parseResult.children.length.should.be(1));
 
       when('calling: engine.render(parseResult)', () {
         var renderResult = engine.render(parseResult);
@@ -347,12 +355,12 @@ void main() {
 
     input = '{{${ParameterTestFunction.tagName} (FALse)}}';
     when('calling: engine.parse(TextTemplate("$input"))', () {
-      var parseResult = engine.parse(TextTemplate(input));
+      var parseResult = engine.parseTemplate(TextTemplate(input));
 
-      then('parseResult should have no errors',
-          () => parseResult.errors.should.beEmpty());
+      then('parseResult.errorMessage should be empty',
+          () => parseResult.errorMessage.should.beNullOrEmpty());
       then('parseResult should have 1 node',
-          () => parseResult.nodes.length.should.be(1));
+          () => parseResult.children.length.should.be(1));
 
       when('calling: ', () {
         var renderResult = engine.render(parseResult);
@@ -364,12 +372,12 @@ void main() {
 
     input = '{{${ParameterTestFunction.tagName}("Hello")}}';
     when('calling engine.parse(TextTemplate("$input"))', () {
-      var parseResult = engine.parse(TextTemplate(input));
+      var parseResult = engine.parseTemplate(TextTemplate(input));
 
-      then('parseResult should have no errors',
-          () => parseResult.errors.should.beEmpty());
+      then('parseResult.errorMessage should be empty',
+          () => parseResult.errorMessage.should.beNullOrEmpty());
       then('parseResult should have 1 node',
-          () => parseResult.nodes.length.should.be(1));
+          () => parseResult.children.length.should.be(1));
 
       when('', () {
         var renderResult = engine.render(parseResult);
@@ -399,9 +407,7 @@ void main() {
     var input = '{{${ParameterTestFunction.tagName}'
         '($parameterName1=true$parameterName2="$test")}}';
     when('calling engine.parse(TextTemplate("$input"))', () {
-      var result = engine.parse(TextTemplate(input));
-      then('result should have 1 error',
-          () => result.errors.length.should.be(1));
+      var result = engine.parseTemplate(TextTemplate(input));
 
       var expected =
           'Parse error in: \'{{test(parameter1=trueparameter2="Test")...\':\n'
@@ -414,9 +420,7 @@ void main() {
     input = '{{${ParameterTestFunction.tagName} '
         '($parameterName1=true, $parameterName3="$test")}}';
     when('calling engine.parse(TextTemplate("$input"))', () {
-      var result = engine.parse(TextTemplate(input));
-      then('result should have 1 error',
-          () => result.errors.length.should.be(1));
+      var result = engine.parseTemplate(TextTemplate(input));
 
       var expected =
           'Parse error in: \'{{test (parameter1=true, parameter3="Tes...\':\n'
@@ -427,9 +431,7 @@ void main() {
 
     input = '{{${ParameterTestFunction.tagName} ( $parameterName3="$test" )}}';
     when('calling engine.parse(TextTemplate("$input"))', () {
-      var result = engine.parse(TextTemplate(input));
-      then('result should have 1 error',
-          () => result.errors.length.should.be(1));
+      var result = engine.parseTemplate(TextTemplate(input));
 
       var expected = 'Parse error in: \'{{test ( parameter3="Test" )}}\':\n'
           '  1:28: missing mandatory function parameters: '
@@ -440,9 +442,7 @@ void main() {
     input = '{{${ParameterTestFunction.tagName}'
         '($parameterName2="$test" ,$parameterName1=false)}}';
     when('calling engine.parse(TextTemplate("$input"))', () {
-      var result = engine.parse(TextTemplate(input));
-      then('result should have 1 error',
-          () => result.errors.length.should.be(1));
+      var result = engine.parseTemplate(TextTemplate(input));
 
       var expected =
           'Parse error in: \'{{test(parameter2="Test" ,parameter1=fal...\':\n'
@@ -454,9 +454,7 @@ void main() {
     input = '{{${ParameterTestFunction.tagName}  '
         '($parameterName3=-123e-1, $parameterName1=false )  }}';
     when('calling engine.parse(TextTemplate("$input"))', () {
-      var result = engine.parse(TextTemplate(input));
-      then('result should have 1 error',
-          () => result.errors.length.should.be(1));
+      var result = engine.parseTemplate(TextTemplate(input));
 
       var expected =
           'Parse error in: \'{{test  (parameter3=-123e-1, parameter1=...\':\n'
@@ -468,17 +466,17 @@ void main() {
     input = '{{${ParameterTestFunction.tagName}( $parameterName3=-123e-1,'
         '$parameterName2="$test",   $parameterName1=false    )  }}';
     when('calling engine.parse(TextTemplate("$input"))', () {
-      var parseResult = engine.parse(TextTemplate(input));
+      var parseResult = engine.parseTemplate(TextTemplate(input));
       var expected = {
         parameterName3: -12.3,
         parameterName2: test,
         parameterName1: false,
       };
 
-      then('parseResult should have no errors',
-          () => parseResult.errors.should.beEmpty());
+      then('parseResult.errorMessage should be empty',
+          () => parseResult.errorMessage.should.beNullOrEmpty());
       then('parseResult should have 1 node',
-          () => parseResult.nodes.length.should.be(1));
+          () => parseResult.children.length.should.be(1));
       when('calling: engine.render(parseResult)', () {
         var renderResult = engine.render(parseResult);
         then('renderResult first node should be: "$expected"',
@@ -510,9 +508,7 @@ void main() {
     var input = '{{${ParameterTestFunction.tagName} '
         '$parameterName1=true$parameterName2="$test"}}';
     when('calling engine.parse(TextTemplate("$input"))', () {
-      var result = engine.parse(TextTemplate(input));
-      then('result should have 1 error',
-          () => result.errors.length.should.be(1));
+      var result = engine.parseTemplate(TextTemplate(input));
 
       var expected =
           'Parse error in: \'{{test parameter1=trueparameter2="Test"}...\':\n'
@@ -524,9 +520,7 @@ void main() {
     input = '{{${ParameterTestFunction.tagName}'
         '( $parameterName1=true, $parameterName3="$test")}}';
     when('calling engine.parse(TextTemplate("$input"))', () {
-      var result = engine.parse(TextTemplate(input));
-      then('result should have 1 error',
-          () => result.errors.length.should.be(1));
+      var result = engine.parseTemplate(TextTemplate(input));
 
       var expected =
           'Parse error in: \'{{test( parameter1=true, parameter3="Tes...\':\n'
@@ -538,9 +532,7 @@ void main() {
     input = '{{${ParameterTestFunction.tagName}($parameterName2="$test",'
         '$parameterName1=false)}}';
     when('calling engine.parse(TextTemplate("$input"))', () {
-      var result = engine.parse(TextTemplate(input));
-      then('result should have 1 error',
-          () => result.errors.length.should.be(1));
+      var result = engine.parseTemplate(TextTemplate(input));
 
       var expected =
           'Parse error in: \'{{test(parameter2="Test",parameter1=fals...\':\n'
@@ -553,9 +545,7 @@ void main() {
     input = '{{${ParameterTestFunction.tagName} ( $parameterName3=-123e-1 ,'
         '$parameterName1=false   )}}';
     when('calling engine.parse(TextTemplate("$input"))', () {
-      var result = engine.parse(TextTemplate(input));
-      then('result should have 1 error',
-          () => result.errors.length.should.be(1));
+      var result = engine.parseTemplate(TextTemplate(input));
 
       var expected =
           'Parse error in: \'{{test ( parameter3=-123e-1 ,parameter1=...\':\n'
@@ -567,17 +557,17 @@ void main() {
     input = '{{${ParameterTestFunction.tagName}($parameterName3=-123e-1,'
         '$parameterName1=true,$parameterName4="$test")}}';
     when('calling engine.parse(TextTemplate("$input"))', () {
-      var parseResult = engine.parse(TextTemplate(input));
+      var parseResult = engine.parseTemplate(TextTemplate(input));
       var expected = {
         parameterName3: -12.3,
         parameterName1: true,
         parameterName4: test,
       };
 
-      then('parseResult should have no errors',
-          () => parseResult.errors.should.beEmpty());
+      then('parseResult.errorMessage should be empty',
+          () => parseResult.errorMessage.should.beNullOrEmpty());
       then('parseResult should have 1 node',
-          () => parseResult.nodes.length.should.be(1));
+          () => parseResult.children.length.should.be(1));
       when('calling: engine.render(parseResult)', () {
         var renderResult = engine.render(parseResult);
         then('renderResult.text should be: "$expected"',
@@ -588,7 +578,7 @@ void main() {
     input = '{{${ParameterTestFunction.tagName}($parameterName3=-123e-1 ,'
         '   $parameterName2=true    ,$parameterName4="$test" ) }}';
     when('calling engine.parse(TextTemplate("$input"))', () {
-      var parseResult = engine.parse(TextTemplate(input));
+      var parseResult = engine.parseTemplate(TextTemplate(input));
       var expected = {
         parameterName3: -12.3,
         parameterName2: true,
@@ -596,10 +586,10 @@ void main() {
         parameterName1: false,
       };
 
-      then('parseResult should have no errors',
-          () => parseResult.errors.should.beEmpty());
+      then('parseResult.errorMessage should should be empty',
+          () => parseResult.errorMessage.should.beNullOrEmpty());
       then('parseResult should have 1 node',
-          () => parseResult.nodes.length.should.be(1));
+          () => parseResult.children.length.should.be(1));
       when('calling: engine.render(parseResult)', () {
         var renderResult = engine.render(parseResult);
 
@@ -616,8 +606,8 @@ void main() {
     when(
         "calling: engine.parse(TextTemplate"
         "('{{length(\"Hello\" + \" \" & \"world.\") + 3}}')) ", () {
-      var parseResult = engine
-          .parse(TextTemplate('{{length("Hello" + " " & "world.") + 3}}'));
+      var parseResult = engine.parseTemplate(
+          TextTemplate('{{length("Hello" + " " & "world.") + 3}}'));
       when('calling: engine.render(parseResult).text', () {
         var renderResult = engine.render(parseResult).text;
         var expected = (('Hello world.'.length) + 3).toString();
@@ -632,7 +622,8 @@ void main() {
       '(needs to be rendered first)', () {
     var engine = TemplateEngine();
     when("calling: engine.parse(TextTemplate('{{sin(asin(0.5))}}'))", () {
-      var parseResult = engine.parse(TextTemplate('{{sin(asin(0.5))}}'));
+      var parseResult =
+          engine.parseTemplate(TextTemplate('{{sin(asin(0.5))}}'));
       when('calling: engine.render(parseResult).text', () {
         var renderResult = engine.render(parseResult).text;
         var expected = '0.5';
@@ -644,12 +635,11 @@ void main() {
   given('A function with a missing parameter', () {
     var engine = TemplateEngine();
     when("calling: engine.parse(TextTemplate('{{sin()}}'))", () {
-      var parseResult = engine.parse(TextTemplate('{{sin()}}'));
-      then('parseResult.errors.length should be 1',
-          () => parseResult.errors.length.should.be(1));
-      var expected = '1:7: missing mandatory function parameter: radians';
+      var parseResult = engine.parseTemplate(TextTemplate('{{sin()}}'));
+      var expected = 'Parse error in: \'{{sin()}}\':\n'
+          '  1:7: missing mandatory function parameter: radians';
       then('parseResult.errors.first.message should be "$expected"',
-          () => parseResult.errors.first.toString().should.be(expected));
+          () => parseResult.errorMessage.should.be(expected));
       when('calling: engine.render(parseResult).text', () {
         var renderResult = engine.render(parseResult);
 

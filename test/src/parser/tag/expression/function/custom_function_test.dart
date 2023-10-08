@@ -7,7 +7,7 @@ void main() {
   engine.functionGroups
       .add(FunctionGroup('Greeting', [GreetingWithParameter()]));
   test("'{{greeting()}}.' should render: 'Hello world.'", () {
-    var parseResult = engine.parse(TextTemplate('{{greeting()}}.'));
+    var parseResult = engine.parseTemplate(TextTemplate('{{greeting()}}.'));
     var renderResult = engine.render(parseResult).text;
     renderResult.should.be('Hello world.');
   });
@@ -16,7 +16,8 @@ void main() {
     var engine = TemplateEngine();
     engine.functionGroups
         .add(FunctionGroup('Greeting', [GreetingWithParameter()]));
-    var parseResult = engine.parse(TextTemplate('{{greeting("Jane Doe")}}.'));
+    var parseResult =
+        engine.parseTemplate(TextTemplate('{{greeting("Jane Doe")}}.'));
     var renderResult = engine.render(parseResult).text;
     renderResult.should.be('Hello Jane Doe.');
   });

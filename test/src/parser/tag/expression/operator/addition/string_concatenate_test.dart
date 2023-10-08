@@ -5,7 +5,7 @@ import 'package:test/test.dart';
 void main() {
   test('{{"Hel" + \'lo\'}} should render: "Hello"', () {
     var engine = TemplateEngine();
-    var parseResult = engine.parse(TextTemplate('{{"Hel" + \'lo\'}}'));
+    var parseResult = engine.parseTemplate(TextTemplate('{{"Hel" + \'lo\'}}'));
     var renderResult = engine.render(parseResult);
     renderResult.text.should.be('Hello');
   });

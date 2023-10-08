@@ -8,7 +8,7 @@ void main() {
     var group =
         engine.operatorGroups.firstWhere((group) => group is Multiplication);
     group.add(DivideOperator());
-    var parseResult = engine.parse(TextTemplate('{{6 : 3}}'));
+    var parseResult = engine.parseTemplate(TextTemplate('{{6 : 3}}'));
     var renderResult = engine.render(parseResult);
     renderResult.text.should.be('2.0');
   });

@@ -61,12 +61,12 @@ class TemplateEngine {
     validateNamesAreUnique();
   }
 
-  TemplateParseResult parseText(String text) => parse(TextTemplate(text));
+  ParseResult parseText(String text) => parseTemplate(TextTemplate(text));
 
   /// Parse the [Template] text into a
   /// [parser tree](https://en.wikipedia.org/wiki/Parse_tree).
   /// See [Renderer]
-  TemplateParseResult parse(Template template) {
+  ParseResult parseTemplate(Template template) {
     var context = ParserContext(
       this,
       template,
@@ -79,22 +79,58 @@ class TemplateEngine {
         result as Failure,
       ));
     }
-    return TemplateParseResult(
+    var templateParseResult = TemplateParseResult(
         template: template, children: result.value, errors: context.errors);
+    return ParseResult([templateParseResult]);
+  }
+
+  /// Parse text from [Template]s into a
+  /// [parser tree](https://en.wikipedia.org/wiki/Parse_tree).
+  /// See [Renderer]
+  ParseResult parseTemplates(List<Template> templates) {
+    var parseResults = <TemplateParseResult>[];
+    for (var template in templates) {
+      var context = ParserContext(
+        this,
+        template,
+      );
+      var parser = templateParser(context);
+      var result = parser.parse(template.text);
+
+      if (result is Failure) {
+        context.errors.add(ParseError.fromFailure(
+          result as Failure,
+        ));
+      }
+      var parseResult = TemplateParseResult(
+          template: template, children: result.value, errors: context.errors);
+      parseResults.add(parseResult);
+    }
+    return ParseResult(parseResults);
   }
 
   /// Render the [parser tree](https://en.wikipedia.org/wiki/Parse_tree)
   /// to a string (and write it as files when needed)
-  RenderResult render(ParserTree parseResult,
+  RenderResult render(ParseResult parseResults,
       [Map<String, Object> variables = const {}]) {
-    var context = RenderContext(
-        engine: this, template: parseResult.template, variables: variables);
-    var text = parseResult.render(context);
-    return TemplateRenderResult(
-      template: parseResult.template,
-      text: text,
-      errors: context.errors,
-    );
+    var results = TemplatesRenderResult([]);
+    for (var parseResult in parseResults.children) {
+      var template = parseResult.template;
+      var renderContext = RenderContext(
+          engine: this,
+          templateBeingRendered: template,
+          variables: variables,
+          parsedTemplates: parseResults.children);
+      var text = parseResult.render(renderContext);
+      var result = TemplateRenderResult(
+        template: template,
+        text: text,
+        errors: [...parseResult.errors, ...renderContext.errors],
+      );
+      results = results.add(result);
+    }
+
+    return results;
   }
 
   void validateNamesAreUnique() {

@@ -7,7 +7,8 @@ void main() {
     var engine = TemplateEngine();
 
     when("call: engine.parse(TemplateWithTemplateSourceFunction())", () {
-      var parseResult = engine.parse(TemplateWithTemplateSourceFunction());
+      var parseResult =
+          engine.parseTemplate(TemplateWithTemplateSourceFunction());
       when('calling: engine.render(parseResult)', () {
         var renderResult = engine.render(parseResult);
         var expected = TemplateWithTemplateSourceFunction().source;

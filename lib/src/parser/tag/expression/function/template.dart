@@ -13,5 +13,5 @@ class TemplateSource extends ExpressionFunction<String> {
 
   static String templateSourcePath(
           RenderContext renderContext, Map<String, Object> parameterValues) =>
-      renderContext.template.source;
+      renderContext.templateBeingRendered.source;
 }

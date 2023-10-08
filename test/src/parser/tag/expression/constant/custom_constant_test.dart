@@ -6,7 +6,8 @@ void main() {
   test('Custom constant', () async {
     var engine = TemplateEngine();
     engine.constants.add(TemplateEngineUrl());
-    var parseResult = engine.parse(TextTemplate('{{templateEngineUrl}}'));
+    var parseResult =
+        engine.parseTemplate(TextTemplate('{{templateEngineUrl}}'));
     var renderResult = engine.render(parseResult);
     renderResult.text.should.be('https://pub.dev/packages/template_engine');
   });
