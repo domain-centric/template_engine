@@ -60,7 +60,7 @@ class ParserTree<T> extends Renderer<String> {
 class RenderContext {
   final TemplateEngine engine;
   final Variables variables;
-  final List<RenderError> errors;
+  List<Error> errors;
   final String renderedError;
 
   /// the Template being rendered
@@ -108,21 +108,22 @@ class TemplateRenderResult extends RenderResult {
       return "";
     }
     var parseErrors = errors.whereType<ParseError>();
-    var renderErrors = errors.whereType<RenderError>();
+    var renderErrors =
+        errors.where((error) => error is RenderError || error is ImportError);
     if (parseErrors.isNotEmpty && renderErrors.isNotEmpty) {
       return 'Errors in: ${template.source}:\n'
           '  Parse error${parseErrors.length > 1 ? "s" : ""}:\n'
-          '${parseErrors.map((error) => '    $error').join('\n')}\n'
+          '${parseErrors.map((error) => error.toIndentedString(2)).join('\n')}\n'
           '  Render error${renderErrors.length > 1 ? "s" : ""}:\n'
-          '${renderErrors.map((error) => '    $error').join('\n')}';
+          '${renderErrors.map((error) => error.toIndentedString(2)).join('\n')}';
     } else if (parseErrors.isNotEmpty) {
       return 'Parse error${parseErrors.length > 1 ? "s" : ""} '
           'in: ${template.source}:\n'
-          '${parseErrors.map((error) => '  $error').join('\n')}';
+          '${parseErrors.map((error) => error.toIndentedString(1)).join('\n')}';
     } else {
       return 'Render error${renderErrors.length > 1 ? "s" : ""} '
           'in: ${template.source}:\n'
-          '${renderErrors.map((error) => '  $error').join('\n')}';
+          '${renderErrors.map((error) => error.toIndentedString(1)).join('\n')}';
     }
   }
 }

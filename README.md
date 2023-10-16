@@ -372,12 +372,23 @@ See [Example](https://github.com/domain-centric/template_engine/blob/main/test/s
 <tr><td>parameter:</td><td>titleLevel</td><td>number</td><td>optional (default=1)</td><td>The level of the tag title</td></tr>
 </table>
 
-## Template
+## Template Functions
 <table>
 <tr><th colspan="5">template.source</th></tr>
 <tr><td>description:</td><td colspan="4">Gives the relative path of the current template</td></tr>
 <tr><td>return type:</td><td colspan="4">String</td></tr>
-<tr><td>expression example:</td><td colspan="4">{{ template.source() }}</td></tr>
+<tr><td>expression example:</td><td colspan="4">{{template.source()}}</td></tr>
+<tr><td>code example:</td><td colspan="4"><a href="https://github.com/domain-centric/template_engine/blob/main/test/src/parser/tag/expression/function/template/template_test.dart">template_test.dart</a></td></tr>
+</table>
+
+## Import Functions
+<table>
+<tr><th colspan="5">import</th></tr>
+<tr><td>description:</td><td colspan="4">Imports a file</td></tr>
+<tr><td>return type:</td><td colspan="4">String</td></tr>
+<tr><td>expression example:</td><td colspan="4">{{import('doc/template/common/generated_comment.template')}}</td></tr>
+<tr><td>code example:</td><td colspan="4"><a href="https://github.com/domain-centric/template_engine/blob/main/test/src/parser/tag/expression/function/import/import_test.dart">import_test.dart</a></td></tr>
+<tr><td>parameter:</td><td>value</td><td>String</td><td colspan="2">mandatory</td></tr>
 </table>
 
 

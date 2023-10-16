@@ -33,7 +33,7 @@ abstract class DocumentationFunction extends ExpressionFunction<String> {
         documentationFunction,
   }) : super(
             parameters: [TitleLevelParameter()],
-            function: (renderContext, parameters) =>
+            function: (position, renderContext, parameters) =>
                 documentationFunction(renderContext, _titleLevel(parameters))
                     .join('\n'));
 

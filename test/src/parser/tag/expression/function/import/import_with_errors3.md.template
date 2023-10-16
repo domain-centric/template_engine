@@ -1,0 +1,2 @@
+{{import('test/src/parser/tag/expression/function/import/none_existing.file')}}
+3: Hello {{name}}. This is wrong: }}

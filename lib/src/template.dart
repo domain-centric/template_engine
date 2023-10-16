@@ -21,10 +21,12 @@ abstract class Template {
 
   @override
   bool operator ==(Object other) =>
-      other is Template && other.source.toLowerCase() == source.toLowerCase();
+      other is Template &&
+      other.source.toLowerCase() == source.toLowerCase() &&
+      other.text == text;
 
   @override
-  int get hashCode => source.toLowerCase().hashCode;
+  int get hashCode => source.toLowerCase().hashCode ^ text.hashCode;
 }
 
 class TextTemplate extends Template {
@@ -53,7 +55,8 @@ class FileTemplate extends Template {
   FileTemplate(File source)
       : super(source: source.path, text: source.readAsStringSync());
 
-  FileTemplate.fromProjectFilePath(ProjectFilePath path) : this(path.file);
+  FileTemplate.fromProjectFilePath(ProjectFilePath path)
+      : super(source: path.relativePath, text: path.file.readAsStringSync());
 }
 
 //TODO WebTemplate: gets text from a URL

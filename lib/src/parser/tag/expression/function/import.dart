@@ -18,13 +18,11 @@ class ImportFile extends ExpressionFunction<String> {
             exampleCode: ProjectFilePath(
                 'test/src/parser/tag/expression/function/import/import_test.dart'),
             parameters: [
-              Parameter<String>(
-                  name: 'value',
-                  presence: Presence
-                      .mandatory()) //TODO check if it is a valide [ProjectFilePath]
+              Parameter<String>(name: 'value', presence: Presence.mandatory())
+              //TODO check if it is a valide [ProjectFilePath]
               ///TODO parameter type: template, text, code, dartCode
             ],
-            function: (renderContext, parameters) {
+            function: (position, renderContext, parameters) {
               var projectFilePath =
                   ProjectFilePath(parameters['value'] as String);
               var template = FileTemplate.fromProjectFilePath(projectFilePath);
@@ -33,14 +31,24 @@ class ImportFile extends ExpressionFunction<String> {
                   .firstWhereOrNull((pt) => pt.template == template);
               if (parsedTemplate == null) {
                 var engine = renderContext.engine;
+
                 parsedTemplate = engine
                     .parseTemplate(template)
                     .children
                     .first; //TODO what to do with parserTemplate.errorMessage?
+
+                renderContext.parsedTemplates.add(parsedTemplate);
               }
-              renderContext.parsedTemplates.add(parsedTemplate);
-              var renderResult = parsedTemplate.render(
-                  renderContext); //TODO what to do with renderResult.errorMessage?
+              var errorsBefore = [...renderContext.errors];
+              var renderResult = parsedTemplate.render(renderContext);
+
+              var importErrors = renderContext.errors
+                  .where((error) => !errorsBefore.contains(error))
+                  .toList();
+              if (importErrors.isNotEmpty) {
+                var importError = ImportError(position, template, importErrors);
+                renderContext.errors = [...errorsBefore, importError];
+              }
               return renderResult;
             });
 }

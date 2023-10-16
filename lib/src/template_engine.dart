@@ -114,7 +114,7 @@ class TemplateEngine {
   RenderResult render(ParseResult parseResults,
       [Map<String, Object> variables = const {}]) {
     var results = TemplatesRenderResult([]);
-    for (var parseResult in parseResults.children) {
+    for (var parseResult in [...parseResults.children]) {
       var template = parseResult.template;
       var renderContext = RenderContext(
           engine: this,

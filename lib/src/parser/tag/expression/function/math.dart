@@ -31,7 +31,7 @@ class Exp extends ExpressionFunction<num> {
             parameters: [
               Parameter<num>(name: 'value', presence: Presence.mandatory())
             ],
-            function: (renderContext, parameters) =>
+            function: (position, renderContext, parameters) =>
                 exp(parameters['value'] as num));
 }
 
@@ -47,7 +47,7 @@ class Log extends ExpressionFunction<num> {
             parameters: [
               Parameter<num>(name: 'value', presence: Presence.mandatory())
             ],
-            function: (renderContext, parameters) =>
+            function: (position, renderContext, parameters) =>
                 log(parameters['value'] as num));
 }
 
@@ -63,7 +63,7 @@ class Sin extends ExpressionFunction<num> {
             parameters: [
               Parameter<num>(name: 'radians', presence: Presence.mandatory())
             ],
-            function: (renderContext, parameters) =>
+            function: (position, renderContext, parameters) =>
                 sin(parameters['radians'] as num));
 }
 
@@ -79,7 +79,7 @@ class Asin extends ExpressionFunction<num> {
             parameters: [
               Parameter<num>(name: 'value', presence: Presence.mandatory())
             ],
-            function: (renderContext, parameters) =>
+            function: (position, renderContext, parameters) =>
                 asin(parameters['value'] as num));
 }
 
@@ -95,7 +95,7 @@ class Cos extends ExpressionFunction<num> {
             parameters: [
               Parameter<num>(name: 'radians', presence: Presence.mandatory())
             ],
-            function: (renderContext, parameters) =>
+            function: (position, renderContext, parameters) =>
                 cos(parameters['radians'] as num));
 }
 
@@ -111,7 +111,7 @@ class Acos extends ExpressionFunction<num> {
             parameters: [
               Parameter<num>(name: 'value', presence: Presence.mandatory())
             ],
-            function: (renderContext, parameters) =>
+            function: (position, renderContext, parameters) =>
                 acos(parameters['value'] as num));
 }
 
@@ -127,7 +127,7 @@ class Tan extends ExpressionFunction<num> {
             parameters: [
               Parameter<num>(name: 'radians', presence: Presence.mandatory())
             ],
-            function: (renderContext, parameters) =>
+            function: (position, renderContext, parameters) =>
                 tan(parameters['radians'] as num));
 }
 
@@ -143,7 +143,7 @@ class Atan extends ExpressionFunction<num> {
             parameters: [
               Parameter<num>(name: 'value', presence: Presence.mandatory())
             ],
-            function: (renderContext, parameters) =>
+            function: (position, renderContext, parameters) =>
                 atan(parameters['value'] as num));
 }
 
@@ -159,7 +159,7 @@ class Sqrt extends ExpressionFunction<num> {
             parameters: [
               Parameter<num>(name: 'value', presence: Presence.mandatory())
             ],
-            function: (renderContext, parameters) =>
+            function: (position, renderContext, parameters) =>
                 sqrt(parameters['value'] as num));
 }
 
@@ -175,6 +175,6 @@ class Round extends ExpressionFunction<num> {
             parameters: [
               Parameter<num>(name: 'value', presence: Presence.mandatory())
             ],
-            function: (renderContext, parameters) =>
+            function: (position, renderContext, parameters) =>
                 (parameters['value'] as num).round());
 }

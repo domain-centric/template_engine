@@ -19,7 +19,7 @@ class StringLength extends ExpressionFunction<num> {
             parameters: [
               Parameter<String>(name: 'string', presence: Presence.mandatory())
             ],
-            function: (renderContext, parameters) {
+            function: (position, renderContext, parameters) {
               var value = parameters['string'];
               if (value is String) {
                 return value.length;

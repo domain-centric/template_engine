@@ -33,15 +33,18 @@ Parser<Expression> functionParser({
               parameters: function.parameters,
               loopbackParser: loopbackParser) &
           char(')').trim())
-      .map((values) =>
-          FunctionExpression(function, values[2] as Map<String, Expression>));
+      .valueContextMap((values, context) => FunctionExpression(
+          context.toPositionString(),
+          function,
+          values[2] as Map<String, Expression>));
 }
 
 class FunctionExpression<R extends Object> extends Expression<R> {
-  final ExpressionFunction<R> tagFunction;
+  final String position;
+  final ExpressionFunction<R> function;
   final Map<String, Expression> parameterExpressionMap;
 
-  FunctionExpression(this.tagFunction, this.parameterExpressionMap);
+  FunctionExpression(this.position, this.function, this.parameterExpressionMap);
 
   @override
   R render(RenderContext context) {
@@ -50,11 +53,11 @@ class FunctionExpression<R extends Object> extends Expression<R> {
       var value = parameterExpressionMap[name]!.render(context);
       parameterMap[name] = value;
     }
-    return tagFunction.function(context, parameterMap);
+    return function.function(position, context, parameterMap);
   }
 
   @override
-  String toString() => 'Function{${tagFunction.name}}';
+  String toString() => 'Function{${function.name}}';
 }
 
 /// A function is a piece of dart code that performs a specific task.
@@ -92,8 +95,8 @@ class ExpressionFunction<R extends Object>
   final String? exampleResult;
   final ProjectFilePath? exampleCode;
   final List<Parameter> parameters;
-  final R Function(RenderContext renderContext, Map<String, Object> parameters)
-      function;
+  final R Function(String position, RenderContext renderContext,
+      Map<String, Object> parameters) function;
 
   @override
   List<String> createMarkdownDocumentation(

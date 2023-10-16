@@ -57,6 +57,9 @@ class ProjectFilePath {
           '$relativePath');
 
   String get githubMarkdownLink => '<a href="$githubUri">$fileName</a>';
+
+  @override
+  String toString() => relativePath;
 }
 
 extension EndWithBetterFailureExtension<R> on Parser<R> {

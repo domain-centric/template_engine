@@ -36,6 +36,10 @@
 * <a href="https://github.com/domain-centric/template_engine/blob/main/test/src/parser/tag/expression/function/math/round_test.dart">round_test.dart</a>
 ### String Functions
 * <a href="https://github.com/domain-centric/template_engine/blob/main/test/src/parser/tag/expression/function/string/length_test.dart">length_test.dart</a>
+### Template Functions
+* <a href="https://github.com/domain-centric/template_engine/blob/main/test/src/parser/tag/expression/function/template/template_test.dart">template_test.dart</a>
+### Import Functions
+* <a href="https://github.com/domain-centric/template_engine/blob/main/test/src/parser/tag/expression/function/import/import_test.dart">import_test.dart</a>
 ## Operators
 * <a href="https://github.com/domain-centric/template_engine/blob/main/test/src/parser/tag/expression/operator/custom_operator_test.dart">custom_operator_test.dart</a>
 ### Parentheses

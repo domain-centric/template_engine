@@ -8,24 +8,54 @@ import 'package:template_engine/src/template.dart';
 /// for each [Error]
 
 abstract class Error {
+  String toIndentedString(int indent);
+
+  String indentation(int indent) => '  ' * indent;
+
+  @override
+  String toString() => toIndentedString(0);
+}
+
+class RenderError extends Error {
   final String message;
 
   /// A cursor position within the [Template.text] in format <row>, <column>
   final String position;
 
-  Error({required this.message, required this.position});
+  RenderError({required this.message, required this.position});
 
   @override
-  String toString() => '$position: $message';
-}
-
-class RenderError extends Error {
-  RenderError({required super.message, required super.position});
+  String toIndentedString(int indent) =>
+      '${indentation(indent)}$position: $message';
 }
 
 class ParseError extends Error {
-  ParseError({required super.message, required super.position});
+  final String message;
+
+  /// A cursor position within the [Template.text] in format <row>, <column>
+  final String position;
+
+  ParseError({required this.message, required this.position});
 
   ParseError.fromFailure(Failure failure)
-      : super(message: failure.message, position: failure.toPositionString());
+      : message = failure.message,
+        position = failure.toPositionString();
+
+  @override
+  String toIndentedString(int indent) =>
+      '${indentation(indent)}$position: $message';
+}
+
+class ImportError extends Error {
+  final Template template;
+  final String positionOfImport;
+  final List<Error> importErrors;
+  ImportError(this.positionOfImport, this.template, this.importErrors);
+
+  @override
+  String toIndentedString(int indent) =>
+      '${indentation(indent)}$positionOfImport: '
+      'Error${importErrors.length > 1 ? 's' : ''} '
+      'while importing ${template.source}:\n'
+      '${importErrors.map((e) => e.toIndentedString(indent + 1)).join('\n')}';
 }

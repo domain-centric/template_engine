@@ -64,6 +64,7 @@ void main() {
       var template = TextTemplate('{{engine.function.documentation()}}');
       var parseResult = engine.parseTemplate(template);
       var expected = FunctionDocumentation().function(
+          '',
           RenderContext(
               engine: engine,
               templateBeingRendered: template,
@@ -100,7 +101,7 @@ class DummyFunction extends ExpressionFunction {
               Parameter<double>(name: 'parameter2'),
               Parameter<bool>(name: 'parameter3')
             ],
-            function: (renderContext, parameters) => 'Dummy');
+            function: (position, renderContext, parameters) => 'Dummy');
 }
 
 ///TODO test if all example links exist

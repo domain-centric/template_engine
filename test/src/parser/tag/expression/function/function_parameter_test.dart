@@ -663,7 +663,7 @@ class GreetingWithParameterFunction extends ExpressionFunction {
                 presence: Presence.optionalWithDefaultValue('world'),
               )
             ],
-            function: (renderContext, parameters) =>
+            function: (position, renderContext, parameters) =>
                 'Hello ${parameters['name']}');
 }
 
@@ -677,5 +677,5 @@ class ParameterTestFunction extends ExpressionFunction<Map<String, Object>> {
             exampleExpression: 'dummy',
             exampleResult: 'dummy',
             parameters: parameters,
-            function: (renderContext, parameters) => parameters);
+            function: (position, renderContext, parameters) => parameters);
 }

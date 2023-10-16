@@ -33,7 +33,7 @@ class GreetingWithParameter extends ExpressionFunction {
                 name: "name",
                 presence: Presence.optionalWithDefaultValue('world'))
           ],
-          function: (renderContext, parameters) =>
+          function: (position, renderContext, parameters) =>
               'Hello ${parameters['name']}',
         );
 }

@@ -1,0 +1,2 @@
+{{import('doc/template/common/generated_comment.template')}}
+Hello World.
