@@ -19,36 +19,47 @@ class ImportFile extends ExpressionFunction<String> {
                 'test/src/parser/tag/expression/function/import/import_test.dart'),
             parameters: [
               Parameter<String>(name: 'value', presence: Presence.mandatory())
-              //TODO check if it is a valide [ProjectFilePath]
-              ///TODO parameter type: template, text, code, dartCode
+              // TODO check if it is a valid [ProjectFilePath]
+              // TODO parameter type: template, text, code, dartCode
             ],
             function: (position, renderContext, parameters) {
               var projectFilePath =
                   ProjectFilePath(parameters['value'] as String);
-              var template = FileTemplate.fromProjectFilePath(projectFilePath);
-              TemplateParseResult? parsedTemplate = renderContext
-                  .parsedTemplates
-                  .firstWhereOrNull((pt) => pt.template == template);
-              if (parsedTemplate == null) {
-                var engine = renderContext.engine;
+              try {
+                var template =
+                    FileTemplate.fromProjectFilePath(projectFilePath);
+                TemplateParseResult? parsedTemplate = renderContext
+                    .parsedTemplates
+                    .firstWhereOrNull((pt) => pt.template == template);
+                if (parsedTemplate == null) {
+                  var engine = renderContext.engine;
 
-                parsedTemplate = engine
-                    .parseTemplate(template)
-                    .children
-                    .first; //TODO what to do with parserTemplate.errorMessage?
+                  parsedTemplate = engine
+                      .parseTemplate(template)
+                      .children
+                      .first; // TODO what to do with parserTemplate.errorMessage?
 
-                renderContext.parsedTemplates.add(parsedTemplate);
+                  renderContext.parsedTemplates.add(parsedTemplate);
+                }
+                var errorsBefore = [...renderContext.errors];
+                var renderResult = parsedTemplate.render(renderContext);
+
+                var importErrors = renderContext.errors
+                    .where((error) => !errorsBefore.contains(error))
+                    .toList();
+                if (importErrors.isNotEmpty) {
+                  var importError =
+                      ImportError(position, template, importErrors);
+                  renderContext.errors = [...errorsBefore, importError];
+                }
+                return renderResult;
+              } on Exception catch (e) {
+                var error = RenderError(
+                    message: 'Error importing template: '
+                        '${e.toString().replaceAll('\r', '').replaceAll('\n', '')}',
+                    position: position);
+                renderContext.errors.add(error);
+                return renderContext.renderedError;
               }
-              var errorsBefore = [...renderContext.errors];
-              var renderResult = parsedTemplate.render(renderContext);
-
-              var importErrors = renderContext.errors
-                  .where((error) => !errorsBefore.contains(error))
-                  .toList();
-              if (importErrors.isNotEmpty) {
-                var importError = ImportError(position, template, importErrors);
-                renderContext.errors = [...errorsBefore, importError];
-              }
-              return renderResult;
             });
 }
