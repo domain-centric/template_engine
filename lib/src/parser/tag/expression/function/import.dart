@@ -27,7 +27,7 @@ class ImportFile extends ExpressionFunction<String> {
                   ProjectFilePath(parameters['value'] as String);
               try {
                 var template =
-                    FileTemplate.fromProjectFilePath(projectFilePath);
+                    ImportedTemplate.fromProjectFilePath(projectFilePath);
                 TemplateParseResult? parsedTemplate = renderContext
                     .parsedTemplates
                     .firstWhereOrNull((pt) => pt.template == template);

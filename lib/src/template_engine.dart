@@ -128,6 +128,12 @@ class TemplateEngine {
         errors: [...parseResult.errors, ...renderContext.errors],
       );
       results = results.add(result);
+      for (var parseResult in renderContext.parsedTemplates
+          .where((parseResult) => parseResult.template is ImportedTemplate)) {
+        var result = ImportedTemplateParseErrors(
+            parseResult.template, parseResult.errorMessage);
+        results = results.add(result);
+      }
     }
 
     return results;
@@ -148,4 +154,20 @@ class TemplateEngine {
             'Tag names: ${doubleNames.join(', ')} are not unique');
     }
   }
+}
+
+class ImportedTemplateParseErrors implements TemplateRenderResult {
+  @override
+  final Template template;
+
+  @override
+  final String errorMessage;
+
+  ImportedTemplateParseErrors(this.template, this.errorMessage);
+
+  @override
+  List<Error> get errors => throw UnimplementedError();
+
+  @override
+  String get text => '';
 }
