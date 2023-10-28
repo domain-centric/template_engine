@@ -3,10 +3,7 @@ import 'package:template_engine/template_engine.dart';
 
 class ImportFunctions extends FunctionGroup {
   ImportFunctions()
-      : super('Import Functions', [
-          ImportTemplate(),
-          ImportPure()
-        ]);
+      : super('Import Functions', [ImportTemplate(), ImportPure()]);
 }
 
 class ImportTemplate extends ExpressionFunction<String> {
@@ -19,7 +16,7 @@ class ImportTemplate extends ExpressionFunction<String> {
             exampleCode: ProjectFilePath(
                 'test/src/parser/tag/expression/function/import/import_test.dart'),
             parameters: [
-                         Parameter<String>(
+              Parameter<String>(
                   name: 'source',
                   description: 'The project path of the template file',
                   presence: Presence.mandatory())
@@ -64,7 +61,6 @@ class ImportTemplate extends ExpressionFunction<String> {
             });
 }
 
-
 class ImportPure extends ExpressionFunction<String> {
   ImportPure()
       : super(
@@ -75,7 +71,7 @@ class ImportPure extends ExpressionFunction<String> {
             exampleCode: ProjectFilePath(
                 'test/src/parser/tag/expression/function/import/import_pure_test.dart'),
             parameters: [
-                         Parameter<String>(
+              Parameter<String>(
                   name: 'source',
                   description: 'The project path of the file',
                   presence: Presence.mandatory())
