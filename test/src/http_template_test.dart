@@ -5,8 +5,6 @@ import 'package:shouldly/shouldly.dart';
 import 'package:template_engine/template_engine.dart';
 import 'package:test/test.dart';
 
-import 'parser/tag/expression/function/import/import_with_errors_test.dart';
-
 void main() async {
   test('test Http template', () async {
     const url =
