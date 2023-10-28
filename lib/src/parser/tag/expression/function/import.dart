@@ -4,12 +4,13 @@ import 'package:template_engine/template_engine.dart';
 class ImportFunctions extends FunctionGroup {
   ImportFunctions()
       : super('Import Functions', [
-          ImportFile(),
+          ImportTemplate(),
+          ImportPure()
         ]);
 }
 
-class ImportFile extends ExpressionFunction<String> {
-  ImportFile()
+class ImportTemplate extends ExpressionFunction<String> {
+  ImportTemplate()
       : super(
             name: 'import',
             description: 'Imports, parses and renders a template file',
@@ -55,6 +56,41 @@ class ImportFile extends ExpressionFunction<String> {
               } on Exception catch (e) {
                 var error = RenderError(
                     message: 'Error importing template: '
+                        '${e.toString().replaceAll('\r', '').replaceAll('\n', '')}',
+                    position: position);
+                renderContext.errors.add(error);
+                return renderContext.renderedError;
+              }
+            });
+}
+
+
+class ImportPure extends ExpressionFunction<String> {
+  ImportPure()
+      : super(
+            name: 'import.pure',
+            description: 'Imports a file as is (without parsing and rendering)',
+            exampleExpression:
+                "{{import.pure('doc/template/common/generated_comment.template')}}",
+            exampleCode: ProjectFilePath(
+                'test/src/parser/tag/expression/function/import/import_pure_test.dart'),
+            parameters: [
+                         Parameter<String>(
+                  name: 'source',
+                  description: 'The project path of the file',
+                  presence: Presence.mandatory())
+            ],
+            function: (position, renderContext, parameters) {
+              try {
+                var projectFilePath =
+                    ProjectFilePath(parameters['source'] as String);
+
+                var template =
+                    ImportedTemplate.fromProjectFilePath(projectFilePath);
+                return template.text;
+              } on Exception catch (e) {
+                var error = RenderError(
+                    message: 'Error importing a pure file: '
                         '${e.toString().replaceAll('\r', '').replaceAll('\n', '')}',
                     position: position);
                 renderContext.errors.add(error);

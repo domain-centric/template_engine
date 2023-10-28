@@ -40,6 +40,7 @@
 * <a href="https://github.com/domain-centric/template_engine/blob/main/test/src/parser/tag/expression/function/template/template_test.dart">template_test.dart</a>
 ### Import Functions
 * <a href="https://github.com/domain-centric/template_engine/blob/main/test/src/parser/tag/expression/function/import/import_test.dart">import_test.dart</a>
+* <a href="https://github.com/domain-centric/template_engine/blob/main/test/src/parser/tag/expression/function/import/import_pure_test.dart">import_pure_test.dart</a>
 ## Operators
 * <a href="https://github.com/domain-centric/template_engine/blob/main/test/src/parser/tag/expression/operator/custom_operator_test.dart">custom_operator_test.dart</a>
 ### Parentheses
