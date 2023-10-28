@@ -19,7 +19,6 @@ class ImportFile extends ExpressionFunction<String> {
                 'test/src/parser/tag/expression/function/import/import_test.dart'),
             parameters: [
               Parameter<String>(name: 'value', presence: Presence.mandatory())
-              // TODO parameter type: template, text, code, dartCode
             ],
             function: (position, renderContext, parameters) {
               try {
