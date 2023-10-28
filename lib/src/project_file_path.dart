@@ -1,4 +1,3 @@
-/// a reference to a file in the Dart project
 import 'dart:io';
 
 import 'package:petitparser/petitparser.dart';

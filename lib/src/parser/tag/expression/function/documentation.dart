@@ -217,9 +217,9 @@ enum CellType {
 
 String typeDescription<T>() {
   switch (T) {
-    case num:
+    case const (num):
       return 'number';
-    case bool:
+    case const (bool):
       return 'boolean';
 
     default:

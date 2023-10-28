@@ -115,8 +115,8 @@ class TemplateParseResult extends ParserTree<Object> {
 /// The result of parsing one or more [Template]s
 class ParseResult extends ParserTree<TemplateParseResult> {
   ParseResult(
-    List<TemplateParseResult> templateParseResults,
-  ) : super(templateParseResults);
+    super.templateParseResults,
+  );
 
   String get errorMessage => children
       .where((result) => result.errorMessage.isNotEmpty)
