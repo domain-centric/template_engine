@@ -71,7 +71,7 @@ class ImportPure extends ExpressionFunction<String> {
             name: 'import.pure',
             description: 'Imports a file as is (without parsing and rendering)',
             exampleExpression:
-                "{{import.pure('doc/template/common/generated_comment.template')}}",
+                "{{import.pure('test/src/template_engine_template_example_test.dart')}}",
             exampleCode: ProjectFilePath(
                 'test/src/parser/tag/expression/function/import/import_pure_test.dart'),
             parameters: [

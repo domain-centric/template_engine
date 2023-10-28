@@ -396,7 +396,7 @@ See [Example](https://github.com/domain-centric/template_engine/blob/main/test/s
 <tr><th colspan="5">import.pure</th></tr>
 <tr><td>description:</td><td colspan="4">Imports a file as is (without parsing and rendering)</td></tr>
 <tr><td>return type:</td><td colspan="4">String</td></tr>
-<tr><td>expression example:</td><td colspan="4">{{import.pure('doc/template/common/generated_comment.template')}}</td></tr>
+<tr><td>expression example:</td><td colspan="4">{{import.pure('test/src/template_engine_template_example_test.dart')}}</td></tr>
 <tr><td>code example:</td><td colspan="4"><a href="https://github.com/domain-centric/template_engine/blob/main/test/src/parser/tag/expression/function/import/import_pure_test.dart">import_pure_test.dart</a></td></tr>
 <tr><td>parameter:</td><td>source</td><td>String</td><td>mandatory</td><td>The project path of the file</td></tr>
 </table>
