@@ -19,13 +19,13 @@ class ImportFile extends ExpressionFunction<String> {
                 'test/src/parser/tag/expression/function/import/import_test.dart'),
             parameters: [
               Parameter<String>(name: 'value', presence: Presence.mandatory())
-              // TODO check if it is a valid [ProjectFilePath]
               // TODO parameter type: template, text, code, dartCode
             ],
             function: (position, renderContext, parameters) {
-              var projectFilePath =
-                  ProjectFilePath(parameters['value'] as String);
               try {
+                var projectFilePath =
+                    ProjectFilePath(parameters['value'] as String);
+
                 var template =
                     ImportedTemplate.fromProjectFilePath(projectFilePath);
                 TemplateParseResult? parsedTemplate = renderContext
@@ -34,11 +34,8 @@ class ImportFile extends ExpressionFunction<String> {
                 if (parsedTemplate == null) {
                   var engine = renderContext.engine;
 
-                  parsedTemplate = engine
-                      .parseTemplate(template)
-                      .children
-                      .first; // TODO what to do with parserTemplate.errorMessage?
-
+                  parsedTemplate =
+                      engine.parseTemplate(template).children.first;
                   renderContext.parsedTemplates.add(parsedTemplate);
                 }
                 var errorsBefore = [...renderContext.errors];
