@@ -59,8 +59,6 @@ class FileTemplate extends Template {
       : super(source: path.relativePath, text: path.file.readAsStringSync());
 }
 
-//TODO WebTemplate: gets text from a URL
-
 class ImportedTemplate extends FileTemplate {
   ImportedTemplate.fromProjectFilePath(super.path)
       : super.fromProjectFilePath();
