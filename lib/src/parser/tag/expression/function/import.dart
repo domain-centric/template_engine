@@ -12,18 +12,21 @@ class ImportFile extends ExpressionFunction<String> {
   ImportFile()
       : super(
             name: 'import',
-            description: 'Imports a file',
+            description: 'Imports, parses and renders a template file',
             exampleExpression:
                 "{{import('doc/template/common/generated_comment.template')}}",
             exampleCode: ProjectFilePath(
                 'test/src/parser/tag/expression/function/import/import_test.dart'),
             parameters: [
-              Parameter<String>(name: 'value', presence: Presence.mandatory())
+                         Parameter<String>(
+                  name: 'source',
+                  description: 'The project path of the template file',
+                  presence: Presence.mandatory())
             ],
             function: (position, renderContext, parameters) {
               try {
                 var projectFilePath =
-                    ProjectFilePath(parameters['value'] as String);
+                    ProjectFilePath(parameters['source'] as String);
 
                 var template =
                     ImportedTemplate.fromProjectFilePath(projectFilePath);
