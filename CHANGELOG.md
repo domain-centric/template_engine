@@ -1,3 +1,5 @@
+## [1.1.0 Change Log](https://github.com/domain-centric/template_engine/milestone/5?closed=1)
+
 ## [1.0.1 Change Log](https://github.com/domain-centric/template_engine/milestone/4?closed=1)
 
 ## [1.0.0 Change Log](https://github.com/domain-centric/template_engine/milestone/3?closed=1)
