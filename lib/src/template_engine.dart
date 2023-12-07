@@ -75,9 +75,7 @@ class TemplateEngine {
     var result = parser.parse(template.text);
 
     if (result is Failure) {
-      context.errors.add(ParseError.fromFailure(
-        result as Failure,
-      ));
+      context.errors.add(ParseError.fromFailure(result));
     }
     var templateParseResult = TemplateParseResult(
         template: template, children: result.value, errors: context.errors);
@@ -98,9 +96,7 @@ class TemplateEngine {
       var result = parser.parse(template.text);
 
       if (result is Failure) {
-        context.errors.add(ParseError.fromFailure(
-          result as Failure,
-        ));
+        context.errors.add(ParseError.fromFailure(result));
       }
       var parseResult = TemplateParseResult(
           template: template, children: result.value, errors: context.errors);

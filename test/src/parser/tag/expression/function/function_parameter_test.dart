@@ -163,10 +163,8 @@ void main() {
     when('calling parser.parse("$input")', () {
       var result = parser.parse(input);
 
-      then(
-          'result should be of type Failure',
-          () => result.should
-              .beOfType<Failure<MapEntry<String, Expression<Object>>>>());
+      then('result should be of type Failure',
+          () => result.should.beOfType<Failure>());
 
       var expected = '"parameter" expected';
       then('result.value should be: $expected',
@@ -191,10 +189,8 @@ void main() {
       var result = parser.parse(input);
       var expected = '"parameter" expected';
 
-      then(
-          'result should be of type Failure',
-          () => result.should
-              .beOfType<Failure<MapEntry<String, Expression<Object>>>>());
+      then('result should be of type Failure',
+          () => result.should.beOfType<Failure>());
       then('result.message should be: $expected',
           () => result.message.should.be(expected));
     });
@@ -204,10 +200,8 @@ void main() {
       var result = parser.parse(input);
       var expected = '"=" expected';
 
-      then(
-          'result should be of type Failure',
-          () => result.should
-              .beOfType<Failure<MapEntry<String, Expression<Object>>>>());
+      then('result should be of type Failure',
+          () => result.should.beOfType<Failure>());
       then('result.message should be: $expected',
           () => result.message.should.be(expected));
     });

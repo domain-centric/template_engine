@@ -31,7 +31,7 @@ class InvalidTagParser extends Parser<Object> {
         .parseOn(tagStartResult);
     if (expressionResult.position > tagStartResult.position) {
       if (expressionResult is Failure) {
-        errors.add(ParseError.fromFailure(expressionResult as Failure));
+        errors.add(ParseError.fromFailure(expressionResult));
       }
     }
 
