@@ -95,7 +95,7 @@ The TemplateEngine comes with several mathematical constants.
 ## Custom Constants
 You can create and add your own Constants by
 manipulating the TemplateEngine.constants field.
-See [Example](https://github.com/domain-centric/template_engine/blob/main/test/src/parser/tag/expression/function/custom_function_test.dart).
+See [Example](https://github.com/domain-centric/template_engine/blob/main/test/src/parser/tag/expression/constant/custom_constant_test.dart).
 
 ## Available Constants
 {{engine.constant.documentation(2)}}
