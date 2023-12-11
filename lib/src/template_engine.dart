@@ -107,8 +107,7 @@ class TemplateEngine {
 
   /// Render the [parser tree](https://en.wikipedia.org/wiki/Parse_tree)
   /// to a string (and write it as files when needed)
-  RenderResult render(ParseResult parseResults,
-      [Variables? variables]) {
+  RenderResult render(ParseResult parseResults, [Variables? variables]) {
     var results = TemplatesRenderResult([]);
     for (var parseResult in [...parseResults.children]) {
       var template = parseResult.template;

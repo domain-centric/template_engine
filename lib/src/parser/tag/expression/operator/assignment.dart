@@ -5,7 +5,7 @@ class Assignments extends OperatorGroup {
   Assignments() : super('Assignment', [AssignmentOperator()]);
 }
 
- class AssignmentOperator extends Operator {
+class AssignmentOperator extends Operator {
   static const String operator = '=';
   static final codeExample = ProjectFilePath(
       'test/src/parser/tag/expression/operator/assignment/assignment_test.dart');
@@ -62,14 +62,23 @@ class AssignVariableExpression extends Expression<String> {
     var variableExpression = left;
     if (variableExpression is! VariableExpression) {
       throw RenderException(
-          message: 'The left side of the = operation must be a valid variable name',
+          message:
+              'The left side of the = operation must be a valid variable name',
           position: position);
     }
-    var value=right.render(context);
-    context.variables[variableExpression.namePath]=value;
-    return '';// variable assignment returns an empty string.
+    if (variableExpression.namePath.contains('.')) {
+      throw RenderException(
+          message: 'The left side of the = operation '
+              'must be a name of a root variable '
+              '(not contain dots)',
+          position: position);
+    }
+
+    var value = right.render(context);
+    context.variables[variableExpression.namePath] = value;
+    return ''; // variable assignment returns an empty string.
   }
 
   @override
-   String toString() => 'AssignVariableExpression{}';
+  String toString() => 'AssignVariableExpression{}';
 }

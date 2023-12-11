@@ -4,7 +4,7 @@ import 'package:template_engine/template_engine.dart';
 /// A [variable](https://en.wikipedia.org/wiki/Variable_(computer_science)) is
 /// a named container for some type of information
 /// (like [num], [bool], [String] etc...)
-typedef Variable=Map<String, Object>;
+typedef Variable = Map<String, Object>;
 
 class VariableExamples implements ExampleFactory {
   @override
@@ -94,13 +94,11 @@ class VariableException implements Exception {
 /// Variable map: {'person': {'name': 'John Doe', 'age',30}}<br>
 /// Variable Name person.name: refers to the variable value of 'John Doe'
 
-
 class VariableName {
   static final nameParser = (letter().plus() & digit().star()).plus();
   static final namePathParser = (nameParser & (char('.') & nameParser).star());
 
-
-static validateName(String name) {
+  static validateName(String name) {
     var result = nameParser.end().parse(name);
     if (result is Failure) {
       throw VariableException(
@@ -108,6 +106,7 @@ static validateName(String name) {
           'at position: ${result.position}');
     }
   }
+
   static validateNamePath(String namePath) {
     var result = namePathParser.end().parse(namePath);
     if (result is Failure) {
