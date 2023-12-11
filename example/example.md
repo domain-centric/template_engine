@@ -62,3 +62,5 @@
 * <a href="https://github.com/domain-centric/template_engine/blob/main/test/src/parser/tag/expression/operator/addition/string_concatenate_test.dart">string_concatenate_test.dart</a>
 * <a href="https://github.com/domain-centric/template_engine/blob/main/test/src/parser/tag/expression/operator/addition/num_subtract_test.dart">num_subtract_test.dart</a>
 * <a href="https://github.com/domain-centric/template_engine/blob/main/test/src/parser/tag/expression/operator/addition/bool_or_test.dart">bool_or_test.dart</a>
+### Assignment
+* <a href="https://github.com/domain-centric/template_engine/blob/main/test/src/parser/tag/expression/operator/assignment/assignment_test.dart">assignment_test.dart</a>

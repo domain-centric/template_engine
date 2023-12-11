@@ -8,22 +8,22 @@ class Additions extends OperatorGroup {
 class AddOperator extends OperatorWith2Values {
   AddOperator()
       : super('+', OperatorAssociativity.left, [
-          TwoValueOperatorVariant<num>(
+          TwoValueOperatorVariant<num,num>(
               description: 'Adds two numbers',
               expressionExample: '{{2+3}}',
               expressionExampleResult: '5',
               codeExample: ProjectFilePath(
                   'test/src/parser/tag/expression/operator/addition/'
                   'num_addition_test.dart'),
-              function: (left, right) => left + right),
-          TwoValueOperatorVariant<String>(
+              function: ( left, right) => left + right),
+          TwoValueOperatorVariant<String,String>(
               description: 'Concatenates two strings',
               expressionExample: '{{"Hel"+"lo"}}',
               expressionExampleResult: "Hello",
               codeExample: ProjectFilePath(
                   'test/src/parser/tag/expression/operator/addition/'
                   'string_concatenate_test.dart'),
-              function: (left, right) => '$left$right')
+              function: ( left, right) => '$left$right')
         ]);
 }
 
@@ -33,14 +33,14 @@ class SubtractOperator extends OperatorWith2Values {
           '-',
           OperatorAssociativity.left,
           [
-            TwoValueOperatorVariant<num>(
+            TwoValueOperatorVariant<num,num>(
                 description: 'Subtracts two numbers',
                 expressionExample: '{{5-3}}',
                 expressionExampleResult: '2',
                 codeExample: ProjectFilePath(
                     'test/src/parser/tag/expression/operator/addition/'
                     'num_subtract_test.dart'),
-                function: (left, right) => left - right)
+                function: ( left, right) => left - right)
           ],
         );
 }
@@ -51,14 +51,14 @@ class OrOperator extends OperatorWith2Values {
           '|',
           OperatorAssociativity.left,
           [
-            TwoValueOperatorVariant<bool>(
+            TwoValueOperatorVariant<bool,bool>(
                 description: 'Logical OR operation on two booleans',
                 expressionExample: '{{false|true}}',
                 expressionExampleResult: 'true',
                 codeExample: ProjectFilePath(
                     'test/src/parser/tag/expression/operator/addition/'
                     'bool_or_test.dart'),
-                function: (left, right) => left | right)
+                function: ( left, right) => left | right)
           ],
         );
 }

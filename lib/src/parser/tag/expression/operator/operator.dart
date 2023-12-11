@@ -31,9 +31,10 @@ class PrefixExpression<PARAMETER_TYPE extends Object>
   }
 }
 
-class TwoValueOperatorVariant<PARAMETER_TYPE extends Object> {
+class TwoValueOperatorVariant<LEFT_TYPE extends Object,
+    RIGHT_TYPE extends Object> {
   final String description;
-  final Object Function(PARAMETER_TYPE left, PARAMETER_TYPE right) function;
+  final Object Function(LEFT_TYPE left, RIGHT_TYPE right) function;
   final String expressionExample;
   final String? expressionExampleResult;
   final ProjectFilePath? codeExample;
@@ -45,25 +46,35 @@ class TwoValueOperatorVariant<PARAMETER_TYPE extends Object> {
       this.expressionExampleResult,
       this.codeExample});
 
-  String get parameterTypeDescription => typeDescription<PARAMETER_TYPE>();
+  String get parameterTypeDescription => typeDescription<LEFT_TYPE>();
 
   List<String> validate(String operator, Object leftValue, Object rightValue) {
-    var typeDesc = typeDescription<PARAMETER_TYPE>();
-    bool leftTypeOk = leftValue is PARAMETER_TYPE;
-    bool rightTypeOk = rightValue is PARAMETER_TYPE;
+    bool leftTypeOk = leftValue is LEFT_TYPE;
+    bool rightTypeOk = rightValue is RIGHT_TYPE;
     if (leftTypeOk && rightTypeOk) {
       return [];
-    } else if (!leftTypeOk && !rightTypeOk) {
-      return ['left and right of the $operator operator must be a $typeDesc'];
+    } else if (LEFT_TYPE.hashCode == RIGHT_TYPE.hashCode &&
+        !leftTypeOk &&
+        !rightTypeOk) {
+      return [
+        'left and right of the $operator operator '
+            'must be a ${typeDescription<LEFT_TYPE>()}'
+      ];
     }
     if (!leftTypeOk) {
-      return ['left of the $operator operator must be a $typeDesc'];
+      return [
+        'left of the $operator operator '
+            'must be a ${typeDescription<LEFT_TYPE>()}'
+      ];
     }
-    return ['right of the $operator operator must be a $typeDesc'];
+    return [
+      'right of the $operator operator '
+          'must be a ${typeDescription<RIGHT_TYPE>()}'
+    ];
   }
 
   Object eval(Object leftValue, Object rightValue) =>
-      function(leftValue as PARAMETER_TYPE, rightValue as PARAMETER_TYPE);
+      function(leftValue as LEFT_TYPE, rightValue as RIGHT_TYPE);
 }
 
 /// delegates the work to one of the [variants] that can process
@@ -99,54 +110,6 @@ class OperatorVariantExpression extends Expression {
     }
     throw RenderException(message: errors.join(', or '), position: position);
   }
-}
-
-/// A value that needs to be calculated (evaluated)
-/// from 2 expressions that return a object of type [T]
-class TwoValueOperatorExpression<T extends Object> extends Expression {
-  final String position;
-  final String operator;
-  final Expression left;
-  final Expression right;
-  final T Function(T left, T right) function;
-
-  TwoValueOperatorExpression(
-      {required this.position,
-      required this.operator,
-      required this.left,
-      required this.right,
-      required this.function});
-
-  @override
-  Object render(RenderContext context) {
-    var leftValue = left.render(context);
-    bool leftTypeOk = leftValue is T;
-    var rightValue = right.render(context);
-    bool rightTypeOk = rightValue is T;
-    if (leftTypeOk && rightTypeOk) {
-      return function(leftValue, rightValue);
-    }
-
-    if (!leftTypeOk && !rightTypeOk) {
-      throw RenderException(
-          message: 'left and right of the $operator operator '
-              'must be a ${typeDescription<T>()}',
-          position: position);
-    } else if (!leftTypeOk) {
-      throw RenderException(
-          message: 'left of the $operator operator '
-              'must be a ${typeDescription<T>()}',
-          position: position);
-    } else {
-      throw RenderException(
-          message: 'right of the $operator operator '
-              'must be a ${typeDescription<T>()}',
-          position: position);
-    }
-  }
-
-  @override
-  String toString() => 'TwoValueOperatorExpression{$operator}';
 }
 
 /// An [Operator] behaves generally like functions,
@@ -322,12 +285,12 @@ abstract class OperatorWith2Values extends Operator {
 /// See https://en.wikipedia.org/wiki/Operator_associativity
 ///
 enum OperatorAssociativity {
-  /// left-associative (meaning the operations are grouped from the left)
+  /// left-associative: meaning the operations are grouped from the left first
   /// This is used for the majority of operators
   left,
 
-  /// right-associative (meaning the operations are grouped from the right)
-  /// This is used for the the power operator, e.g.: 2 ^ 3
+  /// right-associative: meaning the operations are grouped from the right first
+  /// This is used for the the power operator (2 ^ 3) or assignment (x = 12)
   right,
 }
 

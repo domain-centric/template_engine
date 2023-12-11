@@ -4,9 +4,7 @@ import 'package:template_engine/template_engine.dart';
 /// A [variable](https://en.wikipedia.org/wiki/Variable_(computer_science)) is
 /// a named container for some type of information
 /// (like [num], [bool], [String] etc...)
-abstract class Variable {
-  // documentation only
-}
+typedef Variable=Map<String, Object>;
 
 class VariableExamples implements ExampleFactory {
   @override
@@ -68,7 +66,7 @@ class VariableExpression extends Expression {
 }
 
 Parser<Expression<Object>> variableParser(Template template) {
-  return (VariableName.pathParser & char('(').trim().not())
+  return (VariableName.namePathParser & char('(').trim().not())
       .flatten('variable expected')
       .trim()
       .valueContextMap((name, context) => VariableExpression(
@@ -96,12 +94,22 @@ class VariableException implements Exception {
 /// Variable map: {'person': {'name': 'John Doe', 'age',30}}<br>
 /// Variable Name person.name: refers to the variable value of 'John Doe'
 
-class VariableName {
-  static final _parser = (letter().plus() & digit().star()).plus();
-  static final pathParser = (_parser & (char('.') & _parser).star());
 
-  static validate(String namePath) {
-    var result = pathParser.end().parse(namePath);
+class VariableName {
+  static final nameParser = (letter().plus() & digit().star()).plus();
+  static final namePathParser = (nameParser & (char('.') & nameParser).star());
+
+
+static validateName(String name) {
+    var result = nameParser.end().parse(name);
+    if (result is Failure) {
+      throw VariableException(
+          'Variable name: "$name" is invalid: ${result.message} '
+          'at position: ${result.position}');
+    }
+  }
+  static validateNamePath(String namePath) {
+    var result = namePathParser.end().parse(namePath);
     if (result is Failure) {
       throw VariableException(
           'Variable name: "$namePath" is invalid: ${result.message} '

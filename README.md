@@ -530,3 +530,11 @@ See [Example](https://github.com/domain-centric/template_engine/blob/main/test/s
 <tr><td>expression example:</td><td>{{false|true}} should render: true</td></tr>
 <tr><td>code example:</td><td><a href="https://github.com/domain-centric/template_engine/blob/main/test/src/parser/tag/expression/operator/addition/bool_or_test.dart">bool_or_test.dart</a></td></tr>
 </table>
+
+## Assignment
+<table>
+<tr><th colspan="2">operator: =</th></tr>
+<tr><td>description:</td><td>Assigns a value to a variable. A new variable will be created when it did not exist before, otherwise it will be overridden with a new value.</td></tr>
+<tr><td>expression example:</td><td>{{x=2}}{{x=x+3}}{{x}} should render: 5</td></tr>
+<tr><td>code example:</td><td><a href="https://github.com/domain-centric/template_engine/blob/main/test/src/parser/tag/expression/operator/assignment/assignment_test.dart">assignment_test.dart</a></td></tr>
+</table>

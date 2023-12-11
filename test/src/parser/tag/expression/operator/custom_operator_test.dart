@@ -20,7 +20,7 @@ class DivideOperator extends OperatorWith2Values {
           ':',
           OperatorAssociativity.left,
           [
-            TwoValueOperatorVariant<num>(
+            TwoValueOperatorVariant<num,num>(
                 description: 'Divides 2 numbers',
                 expressionExample: '{{6:4}}',
                 expressionExampleResult: '1.5',
