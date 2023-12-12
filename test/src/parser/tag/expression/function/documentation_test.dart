@@ -82,7 +82,6 @@ void main() {
         then('renderResult.text be: "$expected"',
             () => renderResult.text.should.be(expected));
       });
-
     });
   });
 
@@ -97,7 +96,7 @@ void main() {
     urls.should.not.beEmpty();
     final noneExistingUrls = <String>[];
     await Future.forEach(urls, (url) async {
-      if (! await urlExists(url)) {
+      if (!await urlExists(url)) {
         noneExistingUrls.add(url);
       }
     });

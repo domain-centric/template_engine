@@ -32,7 +32,7 @@
 * <a href="https://github.com/domain-centric/template_engine/blob/main/test/src/parser/tag/expression/function/math/acos_test.dart">acos_test.dart</a>
 * <a href="https://github.com/domain-centric/template_engine/blob/main/test/src/parser/tag/expression/function/math/tan_test.dart">tan_test.dart</a>
 * <a href="https://github.com/domain-centric/template_engine/blob/main/test/src/parser/tag/expression/function/math/atan_test.dart">atan_test.dart</a>
-* <a href="https://github.com/domain-centric/template_engine/blob/main/test/src/parser/tag/expression/function/math/sqrt_tst.dart">sqrt_tst.dart</a>
+* <a href="https://github.com/domain-centric/template_engine/blob/main/test/src/parser/tag/expression/function/math/sqrt_test.dart">sqrt_test.dart</a>
 * <a href="https://github.com/domain-centric/template_engine/blob/main/test/src/parser/tag/expression/function/math/round_test.dart">round_test.dart</a>
 ### String Functions
 * <a href="https://github.com/domain-centric/template_engine/blob/main/test/src/parser/tag/expression/function/string/length_test.dart">length_test.dart</a>
