@@ -1,6 +1,9 @@
 import 'package:given_when_then_unit_test/given_when_then_unit_test.dart';
+import 'package:petitparser/petitparser.dart';
 import 'package:shouldly/shouldly.dart';
 import 'package:template_engine/template_engine.dart';
+import 'package:http/http.dart' as http;
+import 'package:test/test.dart';
 
 void main() {
   given('Template engine', () {
@@ -79,8 +82,38 @@ void main() {
         then('renderResult.text be: "$expected"',
             () => renderResult.text.should.be(expected));
       });
+
     });
   });
+
+  test('example documentation should contain existing urls only', () async {
+    var engine = TemplateEngine();
+    var parseResult = engine.parseText('{{engine.example.documentation()}}');
+
+    parseResult.errorMessage.should.beNullOrEmpty();
+    var renderResult = engine.render(parseResult);
+    var text = renderResult.text;
+    var urls = urlParser().allMatches(text);
+    urls.should.not.beEmpty();
+    final noneExistingUrls = <String>[];
+    await Future.forEach(urls, (url) async {
+      if (! await urlExists(url)) {
+        noneExistingUrls.add(url);
+      }
+    });
+    noneExistingUrls.should.beEmpty();
+  });
+}
+
+Parser<String> urlParser() =>
+    ((stringIgnoreCase('https://') | stringIgnoreCase('http://')) &
+            (letter() | digit() | char('-') | pattern('\$_.+! *\'(),/&?=: %'))
+                .plus())
+        .flatten();
+
+Future<bool> urlExists(String url) async {
+  final response = await http.get(Uri.parse(url));
+  return response.statusCode == 200;
 }
 
 class DummyFunctionGroup extends FunctionGroup {
@@ -103,5 +136,3 @@ class DummyFunction extends ExpressionFunction {
             ],
             function: (position, renderContext, parameters) => 'Dummy');
 }
-
-///TODO test if all example links exist

@@ -301,7 +301,7 @@ See [Example](https://github.com/domain-centric/template_engine/blob/main/test/s
 <tr><td>description:</td><td colspan="4">Returns the positive square root of the value.</td></tr>
 <tr><td>return type:</td><td colspan="4">number</td></tr>
 <tr><td>expression example:</td><td colspan="4">{{sqrt(9)}} should render: 3.0</td></tr>
-<tr><td>code example:</td><td colspan="4"><a href="https://github.com/domain-centric/template_engine/blob/main/test/src/parser/tag/expression/function/math/sqrt_test.dart">sqrt_test.dart</a></td></tr>
+<tr><td>code example:</td><td colspan="4"><a href="https://github.com/domain-centric/template_engine/blob/main/test/src/parser/tag/expression/function/math/sqrt_tst.dart">sqrt_tst.dart</a></td></tr>
 <tr><td>parameter:</td><td>value</td><td>number</td><td colspan="2">mandatory</td></tr>
 </table>
 
