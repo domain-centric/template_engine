@@ -182,7 +182,7 @@ class PrefixOperator<PARAMETER_TYPE extends Object> extends Operator {
   @override
   addParser(Template template, ExpressionGroup2<Expression<Object>> group) {
     group.prefix(
-        char(operator).trim(),
+        string(operator).trim(),
         (context, op, value) => PrefixExpression<PARAMETER_TYPE>(
             operator: this,
             position: context.toPositionString(),
@@ -240,7 +240,7 @@ abstract class OperatorWith2Values extends Operator {
   addParser(Template template, ExpressionGroup2<Expression<Object>> group) {
     if (associativity == OperatorAssociativity.right) {
       group.right(
-          char(operator).trim(),
+          string(operator).trim(),
           (context, left, op, right) => OperatorVariantExpression(
                 position: context.toPositionString(),
                 operator: operator,
@@ -250,7 +250,7 @@ abstract class OperatorWith2Values extends Operator {
               ));
     } else {
       group.left(
-          char(operator).trim(),
+          string(operator).trim(),
           (context, left, op, right) => OperatorVariantExpression(
                 position: context.toPositionString(),
                 operator: operator,
