@@ -62,5 +62,12 @@
 * <a href="https://github.com/domain-centric/template_engine/blob/main/test/src/parser/tag/expression/operator/addition/string_concatenate_test.dart">string_concatenate_test.dart</a>
 * <a href="https://github.com/domain-centric/template_engine/blob/main/test/src/parser/tag/expression/operator/addition/num_subtract_test.dart">num_subtract_test.dart</a>
 * <a href="https://github.com/domain-centric/template_engine/blob/main/test/src/parser/tag/expression/operator/addition/bool_or_test.dart">bool_or_test.dart</a>
+### Comparisons
+* <a href="https://github.com/domain-centric/template_engine/blob/main/test/src/parser/tag/expression/operator/comparison/equals_test.dart">equals_test.dart</a>
+* <a href="https://github.com/domain-centric/template_engine/blob/main/test/src/parser/tag/expression/operator/comparison/not_equals_test.dart">not_equals_test.dart</a>
+* <a href="https://github.com/domain-centric/template_engine/blob/main/test/src/parser/tag/expression/operator/comparison/greater_than_or_equal_test.dart">greater_than_or_equal_test.dart</a>
+* <a href="https://github.com/domain-centric/template_engine/blob/main/test/src/parser/tag/expression/operator/comparison/greater_than_test.dart">greater_than_test.dart</a>
+* <a href="https://github.com/domain-centric/template_engine/blob/main/test/src/parser/tag/expression/operator/comparison/less_than_or_equal_test.dart">less_than_or_equal_test.dart</a>
+* <a href="https://github.com/domain-centric/template_engine/blob/main/test/src/parser/tag/expression/operator/comparison/less_than_test.dart">less_than_test.dart</a>
 ### Assignment
 * <a href="https://github.com/domain-centric/template_engine/blob/main/test/src/parser/tag/expression/operator/assignment/assignment_test.dart">assignment_test.dart</a>

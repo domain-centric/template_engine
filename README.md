@@ -531,6 +531,55 @@ See [Example](https://github.com/domain-centric/template_engine/blob/main/test/s
 <tr><td>code example:</td><td><a href="https://github.com/domain-centric/template_engine/blob/main/test/src/parser/tag/expression/operator/addition/bool_or_test.dart">bool_or_test.dart</a></td></tr>
 </table>
 
+## Comparisons
+<table>
+<tr><th colspan="2">operator: ==</th></tr>
+<tr><th colspan="2">parameter type: Object</th></tr>
+<tr><td>description:</td><td>Checks if two values are equal</td></tr>
+<tr><td>expression example:</td><td>{{5==2+3}} should render: true</td></tr>
+<tr><td>code example:</td><td><a href="https://github.com/domain-centric/template_engine/blob/main/test/src/parser/tag/expression/operator/comparison/equals_test.dart">equals_test.dart</a></td></tr>
+</table>
+
+<table>
+<tr><th colspan="2">operator: !=</th></tr>
+<tr><th colspan="2">parameter type: Object</th></tr>
+<tr><td>description:</td><td>Checks if two values are NOT equal</td></tr>
+<tr><td>expression example:</td><td>{{4!=2+3}} should render: true</td></tr>
+<tr><td>code example:</td><td><a href="https://github.com/domain-centric/template_engine/blob/main/test/src/parser/tag/expression/operator/comparison/not_equals_test.dart">not_equals_test.dart</a></td></tr>
+</table>
+
+<table>
+<tr><th colspan="2">operator: >=</th></tr>
+<tr><th colspan="2">parameter type: number</th></tr>
+<tr><td>description:</td><td>Checks if the left value is greater than or equal to the right value</td></tr>
+<tr><td>expression example:</td><td>{{2>=2}} should render: true</td></tr>
+<tr><td>code example:</td><td><a href="https://github.com/domain-centric/template_engine/blob/main/test/src/parser/tag/expression/operator/comparison/greater_than_or_equal_test.dart">greater_than_or_equal_test.dart</a></td></tr>
+</table>
+
+<table>
+<tr><th colspan="2">operator: ></th></tr>
+<tr><th colspan="2">parameter type: number</th></tr>
+<tr><td>description:</td><td>Checks if the left value is greater than the right value</td></tr>
+<tr><td>expression example:</td><td>{{2>1}} should render: true</td></tr>
+<tr><td>code example:</td><td><a href="https://github.com/domain-centric/template_engine/blob/main/test/src/parser/tag/expression/operator/comparison/greater_than_test.dart">greater_than_test.dart</a></td></tr>
+</table>
+
+<table>
+<tr><th colspan="2">operator: <=</th></tr>
+<tr><th colspan="2">parameter type: number</th></tr>
+<tr><td>description:</td><td>Checks if the left value is less than or equal to the right value</td></tr>
+<tr><td>expression example:</td><td>{{2<=2}} should render: true</td></tr>
+<tr><td>code example:</td><td><a href="https://github.com/domain-centric/template_engine/blob/main/test/src/parser/tag/expression/operator/comparison/less_than_or_equal_test.dart">less_than_or_equal_test.dart</a></td></tr>
+</table>
+
+<table>
+<tr><th colspan="2">operator: <</th></tr>
+<tr><th colspan="2">parameter type: number</th></tr>
+<tr><td>description:</td><td>Checks if the left value is less than the right value</td></tr>
+<tr><td>expression example:</td><td>{{2>1}} should render: true</td></tr>
+<tr><td>code example:</td><td><a href="https://github.com/domain-centric/template_engine/blob/main/test/src/parser/tag/expression/operator/comparison/less_than_test.dart">less_than_test.dart</a></td></tr>
+</table>
+
 ## Assignment
 <table>
 <tr><th colspan="2">operator: =</th></tr>
