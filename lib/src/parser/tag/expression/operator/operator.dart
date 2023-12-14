@@ -53,7 +53,8 @@ class TwoValueOperatorVariant<LEFT_TYPE extends Object,
     bool rightTypeOk = rightValue is RIGHT_TYPE;
     if (leftTypeOk && rightTypeOk) {
       return [];
-    } else if (LEFT_TYPE.hashCode == RIGHT_TYPE.hashCode &&
+    }
+    if (LEFT_TYPE.hashCode == RIGHT_TYPE.hashCode &&
         !leftTypeOk &&
         !rightTypeOk) {
       return [
@@ -61,16 +62,16 @@ class TwoValueOperatorVariant<LEFT_TYPE extends Object,
             'must be a ${typeDescription<LEFT_TYPE>()}'
       ];
     }
+    var errors = <String>[];
     if (!leftTypeOk) {
-      return [
-        'left of the $operator operator '
-            'must be a ${typeDescription<LEFT_TYPE>()}'
-      ];
+      errors.add('left of the $operator operator '
+          'must be a ${typeDescription<LEFT_TYPE>()}');
     }
-    return [
-      'right of the $operator operator '
-          'must be a ${typeDescription<RIGHT_TYPE>()}'
-    ];
+    if (!rightTypeOk) {
+      errors.add('right of the $operator operator '
+          'must be a ${typeDescription<RIGHT_TYPE>()}');
+    }
+    return errors;
   }
 
   Object eval(Object leftValue, Object rightValue) =>
