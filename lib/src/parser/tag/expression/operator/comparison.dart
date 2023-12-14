@@ -7,6 +7,7 @@ class Comparisons extends OperatorGroup {
           NotEqualsOperator(),
           GreaterThanOrQualOperator(),
           GreaterThanOperator(),
+          LessThanOrQualOperator(),
           LessThanOperator(),
         ]);
 }
@@ -81,5 +82,20 @@ class LessThanOperator extends OperatorWith2Values {
                   'test/src/parser/tag/expression/operator/comparison/'
                   'less_than_test.dart'),
               function: (left, right) => left < right)
+        ]);
+}
+
+class LessThanOrQualOperator extends OperatorWith2Values {
+  LessThanOrQualOperator()
+      : super('<=', OperatorAssociativity.left, [
+          TwoValueOperatorVariant<num, num>(
+              description: 'Checks if the left value is less than '
+                  'or equal to the right value',
+              expressionExample: '{{2<=2}}',
+              expressionExampleResult: 'true',
+              codeExample: ProjectFilePath(
+                  'test/src/parser/tag/expression/operator/comparison/'
+                  'less_than_or_equal_test.dart'),
+              function: (left, right) => left <= right)
         ]);
 }
