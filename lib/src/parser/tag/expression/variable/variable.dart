@@ -4,7 +4,7 @@ import 'package:template_engine/template_engine.dart';
 /// A [variable](https://en.wikipedia.org/wiki/Variable_(computer_science)) is
 /// a named container for some type of information
 /// (like [num], [bool], [String] etc...)
-typedef Variable = Map<String, Object>;
+abstract class Variable {}
 
 class VariableExamples implements ExampleFactory {
   @override
@@ -18,13 +18,13 @@ class VariableExamples implements ExampleFactory {
       ];
 }
 
-/// * Variables are stored as key, value pairs in a dart Map<String, Object> where:
+/// * Variables are stored as key, value pairs in a dart Map<String, dynamic> where:
 ///   * String=Variable name
-///   * Object=Variable value
+///   * dynamic=Variable value
 /// * Variables can be used in an [ExpressionTag]
 /// * Initial variable values are passed to the TemplateEngine.render method
 /// * Variables can be modified during rendering
-typedef Variables = Map<String, Object>;
+typedef Variables = Map<String, dynamic>;
 
 /// An expression to return a variable value
 class VariableExpression extends Expression {
@@ -46,7 +46,7 @@ class VariableExpression extends Expression {
           VariableException('Variable: $namePath may not be null');
         }
         return value!;
-      } else if (value is Map<String, Object>) {
+      } else if (value is Variables) {
         // recursive:
         return _findVariableValue(value, namePath, namePathIndex + 1);
       }

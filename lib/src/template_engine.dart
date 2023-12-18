@@ -124,7 +124,7 @@ class TemplateEngine {
       );
       results = results.add(result);
       for (var parseResult in renderContext.parsedTemplates
-          .where((parseResult) => parseResult.template is ImportedTemplate)) {
+          .where((parseResult) => parseResult.template is ImportedJson)) {
         var result = ImportedTemplateParseErrors(
             parseResult.template, parseResult.errorMessage);
         results = results.add(result);

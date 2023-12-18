@@ -3,7 +3,11 @@ import 'package:template_engine/template_engine.dart';
 
 class ImportFunctions extends FunctionGroup {
   ImportFunctions()
-      : super('Import Functions', [ImportTemplate(), ImportPure()]);
+      : super('Import Functions', [
+          ImportTemplate(),
+          ImportPure(),
+          ImportJson(),
+        ]);
 }
 
 class ImportTemplate extends ExpressionFunction<String> {
@@ -27,7 +31,7 @@ class ImportTemplate extends ExpressionFunction<String> {
                     ProjectFilePath(parameters['source'] as String);
 
                 var template =
-                    ImportedTemplate.fromProjectFilePath(projectFilePath);
+                    ImportedJson.fromProjectFilePath(projectFilePath);
                 TemplateParseResult? parsedTemplate = renderContext
                     .parsedTemplates
                     .firstWhereOrNull((pt) => pt.template == template);
@@ -91,6 +95,43 @@ class ImportPure extends ExpressionFunction<String> {
                     position: position);
                 renderContext.errors.add(error);
                 return renderContext.renderedError;
+              }
+            });
+}
+
+class ImportJson extends ExpressionFunction<Map<String, dynamic>> {
+  ImportJson()
+      : super(
+            name: 'importJson',
+            description: 'Imports a json file '
+                'and decode it to a Map<String, dynamic>. '
+                'You could use it assign it to a variable.',
+            exampleExpression:
+                "{{json=importJson('test/src/parser/tag/expression/function/import/person.json')}}"
+                "{{json.person.child.name}}",
+            exampleCode: ProjectFilePath(
+                'test/src/parser/tag/expression/function/import/import_json_test.dart'),
+            parameters: [
+              Parameter<String>(
+                  name: 'source',
+                  description: 'The project path of the file',
+                  presence: Presence.mandatory())
+            ],
+            function: (position, renderContext, parameters) {
+              try {
+                var projectFilePath =
+                    ProjectFilePath(parameters['source'] as String);
+
+                var json = ImportedJson.fromProjectFilePath(projectFilePath);
+
+                return json.decode();
+              } on Exception catch (e) {
+                var error = RenderError(
+                    message: 'Error importing a Json file: '
+                        '${e.toString().replaceAll('\r', '').replaceAll('\n', '')}',
+                    position: position);
+                renderContext.errors.add(error);
+                return {};
               }
             });
 }

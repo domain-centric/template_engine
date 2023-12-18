@@ -135,8 +135,7 @@ class TemplatesRenderResult extends RenderResult {
   TemplatesRenderResult(this.renderResults)
       : super(
             text: renderResults
-                .where((renderResult) =>
-                    renderResult.template is! ImportedTemplate)
+                .where((renderResult) => renderResult.template is! ImportedJson)
                 .map((renderResult) => renderResult.text)
                 .join());
 

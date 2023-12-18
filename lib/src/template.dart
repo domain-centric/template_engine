@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:template_engine/template_engine.dart';
@@ -62,4 +63,10 @@ class FileTemplate extends Template {
 class ImportedTemplate extends FileTemplate {
   ImportedTemplate.fromProjectFilePath(super.path)
       : super.fromProjectFilePath();
+}
+
+class ImportedJson extends FileTemplate {
+  ImportedJson.fromProjectFilePath(super.path) : super.fromProjectFilePath();
+
+  Map<String, dynamic> decode() => jsonDecode(text);
 }
