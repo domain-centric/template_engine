@@ -68,7 +68,7 @@ class ImportTemplate extends ExpressionFunction<String> {
 class ImportPure extends ExpressionFunction<String> {
   ImportPure()
       : super(
-            name: 'import.pure',
+            name: 'importPure',
             description: 'Imports a file as is (without parsing and rendering)',
             exampleExpression:
                 "{{import.pure('test/src/template_engine_template_example_test.dart')}}",

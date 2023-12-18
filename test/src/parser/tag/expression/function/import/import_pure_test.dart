@@ -6,7 +6,7 @@ void main() {
   test('The import function should import a file as is', () {
     var engine = TemplateEngine();
     var parseResult = engine.parseText(
-        "{{import.pure('test/src/template_engine_template_example_test.dart')}}");
+        "{{importPure('test/src/template_engine_template_example_test.dart')}}");
     var renderResult = engine.render(parseResult);
     renderResult.errorMessage.should.beNullOrEmpty();
     var expected = "import 'package:shouldly/shouldly.dart';\n"
