@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:template_engine/template_engine.dart';
+import 'package:xml/xml.dart';
 
 /// A template is a text that can contain [Tag]s.
 /// This text is parsed by the [TemplateEngine] into [Renderer]s.
@@ -69,4 +70,25 @@ class ImportedJson extends FileTemplate {
   ImportedJson.fromProjectFilePath(super.path) : super.fromProjectFilePath();
 
   Map<String, dynamic> decode() => jsonDecode(text);
+}
+
+class ImportedXml extends FileTemplate {
+  ImportedXml.fromProjectFilePath(super.path) : super.fromProjectFilePath();
+
+  Map<String, dynamic> decode() {
+    var document = XmlDocument.parse(text);
+    return convertToMap(document);
+  }
+
+  Map<String, dynamic> convertToMap(XmlNode node) {
+    var map = <String, dynamic>{};
+    for (var element in node.childElements.whereType<XmlElement>()) {
+      if (element.children.length == 1 && element.children.first is XmlText) {
+        map[element.name.local] = element.innerText;
+      } else {
+        map[element.name.local] = convertToMap(element);
+      }
+    }
+    return map;
+  }
 }

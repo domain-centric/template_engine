@@ -11,6 +11,8 @@ dependencies:
   http: ^1.1.2
   petitparser: ^6.0.1
   recase: ^4.1.0
+  xml: ^6.5.0
+  
 
 dev_dependencies:
   flutter_lints: ^3.0.0

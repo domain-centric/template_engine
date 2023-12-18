@@ -7,6 +7,7 @@ class ImportFunctions extends FunctionGroup {
           ImportTemplate(),
           ImportPure(),
           ImportJson(),
+          ImportXml(),
         ]);
 }
 
@@ -115,7 +116,7 @@ class ImportJson extends ExpressionFunction<Map<String, dynamic>> {
             parameters: [
               Parameter<String>(
                   name: 'source',
-                  description: 'The project path of the file',
+                  description: 'The project path of the json file',
                   presence: Presence.mandatory())
             ],
             function: (position, renderContext, parameters) {
@@ -129,6 +130,43 @@ class ImportJson extends ExpressionFunction<Map<String, dynamic>> {
               } on Exception catch (e) {
                 var error = RenderError(
                     message: 'Error importing a Json file: '
+                        '${e.toString().replaceAll('\r', '').replaceAll('\n', '')}',
+                    position: position);
+                renderContext.errors.add(error);
+                return {};
+              }
+            });
+}
+
+class ImportXml extends ExpressionFunction<Map<String, dynamic>> {
+  ImportXml()
+      : super(
+            name: 'importXml',
+            description: 'Imports a XML file '
+                'and decode it to a Map<String, dynamic>. '
+                'You could use it assign it to a variable.',
+            exampleExpression:
+                "{{xml=importXml('test/src/parser/tag/expression/function/import/person.xml')}}"
+                "{{xml.person.child.name}}",
+            exampleCode: ProjectFilePath(
+                'test/src/parser/tag/expression/function/import/import_xml_test.dart'),
+            parameters: [
+              Parameter<String>(
+                  name: 'source',
+                  description: 'The project path of the XML file',
+                  presence: Presence.mandatory())
+            ],
+            function: (position, renderContext, parameters) {
+              try {
+                var projectFilePath =
+                    ProjectFilePath(parameters['source'] as String);
+
+                var xml = ImportedXml.fromProjectFilePath(projectFilePath);
+
+                return xml.decode();
+              } on Exception catch (e) {
+                var error = RenderError(
+                    message: 'Error importing a XML file: '
                         '${e.toString().replaceAll('\r', '').replaceAll('\n', '')}',
                     position: position);
                 renderContext.errors.add(error);
