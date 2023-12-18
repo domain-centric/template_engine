@@ -6,10 +6,10 @@ void main() {
   test('Multiple imports of the same file, should only parse it once', () {
     var engine = TemplateEngine();
     var parseResults = engine.parseText(
-        "{{import('doc/template/common/generated_comment.template')}}\n"
-        "{{import('doc/template/common/generated_comment.template')}}\n"
+        "{{importTemplate('doc/template/common/generated_comment.template')}}\n"
+        "{{importTemplate('doc/template/common/generated_comment.template')}}\n"
         "Hello World.\n"
-        "{{import('doc/template/common/generated_comment.template')}}");
+        "{{importTemplate('doc/template/common/generated_comment.template')}}");
 
     var parseResult = parseResults.children.first;
     var template = parseResult.template;
@@ -26,7 +26,7 @@ void main() {
 
     var commentLine = "[//]: # (This document was generated "
         "by template_engine/tool/generate_documentation.dart "
-        "from '{{import('doc/template/common/generated_...')";
+        "from '{{importTemplate('doc/template/common/ge...')"; //TODO should be real source
     var expectedText = "$commentLine\n"
         "$commentLine\n"
         'Hello World.\n'

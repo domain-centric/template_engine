@@ -13,12 +13,13 @@ class ImportFunctions extends FunctionGroup {
 class ImportTemplate extends ExpressionFunction<String> {
   ImportTemplate()
       : super(
-            name: 'import',
+            name: 'importTemplate',
             description: 'Imports, parses and renders a template file',
             exampleExpression:
                 "{{import('doc/template/common/generated_comment.template')}}",
             exampleCode: ProjectFilePath(
-                'test/src/parser/tag/expression/function/import/import_test.dart'),
+                'test/src/parser/tag/expression/function/import/'
+                'import_template_test.dart'),
             parameters: [
               Parameter<String>(
                   name: 'source',

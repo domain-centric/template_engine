@@ -1,0 +1,3 @@
+{{importTemplate('test/src/parser/tag/expression/function/import/none_existing.file')}}
+{{importTemplate('test/src/parser/tag/expression/function/import/import_template_with_errors2.md.template')}}
+1: Hello {{name}}. This is wrong: }}

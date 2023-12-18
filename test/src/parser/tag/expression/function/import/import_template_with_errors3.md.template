@@ -1,2 +1,2 @@
-{{import('/invalid.path')}}
+{{importTemplate('/invalid.path')}}
 3: Hello {{name}}. This is wrong: }}
