@@ -23,5 +23,5 @@ class TemplateWithTemplateSourceFunction extends Template {
   TemplateWithTemplateSourceFunction()
       : super(
             source: 'doc/template/generic/generated.md.template',
-            text: '{{template.source()}}');
+            text: '{{templateSource()}}');
 }

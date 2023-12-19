@@ -7,9 +7,9 @@ class TemplateFunctions extends FunctionGroup {
 class TemplateSource extends ExpressionFunction<String> {
   TemplateSource()
       : super(
-            name: "template.source",
+            name: "templateSource",
             description: 'Gives the relative path of the current template',
-            exampleExpression: "{{template.source()}}",
+            exampleExpression: "{{templateSource()}}",
             exampleCode: ProjectFilePath(
                 'test/src/parser/tag/expression/function/template/template_test.dart'),
             function: templateSourcePath);
