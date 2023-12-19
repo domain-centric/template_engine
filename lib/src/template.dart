@@ -82,13 +82,29 @@ class ImportedXml extends FileTemplate {
 
   Map<String, dynamic> convertToMap(XmlNode node) {
     var map = <String, dynamic>{};
-    for (var element in node.childElements.whereType<XmlElement>()) {
-      if (element.children.length == 1 && element.children.first is XmlText) {
-        map[element.name.local] = element.innerText;
+    for (var element in node.childElements) {
+      var entry = convertToEntry(element);
+      if (map.containsKey(entry.key)) {
+        var existingValue = map[entry.key];
+        if (existingValue is List) {
+          existingValue.add(entry.value);
+        } else {
+          var list = [];
+          list.add(existingValue);
+          map[entry.key] = list;
+        }
       } else {
-        map[element.name.local] = convertToMap(element);
+        map[entry.key] = entry.value;
       }
     }
     return map;
+  }
+
+  MapEntry<String, dynamic> convertToEntry(XmlElement element) {
+    if (element.children.length == 1 && element.children.first is XmlText) {
+      return MapEntry(element.name.local, element.innerText);
+    } else {
+      return MapEntry(element.name.local, convertToMap(element));
+    }
   }
 }
