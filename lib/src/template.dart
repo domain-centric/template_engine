@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:template_engine/template_engine.dart';
 import 'package:xml/xml.dart';
+import 'package:yaml/yaml.dart';
 
 /// A template is a text that can contain [Tag]s.
 /// This text is parsed by the [TemplateEngine] into [Renderer]s.
@@ -105,6 +106,45 @@ class ImportedXml extends FileTemplate {
       return MapEntry(element.name.local, element.innerText);
     } else {
       return MapEntry(element.name.local, convertToMap(element));
+    }
+  }
+}
+
+class ImportedYaml extends FileTemplate {
+  ImportedYaml.fromProjectFilePath(super.path) : super.fromProjectFilePath();
+
+  Map<String, dynamic> decode() {
+    var document = loadYaml(text);
+    var map = convertToMap(document);
+    return map;
+  }
+
+  Map<String, dynamic> convertToMap(YamlMap yamlMap) {
+    var map = <String, dynamic>{};
+    for (var key in yamlMap.keys) {
+      var value = yamlMap[key];
+      var entry = convertToEntry(key, value);
+      if (map.containsKey(entry.key)) {
+        var existingValue = map[entry.key];
+        if (existingValue is List) {
+          existingValue.add(entry.value);
+        } else {
+          var list = [];
+          list.add(existingValue);
+          map[entry.key] = list;
+        }
+      } else {
+        map[entry.key] = entry.value;
+      }
+    }
+    return map;
+  }
+
+  MapEntry<String, dynamic> convertToEntry(String key, dynamic value) {
+    if (value is YamlMap) {
+      return MapEntry(key, convertToMap(value));
+    } else {
+      return MapEntry(key, value);
     }
   }
 }

@@ -8,6 +8,7 @@ class ImportFunctions extends FunctionGroup {
           ImportPure(),
           ImportJson(),
           ImportXml(),
+          ImportYaml(),
         ]);
 }
 
@@ -105,9 +106,9 @@ class ImportJson extends ExpressionFunction<Map<String, dynamic>> {
   ImportJson()
       : super(
             name: 'importJson',
-            description: 'Imports a json file '
-                'and decode it to a Map<String, dynamic>. '
-                'You could use it assign it to a variable.',
+            description: 'Imports a JSON file '
+                'and decode it to a Map<String, dynamic>, '
+                'which could be assigned it to a variable.',
             exampleExpression:
                 "{{json=importJson('test/src/parser/tag/expression/function/import/person.json')}}"
                 "{{json.person.child.name}}",
@@ -116,7 +117,7 @@ class ImportJson extends ExpressionFunction<Map<String, dynamic>> {
             parameters: [
               Parameter<String>(
                   name: 'source',
-                  description: 'The project path of the json file',
+                  description: 'The project path of the JSON file',
                   presence: Presence.mandatory())
             ],
             function: (position, renderContext, parameters) {
@@ -143,8 +144,8 @@ class ImportXml extends ExpressionFunction<Map<String, dynamic>> {
       : super(
             name: 'importXml',
             description: 'Imports a XML file '
-                'and decode it to a Map<String, dynamic>. '
-                'You could use it assign it to a variable.',
+                'and decode it to a Map<String, dynamic>, '
+                'which could be assigned it to a variable.',
             exampleExpression:
                 "{{xml=importXml('test/src/parser/tag/expression/function/import/person.xml')}}"
                 "{{xml.person.child.name}}",
@@ -167,6 +168,43 @@ class ImportXml extends ExpressionFunction<Map<String, dynamic>> {
               } on Exception catch (e) {
                 var error = RenderError(
                     message: 'Error importing a XML file: '
+                        '${e.toString().replaceAll('\r', '').replaceAll('\n', '')}',
+                    position: position);
+                renderContext.errors.add(error);
+                return {};
+              }
+            });
+}
+
+class ImportYaml extends ExpressionFunction<Map<String, dynamic>> {
+  ImportYaml()
+      : super(
+            name: 'importYaml',
+            description: 'Imports a YAML file '
+                'and decode it to a Map<String, dynamic>, '
+                'which could be assigned it to a variable.',
+            exampleExpression:
+                "{{yaml=importYaml('test/src/parser/tag/expression/function/import/person.yaml')}}"
+                "{{yaml.person.child.name}}",
+            exampleCode: ProjectFilePath(
+                'test/src/parser/tag/expression/function/import/import_yaml_test.dart'),
+            parameters: [
+              Parameter<String>(
+                  name: 'source',
+                  description: 'The project path of the YAML file',
+                  presence: Presence.mandatory())
+            ],
+            function: (position, renderContext, parameters) {
+              try {
+                var projectFilePath =
+                    ProjectFilePath(parameters['source'] as String);
+
+                var yaml = ImportedYaml.fromProjectFilePath(projectFilePath);
+
+                return yaml.decode();
+              } on Exception catch (e) {
+                var error = RenderError(
+                    message: 'Error importing a YAML file: '
                         '${e.toString().replaceAll('\r', '').replaceAll('\n', '')}',
                     position: position);
                 renderContext.errors.add(error);
