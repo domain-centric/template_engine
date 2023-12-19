@@ -18,7 +18,7 @@ class ImportTemplate extends ExpressionFunction<String> {
             name: 'importTemplate',
             description: 'Imports, parses and renders a template file',
             exampleExpression:
-                "{{import('doc/template/common/generated_comment.template')}}",
+                "{{importTemplate('doc/template/common/generated_comment.template')}}",
             exampleCode: ProjectFilePath(
                 'test/src/parser/tag/expression/function/import/'
                 'import_template_test.dart'),
@@ -74,7 +74,7 @@ class ImportPure extends ExpressionFunction<String> {
             name: 'importPure',
             description: 'Imports a file as is (without parsing and rendering)',
             exampleExpression:
-                "{{import.pure('test/src/template_engine_template_example_test.dart')}}",
+                "{{importPure('test/src/template_engine_template_example_test.dart')}}",
             exampleCode: ProjectFilePath(
                 'test/src/parser/tag/expression/function/import/import_pure_test.dart'),
             parameters: [
