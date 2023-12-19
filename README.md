@@ -322,59 +322,59 @@ See [Example](https://github.com/domain-centric/template_engine/blob/main/test/s
 
 ## Documentation Functions
 <table>
-<tr><th colspan="5">engine.tag.documentation</th></tr>
+<tr><th colspan="5">tagDocumentation</th></tr>
 <tr><td>description:</td><td colspan="4">Generates markdown documentation of all the tags within a TemplateEngine</td></tr>
 <tr><td>return type:</td><td colspan="4">String</td></tr>
-<tr><td>expression example:</td><td colspan="4">{{ engine.tag.documentation() }}</td></tr>
+<tr><td>expression example:</td><td colspan="4">{{ tagDocumentation() }}</td></tr>
 <tr><td>parameter:</td><td>titleLevel</td><td>number</td><td>optional (default=1)</td><td>The level of the tag title</td></tr>
 </table>
 
 <table>
-<tr><th colspan="5">engine.dataType.documentation</th></tr>
+<tr><th colspan="5">dataTypeDocumentation</th></tr>
 <tr><td>description:</td><td colspan="4">Generates markdown documentation of all the data types that can be used within a ExpressionTag of a TemplateEngine</td></tr>
 <tr><td>return type:</td><td colspan="4">String</td></tr>
-<tr><td>expression example:</td><td colspan="4">{{ engine.dataType.documentation() }}</td></tr>
+<tr><td>expression example:</td><td colspan="4">{{ dataTypeDocumentation() }}</td></tr>
 <tr><td>parameter:</td><td>titleLevel</td><td>number</td><td>optional (default=1)</td><td>The level of the tag title</td></tr>
 </table>
 
 <table>
-<tr><th colspan="5">engine.constant.documentation</th></tr>
+<tr><th colspan="5">constantDocumentation</th></tr>
 <tr><td>description:</td><td colspan="4">Generates markdown documentation of all the constants that can be used within a ExpressionTag of a TemplateEngine</td></tr>
 <tr><td>return type:</td><td colspan="4">String</td></tr>
-<tr><td>expression example:</td><td colspan="4">{{ engine.constant.documentation() }}</td></tr>
+<tr><td>expression example:</td><td colspan="4">{{ constantDocumentation() }}</td></tr>
 <tr><td>parameter:</td><td>titleLevel</td><td>number</td><td>optional (default=1)</td><td>The level of the tag title</td></tr>
 </table>
 
 <table>
-<tr><th colspan="5">engine.function.documentation</th></tr>
+<tr><th colspan="5">functionDocumentation</th></tr>
 <tr><td>description:</td><td colspan="4">Generates markdown documentation of all the functions that can be used within a ExpressionTag of a TemplateEngine</td></tr>
 <tr><td>return type:</td><td colspan="4">String</td></tr>
-<tr><td>expression example:</td><td colspan="4">{{ engine.function.documentation() }}</td></tr>
+<tr><td>expression example:</td><td colspan="4">{{ functionDocumentation() }}</td></tr>
 <tr><td>parameter:</td><td>titleLevel</td><td>number</td><td>optional (default=1)</td><td>The level of the tag title</td></tr>
 </table>
 
 <table>
-<tr><th colspan="5">engine.operator.documentation</th></tr>
+<tr><th colspan="5">operatorDocumentation</th></tr>
 <tr><td>description:</td><td colspan="4">Generates markdown documentation of all the operators that can be used within a ExpressionTag of a TemplateEngine</td></tr>
 <tr><td>return type:</td><td colspan="4">String</td></tr>
-<tr><td>expression example:</td><td colspan="4">{{ engine.operator.documentation() }}</td></tr>
+<tr><td>expression example:</td><td colspan="4">{{ operatorDocumentation() }}</td></tr>
 <tr><td>parameter:</td><td>titleLevel</td><td>number</td><td>optional (default=1)</td><td>The level of the tag title</td></tr>
 </table>
 
 <table>
-<tr><th colspan="5">engine.example.documentation</th></tr>
+<tr><th colspan="5">exampleDocumentation</th></tr>
 <tr><td>description:</td><td colspan="4">Generates markdown documentation of all the examples. This could be used to generate example.md file.</td></tr>
 <tr><td>return type:</td><td colspan="4">String</td></tr>
-<tr><td>expression example:</td><td colspan="4">{{ engine.example.documentation() }}</td></tr>
+<tr><td>expression example:</td><td colspan="4">{{ exampleDocumentation() }}</td></tr>
 <tr><td>parameter:</td><td>titleLevel</td><td>number</td><td>optional (default=1)</td><td>The level of the tag title</td></tr>
 </table>
 
 ## Template Functions
 <table>
-<tr><th colspan="5">template.source</th></tr>
+<tr><th colspan="5">templateSource</th></tr>
 <tr><td>description:</td><td colspan="4">Gives the relative path of the current template</td></tr>
 <tr><td>return type:</td><td colspan="4">String</td></tr>
-<tr><td>expression example:</td><td colspan="4">{{template.source()}}</td></tr>
+<tr><td>expression example:</td><td colspan="4">{{templateSource()}}</td></tr>
 <tr><td>code example:</td><td colspan="4"><a href="https://github.com/domain-centric/template_engine/blob/main/test/src/parser/tag/expression/function/template/template_test.dart">template_test.dart</a></td></tr>
 </table>
 

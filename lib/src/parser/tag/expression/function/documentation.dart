@@ -55,7 +55,7 @@ abstract class DocumentationFunction extends ExpressionFunction<String> {
 class TagDocumentation extends DocumentationFunction {
   TagDocumentation()
       : super(
-            name: 'engine.tag.documentation',
+            name: 'tagDocumentation',
             description: 'Generates markdown documentation of all the tags '
                 'within a TemplateEngine',
             documentationFunction: (renderContext, titleLevel) => renderContext
@@ -69,7 +69,7 @@ class TagDocumentation extends DocumentationFunction {
 class DataTypeDocumentation extends DocumentationFunction {
   DataTypeDocumentation()
       : super(
-            name: 'engine.dataType.documentation',
+            name: 'dataTypeDocumentation',
             description: 'Generates markdown documentation of all the data '
                 'types that can be used within a ExpressionTag of a '
                 'TemplateEngine',
@@ -84,7 +84,7 @@ class DataTypeDocumentation extends DocumentationFunction {
 class ConstantDocumentation extends DocumentationFunction {
   ConstantDocumentation()
       : super(
-            name: 'engine.constant.documentation',
+            name: 'constantDocumentation',
             description:
                 'Generates markdown documentation of all the constants '
                 'that can be used within a ExpressionTag of a TemplateEngine',
@@ -99,7 +99,7 @@ class ConstantDocumentation extends DocumentationFunction {
 class FunctionDocumentation extends DocumentationFunction {
   FunctionDocumentation()
       : super(
-            name: 'engine.function.documentation',
+            name: 'functionDocumentation',
             description:
                 'Generates markdown documentation of all the functions '
                 'that can be used within a ExpressionTag of a TemplateEngine',
@@ -114,7 +114,7 @@ class FunctionDocumentation extends DocumentationFunction {
 class OperatorDocumentation extends DocumentationFunction {
   OperatorDocumentation()
       : super(
-            name: 'engine.operator.documentation',
+            name: 'operatorDocumentation',
             description:
                 'Generates markdown documentation of all the operators '
                 'that can be used within a ExpressionTag of a TemplateEngine',
@@ -129,7 +129,7 @@ class OperatorDocumentation extends DocumentationFunction {
 class ExampleDocumentation extends DocumentationFunction {
   ExampleDocumentation()
       : super(
-            name: 'engine.example.documentation',
+            name: 'exampleDocumentation',
             description:
                 'Generates markdown documentation of all the examples. '
                 'This could be used to generate example.md file.',

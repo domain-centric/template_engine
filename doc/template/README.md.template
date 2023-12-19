@@ -73,7 +73,7 @@ if your template contains HTML or XML.
 The TemplateEngine comes with default tags. You can replace or add your
 own tags by manipulating the the TemplateEngine.tags field.
 
-{{engine.tag.documentation(2)}}
+{{tagDocumentation(2)}}
 
 # Data types in tag expressions
 [//]: # (TODO: This text should be imported from the dart doc of the DataType class using document_generator package)
@@ -89,7 +89,7 @@ manipulating the TemplateEngine.dataTypes field.
 See [Example](https://github.com/domain-centric/template_engine/blob/main/test/src/parser/tag/expression/data_type/custom_data_type_test.dart). 
 
 ## Available DataTypes
-{{engine.dataType.documentation(2)}}
+{{dataTypeDocumentation(2)}}
 
 # Constants in tag expressions
 [//]: # (TODO: This text should be imported from the dart doc of the Constant class using document_generator package)
@@ -103,7 +103,7 @@ manipulating the TemplateEngine.constants field.
 See [Example](https://github.com/domain-centric/template_engine/blob/main/test/src/parser/tag/expression/constant/custom_constant_test.dart).
 
 ## Available Constants
-{{engine.constant.documentation(2)}}
+{{constantDocumentation(2)}}
 
 # Variables in tag expressions
 [//]: # (TODO: This text should be imported from the dart doc of the Variable class using document_generator package)
@@ -152,7 +152,7 @@ manipulating the TemplateEngine.functionGroups field.
 See [Example](https://github.com/domain-centric/template_engine/blob/main/test/src/parser/tag/expression/function/custom_function_test.dart). 
 
 ## Available Functions
-{{engine.function.documentation(2)}}
+{{functionDocumentation(2)}}
 
 # Operator
  An operator behaves generally like functions,
@@ -172,4 +172,4 @@ See [Example](https://github.com/domain-centric/template_engine/blob/main/test/s
  See [custom_operator_test.dart](https://github.com/domain-centric/template_engine/blob/main/test/src/parser/tag/expression/operator/custom_operator_test.dart).
 
 ## Available Operators
-{{engine.operator.documentation(2)}}
+{{operatorDocumentation(2)}}
