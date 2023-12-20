@@ -11,7 +11,8 @@ void main() {
                 () => Parameter(name: 'inv@lid'))!
             .message
             .should
-            .be('Parameter name: "inv@lid" is invalid: end of input expected at position: 3');
+            .be('Invalid parameter name: "inv@lid", '
+                'letter OR digit expected at position 3');
       });
     });
   });

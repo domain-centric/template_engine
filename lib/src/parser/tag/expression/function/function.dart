@@ -39,6 +39,29 @@ Parser<Expression> functionParser({
           values[2] as Map<String, Expression>));
 }
 
+class FunctionException implements Exception {
+  final String message;
+  FunctionException(this.message);
+}
+
+/// The [FunctionName]:
+/// * must start with a lower case letter, optionally followed by letters and or digits.
+/// * is case sensitive .
+///
+/// E.g.: myValue1
+class FunctionName {
+  static final Parser<String> parser =
+      (lowercase() & (letter() | digit()).star()).flatten();
+
+  static validate(String name) {
+    var result = parser.end('letter OR digit expected').parse(name);
+    if (result is Failure) {
+      throw FunctionException("Invalid function name: '$name', "
+          "${result.message} at position ${result.position}");
+    }
+  }
+}
+
 class FunctionExpression<R extends Object> extends Expression<R> {
   final String position;
   final ExpressionFunction<R> function;
@@ -87,7 +110,9 @@ class ExpressionFunction<R extends Object>
     this.exampleCode,
     this.parameters = const [],
     required this.function,
-  });
+  }) {
+    FunctionName.validate(name);
+  }
 
   final String name;
   final String? description;
@@ -299,13 +324,13 @@ class Presence {
 ///
 /// E.g.: myValue1
 class ParameterName {
-  static final parser = (letter().plus() & digit().star()).plus().flatten();
+  static final parser = FunctionName.parser;
 
   static validate(String name) {
-    var result = parser.end().parse(name);
+    var result = parser.end('letter OR digit expected').parse(name);
     if (result is Failure) {
       throw ParameterException(
-          'Parameter name: "$name" is invalid: ${result.message} at position: ${result.position}');
+          'Invalid parameter name: "$name", ${result.message} at position ${result.position}');
     }
   }
 }
