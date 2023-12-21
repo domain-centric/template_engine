@@ -6,7 +6,7 @@ void main() {
   const path = 'test/src/parser/tag/expression/function/import/person.yaml';
 
   test('test importYaml on existing yaml file', () {
-    Variables yamlMap = {
+    DataMap yamlMap = {
       'person': {
         'name': 'John Doe',
         'age': 30,
@@ -39,8 +39,9 @@ void main() {
     renderResult.text.should.be('{{ERROR}}');
     renderResult.errorMessage.should.contain("Render errors in: "
         "'{{yaml=importYaml('none_existing.yaml')}");
-    renderResult.errorMessage.should.contain("1:8: Error importing a "
-        "YAML file: PathNotFoundException: Cannot open file, path");
+    renderResult.errorMessage.should
+        .contain("  1:8: Error importing a YAML file: Exception: "
+            "Source could not be read: none_existing.yaml");
     renderResult.errorMessage.should.contain("none_existing.yaml");
     renderResult.errorMessage.should.contain(" 1:44: Variable "
         "does not exist: yaml.person");

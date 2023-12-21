@@ -26,7 +26,7 @@ void main() {
 
     var commentLine = "[//]: # (This document was generated "
         "by template_engine/tool/generate_documentation.dart "
-        "from '{{importTemplate('doc/template/common/ge...')"; //TODO should be real source
+        "from '{{importTemplate('doc/template/common/ge...')";
     var expectedText = "$commentLine\n"
         "$commentLine\n"
         'Hello World.\n'

@@ -29,8 +29,7 @@ void main() {
     renderResult.errorMessage.should
         .contain("Render error in: '{{importPure('none_existent.dart')}}':");
     renderResult.errorMessage.should
-        .contain("  1:3: Error importing a pure file: PathNotFoundException: "
-            "Cannot open file, path = ");
-    renderResult.errorMessage.should.contain("none_existent.dart");
+        .contain("  1:3: Error importing a pure file: Exception: "
+            "Source could not be read: none_existent.dart");
   });
 }

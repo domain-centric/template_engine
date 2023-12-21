@@ -18,13 +18,37 @@ class VariableExamples implements ExampleFactory {
       ];
 }
 
+/// A [DataMap] is a structure that stores information with keys and values.
+/// The key is a name that identifies a value
+/// A value can is normally on of the following types:
+/// * [bool]
+/// * [String]
+/// * [num]
+/// * A list of one of the types above
+/// * A [DataMap]
+///
+/// An example of a [DataMap]:
+///
+/// DataMap dataMap = {
+///   'person': {
+///     'name': 'John Doe',
+///     'age': 30,
+///     'alive': true
+///     'child': {
+///       'name': 'Jane Doe',
+///       'age': 5,
+///     }
+///   }
+/// };
+typedef DataMap = Map<String, dynamic>;
+
 /// * Variables are stored as key, value pairs in a dart Map<String, dynamic> where:
 ///   * String=Variable name
 ///   * dynamic=Variable value
 /// * Variables can be used in an [ExpressionTag]
 /// * Initial variable values are passed to the TemplateEngine.render method
 /// * Variables can be modified during rendering
-typedef Variables = Map<String, dynamic>;
+typedef VariableMap = DataMap;
 
 /// An expression to return a variable value
 class VariableExpression extends Expression {
@@ -36,7 +60,7 @@ class VariableExpression extends Expression {
   String toString() => 'Variable{$namePath}';
 
   Object _findVariableValue(
-      Variables variables, List<String> namePath, namePathIndex) {
+      VariableMap variables, List<String> namePath, namePathIndex) {
     var name = namePath[namePathIndex];
 
     if (variables.containsKey(name)) {
@@ -46,7 +70,7 @@ class VariableExpression extends Expression {
           VariableException('Variable: $namePath may not be null');
         }
         return value!;
-      } else if (value is Variables) {
+      } else if (value is VariableMap) {
         // recursive:
         return _findVariableValue(value, namePath, namePathIndex + 1);
       }
@@ -80,7 +104,7 @@ class VariableException implements Exception {
 }
 
 /// The [VariableName] identifies the [Variable] and corresponds with the keys
-/// in the [Variables] map.
+/// in the [VariableMap] map.
 ///
 /// The [VariableName]:
 /// * must be unique and does not match a other [Tag] syntax

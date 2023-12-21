@@ -6,7 +6,7 @@ void main() {
   const path = 'test/src/parser/tag/expression/function/import/person.xml';
 
   test('test importXml on existing xml file', () {
-    Variables xmlMap = {
+    DataMap xmlMap = {
       'person': {
         'name': 'John Doe',
         'age': 30,
@@ -38,8 +38,8 @@ void main() {
     renderResult.text.should.be('{{ERROR}}');
     renderResult.errorMessage.should.contain("Render errors in: "
         "'{{xml=importXml('none_existing.xml')}");
-    renderResult.errorMessage.should.contain("1:7: Error importing a "
-        "XML file: PathNotFoundException: Cannot open file, path");
+    renderResult.errorMessage.should.contain("1:7: Error importing a XML file:"
+        " Exception: Source could not be read: none_existing.xml");
     renderResult.errorMessage.should.contain("none_existing.xml");
     renderResult.errorMessage.should.contain(" 1:41: Variable "
         "does not exist: xml.person");

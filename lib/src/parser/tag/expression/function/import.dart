@@ -1,5 +1,9 @@
+import 'dart:convert';
+
 import 'package:collection/collection.dart';
 import 'package:template_engine/template_engine.dart';
+import 'package:xml/xml.dart';
+import 'package:yaml/yaml.dart';
 
 class ImportFunctions extends FunctionGroup {
   ImportFunctions()
@@ -30,11 +34,10 @@ class ImportTemplate extends ExpressionFunction<String> {
             ],
             function: (position, renderContext, parameters) {
               try {
-                var projectFilePath =
-                    ProjectFilePath(parameters['source'] as String);
+                var source = parameters['source'] as String;
+                var text = readSource(source);
+                var template = ImportedTemplate(source: source, text: text);
 
-                var template =
-                    ImportedJson.fromProjectFilePath(projectFilePath);
                 TemplateParseResult? parsedTemplate = renderContext
                     .parsedTemplates
                     .firstWhereOrNull((pt) => pt.template == template);
@@ -80,17 +83,15 @@ class ImportPure extends ExpressionFunction<String> {
             parameters: [
               Parameter<String>(
                   name: 'source',
-                  description: 'The project path of the file',
+                  description: 'The project path of the file. '
+                      'This path can be a absolute or relative file path or URI.',
                   presence: Presence.mandatory())
             ],
             function: (position, renderContext, parameters) {
               try {
-                var projectFilePath =
-                    ProjectFilePath(parameters['source'] as String);
-
-                var template =
-                    ImportedTemplate.fromProjectFilePath(projectFilePath);
-                return template.text;
+                var source = parameters['source'] as String;
+                var text = readSource(source);
+                return text;
               } on Exception catch (e) {
                 var error = RenderError(
                     message: 'Error importing a pure file: '
@@ -117,17 +118,16 @@ class ImportJson extends ExpressionFunction<Map<String, dynamic>> {
             parameters: [
               Parameter<String>(
                   name: 'source',
-                  description: 'The project path of the JSON file',
+                  description: 'The project path of the JSON file. '
+                      'This path can be a absolute or relative file path or URI.',
                   presence: Presence.mandatory())
             ],
             function: (position, renderContext, parameters) {
               try {
-                var projectFilePath =
-                    ProjectFilePath(parameters['source'] as String);
-
-                var json = ImportedJson.fromProjectFilePath(projectFilePath);
-
-                return json.decode();
+                var source = parameters['source'] as String;
+                var jsonText = readSource(source);
+                var jsonMap = jsonDecode(jsonText);
+                return jsonMap;
               } on Exception catch (e) {
                 var error = RenderError(
                     message: 'Error importing a Json file: '
@@ -154,17 +154,17 @@ class ImportXml extends ExpressionFunction<Map<String, dynamic>> {
             parameters: [
               Parameter<String>(
                   name: 'source',
-                  description: 'The project path of the XML file',
+                  description: 'The project path of the XML file. '
+                      'This path can be a absolute or relative file path or URI.',
                   presence: Presence.mandatory())
             ],
             function: (position, renderContext, parameters) {
               try {
-                var projectFilePath =
-                    ProjectFilePath(parameters['source'] as String);
+                var source = parameters['source'] as String;
 
-                var xml = ImportedXml.fromProjectFilePath(projectFilePath);
-
-                return xml.decode();
+                var xmlText = readSource(source);
+                var xmlMap = xmlToDataMap(xmlText);
+                return xmlMap;
               } on Exception catch (e) {
                 var error = RenderError(
                     message: 'Error importing a XML file: '
@@ -174,6 +174,39 @@ class ImportXml extends ExpressionFunction<Map<String, dynamic>> {
                 return {};
               }
             });
+
+  static DataMap xmlToDataMap(String xml) {
+    var document = XmlDocument.parse(xml);
+    return _xmlNodeToDataMap(document);
+  }
+
+  static Map<String, dynamic> _xmlNodeToDataMap(XmlNode node) {
+    var map = <String, dynamic>{};
+    for (var element in node.childElements) {
+      var entry = _xmlElementToEntry(element);
+      if (map.containsKey(entry.key)) {
+        var existingValue = map[entry.key];
+        if (existingValue is List) {
+          existingValue.add(entry.value);
+        } else {
+          var list = [];
+          list.add(existingValue);
+          map[entry.key] = list;
+        }
+      } else {
+        map[entry.key] = entry.value;
+      }
+    }
+    return map;
+  }
+
+  static MapEntry<String, dynamic> _xmlElementToEntry(XmlElement element) {
+    if (element.children.length == 1 && element.children.first is XmlText) {
+      return MapEntry(element.name.local, element.innerText);
+    } else {
+      return MapEntry(element.name.local, _xmlNodeToDataMap(element));
+    }
+  }
 }
 
 class ImportYaml extends ExpressionFunction<Map<String, dynamic>> {
@@ -191,17 +224,16 @@ class ImportYaml extends ExpressionFunction<Map<String, dynamic>> {
             parameters: [
               Parameter<String>(
                   name: 'source',
-                  description: 'The project path of the YAML file',
+                  description: 'The project path of the YAML file. '
+                      'This path can be a absolute or relative file path or URI.',
                   presence: Presence.mandatory())
             ],
             function: (position, renderContext, parameters) {
               try {
-                var projectFilePath =
-                    ProjectFilePath(parameters['source'] as String);
-
-                var yaml = ImportedYaml.fromProjectFilePath(projectFilePath);
-
-                return yaml.decode();
+                var source = parameters['source'] as String;
+                var yamlText = readSource(source);
+                var yamlMap = yamlToDataMap(yamlText);
+                return yamlMap;
               } on Exception catch (e) {
                 var error = RenderError(
                     message: 'Error importing a YAML file: '
@@ -211,4 +243,40 @@ class ImportYaml extends ExpressionFunction<Map<String, dynamic>> {
                 return {};
               }
             });
+
+  static DataMap yamlToDataMap(String yaml) {
+    var document = loadYaml(yaml);
+    var map = _yamlMapToDataMap(document);
+    return map;
+  }
+
+  static DataMap _yamlMapToDataMap(YamlMap yamlMap) {
+    var map = <String, dynamic>{};
+    for (var key in yamlMap.keys) {
+      var value = yamlMap[key];
+      var entry = _yamlKeyValueToEntry(key, value);
+      if (map.containsKey(entry.key)) {
+        var existingValue = map[entry.key];
+        if (existingValue is List) {
+          existingValue.add(entry.value);
+        } else {
+          var list = [];
+          list.add(existingValue);
+          map[entry.key] = list;
+        }
+      } else {
+        map[entry.key] = entry.value;
+      }
+    }
+    return map;
+  }
+
+  static MapEntry<String, dynamic> _yamlKeyValueToEntry(
+      String key, dynamic value) {
+    if (value is YamlMap) {
+      return MapEntry(key, _yamlMapToDataMap(value));
+    } else {
+      return MapEntry(key, value);
+    }
+  }
 }

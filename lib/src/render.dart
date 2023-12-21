@@ -59,7 +59,7 @@ class ParserTree<T> extends Renderer<String> {
 
 class RenderContext {
   final TemplateEngine engine;
-  final Variables variables;
+  final VariableMap variables;
   List<Error> errors;
   final String renderedError;
 
@@ -74,7 +74,7 @@ class RenderContext {
 
       /// How errors need to be rendered
       String? renderedError,
-      Variables? variables})
+      VariableMap? variables})
       : variables = variables ?? {},
         renderedError =
             renderedError ?? '${engine.tagStart}ERROR${engine.tagEnd}',
@@ -135,7 +135,8 @@ class TemplatesRenderResult extends RenderResult {
   TemplatesRenderResult(this.renderResults)
       : super(
             text: renderResults
-                .where((renderResult) => renderResult.template is! ImportedJson)
+                .where((renderResult) =>
+                    renderResult.template is! ImportedTemplate)
                 .map((renderResult) => renderResult.text)
                 .join());
 

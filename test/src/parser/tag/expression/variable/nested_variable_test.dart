@@ -5,7 +5,7 @@ import 'package:test/test.dart';
 void main() {
   test('{{person}} should render the person variable', () {
     var engine = TemplateEngine();
-    Variables variables = {
+    VariableMap variables = {
       'person': {
         'name': 'John Doe',
         'age': 30,
@@ -23,7 +23,7 @@ void main() {
 
   test('{{person.name}} should render the nested person.name variable', () {
     var engine = TemplateEngine();
-    Variables variables = {
+    VariableMap variables = {
       'person': {
         'name': 'John Doe',
         'age': 30,
@@ -42,7 +42,7 @@ void main() {
       '{{person.child.name}} should render the nested person.child.name variable',
       () {
     var engine = TemplateEngine();
-    Variables variables = {
+    VariableMap variables = {
       'person': {
         'name': 'John Doe',
         'age': 30,
@@ -62,7 +62,7 @@ void main() {
       '{{person.child.age}} should render the nested person.child.age variable',
       () {
     var engine = TemplateEngine();
-    Variables variables = {
+    VariableMap variables = {
       'person': {
         'name': 'John Doe',
         'age': 30,
@@ -80,7 +80,7 @@ void main() {
 
   test('"Hello {{person.child.name}}." should render a greeting', () {
     var engine = TemplateEngine();
-    Variables variables = {
+    VariableMap variables = {
       'person': {
         'name': 'John Doe',
         'age': 30,

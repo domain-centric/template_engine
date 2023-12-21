@@ -107,7 +107,7 @@ class TemplateEngine {
 
   /// Render the [parser tree](https://en.wikipedia.org/wiki/Parse_tree)
   /// to a string (and write it as files when needed)
-  RenderResult render(ParseResult parseResults, [Variables? variables]) {
+  RenderResult render(ParseResult parseResults, [VariableMap? variables]) {
     var results = TemplatesRenderResult([]);
     for (var parseResult in [...parseResults.children]) {
       var template = parseResult.template;
@@ -124,7 +124,7 @@ class TemplateEngine {
       );
       results = results.add(result);
       for (var parseResult in renderContext.parsedTemplates
-          .where((parseResult) => parseResult.template is ImportedJson)) {
+          .where((parseResult) => parseResult.template is ImportedTemplate)) {
         var result = ImportedTemplateParseErrors(
             parseResult.template, parseResult.errorMessage);
         results = results.add(result);
