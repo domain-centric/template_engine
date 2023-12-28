@@ -45,7 +45,7 @@ import 'package:template_engine/template_engine.dart';
 void main() {
   var engine = TemplateEngine();
   var parseResult = engine.parseText('Hello {{name}}.');
-  var renderResult = engine.render(parseResult, {'name': 'world'});
+  var renderResult = await engine.render(parseResult, {'name': 'world'});
   renderResult.text.should.be('Hello world.');
 }
 

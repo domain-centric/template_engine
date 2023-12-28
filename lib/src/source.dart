@@ -1,52 +1,66 @@
+import 'dart:convert';
 import 'dart:io';
 
 /// [source] is the location of a file.
 /// [source] can be a [File.path], [ProjectFilePath] or [Uri]
-String readSource(String source) {
-  var text = readFromFilePath(source) ??
-      readFromHttpUri(source) ??
-      readFromFileUri(source);
-  if (text == null) {
-    throw Exception('Source could not be read: $source');
+Future<String> readSource(String source) async {
+  try {
+    return await readFromFilePath(source);
+  } on UnsupportedSourceException {
+    try {
+      return await readFromHttpUri(source);
+    } on UnsupportedSourceException {
+      try {
+        return await readFromFileUri(source);
+      } on Exception catch (e) {
+        return Future.error(e);
+      }
+    }
   }
-  return text;
 }
 
 /// Reads a file from a operation systems
 /// [File Path](https://en.wikipedia.org/wiki/Path_(computing))/
-String? readFromFilePath(String source) {
+Future<String> readFromFilePath(String source) async {
   try {
     var file = File(source);
-    return file.readAsStringSync();
+    return await file.readAsString();
   } on Exception {
-    return null;
+    return Future.error(UnsupportedSourceException());
   }
 }
 
-String? readFromHttpUri(String source) {
-  try {
-    var uri = Uri.parse(source);
-    if (uri.isScheme('HTTP') || uri.isScheme("HTTPS")) {
-      //TODO see https://pub.dev/packages/sync_http and
-      // https://github.com/google/sync_http.dart/blob/master/test/http_basic_test.dart
-      return "TODO";
-    } else {
-      return null;
+Future<String> readFromHttpUri(String source) async {
+  var url = Uri.parse(source);
+  if (url.isScheme('HTTP') || url.isScheme("HTTPS")) {
+    try {
+      var request = await HttpClient().getUrl(url);
+      var response = await request.close();
+      if (response.statusCode != 200) {
+        return Future.error(Exception(
+            'Error reading: $source, status code: ${response.statusCode}'));
+      }
+      return response.transform(const Utf8Decoder()).join();
+    } on Exception catch (e) {
+      return Future.error(Exception('Error reading: $source, $e'));
     }
-  } on Exception {
-    return null;
   }
+  return Future.error(UnsupportedSourceException());
 }
 
 /// Reads from a
 /// [File URI scheme](https://en.wikipedia.org/wiki/File_URI_scheme).
 /// This includes a [ProjectFilePath].
-String? readFromFileUri(String source) {
+Future<String> readFromFileUri(String source) async {
   try {
     var uri = Uri.parse(source);
     var file = File.fromUri(uri);
-    return file.readAsStringSync();
-  } on Exception {
-    return null;
+    return await file.readAsString();
+  } on Exception catch (e) {
+    return Future.error(Exception('Error reading: $source, $e'));
   }
+}
+
+class UnsupportedSourceException implements Exception {
+  UnsupportedSourceException();
 }

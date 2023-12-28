@@ -14,8 +14,8 @@ class PrefixExpression<PARAMETER_TYPE extends Object>
       required this.valueExpression});
 
   @override
-  PARAMETER_TYPE render(RenderContext context) {
-    var value = valueExpression.render(context);
+  Future<PARAMETER_TYPE> render(RenderContext context) async {
+    var value = await valueExpression.render(context);
     if (value is PARAMETER_TYPE) {
       return operator.function(value);
     }
@@ -95,9 +95,9 @@ class OperatorVariantExpression extends Expression {
       required this.right});
 
   @override
-  Object render(RenderContext context) {
-    var leftValue = left.render(context);
-    var rightValue = right.render(context);
+  Future<Object> render(RenderContext context) async {
+    var leftValue = await left.render(context);
+    var rightValue = await right.render(context);
 
     var errors = <String>[];
     for (var operatorVariant in variants) {

@@ -12,9 +12,7 @@ class TemplateSource extends ExpressionFunction<String> {
             exampleExpression: "{{templateSource()}}",
             exampleCode: ProjectFilePath(
                 'test/src/parser/tag/expression/function/template/template_test.dart'),
-            function: templateSourcePath);
-
-  static String templateSourcePath(String position, RenderContext renderContext,
-          Map<String, Object> parameterValues) =>
-      renderContext.templateBeingRendered.source;
+            function: (String position, RenderContext renderContext,
+                    Map<String, Object> parameterValues) =>
+                Future.value(renderContext.templateBeingRendered.source));
 }

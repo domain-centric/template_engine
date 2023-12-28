@@ -58,7 +58,7 @@ class AssignVariableExpression extends Expression<String> {
       {required this.position, required this.left, required this.right});
 
   @override
-  String render(RenderContext context) {
+  Future<String> render(RenderContext context) async {
     var variableExpression = left;
     if (variableExpression is! VariableExpression) {
       throw RenderException(
@@ -74,7 +74,7 @@ class AssignVariableExpression extends Expression<String> {
           position: position);
     }
 
-    var value = right.render(context);
+    var value = await right.render(context);
     context.variables[variableExpression.namePath] = value;
     return ''; // variable assignment returns an empty string.
   }

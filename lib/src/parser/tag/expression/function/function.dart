@@ -70,13 +70,13 @@ class FunctionExpression<R extends Object> extends Expression<R> {
   FunctionExpression(this.position, this.function, this.parameterExpressionMap);
 
   @override
-  R render(RenderContext context) {
+  Future<R> render(RenderContext context) async {
     ParameterMap parameterMap = <String, Object>{};
     for (var name in parameterExpressionMap.keys) {
-      var value = parameterExpressionMap[name]!.render(context);
+      var value = await parameterExpressionMap[name]!.render(context);
       parameterMap[name] = value;
     }
-    return function.function(position, context, parameterMap);
+    return await function.function(position, context, parameterMap);
   }
 
   @override
@@ -120,7 +120,7 @@ class ExpressionFunction<R extends Object>
   final String? exampleResult;
   final ProjectFilePath? exampleCode;
   final List<Parameter> parameters;
-  final R Function(String position, RenderContext renderContext,
+  final Future<R> Function(String position, RenderContext renderContext,
       Map<String, Object> parameters) function;
 
   @override

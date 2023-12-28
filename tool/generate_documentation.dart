@@ -19,13 +19,13 @@ void main(List<String> args) {
   }
 }
 
-void generate(
+Future<void> generate(
     {required TemplateEngine engine,
     required ProjectFilePath templatePath,
-    required ProjectFilePath outputPath}) {
+    required ProjectFilePath outputPath}) async {
   var template = FileTemplate(templatePath.file);
   var parseResult = engine.parseTemplate(template);
-  var renderResult = engine.render(parseResult);
+  var renderResult = await engine.render(parseResult);
   if (parseResult.errorMessage.isNotEmpty) {
     print(parseResult.errorMessage);
   }

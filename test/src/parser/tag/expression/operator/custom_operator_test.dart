@@ -3,13 +3,13 @@ import 'package:template_engine/template_engine.dart';
 import 'package:test/test.dart';
 
 void main() {
-  test('Custom operator : should work correctly', () {
+  test('Custom operator : should work correctly', () async {
     var engine = TemplateEngine();
     var group =
         engine.operatorGroups.firstWhere((group) => group is Multiplication);
     group.add(DivideOperator());
     var parseResult = engine.parseTemplate(TextTemplate('{{6 : 3}}'));
-    var renderResult = engine.render(parseResult);
+    var renderResult = await engine.render(parseResult);
     renderResult.text.should.be('2.0');
   });
 }

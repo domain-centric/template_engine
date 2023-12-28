@@ -28,8 +28,8 @@ void main() {
           '</table>\n';
       then('parseResult.errorMessage should be empty',
           () => parseResult.errorMessage.should.beNullOrEmpty());
-      when('calling: engine.render(parseResult)', () {
-        var renderResult = engine.render(parseResult);
+      when('calling: await engine.render(parseResult)', () async {
+        var renderResult = await engine.render(parseResult);
 
         then('renderResult.text be: "$expected"',
             () => renderResult.text.should.be(expected));
@@ -51,8 +51,8 @@ void main() {
       then('parseResult.errorMessage should be empty',
           () => parseResult.errorMessage.should.beNullOrEmpty());
 
-      when('calling: engine.render(parseResult)', () {
-        var renderResult = engine.render(parseResult);
+      when('calling: await engine.render(parseResult)', () async {
+        var renderResult = await engine.render(parseResult);
 
         then('renderResult.errorMessage should be empty',
             () => renderResult.errorMessage.should.beNullOrEmpty());
@@ -63,10 +63,10 @@ void main() {
 
     when(
         "call: engine.parse(const "
-        "TextTemplate('{{functionDocumentation()}}'))", () {
+        "TextTemplate('{{functionDocumentation()}}'))", () async {
       var template = TextTemplate('{{functionDocumentation()}}');
       var parseResult = engine.parseTemplate(template);
-      var expected = FunctionDocumentation().function(
+      var expected = await FunctionDocumentation().function(
           '',
           RenderContext(
               engine: engine,
@@ -76,8 +76,8 @@ void main() {
 
       then('parseResult.errorMessage should be empty',
           () => parseResult.errorMessage.should.beNullOrEmpty());
-      when('calling: engine.render(parseResult)', () {
-        var renderResult = engine.render(parseResult);
+      when('calling: await engine.render(parseResult)', () async {
+        var renderResult = await engine.render(parseResult);
 
         then('renderResult.text be: "$expected"',
             () => renderResult.text.should.be(expected));
@@ -90,7 +90,7 @@ void main() {
     var parseResult = engine.parseText('{{exampleDocumentation()}}');
 
     parseResult.errorMessage.should.beNullOrEmpty();
-    var renderResult = engine.render(parseResult);
+    var renderResult = await engine.render(parseResult);
     var text = renderResult.text;
     var urls = urlParser().allMatches(text);
     urls.should.not.beEmpty();
@@ -133,5 +133,6 @@ class DummyFunction extends ExpressionFunction {
               Parameter<double>(name: 'parameter2'),
               Parameter<bool>(name: 'parameter3')
             ],
-            function: (position, renderContext, parameters) => 'Dummy');
+            function: (position, renderContext, parameters) =>
+                Future.value('Dummy'));
 }

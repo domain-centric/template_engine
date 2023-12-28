@@ -10,24 +10,24 @@ void main() {
     var context = RenderContext(
         engine: engine, templateBeingRendered: template, parsedTemplates: []);
     when('calling parser.parse("\'Hello\'")', () {
-      var result = parser.parse("'Hello'");
+      var parseResult = parser.parse("'Hello'");
       then('result.value should be an Expression<String>', () {
-        result.value.should.beAssignableTo<Expression<String>>();
+        parseResult.value.should.beAssignableTo<Expression<String>>();
       });
-      then('result.value.render(context) should be "Hello"', () {
-        result.value.render(context).should.be('Hello');
+      then('result.value.render(context) should be "Hello"', () async {
+        var text = await parseResult.value.render(context);
+        text.should.be('Hello');
       });
     });
 
-    when('calling parser.parse("123.45")', () {
-      var result = parser.parse("123.45");
+    when('calling parser.parse("123.45")', () async {
+      var parseResult = parser.parse("123.45");
+      var value = await parseResult.value.render(context);
       then('result.value should be an Expression<num>', () {
-        result.value.should.beAssignableTo<Expression<num>>();
+        value.should.beAssignableTo<Expression<num>>();
       });
       then('result.value.render(context) should be 123.45', () {
-        (result.value.render(context) as num)
-            .should
-            .beCloseTo(123.45, delta: 0.001);
+        (value as num).should.beCloseTo(123.45, delta: 0.001);
       });
     });
 

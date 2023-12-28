@@ -8,7 +8,7 @@ void main() {
   test('{{ln10}} should render: $ln10', () async {
     var engine = TemplateEngine();
     var parseResult = engine.parseTemplate(TextTemplate('{{ln10}}'));
-    var renderResult = engine.render(parseResult);
+    var renderResult = await engine.render(parseResult);
     renderResult.text.should.be(ln10.toString());
   });
 }

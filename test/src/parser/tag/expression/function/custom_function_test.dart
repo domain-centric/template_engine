@@ -6,24 +6,25 @@ void main() {
   var engine = TemplateEngine();
   engine.functionGroups
       .add(FunctionGroup('Greeting', [GreetingWithParameter()]));
-  test("'{{greeting()}}.' should render: 'Hello world.'", () {
+  test("'{{greeting()}}.' should render: 'Hello world.'", () async {
     var parseResult = engine.parseTemplate(TextTemplate('{{greeting()}}.'));
-    var renderResult = engine.render(parseResult).text;
-    renderResult.should.be('Hello world.');
+    var renderResult = await engine.render(parseResult);
+    renderResult.text.should.be('Hello world.');
   });
 
-  test("'{{greeting(\"Jane Doe\")}}.' should render: 'Hello Jane Doe.'", () {
+  test("'{{greeting(\"Jane Doe\")}}.' should render: 'Hello Jane Doe.'",
+      () async {
     var engine = TemplateEngine();
     engine.functionGroups
         .add(FunctionGroup('Greeting', [GreetingWithParameter()]));
     var parseResult =
         engine.parseTemplate(TextTemplate('{{greeting("Jane Doe")}}.'));
-    var renderResult = engine.render(parseResult).text;
-    renderResult.should.be('Hello Jane Doe.');
+    var renderResult = await engine.render(parseResult);
+    renderResult.text.should.be('Hello Jane Doe.');
   });
 }
 
-class GreetingWithParameter extends ExpressionFunction {
+class GreetingWithParameter extends ExpressionFunction<String> {
   GreetingWithParameter()
       : super(
           name: 'greeting',
@@ -34,6 +35,6 @@ class GreetingWithParameter extends ExpressionFunction {
                 presence: Presence.optionalWithDefaultValue('world'))
           ],
           function: (position, renderContext, parameters) =>
-              'Hello ${parameters['name']}',
+              Future.value('Hello ${parameters['name']}'),
         );
 }

@@ -7,6 +7,7 @@
         "recase",
         "shouldly",
         "sublist",
-        "trueparameter"
+        "trueparameter",
+        "webflow"
     ]
 }

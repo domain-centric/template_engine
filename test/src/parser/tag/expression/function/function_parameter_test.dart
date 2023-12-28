@@ -233,8 +233,10 @@ void main() {
       then('result 2nd node : "."',
           () => templateParseResult.children[1].should.be('.'));
 
-      then('engine.render(result).text should be "Hello world."', () {
-        engine.render(result).text.should.be("Hello world.");
+      then('await engine.render(result).text should be "Hello world."',
+          () async {
+        var renderResult = await engine.render(result);
+        renderResult.text.should.be("Hello world.");
       });
     });
 
@@ -256,7 +258,10 @@ void main() {
               .be('Function{greeting}'));
       then('result 2nd node : "."',
           () => templateParseResult.children[1].should.be('.'));
-      then('', () => engine.render(result).text.should.be("Hello Jane Doe."));
+      then('', () async {
+        var renderResult = await engine.render(result);
+        renderResult.text.should.be("Hello Jane Doe.");
+      });
     });
 
     var inputTag1 = '{{greeting("Jane Doe", invalidParameter=invalidValue)}}';
@@ -322,8 +327,8 @@ void main() {
           () => parserResult.errorMessage.should.beNullOrEmpty());
       then('parserResult should have 1 node',
           () => parserResult.children.length.should.be(1));
-      when('calling: engine.render(parserResult)', () {
-        var renderResult = engine.render(parserResult);
+      when('calling: await engine.render(parserResult)', () async {
+        var renderResult = await engine.render(parserResult);
         var expected = {parameterName: -12.3};
 
         then('renderResult.text should be: "$expected"',
@@ -340,8 +345,8 @@ void main() {
       then('parseResult should have 1 node',
           () => parseResult.children.length.should.be(1));
 
-      when('calling: engine.render(parseResult)', () {
-        var renderResult = engine.render(parseResult);
+      when('calling: await engine.render(parseResult)', () async {
+        var renderResult = await engine.render(parseResult);
         var expected = {parameterName: true};
         then('result first node should be: "$expected"',
             () => renderResult.text.should.be(expected.toString()));
@@ -357,8 +362,8 @@ void main() {
       then('parseResult should have 1 node',
           () => parseResult.children.length.should.be(1));
 
-      when('calling: ', () {
-        var renderResult = engine.render(parseResult);
+      when('calling: ', () async {
+        var renderResult = await engine.render(parseResult);
         var expected = {parameterName: false};
         then('renderResult.text should be: "$expected"',
             () => renderResult.text.should.be(expected.toString()));
@@ -374,8 +379,8 @@ void main() {
       then('parseResult should have 1 node',
           () => parseResult.children.length.should.be(1));
 
-      when('', () {
-        var renderResult = engine.render(parseResult);
+      when('', () async {
+        var renderResult = await engine.render(parseResult);
         var expected = {parameterName: 'Hello'};
         then('renderResult.text should be: "$expected"',
             () => renderResult.text.should.be(expected.toString()));
@@ -472,8 +477,8 @@ void main() {
           () => parseResult.errorMessage.should.beNullOrEmpty());
       then('parseResult should have 1 node',
           () => parseResult.children.length.should.be(1));
-      when('calling: engine.render(parseResult)', () {
-        var renderResult = engine.render(parseResult);
+      when('calling: await engine.render(parseResult)', () async {
+        var renderResult = await engine.render(parseResult);
         then('renderResult first node should be: "$expected"',
             () => renderResult.text.should.be(expected.toString()));
       });
@@ -563,8 +568,8 @@ void main() {
           () => parseResult.errorMessage.should.beNullOrEmpty());
       then('parseResult should have 1 node',
           () => parseResult.children.length.should.be(1));
-      when('calling: engine.render(parseResult)', () {
-        var renderResult = engine.render(parseResult);
+      when('calling: await engine.render(parseResult)', () async {
+        var renderResult = await engine.render(parseResult);
         then('renderResult.text should be: "$expected"',
             () => renderResult.text.should.be(expected.toString()));
       });
@@ -585,8 +590,8 @@ void main() {
           () => parseResult.errorMessage.should.beNullOrEmpty());
       then('parseResult should have 1 node',
           () => parseResult.children.length.should.be(1));
-      when('calling: engine.render(parseResult)', () {
-        var renderResult = engine.render(parseResult);
+      when('calling: await engine.render(parseResult)', () async {
+        var renderResult = await engine.render(parseResult);
 
         then('renderResult.text should be: "$expected"',
             () => renderResult.text.should.be(expected.toString()));
@@ -603,11 +608,11 @@ void main() {
         "('{{length(\"Hello\" + \" \" & \"world.\") + 3}}')) ", () {
       var parseResult = engine.parseTemplate(
           TextTemplate('{{length("Hello" + " " & "world.") + 3}}'));
-      when('calling: engine.render(parseResult).text', () {
-        var renderResult = engine.render(parseResult).text;
+      when('calling: await engine.render(parseResult).text', () async {
+        var renderResult = await engine.render(parseResult);
         var expected = (('Hello world.'.length) + 3).toString();
         then('result should be: $expected',
-            () => renderResult.should.be(expected));
+            () => renderResult.text.should.be(expected));
       });
     });
   });
@@ -619,11 +624,11 @@ void main() {
     when("calling: engine.parse(TextTemplate('{{sin(asin(0.5))}}'))", () {
       var parseResult =
           engine.parseTemplate(TextTemplate('{{sin(asin(0.5))}}'));
-      when('calling: engine.render(parseResult).text', () {
-        var renderResult = engine.render(parseResult).text;
+      when('calling: await engine.render(parseResult).text', () async {
+        var renderResult = await engine.render(parseResult);
         var expected = '0.5';
         then('result should be: $expected',
-            () => renderResult.should.be(expected));
+            () => renderResult.text.should.be(expected));
       });
     });
   });
@@ -635,8 +640,8 @@ void main() {
           '  1:7: missing mandatory function parameter: radians';
       then('parseResult.errors.first.message should be "$expected"',
           () => parseResult.errorMessage.should.be(expected));
-      when('calling: engine.render(parseResult).text', () {
-        var renderResult = engine.render(parseResult);
+      when('calling: await engine.render(parseResult).text', () async {
+        var renderResult = await engine.render(parseResult);
 
         then('renderResult.text should be: "{{sin()}}"',
             () => renderResult.text.should.be('{{sin()}}'));
@@ -659,7 +664,7 @@ class GreetingWithParameterFunction extends ExpressionFunction {
               )
             ],
             function: (position, renderContext, parameters) =>
-                'Hello ${parameters['name']}');
+                Future.value('Hello ${parameters['name']}'));
 }
 
 class ParameterTestFunction extends ExpressionFunction<Map<String, Object>> {
@@ -672,5 +677,6 @@ class ParameterTestFunction extends ExpressionFunction<Map<String, Object>> {
             exampleExpression: 'dummy',
             exampleResult: 'dummy',
             parameters: parameters,
-            function: (position, renderContext, parameters) => parameters);
+            function: (position, renderContext, parameters) =>
+                Future.value(parameters));
 }

@@ -33,9 +33,9 @@ abstract class DocumentationFunction extends ExpressionFunction<String> {
         documentationFunction,
   }) : super(
             parameters: [TitleLevelParameter()],
-            function: (position, renderContext, parameters) =>
+            function: (position, renderContext, parameters) => Future.value(
                 documentationFunction(renderContext, _titleLevel(parameters))
-                    .join('\n'));
+                    .join('\n')));
 
   static int _titleLevel(
     Map<String, Object> parameters,

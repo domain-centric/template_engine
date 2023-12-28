@@ -17,38 +17,38 @@ void main() {
         '  1:8: invalid tag syntax');
   });
 
-  test("{{'Hello'}} should render: 'Hello'", () {
+  test("{{'Hello'}} should render: 'Hello'", () async {
     var engine = TemplateEngine();
     var parseResult = engine.parseText("{{'Hello'}}");
-    var renderResult = engine.render(parseResult);
+    var renderResult = await engine.render(parseResult);
     renderResult.text.should.be('Hello');
   });
 
-  test('{{"Hello"}} should render: \'Hello\'', () {
+  test('{{"Hello"}} should render: \'Hello\'', () async {
     var engine = TemplateEngine();
     var parseResult = engine.parseText('{{"Hello"}}');
-    var renderResult = engine.render(parseResult);
+    var renderResult = await engine.render(parseResult);
     renderResult.text.should.be('Hello');
   });
 
-  test("{{'Hello'   }} should render: 'Hello'", () {
+  test("{{'Hello'   }} should render: 'Hello'", () async {
     var engine = TemplateEngine();
     var parseResult = engine.parseText("{{'Hello'   }}");
-    var renderResult = engine.render(parseResult);
+    var renderResult = await engine.render(parseResult);
     renderResult.text.should.be('Hello');
   });
 
-  test('{{   "Hello"}} should render: \'Hello\'', () {
+  test('{{   "Hello"}} should render: \'Hello\'', () async {
     var engine = TemplateEngine();
     var parseResult = engine.parseText('{{   "Hello"}}');
-    var renderResult = engine.render(parseResult);
+    var renderResult = await engine.render(parseResult);
     renderResult.text.should.be('Hello');
   });
 
-  test('{{\'Hel\' + \'l\' & "o"}} should render: \'Hello\'', () {
+  test('{{\'Hel\' + \'l\' & "o"}} should render: \'Hello\'', () async {
     var engine = TemplateEngine();
     var parseResult = engine.parseText('{{\'Hel\' + \'l\' & "o"}}');
-    var renderResult = engine.render(parseResult);
+    var renderResult = await engine.render(parseResult);
     renderResult.text.should.be('Hello');
   });
 }

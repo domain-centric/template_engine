@@ -59,8 +59,8 @@ class VariableExpression extends Expression {
   @override
   String toString() => 'Variable{$namePath}';
 
-  Object _findVariableValue(
-      VariableMap variables, List<String> namePath, namePathIndex) {
+  Future<Object> _findVariableValue(
+      VariableMap variables, List<String> namePath, namePathIndex) async {
     var name = namePath[namePathIndex];
 
     if (variables.containsKey(name)) {
@@ -69,10 +69,10 @@ class VariableExpression extends Expression {
         if (value == null) {
           VariableException('Variable: $namePath may not be null');
         }
-        return value!;
+        return Future.value(value!);
       } else if (value is VariableMap) {
         // recursive:
-        return _findVariableValue(value, namePath, namePathIndex + 1);
+        return await _findVariableValue(value, namePath, namePathIndex + 1);
       }
     }
     throw VariableException('Variable does not exist: '
@@ -80,7 +80,7 @@ class VariableExpression extends Expression {
   }
 
   @override
-  Object render(RenderContext context) {
+  Future<Object> render(RenderContext context) {
     try {
       return _findVariableValue(context.variables, namePath.split('.'), 0);
     } on VariableException catch (e) {

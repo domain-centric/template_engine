@@ -107,7 +107,8 @@ class TemplateEngine {
 
   /// Render the [parser tree](https://en.wikipedia.org/wiki/Parse_tree)
   /// to a string (and write it as files when needed)
-  RenderResult render(ParseResult parseResults, [VariableMap? variables]) {
+  Future<RenderResult> render(ParseResult parseResults,
+      [VariableMap? variables]) async {
     var results = TemplatesRenderResult([]);
     for (var parseResult in [...parseResults.children]) {
       var template = parseResult.template;
@@ -116,7 +117,7 @@ class TemplateEngine {
           templateBeingRendered: template,
           variables: variables,
           parsedTemplates: parseResults.children);
-      var text = parseResult.render(renderContext);
+      var text = await parseResult.render(renderContext);
       var result = TemplateRenderResult(
         template: template,
         text: text,

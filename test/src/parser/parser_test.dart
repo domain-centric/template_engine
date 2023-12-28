@@ -36,10 +36,10 @@ void main() {
                 .be(' world.'));
       });
 
-      when('call: render(parseResult)', () {
+      when('call: render(parseResult)', () async {
         var parseResult = engine.parseTemplate(template);
         var variables = {'name': 'world'};
-        var result = engine.render(parseResult, variables);
+        var result = await engine.render(parseResult, variables);
         then('return: "Hello {{ world."',
             () => result.text.should.be('Hello {{ world.'));
       });
@@ -76,10 +76,10 @@ void main() {
                 .be(' world.'));
       });
 
-      when('call: render(parseResult)', () {
+      when('call: render(parseResult)', () async {
         var parseResult = engine.parseTemplate(template);
         var variables = {'name': 'world'};
-        var result = engine.render(parseResult, variables);
+        var result = await engine.render(parseResult, variables);
         then('return text: "Hello }} world."',
             () => result.text.should.be('Hello }} world.'));
       });
@@ -117,10 +117,10 @@ void main() {
                 .be('}}'));
       });
 
-      when('call: render(parseResult)', () {
+      when('call: render(parseResult)', () async {
         var parseResult = engine.parseTemplate(template);
         var variables = {'name': 'world'};
-        var result = engine.render(parseResult, variables);
+        var result = await engine.render(parseResult, variables);
         then('expect: result.text "{{ this is not a tag or variable }}"',
             () => result.text.should.be('{{ this is not a tag or variable }}'));
       });

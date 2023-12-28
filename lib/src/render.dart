@@ -1,3 +1,4 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:template_engine/template_engine.dart';
 
 /// Renders some value depending on the implementation of the [Renderer]
@@ -6,7 +7,7 @@ import 'package:template_engine/template_engine.dart';
 ///
 
 abstract class Renderer<T> {
-  T render(RenderContext context);
+  Future<T> render(RenderContext context);
 }
 
 class RenderException extends RenderError implements Exception {
@@ -37,13 +38,20 @@ class ParserTree<T> extends Renderer<String> {
   ParserTree([this.children = const []]);
 
   @override
-  String render(RenderContext context) =>
-      children.map((node) => renderNode(context, node)).join();
+  Future<String> render(RenderContext context) async {
+    var text = StringBuffer();
+    for (var child in children) {
+      var result = await renderNode(context, child);
+      text.write(result);
+    }
+    return text.toString();
+  }
 
-  String renderNode(RenderContext context, T node) {
+  Future<String> renderNode(RenderContext context, T node) async {
     if (node is Renderer) {
       try {
-        return node.render(context).toString();
+        var result = await (node.render(context));
+        return result.toString();
       } on Exception catch (e) {
         if (e is RenderException) {
           context.errors.add(e);
@@ -51,7 +59,12 @@ class ParserTree<T> extends Renderer<String> {
         return context.renderedError;
       }
     } else if (node is List) {
-      return node.map((n) => renderNode(context, n)).join();
+      var values = <String>[];
+      for (var item in node) {
+        var value = await renderNode(context, item);
+        values.add(value);
+      }
+      return values.join();
     } else {}
     return node.toString();
   }

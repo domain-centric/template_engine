@@ -8,7 +8,7 @@ void main() {
   test('{{pi}} should render: $pi', () async {
     var engine = TemplateEngine();
     var parseResult = engine.parseTemplate(TextTemplate('{{pi}}'));
-    var renderResult = engine.render(parseResult);
+    var renderResult = await engine.render(parseResult);
     renderResult.text.should.be(pi.toString());
   });
 }

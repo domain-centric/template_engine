@@ -5,9 +5,10 @@ import 'package:template_engine/template_engine.dart';
 void main() {
   given('TemplateEngine', () {
     var engine = TemplateEngine();
-    when("calling: engine.parseTemplate(TextTemplate('Hello {{name}}.'))", () {
+    when("calling: engine.parseTemplate(TextTemplate('Hello {{name}}.'))",
+        () async {
       var parseResult = engine.parseTemplate(TextTemplate('Hello {{name}}.'));
-      var renderResult = engine.render(parseResult, {'name': 'world'});
+      var renderResult = await engine.render(parseResult, {'name': 'world'});
 
       then('renderResult.errorMessage should be empty', () {
         renderResult.errorMessage.should.beNullOrEmpty();

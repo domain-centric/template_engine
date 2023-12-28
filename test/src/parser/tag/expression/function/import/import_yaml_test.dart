@@ -5,7 +5,7 @@ import 'package:test/test.dart';
 void main() {
   const path = 'test/src/parser/tag/expression/function/import/person.yaml';
 
-  test('test importYaml on existing yaml file', () {
+  test('test importYaml on existing yaml file', () async {
     DataMap yamlMap = {
       'person': {
         'name': 'John Doe',
@@ -18,24 +18,24 @@ void main() {
     };
     var engine = TemplateEngine();
     var parseResult = engine.parseText("{{importYaml('$path')}}");
-    var renderResult = engine.render(parseResult);
+    var renderResult = await engine.render(parseResult);
     renderResult.text.should.be(yamlMap.toString());
   });
 
-  test('test assigning importYaml to a variable', () {
+  test('test assigning importYaml to a variable', () async {
     var engine = TemplateEngine();
     var parseResult = engine.parseText("{{yaml=importYaml('$path')}}"
         "{{yaml.person.child.name}}");
-    var renderResult = engine.render(parseResult);
+    var renderResult = await engine.render(parseResult);
     renderResult.text.should.be('Jane Doe');
   });
 
-  test('test importYaml with none existing file', () {
+  test('test importYaml with none existing file', () async {
     var engine = TemplateEngine();
     var parseResult =
         engine.parseText("{{yaml=importYaml('none_existing.yaml')}}"
             "{{yaml.person.child.name}}");
-    var renderResult = engine.render(parseResult);
+    var renderResult = await engine.render(parseResult);
     renderResult.text.should.be('{{ERROR}}');
     renderResult.errorMessage.should.contain("Render errors in: "
         "'{{yaml=importYaml('none_existing.yaml')}");

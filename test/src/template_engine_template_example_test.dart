@@ -1,9 +1,9 @@
 import 'package:shouldly/shouldly.dart';
 import 'package:template_engine/template_engine.dart';
 
-void main() {
+Future<void> main() async {
   var engine = TemplateEngine();
   var parseResult = engine.parseText('Hello {{name}}.');
-  var renderResult = engine.render(parseResult, {'name': 'world'});
+  var renderResult = await engine.render(parseResult, {'name': 'world'});
   renderResult.text.should.be('Hello world.');
 }

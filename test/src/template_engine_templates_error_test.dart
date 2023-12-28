@@ -9,10 +9,10 @@ void main() {
     // with single parse error
     when(
         "engine.parseTemplates([TextTemplate('Hello '), "
-        "TextTemplate('{{name}.')])", () {
+        "TextTemplate('{{name}.')])", () async {
       var parseResult = engine
           .parseTemplates([TextTemplate('Hello '), TextTemplate('{{name}.')]);
-      var renderResult = engine.render(parseResult, {'name': 'world'});
+      var renderResult = await engine.render(parseResult, {'name': 'world'});
 
       var expectedError = 'Parse error in: \'{{name}.\':\n'
           '  1:1: Found tag start: {{, but it was not followed with a tag end: }}';
@@ -28,10 +28,10 @@ void main() {
     // with multiple parse errors
     when(
         "engine.parseTemplates([TextTemplate('Hello '), "
-        "TextTemplate('}}name{{.')])", () {
+        "TextTemplate('}}name{{.')])", () async {
       var parseResult = engine
           .parseTemplates([TextTemplate('Hello '), TextTemplate('}}name{{.')]);
-      var renderResult = engine.render(parseResult, {'name': 'world'});
+      var renderResult = await engine.render(parseResult, {'name': 'world'});
 
       var expectedError = 'Parse errors in: \'}}name{{.\':\n'
           '  1:1: Found tag end: }}, but it was not preceded with a tag start: {{\n'
@@ -48,10 +48,10 @@ void main() {
 // with single render error
     when(
         "engine.parseTemplates([TextTemplate('Hello '), "
-        "TextTemplate('{{name}}.')])", () {
+        "TextTemplate('{{name}}.')])", () async {
       var parseResult = engine
           .parseTemplates([TextTemplate('Hello '), TextTemplate('{{name}}.')]);
-      var renderResult = engine.render(parseResult, {'age': '13'});
+      var renderResult = await engine.render(parseResult, {'age': '13'});
 
       var expectedError = 'Render error in: \'{{name}}.\':\n'
           '  1:3: Variable does not exist: name';
@@ -69,12 +69,12 @@ void main() {
         "engine.parseTemplates(["
         "TextTemplate('Hello {{name}}. '),"
         "TextTemplate('Welcome in {{location}}.')"
-        "])", () {
+        "])", () async {
       var parseResult = engine.parseTemplates([
         TextTemplate('Hello {{name}}. '),
         TextTemplate('Welcome in {{location}}.')
       ]);
-      var renderResult = engine.render(parseResult, {'age': '13'});
+      var renderResult = await engine.render(parseResult, {'age': '13'});
 
       var expectedError = 'Render error in: \'Hello {{name}}. \':\n'
           '  1:9: Variable does not exist: name\n'
@@ -94,12 +94,12 @@ void main() {
         "engine.parseTemplates(["
         "TextTemplate('}}Hello {{name}}. '),"
         "TextTemplate('Welcome in {{location}}.')"
-        "])", () {
+        "])", () async {
       var parseResult = engine.parseTemplates([
         TextTemplate('}}Hello {{name}}. '),
         TextTemplate('Welcome in {{location}}.')
       ]);
-      var renderResult = engine.render(parseResult, {'age': '13'});
+      var renderResult = await engine.render(parseResult, {'age': '13'});
 
       var expectedError = 'Errors in: \'}}Hello {{name}}. \':\n'
           '  Parse error:\n'

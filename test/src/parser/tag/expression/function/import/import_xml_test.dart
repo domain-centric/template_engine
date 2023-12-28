@@ -5,7 +5,7 @@ import 'package:test/test.dart';
 void main() {
   const path = 'test/src/parser/tag/expression/function/import/person.xml';
 
-  test('test importXml on existing xml file', () {
+  test('test importXml on existing xml file', () async {
     DataMap xmlMap = {
       'person': {
         'name': 'John Doe',
@@ -18,23 +18,23 @@ void main() {
     };
     var engine = TemplateEngine();
     var parseResult = engine.parseText("{{importXml('$path')}}");
-    var renderResult = engine.render(parseResult);
+    var renderResult = await engine.render(parseResult);
     renderResult.text.should.be(xmlMap.toString());
   });
 
-  test('test assigning importXml to a variable', () {
+  test('test assigning importXml to a variable', () async {
     var engine = TemplateEngine();
     var parseResult = engine.parseText("{{xml=importXml('$path')}}"
         "{{xml.person.child.name}}");
-    var renderResult = engine.render(parseResult);
+    var renderResult = await engine.render(parseResult);
     renderResult.text.should.be('Jane Doe');
   });
 
-  test('test importXml with none existing file', () {
+  test('test importXml with none existing file', () async {
     var engine = TemplateEngine();
     var parseResult = engine.parseText("{{xml=importXml('none_existing.xml')}}"
         "{{xml.person.child.name}}");
-    var renderResult = engine.render(parseResult);
+    var renderResult = await engine.render(parseResult);
     renderResult.text.should.be('{{ERROR}}');
     renderResult.errorMessage.should.contain("Render errors in: "
         "'{{xml=importXml('none_existing.xml')}");

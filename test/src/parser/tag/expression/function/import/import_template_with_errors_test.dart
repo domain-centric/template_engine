@@ -5,13 +5,13 @@ import 'package:template_engine/template_engine.dart';
 import 'package:test/test.dart';
 
 void main() {
-  test('Test parse and render errors in imported template', () {
+  test('Test parse and render errors in imported template', () async {
     var engine = TemplateEngine();
     var templatePath = ProjectFilePath(
         'test/src/parser/tag/expression/function/import/import_template_with_errors1.md.template');
     var template = FileTemplate.fromProjectFilePath(templatePath);
     var parseResult = engine.parseTemplate(template);
-    var renderResult = engine.render(parseResult);
+    var renderResult = await engine.render(parseResult);
     const expectedError =
         'Errors in: test/src/parser/tag/expression/function/import/import_template_with_errors1.md.template:\n'
         '  Parse error:\n'

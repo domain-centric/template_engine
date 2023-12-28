@@ -32,10 +32,10 @@ class ImportTemplate extends ExpressionFunction<String> {
                   description: 'The project path of the template file',
                   presence: Presence.mandatory())
             ],
-            function: (position, renderContext, parameters) {
+            function: (position, renderContext, parameters) async {
               try {
                 var source = parameters['source'] as String;
-                var text = readSource(source);
+                var text = await readSource(source);
                 var template = ImportedTemplate(source: source, text: text);
 
                 TemplateParseResult? parsedTemplate = renderContext
@@ -49,7 +49,7 @@ class ImportTemplate extends ExpressionFunction<String> {
                   renderContext.parsedTemplates.add(parsedTemplate);
                 }
                 var errorsBefore = [...renderContext.errors];
-                var renderResult = parsedTemplate.render(renderContext);
+                var renderResult = await parsedTemplate.render(renderContext);
 
                 var importErrors = renderContext.errors
                     .where((error) => !errorsBefore.contains(error))
@@ -87,10 +87,10 @@ class ImportPure extends ExpressionFunction<String> {
                       'This path can be a absolute or relative file path or URI.',
                   presence: Presence.mandatory())
             ],
-            function: (position, renderContext, parameters) {
+            function: (position, renderContext, parameters) async {
               try {
                 var source = parameters['source'] as String;
-                var text = readSource(source);
+                var text = await readSource(source);
                 return text;
               } on Exception catch (e) {
                 var error = RenderError(
@@ -98,7 +98,7 @@ class ImportPure extends ExpressionFunction<String> {
                         '${e.toString().replaceAll('\r', '').replaceAll('\n', '')}',
                     position: position);
                 renderContext.errors.add(error);
-                return renderContext.renderedError;
+                return Future.value(renderContext.renderedError);
               }
             });
 }
@@ -122,10 +122,10 @@ class ImportJson extends ExpressionFunction<Map<String, dynamic>> {
                       'This path can be a absolute or relative file path or URI.',
                   presence: Presence.mandatory())
             ],
-            function: (position, renderContext, parameters) {
+            function: (position, renderContext, parameters) async {
               try {
                 var source = parameters['source'] as String;
-                var jsonText = readSource(source);
+                var jsonText = await readSource(source);
                 var jsonMap = jsonDecode(jsonText);
                 return jsonMap;
               } on Exception catch (e) {
@@ -158,11 +158,11 @@ class ImportXml extends ExpressionFunction<Map<String, dynamic>> {
                       'This path can be a absolute or relative file path or URI.',
                   presence: Presence.mandatory())
             ],
-            function: (position, renderContext, parameters) {
+            function: (position, renderContext, parameters) async {
               try {
                 var source = parameters['source'] as String;
 
-                var xmlText = readSource(source);
+                var xmlText = await readSource(source);
                 var xmlMap = xmlToDataMap(xmlText);
                 return xmlMap;
               } on Exception catch (e) {
@@ -228,10 +228,10 @@ class ImportYaml extends ExpressionFunction<Map<String, dynamic>> {
                       'This path can be a absolute or relative file path or URI.',
                   presence: Presence.mandatory())
             ],
-            function: (position, renderContext, parameters) {
+            function: (position, renderContext, parameters) async {
               try {
                 var source = parameters['source'] as String;
-                var yamlText = readSource(source);
+                var yamlText = await readSource(source);
                 var yamlMap = yamlToDataMap(yamlText);
                 return yamlMap;
               } on Exception catch (e) {

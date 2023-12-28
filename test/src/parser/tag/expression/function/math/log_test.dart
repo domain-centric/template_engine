@@ -5,10 +5,10 @@ import 'package:template_engine/template_engine.dart';
 import 'package:test/test.dart';
 
 void main() {
-  test('{{log(7)}} should render as: ${log(7).toString()}', () {
+  test('{{log(7)}} should render as: ${log(7).toString()}', () async {
     var engine = TemplateEngine();
     var parseResult = engine.parseTemplate(TextTemplate('{{log(7)}}'));
-    var renderResult = engine.render(parseResult);
+    var renderResult = await engine.render(parseResult);
     renderResult.text.should.be(log(7).toString());
   });
 }

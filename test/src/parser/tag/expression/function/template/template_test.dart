@@ -9,8 +9,8 @@ void main() {
     when("call: engine.parse(TemplateWithTemplateSourceFunction())", () {
       var parseResult =
           engine.parseTemplate(TemplateWithTemplateSourceFunction());
-      when('calling: engine.render(parseResult)', () {
-        var renderResult = engine.render(parseResult);
+      when('calling: await engine.render(parseResult)', () async {
+        var renderResult = await engine.render(parseResult);
         var expected = TemplateWithTemplateSourceFunction().source;
         then('renderResult.text be: "$expected"',
             () => renderResult.text.should.be(expected));

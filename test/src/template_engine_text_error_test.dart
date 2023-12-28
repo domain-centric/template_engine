@@ -7,9 +7,9 @@ void main() {
     var engine = TemplateEngine();
 
     // with single parse error
-    when("calling: renderResult=engine.parseText('Hello {{name}.')", () {
+    when("calling: renderResult=engine.parseText('Hello {{name}.')", () async {
       var parseResult = engine.parseText('Hello {{name}.');
-      var renderResult = engine.render(parseResult, {'name': 'world'});
+      var renderResult = await engine.render(parseResult, {'name': 'world'});
 
       var expectedError = 'Parse error in: \'Hello {{name}.\':\n'
           '  1:7: Found tag start: {{, but it was not followed with a tag end: }}';
@@ -23,9 +23,9 @@ void main() {
     });
 
     // with multiple parse errors
-    when("calling: renderResult=engine.parseText('Hello }}name{{.')", () {
+    when("calling: renderResult=engine.parseText('Hello }}name{{.')", () async {
       var parseResult = engine.parseText('Hello }}name{{.');
-      var renderResult = engine.render(parseResult, {'name': 'world'});
+      var renderResult = await engine.render(parseResult, {'name': 'world'});
 
       var expectedError = 'Parse errors in: \'Hello }}name{{.\':\n'
           '  1:7: Found tag end: }}, but it was not preceded with a tag start: {{\n'
@@ -40,9 +40,9 @@ void main() {
     });
 
     // with single render error
-    when("calling: renderResult=engine.parseText('Hello {{name}}.')", () {
+    when("calling: renderResult=engine.parseText('Hello {{name}}.')", () async {
       var parseResult = engine.parseText('Hello {{name}}.');
-      var renderResult = engine.render(parseResult, {'age': '13'});
+      var renderResult = await engine.render(parseResult, {'age': '13'});
 
       var expectedError = 'Render error in: \'Hello {{name}}.\':\n'
           '  1:9: Variable does not exist: name';
@@ -58,10 +58,10 @@ void main() {
     // with multiple render errors
     when(
         "calling: renderResult=engine.parseText("
-        "'Hello {{name}}. Welcome in {{location}}.')", () {
+        "'Hello {{name}}. Welcome in {{location}}.')", () async {
       var parseResult =
           engine.parseText('Hello {{name}}. Welcome in {{location}}.');
-      var renderResult = engine.render(parseResult, {'age': '13'});
+      var renderResult = await engine.render(parseResult, {'age': '13'});
 
       var expectedError =
           'Render errors in: \'Hello {{name}}. Welcome in {{location}}.\':\n'

@@ -8,7 +8,7 @@ void main() {
     engine.constants.add(TemplateEngineUrl());
     var parseResult =
         engine.parseTemplate(TextTemplate('{{templateEngineUrl}}'));
-    var renderResult = engine.render(parseResult);
+    var renderResult = await engine.render(parseResult);
     renderResult.text.should.be('https://pub.dev/packages/template_engine');
   });
 }

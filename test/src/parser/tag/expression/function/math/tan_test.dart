@@ -5,10 +5,10 @@ import 'package:template_engine/template_engine.dart';
 import 'package:test/test.dart';
 
 void main() {
-  test('{{tan(7)}} should render as: ${tan(7).toString()}', () {
+  test('{{tan(7)}} should render as: ${tan(7).toString()}', () async {
     var engine = TemplateEngine();
     var parseResult = engine.parseTemplate(TextTemplate('{{tan(7)}}'));
-    var renderResult = engine.render(parseResult);
+    var renderResult = await engine.render(parseResult);
     renderResult.text.should.be(tan(7).toString());
   });
 }

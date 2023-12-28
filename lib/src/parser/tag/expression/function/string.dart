@@ -22,7 +22,7 @@ class StringLength extends ExpressionFunction<num> {
             function: (position, renderContext, parameters) {
               var value = parameters['string'];
               if (value is String) {
-                return value.length;
+                return Future.value(value.length);
               } else {
                 throw ParameterException('String expected');
               }

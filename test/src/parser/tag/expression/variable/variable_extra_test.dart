@@ -7,36 +7,36 @@ import 'package:test/test.dart';
 void main() {
   test(
       '"Hello {{name}}." should render a an error '
-      'if the variable does not exist', () {
+      'if the variable does not exist', () async {
     var engine = TemplateEngine();
     var parseResult = engine.parseTemplate(TextTemplate('Hello {{name}}.'));
-    var renderResult = engine.render(parseResult);
+    var renderResult = await engine.render(parseResult);
     renderResult.errorMessage.should
         .be('Render error in: \'Hello {{name}}.\':\n'
             '  1:9: Variable does not exist: name');
   });
 
-  test('"Hello {{  \t name}}." should render a proper greeting', () {
+  test('"Hello {{  \t name}}." should render a proper greeting', () async {
     var engine = TemplateEngine();
     var parseResult =
         engine.parseTemplate(TextTemplate('Hello {{  \t name}}.'));
-    var renderResult = engine.render(parseResult, {'name': 'world'});
+    var renderResult = await engine.render(parseResult, {'name': 'world'});
     renderResult.text.should.be('Hello world.');
   });
 
-  test('"Hello {{name  \t\n }}." should render a proper greeting', () {
+  test('"Hello {{name  \t\n }}." should render a proper greeting', () async {
     var engine = TemplateEngine();
     var parseResult =
         engine.parseTemplate(TextTemplate('Hello {{name  \t\n }}.'));
-    var renderResult = engine.render(parseResult, {'name': 'world'});
+    var renderResult = await engine.render(parseResult, {'name': 'world'});
     renderResult.text.should.be('Hello world.');
   });
 
-  test('"Hello {{   name  \t\n }}." should render a proper greeting', () {
+  test('"Hello {{   name  \t\n }}." should render a proper greeting', () async {
     var engine = TemplateEngine();
     var parseResult =
         engine.parseTemplate(TextTemplate('Hello {{   name  \t\n }}.'));
-    var renderResult = engine.render(parseResult, {'name': 'world'});
+    var renderResult = await engine.render(parseResult, {'name': 'world'});
     renderResult.text.should.be('Hello world.');
   });
 }

@@ -12,12 +12,12 @@ abstract class Expression<T extends Object> extends Renderer<T> {}
 /// rendered (evaluated).
 /// e.g. it can be like a [num], [bool], [String] etc...
 class Value<T extends Object> extends Expression<T> {
-  Value(this.value);
+  Value(T value) : value = Future.value(value);
 
-  final T value;
+  final Future<T> value;
 
   @override
-  T render(RenderContext context) => value;
+  Future<T> render(RenderContext context) => value;
 
   @override
   String toString() => 'Value{$value}';
