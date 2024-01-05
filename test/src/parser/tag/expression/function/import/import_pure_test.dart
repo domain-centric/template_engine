@@ -12,7 +12,7 @@ void main() {
     var expected = "import 'package:shouldly/shouldly.dart';\n"
         "import 'package:template_engine/template_engine.dart';\n"
         "\n"
-        "void main() {\n"
+        "Future<void> main() async {\n"
         "  var engine = TemplateEngine();\n"
         "  var parseResult = engine.parseText('Hello {{name}}.');\n"
         "  var renderResult = await engine.render(parseResult, {'name': 'world'});\n"
@@ -29,7 +29,8 @@ void main() {
     renderResult.errorMessage.should
         .contain("Render error in: '{{importPure('none_existent.dart')}}':");
     renderResult.errorMessage.should
-        .contain("  1:3: Error importing a pure file: Exception: "
-            "Source could not be read: none_existent.dart");
+        .contain("1:3: Error importing a pure file: Exception: Error reading: "
+            "none_existent.dart, PathNotFoundException: Cannot open file, "
+            "path = 'none_existent.dart'");
   });
 }

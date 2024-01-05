@@ -67,7 +67,9 @@ class VariableExpression extends Expression {
       var value = variables[name];
       if (namePath.length == namePathIndex + 1) {
         if (value == null) {
-          VariableException('Variable: $namePath may not be null');
+          throw VariableException(
+              message: 'Variable: $namePath may not be null',
+              position: position);
         }
         return Future.value(value!);
       } else if (value is VariableMap) {
@@ -75,8 +77,10 @@ class VariableExpression extends Expression {
         return await _findVariableValue(value, namePath, namePathIndex + 1);
       }
     }
-    throw VariableException('Variable does not exist: '
-        '${namePath.sublist(0, namePathIndex + 1).join('.')}');
+    throw VariableException(
+        message: 'Variable does not exist: '
+            '${namePath.sublist(0, namePathIndex + 1).join('.')}',
+        position: position);
   }
 
   @override
@@ -97,10 +101,8 @@ Parser<Expression<Object>> variableParser(Template template) {
           namePath: name, position: context.toPositionString()));
 }
 
-class VariableException implements Exception {
-  final String message;
-
-  VariableException(this.message);
+class VariableException extends RenderException {
+  VariableException({required super.message, required super.position});
 }
 
 /// The [VariableName] identifies the [Variable] and corresponds with the keys
@@ -125,8 +127,7 @@ class VariableName {
   static validateName(String name) {
     var result = nameParser.end().parse(name);
     if (result is Failure) {
-      throw VariableException(
-          'Variable name: "$name" is invalid: ${result.message} '
+      throw Exception('Variable name: "$name" is invalid: ${result.message} '
           'at position: ${result.position}');
     }
   }
@@ -134,7 +135,7 @@ class VariableName {
   static validateNamePath(String namePath) {
     var result = namePathParser.end().parse(namePath);
     if (result is Failure) {
-      throw VariableException(
+      throw Exception(
           'Variable name: "$namePath" is invalid: ${result.message} '
           'at position: ${result.position}');
     }

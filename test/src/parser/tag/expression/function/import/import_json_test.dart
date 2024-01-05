@@ -36,12 +36,14 @@ void main() {
         engine.parseText("{{json=importJson('none_existing.json')}}"
             "{{json.person.child.name}}");
     var renderResult = await engine.render(parseResult);
-    renderResult.text.should.be('{{ERROR}}');
+    renderResult.text.should.be('{{ERROR}}{{ERROR}}');
     renderResult.errorMessage.should.contain("Render errors in: "
         "'{{json=importJson('none_existing.json')}");
-    renderResult.errorMessage.should.contain(
-        "1:8: Error importing a Json file: Exception: Source could not be read: none_existing.json");
+    renderResult.errorMessage.should
+        .contain("1:8: Error importing a Json file: Exception: Error reading: "
+            "none_existing.json, PathNotFoundException: Cannot open file, "
+            "path = 'none_existing.json'");
     renderResult.errorMessage.should.contain(" 1:44: Variable "
-        "does not exist: json.person");
+        "does not exist: json");
   });
 }

@@ -3,7 +3,8 @@ import 'package:template_engine/template_engine.dart';
 import 'package:test/test.dart';
 
 void main() {
-  test('Multiple imports of the same file, should only parse it once', () {
+  test('Multiple imports of the same file, should only parse it once',
+      () async {
     var engine = TemplateEngine();
     var parseResults = engine.parseText(
         "{{importTemplate('doc/template/common/generated_comment.template')}}\n"
@@ -18,11 +19,9 @@ void main() {
         templateBeingRendered: template,
         variables: {},
         parsedTemplates: parseResults.children);
-    var text = parseResult.render(renderContext);
+    var result = await parseResult.render(renderContext);
 
     renderContext.parsedTemplates.length.should.be(2);
-
-    renderContext.errors.should.beEmpty();
 
     var commentLine = "[//]: # (This document was generated "
         "by template_engine/tool/generate_documentation.dart "
@@ -31,6 +30,6 @@ void main() {
         "$commentLine\n"
         'Hello World.\n'
         "$commentLine";
-    text.should.be(expectedText);
+    result.text.should.be(expectedText);
   });
 }

@@ -35,13 +35,14 @@ void main() {
     var parseResult = engine.parseText("{{xml=importXml('none_existing.xml')}}"
         "{{xml.person.child.name}}");
     var renderResult = await engine.render(parseResult);
-    renderResult.text.should.be('{{ERROR}}');
+    renderResult.text.should.be('{{ERROR}}{{ERROR}}');
     renderResult.errorMessage.should.contain("Render errors in: "
         "'{{xml=importXml('none_existing.xml')}");
-    renderResult.errorMessage.should.contain("1:7: Error importing a XML file:"
-        " Exception: Source could not be read: none_existing.xml");
+    renderResult.errorMessage.should.contain("1:7: Error importing a XML file: "
+        "Exception: Error reading: none_existing.xml, "
+        "PathNotFoundException: Cannot open file, path = 'none_existing.xml'");
     renderResult.errorMessage.should.contain("none_existing.xml");
     renderResult.errorMessage.should.contain(" 1:41: Variable "
-        "does not exist: xml.person");
+        "does not exist: xml");
   });
 }

@@ -117,11 +117,11 @@ class TemplateEngine {
           templateBeingRendered: template,
           variables: variables,
           parsedTemplates: parseResults.children);
-      var text = await parseResult.render(renderContext);
+      var renderResult = await parseResult.render(renderContext);
       var result = TemplateRenderResult(
         template: template,
-        text: text,
-        errors: [...parseResult.errors, ...renderContext.errors],
+        text: renderResult.text,
+        errors: renderResult.errors,
       );
       results = results.add(result);
       for (var parseResult in renderContext.parsedTemplates
@@ -162,7 +162,7 @@ class ImportedTemplateParseErrors implements TemplateRenderResult {
   ImportedTemplateParseErrors(this.template, this.errorMessage);
 
   @override
-  List<Error> get errors => throw UnimplementedError();
+  List<TemplateError> get errors => throw UnimplementedError();
 
   @override
   String get text => '';

@@ -29,8 +29,8 @@ abstract class RenderType {
 }
 
 /// The [ParserTree](https://en.wikipedia.org/wiki/Parse_tree) contains
-/// parsed nodes from a [Template] that can be rendered to a [String].
-class ParserTree<T> extends Renderer<String> {
+/// parsed nodes from a [Template] that can be rendered to a [IntermediateRenderResult].
+class ParserTree<T> extends Renderer<IntermediateRenderResult> {
   /// The [children] that where parsed and can be rendered to a [String].
   /// The [children] are of type [RenderType]
   final List<T> children;
@@ -38,26 +38,30 @@ class ParserTree<T> extends Renderer<String> {
   ParserTree([this.children = const []]);
 
   @override
-  Future<String> render(RenderContext context) async {
-    var text = StringBuffer();
+  Future<IntermediateRenderResult> render(RenderContext context) async {
+    var errors = <TemplateError>[];
+    var textBuffer = StringBuffer();
     for (var child in children) {
-      var result = await renderNode(context, child);
-      text.write(result);
+      try {
+        var result = await renderNode(context, child);
+        textBuffer.write(result);
+      } on TemplateError catch (e) {
+        errors.add(e);
+        textBuffer.write(context.renderedError);
+      } catch (e) {
+        var error = RenderError(message: e.toString(), position: '?');
+        errors.add(error);
+        textBuffer.write(context.renderedError);
+      }
     }
-    return text.toString();
+    return IntermediateRenderResult(
+        text: textBuffer.toString(), errors: errors);
   }
 
   Future<String> renderNode(RenderContext context, T node) async {
     if (node is Renderer) {
-      try {
-        var result = await (node.render(context));
-        return result.toString();
-      } on Exception catch (e) {
-        if (e is RenderException) {
-          context.errors.add(e);
-        }
-        return context.renderedError;
-      }
+      var result = await node.render(context);
+      return result.toString();
     } else if (node is List) {
       var values = <String>[];
       for (var item in node) {
@@ -65,15 +69,15 @@ class ParserTree<T> extends Renderer<String> {
         values.add(value);
       }
       return values.join();
-    } else {}
-    return node.toString();
+    } else {
+      return node.toString();
+    }
   }
 }
 
 class RenderContext {
   final TemplateEngine engine;
   final VariableMap variables;
-  List<Error> errors;
   final String renderedError;
 
   /// the Template being rendered
@@ -90,8 +94,7 @@ class RenderContext {
       VariableMap? variables})
       : variables = variables ?? {},
         renderedError =
-            renderedError ?? '${engine.tagStart}ERROR${engine.tagEnd}',
-        errors = [];
+            renderedError ?? '${engine.tagStart}ERROR${engine.tagEnd}';
 }
 
 abstract class RenderResult {
@@ -107,10 +110,17 @@ abstract class RenderResult {
   String toString() => text;
 }
 
+class IntermediateRenderResult extends RenderResult {
+  final List<TemplateError> errors;
+  IntermediateRenderResult({required super.text, required this.errors});
+  @override
+  String get errorMessage => errors.join('\n');
+}
+
 /// contains the [RenderResult] of a [Template]
 class TemplateRenderResult extends RenderResult {
   final Template template;
-  final List<Error> errors;
+  final List<TemplateError> errors;
 
   TemplateRenderResult(
       {required this.template, required super.text, this.errors = const []});

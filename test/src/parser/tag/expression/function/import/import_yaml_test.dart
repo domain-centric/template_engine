@@ -36,14 +36,15 @@ void main() {
         engine.parseText("{{yaml=importYaml('none_existing.yaml')}}"
             "{{yaml.person.child.name}}");
     var renderResult = await engine.render(parseResult);
-    renderResult.text.should.be('{{ERROR}}');
+    renderResult.text.should.be('{{ERROR}}{{ERROR}}');
     renderResult.errorMessage.should.contain("Render errors in: "
         "'{{yaml=importYaml('none_existing.yaml')}");
     renderResult.errorMessage.should
         .contain("  1:8: Error importing a YAML file: Exception: "
-            "Source could not be read: none_existing.yaml");
+            "Error reading: none_existing.yaml, PathNotFoundException: "
+            "Cannot open file, path = 'none_existing.yaml'");
     renderResult.errorMessage.should.contain("none_existing.yaml");
     renderResult.errorMessage.should.contain(" 1:44: Variable "
-        "does not exist: yaml.person");
+        "does not exist: yaml");
   });
 }
