@@ -36,12 +36,14 @@ void main() {
                 .be(' world.'));
       });
 
-      when('call: render(parseResult)', () async {
+      when('call: render(parseResult)', () {
         var parseResult = engine.parseTemplate(template);
         var variables = {'name': 'world'};
-        var result = await engine.render(parseResult, variables);
-        then('return: "Hello {{ world."',
-            () => result.text.should.be('Hello {{ world.'));
+
+        then('return: "Hello {{ world."', () async {
+          var result = await engine.render(parseResult, variables);
+          result.text.should.be('Hello {{ world.');
+        });
       });
     });
 
@@ -76,12 +78,14 @@ void main() {
                 .be(' world.'));
       });
 
-      when('call: render(parseResult)', () async {
+      when('call: render(parseResult)', () {
         var parseResult = engine.parseTemplate(template);
         var variables = {'name': 'world'};
-        var result = await engine.render(parseResult, variables);
-        then('return text: "Hello }} world."',
-            () => result.text.should.be('Hello }} world.'));
+
+        then('return text: "Hello }} world."', () async {
+          var result = await engine.render(parseResult, variables);
+          result.text.should.be('Hello }} world.');
+        });
       });
     });
 
@@ -117,12 +121,15 @@ void main() {
                 .be('}}'));
       });
 
-      when('call: render(parseResult)', () async {
+      when('call: render(parseResult)', () {
         var parseResult = engine.parseTemplate(template);
         var variables = {'name': 'world'};
-        var result = await engine.render(parseResult, variables);
+
         then('expect: result.text "{{ this is not a tag or variable }}"',
-            () => result.text.should.be('{{ this is not a tag or variable }}'));
+            () async {
+          var result = await engine.render(parseResult, variables);
+          result.text.should.be('{{ this is not a tag or variable }}');
+        });
       });
     });
   });

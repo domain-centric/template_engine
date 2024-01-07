@@ -7,50 +7,53 @@ void main() {
     var engine = TemplateEngine();
 
     // with single parse error
-    when("calling: renderResult=engine.parseText('Hello {{name}.')", () async {
+    when("calling: renderResult=engine.parseText('Hello {{name}.')", () {
       var parseResult = engine.parseText('Hello {{name}.');
-      var renderResult = await engine.render(parseResult, {'name': 'world'});
 
       var expectedError = 'Parse error in: \'Hello {{name}.\':\n'
           '  1:7: Found tag start: {{, but it was not followed with a tag end: }}';
-      then('renderResult.errorMessage should be "$expectedError"', () {
+      then('renderResult.errorMessage should be "$expectedError"', () async {
+        var renderResult = await engine.render(parseResult, {'name': 'world'});
         renderResult.errorMessage.should.be(expectedError);
       });
       var expectedText = 'Hello {{';
-      then('renderResult.text should be "$expectedText"', () {
+      then('renderResult.text should be "$expectedText"', () async {
+        var renderResult = await engine.render(parseResult, {'name': 'world'});
         renderResult.text.should.be(expectedText);
       });
     });
 
     // with multiple parse errors
-    when("calling: renderResult=engine.parseText('Hello }}name{{.')", () async {
+    when("calling: renderResult=engine.parseText('Hello }}name{{.')", () {
       var parseResult = engine.parseText('Hello }}name{{.');
-      var renderResult = await engine.render(parseResult, {'name': 'world'});
 
       var expectedError = 'Parse errors in: \'Hello }}name{{.\':\n'
           '  1:7: Found tag end: }}, but it was not preceded with a tag start: {{\n'
           '  1:13: Found tag start: {{, but it was not followed with a tag end: }}';
-      then('renderResult.errorMessage should be "$expectedError"', () {
+      then('renderResult.errorMessage should be "$expectedError"', () async {
+        var renderResult = await engine.render(parseResult, {'name': 'world'});
         renderResult.errorMessage.should.be(expectedError);
       });
       var expectedText = 'Hello }}name{{';
-      then('renderResult.text should be "$expectedText"', () {
+      then('renderResult.text should be "$expectedText"', () async {
+        var renderResult = await engine.render(parseResult, {'name': 'world'});
         renderResult.text.should.be(expectedText);
       });
     });
 
     // with single render error
-    when("calling: renderResult=engine.parseText('Hello {{name}}.')", () async {
+    when("calling: renderResult=engine.parseText('Hello {{name}}.')", () {
       var parseResult = engine.parseText('Hello {{name}}.');
-      var renderResult = await engine.render(parseResult, {'age': '13'});
 
       var expectedError = 'Render error in: \'Hello {{name}}.\':\n'
           '  1:9: Variable does not exist: name';
-      then('renderResult.errorMessage should be "$expectedError"', () {
+      then('renderResult.errorMessage should be "$expectedError"', () async {
+        var renderResult = await engine.render(parseResult, {'age': '13'});
         renderResult.errorMessage.should.be(expectedError);
       });
       var expectedText = 'Hello {{ERROR}}.';
-      then('renderResult.text should be "$expectedText"', () {
+      then('renderResult.text should be "$expectedText"', () async {
+        var renderResult = await engine.render(parseResult, {'age': '13'});
         renderResult.text.should.be(expectedText);
       });
     });
@@ -58,20 +61,21 @@ void main() {
     // with multiple render errors
     when(
         "calling: renderResult=engine.parseText("
-        "'Hello {{name}}. Welcome in {{location}}.')", () async {
+        "'Hello {{name}}. Welcome in {{location}}.')", () {
       var parseResult =
           engine.parseText('Hello {{name}}. Welcome in {{location}}.');
-      var renderResult = await engine.render(parseResult, {'age': '13'});
 
       var expectedError =
           'Render errors in: \'Hello {{name}}. Welcome in {{location}}.\':\n'
           '  1:9: Variable does not exist: name\n'
           '  1:30: Variable does not exist: location';
-      then('renderResult.errorMessage should be "$expectedError"', () {
+      then('renderResult.errorMessage should be "$expectedError"', () async {
+        var renderResult = await engine.render(parseResult, {'age': '13'});
         renderResult.errorMessage.should.be(expectedError);
       });
       var expectedText = 'Hello {{ERROR}}. Welcome in {{ERROR}}.';
-      then('renderResult.text should be "$expectedText"', () {
+      then('renderResult.text should be "$expectedText"', () async {
+        var renderResult = await engine.render(parseResult, {'age': '13'});
         renderResult.text.should.be(expectedText);
       });
     });

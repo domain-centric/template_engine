@@ -49,7 +49,8 @@ class ParserTree<T> extends Renderer<IntermediateRenderResult> {
         errors.add(e);
         textBuffer.write(context.renderedError);
       } catch (e) {
-        var error = RenderError(message: e.toString(), position: '?');
+        var error =
+            RenderError(message: e.toString(), position: position(child));
         errors.add(error);
         textBuffer.write(context.renderedError);
       }
@@ -57,6 +58,9 @@ class ParserTree<T> extends Renderer<IntermediateRenderResult> {
     return IntermediateRenderResult(
         text: textBuffer.toString(), errors: errors);
   }
+
+  String position(child) =>
+      child is ExpressionWithSourcePosition ? child.position : '?';
 
   Future<String> renderNode(RenderContext context, T node) async {
     if (node is Renderer) {

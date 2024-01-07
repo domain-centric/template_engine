@@ -62,12 +62,16 @@ class FunctionName {
   }
 }
 
-class FunctionExpression<R extends Object> extends Expression<R> {
-  final String position;
+class FunctionExpression<R extends Object>
+    extends ExpressionWithSourcePosition<R> {
   final ExpressionFunction<R> function;
   final Map<String, Expression> parameterExpressionMap;
 
-  FunctionExpression(this.position, this.function, this.parameterExpressionMap);
+  FunctionExpression(
+    String position,
+    this.function,
+    this.parameterExpressionMap,
+  ) : super(position: position);
 
   @override
   Future<R> render(RenderContext context) async {
@@ -76,7 +80,7 @@ class FunctionExpression<R extends Object> extends Expression<R> {
       var value = await parameterExpressionMap[name]!.render(context);
       parameterMap[name] = value;
     }
-    return await function.function(position, context, parameterMap);
+    return await function.function(super.position, context, parameterMap);
   }
 
   @override

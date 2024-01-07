@@ -13,7 +13,12 @@ Future<String> readSource(String source) async {
       try {
         return await readFromFileUri(source);
       } on Exception catch (e) {
-        return Future.error(e);
+        var message = e
+            .toString()
+            .replaceFirst('Exception: ', '')
+            .replaceAll('\r', '')
+            .replaceAll('\n', '');
+        throw Exception(message);
       }
     }
   }

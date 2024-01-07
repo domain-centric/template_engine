@@ -121,7 +121,7 @@ class TemplateEngine {
       var result = TemplateRenderResult(
         template: template,
         text: renderResult.text,
-        errors: renderResult.errors,
+        errors: [...parseResult.errors, ...renderResult.errors],
       );
       results = results.add(result);
       for (var parseResult in renderContext.parsedTemplates

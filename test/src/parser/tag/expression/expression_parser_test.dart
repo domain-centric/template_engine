@@ -20,13 +20,15 @@ void main() {
       });
     });
 
-    when('calling parser.parse("123.45")', () async {
+    when('calling parser.parse("123.45")', () {
       var parseResult = parser.parse("123.45");
-      var value = await parseResult.value.render(context);
-      then('result.value should be an Expression<num>', () {
-        value.should.beAssignableTo<Expression<num>>();
+
+      then('result.value should be an Expression<num>', () async {
+        var value = await parseResult.value.render(context);
+        value.should.beAssignableTo<double>();
       });
-      then('result.value.render(context) should be 123.45', () {
+      then('result.value.render(context) should be 123.45', () async {
+        var value = await parseResult.value.render(context);
         (value as num).should.beCloseTo(123.45, delta: 0.001);
       });
     });
@@ -36,8 +38,8 @@ void main() {
       then('result.value should be an Expression', () {
         result.value.should.beAssignableTo<Expression>();
       });
-      then('result.value.render(context) should be 5', () {
-        (result.value.render(context) as num).should.be(5);
+      then('result.value.render(context) should be 5', () async {
+        (await result.value.render(context) as num).should.be(5);
       });
     });
 
@@ -46,8 +48,8 @@ void main() {
       then('result.value should be an Expression', () {
         result.value.should.beAssignableTo<Expression>();
       });
-      then('result.value.render(context) should be 8', () {
-        (result.value.render(context) as num).should.be(8);
+      then('result.value.render(context) should be 8', () async {
+        (await result.value.render(context) as num).should.be(8);
       });
     });
   });

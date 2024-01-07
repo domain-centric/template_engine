@@ -33,31 +33,37 @@ class ImportTemplate extends ExpressionFunction<String> {
                   presence: Presence.mandatory())
             ],
             function: (position, renderContext, parameters) async {
+              var source = parameters['source'] as String;
+
               try {
-                var source = parameters['source'] as String;
                 var text = await readSource(source);
                 var template = ImportedTemplate(source: source, text: text);
-
                 TemplateParseResult? parseResult = renderContext.parsedTemplates
                     .firstWhereOrNull((pt) => pt.template == template);
                 if (parseResult == null) {
                   var engine = renderContext.engine;
-
                   parseResult = engine.parseTemplate(template).children.first;
                   renderContext.parsedTemplates.add(parseResult);
                 }
                 var renderResult = await parseResult.render(renderContext);
-                //TODO test
-                var errorMessage = renderResult.errorMessage;
-                if (errorMessage.isNotEmpty) {
-                  throw RenderError(message: errorMessage, position: position);
+                //TODO return renderResult;
+                if (renderResult.errors.isNotEmpty) {
+                  throw ImportError(position, template, renderResult.errors);
                 }
                 return renderResult.text;
               } on Exception catch (e) {
-                throw RenderError(
-                    message: 'Error importing template: '
-                        '${e.toString().replaceAll('\r', '').replaceAll('\n', '')}',
-                    position: position);
+                if (e is ImportError) {
+                  rethrow;
+                } else {
+                  var message = e
+                      .toString()
+                      .replaceFirst('Exception: ', '')
+                      .replaceAll('\r', '')
+                      .replaceAll('\n', '');
+                  throw RenderError(
+                      message: 'Error importing template: $message',
+                      position: position);
+                }
               }
             });
 }
@@ -84,9 +90,13 @@ class ImportPure extends ExpressionFunction<String> {
                 var text = await readSource(source);
                 return text;
               } on Exception catch (e) {
+                var message = e
+                    .toString()
+                    .replaceFirst('Exception: ', '')
+                    .replaceAll('\r', '')
+                    .replaceAll('\n', '');
                 throw RenderError(
-                    message: 'Error importing a pure file: '
-                        '${e.toString().replaceAll('\r', '').replaceAll('\n', '')}',
+                    message: 'Error importing a pure file: $message',
                     position: position);
               }
             });
@@ -118,9 +128,13 @@ class ImportJson extends ExpressionFunction<Map<String, dynamic>> {
                 var jsonMap = jsonDecode(jsonText);
                 return jsonMap;
               } on Exception catch (e) {
+                var message = e
+                    .toString()
+                    .replaceFirst('Exception: ', '')
+                    .replaceAll('\r', '')
+                    .replaceAll('\n', '');
                 throw RenderError(
-                    message: 'Error importing a Json file: '
-                        '${e.toString().replaceAll('\r', '').replaceAll('\n', '')}',
+                    message: 'Error importing a Json file: $message',
                     position: position);
               }
             });
@@ -153,9 +167,13 @@ class ImportXml extends ExpressionFunction<Map<String, dynamic>> {
                 var xmlMap = xmlToDataMap(xmlText);
                 return xmlMap;
               } on Exception catch (e) {
+                var message = e
+                    .toString()
+                    .replaceFirst('Exception: ', '')
+                    .replaceAll('\r', '')
+                    .replaceAll('\n', '');
                 throw RenderError(
-                    message: 'Error importing a XML file: '
-                        '${e.toString().replaceAll('\r', '').replaceAll('\n', '')}',
+                    message: 'Error importing a XML file: $message',
                     position: position);
               }
             });
@@ -220,9 +238,13 @@ class ImportYaml extends ExpressionFunction<Map<String, dynamic>> {
                 var yamlMap = yamlToDataMap(yamlText);
                 return yamlMap;
               } on Exception catch (e) {
+                var message = e
+                    .toString()
+                    .replaceFirst('Exception: ', '')
+                    .replaceAll('\r', '')
+                    .replaceAll('\n', '');
                 var error = RenderError(
-                    message: 'Error importing a YAML file: '
-                        '${e.toString().replaceAll('\r', '').replaceAll('\n', '')}',
+                    message: 'Error importing a YAML file: $message',
                     position: position);
                 throw error;
               }

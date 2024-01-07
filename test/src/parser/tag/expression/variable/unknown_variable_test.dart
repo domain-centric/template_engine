@@ -1,13 +1,13 @@
 import 'package:shouldly/shouldly.dart';
 import 'package:template_engine/template_engine.dart';
 
-void main() {
+Future<void> main() async {
   var template = TextTemplate('Hello {{world}}.');
   var engine = TemplateEngine();
 
-  var result = engine.parseTemplate(template);
-
-  var expected = 'Parse Error: Unknown tag or variable. '
-      'position: 1:7 source: Text';
-  result.errorMessage.should.be(expected);
+  var parseResult = engine.parseTemplate(template);
+  var renderResult = await engine.render(parseResult);
+  var expected = "Render error in: 'Hello {{world}}.':\n"
+      "  1:9: Variable does not exist: world";
+  renderResult.errorMessage.should.be(expected);
 }

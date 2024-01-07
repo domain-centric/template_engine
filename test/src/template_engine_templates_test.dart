@@ -5,17 +5,18 @@ import 'package:template_engine/template_engine.dart';
 void main() {
   given('TemplateEngine', () {
     var engine = TemplateEngine();
-    when("calling: engine.parseTemplates();", () async {
+    when("calling: engine.parseTemplates();", () {
       var path = ProjectFilePath('test/src/hello.template.md');
       var parseResult = engine.parseTemplates(
           [FileTemplate.fromProjectFilePath(path), TextTemplate('{{name}}.')]);
-      var renderResult = await engine.render(parseResult, {'name': 'world'});
 
-      then('renderResult.errorMessage should be empty', () {
+      then('renderResult.errorMessage should be empty', () async {
+        var renderResult = await engine.render(parseResult, {'name': 'world'});
         renderResult.errorMessage.should.beNullOrEmpty();
       });
       var expected = 'Hello world.';
-      then('renderResult.text should be "$expected"', () {
+      then('renderResult.text should be "$expected"', () async {
+        var renderResult = await engine.render(parseResult, {'name': 'world'});
         renderResult.text.should.be(expected);
       });
     });

@@ -3,14 +3,13 @@ import 'package:petitparser/petitparser.dart';
 import 'package:template_engine/template_engine.dart';
 
 class PrefixExpression<PARAMETER_TYPE extends Object>
-    extends Expression<PARAMETER_TYPE> {
+    extends ExpressionWithSourcePosition<PARAMETER_TYPE> {
   final PrefixOperator<PARAMETER_TYPE> operator;
   final Expression valueExpression;
-  final String position;
 
   PrefixExpression(
       {required this.operator,
-      required this.position,
+      required super.position,
       required this.valueExpression});
 
   @override
@@ -22,7 +21,7 @@ class PrefixExpression<PARAMETER_TYPE extends Object>
     throw RenderException(
         message:
             '${typeDescription<PARAMETER_TYPE>()} expected after the ${operator.operator} operator',
-        position: position);
+        position: super.position);
   }
 
   @override
@@ -80,15 +79,14 @@ class TwoValueOperatorVariant<LEFT_TYPE extends Object,
 
 /// delegates the work to one of the [variants] that can process
 /// the correct types of the evaluated [left] and [right] values.
-class OperatorVariantExpression extends Expression {
-  final String position;
+class OperatorVariantExpression extends ExpressionWithSourcePosition {
   final List<TwoValueOperatorVariant> variants;
   final String operator;
   final Expression left;
   final Expression right;
 
   OperatorVariantExpression(
-      {required this.position,
+      {required super.position,
       required this.operator,
       required this.variants,
       required this.left,
@@ -109,7 +107,8 @@ class OperatorVariantExpression extends Expression {
         errors.addAll(variantErrors);
       }
     }
-    throw RenderException(message: errors.join(', or '), position: position);
+    throw RenderException(
+        message: errors.join(', or '), position: super.position);
   }
 }
 

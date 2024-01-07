@@ -51,10 +51,9 @@ typedef DataMap = Map<String, dynamic>;
 typedef VariableMap = DataMap;
 
 /// An expression to return a variable value
-class VariableExpression extends Expression {
+class VariableExpression extends ExpressionWithSourcePosition {
   final String namePath;
-  final String position;
-  VariableExpression({required this.position, required this.namePath});
+  VariableExpression({required super.position, required this.namePath});
 
   @override
   String toString() => 'Variable{$namePath}';
@@ -69,7 +68,7 @@ class VariableExpression extends Expression {
         if (value == null) {
           throw VariableException(
               message: 'Variable: $namePath may not be null',
-              position: position);
+              position: super.position);
         }
         return Future.value(value!);
       } else if (value is VariableMap) {
@@ -80,7 +79,7 @@ class VariableExpression extends Expression {
     throw VariableException(
         message: 'Variable does not exist: '
             '${namePath.sublist(0, namePathIndex + 1).join('.')}',
-        position: position);
+        position: super.position);
   }
 
   @override
@@ -88,7 +87,7 @@ class VariableExpression extends Expression {
     try {
       return _findVariableValue(context.variables, namePath.split('.'), 0);
     } on VariableException catch (e) {
-      throw RenderException(message: e.message, position: position);
+      throw RenderException(message: e.message, position: super.position);
     }
   }
 }

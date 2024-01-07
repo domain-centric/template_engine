@@ -327,12 +327,13 @@ void main() {
           () => parserResult.errorMessage.should.beNullOrEmpty());
       then('parserResult should have 1 node',
           () => parserResult.children.length.should.be(1));
-      when('calling: await engine.render(parserResult)', () async {
-        var renderResult = await engine.render(parserResult);
+      when('calling: await engine.render(parserResult)', () {
         var expected = {parameterName: -12.3};
 
-        then('renderResult.text should be: "$expected"',
-            () => renderResult.text.should.be(expected.toString()));
+        then('renderResult.text should be: "$expected"', () async {
+          var renderResult = await engine.render(parserResult);
+          renderResult.text.should.be(expected.toString());
+        });
       });
     });
 
@@ -345,11 +346,12 @@ void main() {
       then('parseResult should have 1 node',
           () => parseResult.children.length.should.be(1));
 
-      when('calling: await engine.render(parseResult)', () async {
-        var renderResult = await engine.render(parseResult);
+      when('calling: await engine.render(parseResult)', () {
         var expected = {parameterName: true};
-        then('result first node should be: "$expected"',
-            () => renderResult.text.should.be(expected.toString()));
+        then('result first node should be: "$expected"', () async {
+          var renderResult = await engine.render(parseResult);
+          renderResult.text.should.be(expected.toString());
+        });
       });
     });
 
@@ -362,11 +364,12 @@ void main() {
       then('parseResult should have 1 node',
           () => parseResult.children.length.should.be(1));
 
-      when('calling: ', () async {
-        var renderResult = await engine.render(parseResult);
+      when('calling: ', () {
         var expected = {parameterName: false};
-        then('renderResult.text should be: "$expected"',
-            () => renderResult.text.should.be(expected.toString()));
+        then('renderResult.text should be: "$expected"', () async {
+          var renderResult = await engine.render(parseResult);
+          renderResult.text.should.be(expected.toString());
+        });
       });
     });
 
@@ -379,11 +382,12 @@ void main() {
       then('parseResult should have 1 node',
           () => parseResult.children.length.should.be(1));
 
-      when('', () async {
-        var renderResult = await engine.render(parseResult);
+      when('', () {
         var expected = {parameterName: 'Hello'};
-        then('renderResult.text should be: "$expected"',
-            () => renderResult.text.should.be(expected.toString()));
+        then('renderResult.text should be: "$expected"', () async {
+          var renderResult = await engine.render(parseResult);
+          renderResult.text.should.be(expected.toString());
+        });
       });
     });
   });
@@ -477,10 +481,11 @@ void main() {
           () => parseResult.errorMessage.should.beNullOrEmpty());
       then('parseResult should have 1 node',
           () => parseResult.children.length.should.be(1));
-      when('calling: await engine.render(parseResult)', () async {
-        var renderResult = await engine.render(parseResult);
-        then('renderResult first node should be: "$expected"',
-            () => renderResult.text.should.be(expected.toString()));
+      when('calling: await engine.render(parseResult)', () {
+        then('renderResult first node should be: "$expected"', () async {
+          var renderResult = await engine.render(parseResult);
+          renderResult.text.should.be(expected.toString());
+        });
       });
     });
   });
@@ -568,10 +573,11 @@ void main() {
           () => parseResult.errorMessage.should.beNullOrEmpty());
       then('parseResult should have 1 node',
           () => parseResult.children.length.should.be(1));
-      when('calling: await engine.render(parseResult)', () async {
-        var renderResult = await engine.render(parseResult);
-        then('renderResult.text should be: "$expected"',
-            () => renderResult.text.should.be(expected.toString()));
+      when('calling: await engine.render(parseResult)', () {
+        then('renderResult.text should be: "$expected"', () async {
+          var renderResult = await engine.render(parseResult);
+          renderResult.text.should.be(expected.toString());
+        });
       });
     });
 
@@ -590,11 +596,11 @@ void main() {
           () => parseResult.errorMessage.should.beNullOrEmpty());
       then('parseResult should have 1 node',
           () => parseResult.children.length.should.be(1));
-      when('calling: await engine.render(parseResult)', () async {
-        var renderResult = await engine.render(parseResult);
-
-        then('renderResult.text should be: "$expected"',
-            () => renderResult.text.should.be(expected.toString()));
+      when('calling: await engine.render(parseResult)', () {
+        then('renderResult.text should be: "$expected"', () async {
+          var renderResult = await engine.render(parseResult);
+          renderResult.text.should.be(expected.toString());
+        });
       });
     });
   });
@@ -608,11 +614,12 @@ void main() {
         "('{{length(\"Hello\" + \" \" & \"world.\") + 3}}')) ", () {
       var parseResult = engine.parseTemplate(
           TextTemplate('{{length("Hello" + " " & "world.") + 3}}'));
-      when('calling: await engine.render(parseResult).text', () async {
-        var renderResult = await engine.render(parseResult);
+      when('calling: await engine.render(parseResult).text', () {
         var expected = (('Hello world.'.length) + 3).toString();
-        then('result should be: $expected',
-            () => renderResult.text.should.be(expected));
+        then('result should be: $expected', () async {
+          var renderResult = await engine.render(parseResult);
+          renderResult.text.should.be(expected);
+        });
       });
     });
   });
@@ -624,11 +631,12 @@ void main() {
     when("calling: engine.parse(TextTemplate('{{sin(asin(0.5))}}'))", () {
       var parseResult =
           engine.parseTemplate(TextTemplate('{{sin(asin(0.5))}}'));
-      when('calling: await engine.render(parseResult).text', () async {
-        var renderResult = await engine.render(parseResult);
+      when('calling: await engine.render(parseResult).text', () {
         var expected = '0.5';
-        then('result should be: $expected',
-            () => renderResult.text.should.be(expected));
+        then('result should be: $expected', () async {
+          var renderResult = await engine.render(parseResult);
+          renderResult.text.should.be(expected);
+        });
       });
     });
   });
@@ -640,11 +648,11 @@ void main() {
           '  1:7: missing mandatory function parameter: radians';
       then('parseResult.errors.first.message should be "$expected"',
           () => parseResult.errorMessage.should.be(expected));
-      when('calling: await engine.render(parseResult).text', () async {
-        var renderResult = await engine.render(parseResult);
-
-        then('renderResult.text should be: "{{sin()}}"',
-            () => renderResult.text.should.be('{{sin()}}'));
+      when('calling: await engine.render(parseResult).text', () {
+        then('renderResult.text should be: "{{sin()}}"', () async {
+          var renderResult = await engine.render(parseResult);
+          renderResult.text.should.be('{{sin()}}');
+        });
       });
     });
   });

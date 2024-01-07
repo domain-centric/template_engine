@@ -49,13 +49,12 @@ class AssignmentOperator extends Operator {
   }
 }
 
-class AssignVariableExpression extends Expression<String> {
-  final String position;
+class AssignVariableExpression extends ExpressionWithSourcePosition<String> {
   final Expression<Object> left;
   final Expression<Object> right;
 
   AssignVariableExpression(
-      {required this.position, required this.left, required this.right});
+      {required super.position, required this.left, required this.right});
 
   @override
   Future<String> render(RenderContext context) async {
@@ -64,14 +63,14 @@ class AssignVariableExpression extends Expression<String> {
       throw RenderException(
           message:
               'The left side of the = operation must be a valid variable name',
-          position: position);
+          position: super.position);
     }
     if (variableExpression.namePath.contains('.')) {
       throw RenderException(
           message: 'The left side of the = operation '
               'must be a name of a root variable '
               '(not contain dots)',
-          position: position);
+          position: super.position);
     }
 
     var value = await right.render(context);

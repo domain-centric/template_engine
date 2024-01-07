@@ -9,11 +9,12 @@ void main() {
     when("call: engine.parse(TemplateWithTemplateSourceFunction())", () {
       var parseResult =
           engine.parseTemplate(TemplateWithTemplateSourceFunction());
-      when('calling: await engine.render(parseResult)', () async {
-        var renderResult = await engine.render(parseResult);
+      when('calling: await engine.render(parseResult)', () {
         var expected = TemplateWithTemplateSourceFunction().source;
-        then('renderResult.text be: "$expected"',
-            () => renderResult.text.should.be(expected));
+        then('renderResult.text be: "$expected"', () async {
+          var renderResult = await engine.render(parseResult);
+          return renderResult.text.should.be(expected);
+        });
       });
     });
   });

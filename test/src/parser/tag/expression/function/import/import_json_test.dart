@@ -39,10 +39,10 @@ void main() {
     renderResult.text.should.be('{{ERROR}}{{ERROR}}');
     renderResult.errorMessage.should.contain("Render errors in: "
         "'{{json=importJson('none_existing.json')}");
-    renderResult.errorMessage.should
-        .contain("1:8: Error importing a Json file: Exception: Error reading: "
-            "none_existing.json, PathNotFoundException: Cannot open file, "
-            "path = 'none_existing.json'");
+    renderResult.errorMessage.should.contain(
+        "  1:8: Error importing a Json file: "
+        "Error reading: none_existing.json, "
+        "PathNotFoundException: Cannot open file, path = 'none_existing.json'");
     renderResult.errorMessage.should.contain(" 1:44: Variable "
         "does not exist: json");
   });

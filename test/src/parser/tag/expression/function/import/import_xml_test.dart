@@ -38,8 +38,9 @@ void main() {
     renderResult.text.should.be('{{ERROR}}{{ERROR}}');
     renderResult.errorMessage.should.contain("Render errors in: "
         "'{{xml=importXml('none_existing.xml')}");
-    renderResult.errorMessage.should.contain("1:7: Error importing a XML file: "
-        "Exception: Error reading: none_existing.xml, "
+    renderResult.errorMessage.should.contain(
+        "  1:7: Error importing a XML file: "
+        "Error reading: none_existing.xml, "
         "PathNotFoundException: Cannot open file, path = 'none_existing.xml'");
     renderResult.errorMessage.should.contain("none_existing.xml");
     renderResult.errorMessage.should.contain(" 1:41: Variable "

@@ -8,6 +8,13 @@ import 'package:template_engine/template_engine.dart';
 /// * [Operator]s
 abstract class Expression<T extends Object> extends Renderer<T> {}
 
+abstract class ExpressionWithSourcePosition<T extends Object>
+    extends Expression<T> {
+  final String position;
+
+  ExpressionWithSourcePosition({required this.position});
+}
+
 /// A [Value] [Expression] holds a value that does not change when
 /// rendered (evaluated).
 /// e.g. it can be like a [num], [bool], [String] etc...

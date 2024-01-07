@@ -12,24 +12,36 @@ void main() {
     var template = FileTemplate.fromProjectFilePath(templatePath);
     var parseResult = engine.parseTemplate(template);
     var renderResult = await engine.render(parseResult);
-    const expectedError =
-        'Errors in: test/src/parser/tag/expression/function/import/import_template_with_errors1.md.template:\n'
-        '  Parse error:\n'
-        '    3:35: Found tag end: }}, but it was not preceded with a tag start: {{\n'
-        '  Render errors:\n'
-        '    1:3: Error importing template: Exception: Source could not be read: test/src/parser/tag/expression/function/import/none_existing.file\n'
-        '    2:3: Errors while importing test/src/parser/tag/expression/function/import/import_template_with_errors2.md.template:\n'
-        '      1:3: Error importing template: Exception: Source could not be read: test/src/parser/tag/expression/function/import/none_existing.file\n'
-        '      2:3: Errors while importing test/src/parser/tag/expression/function/import/import_template_with_errors3.md.template:\n'
-        '        1:3: Error importing template: Exception: Source could not be read: /invalid.path\n'
-        '        2:12: Variable does not exist: name\n'
-        '      3:12: Variable does not exist: name\n'
-        '    3:12: Variable does not exist: name\n'
-        'Parse error in: test/src/parser/tag/expression/function/import/import_template_with_errors2.md.template:\n'
-        '  3:35: Found tag end: }}, but it was not preceded with a tag start: {{\n'
-        'Parse error in: test/src/parser/tag/expression/function/import/import_template_with_errors3.md.template:\n'
-        '  2:35: Found tag end: }}, but it was not preceded with a tag start: {{';
-    renderResult.errorMessage.should.be(expectedError);
+    renderResult.errorMessage.should.contain(
+        'Errors in: test/src/parser/tag/expression/function/import/import_template_with_errors1.md.template:\n');
+    renderResult.errorMessage.should.contain('  Parse error:\n');
+    renderResult.errorMessage.should.contain(
+        '    3:35: Found tag end: }}, but it was not preceded with a tag start: {{\n');
+    renderResult.errorMessage.should.contain('  Render errors:\n');
+    renderResult.errorMessage.should.contain(
+        '    1:3: Error importing template: Error reading: test/src/parser/tag/expression/function/import/none_existing.file, PathNotFoundException: Cannot open file, path = ');
+    renderResult.errorMessage.should.contain(
+        '    2:3: Errors while importing test/src/parser/tag/expression/function/import/import_template_with_errors2.md.template:\n');
+    renderResult.errorMessage.should.contain(
+        "      1:3: Error importing template: Error reading: test/src/parser/tag/expression/function/import/none_existing.file, PathNotFoundException: Cannot open file, path = ");
+    renderResult.errorMessage.should.contain(
+        '      2:3: Errors while importing test/src/parser/tag/expression/function/import/import_template_with_errors3.md.template:\n');
+    renderResult.errorMessage.should.contain(
+        '        1:3: Error importing template: Error reading: /invalid.path, PathNotFoundException: Cannot open file, path = ');
+    renderResult.errorMessage.should
+        .contain('        2:12: Variable does not exist: name\n');
+    renderResult.errorMessage.should
+        .contain('      3:12: Variable does not exist: name\n');
+    renderResult.errorMessage.should
+        .contain('    3:12: Variable does not exist: name\n');
+    renderResult.errorMessage.should.contain(
+        'Parse error in: test/src/parser/tag/expression/function/import/import_template_with_errors2.md.template:\n');
+    renderResult.errorMessage.should.contain(
+        '  3:35: Found tag end: }}, but it was not preceded with a tag start: {{\n');
+    renderResult.errorMessage.should.contain(
+        'Parse error in: test/src/parser/tag/expression/function/import/import_template_with_errors3.md.template:\n');
+    renderResult.errorMessage.should.contain(
+        '  2:35: Found tag end: }}, but it was not preceded with a tag start: {{');
 
     const expectedText = '{{ERROR}}\r\n'
         '{{ERROR}}\r\n'

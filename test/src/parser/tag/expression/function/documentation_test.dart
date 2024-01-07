@@ -28,11 +28,11 @@ void main() {
           '</table>\n';
       then('parseResult.errorMessage should be empty',
           () => parseResult.errorMessage.should.beNullOrEmpty());
-      when('calling: await engine.render(parseResult)', () async {
-        var renderResult = await engine.render(parseResult);
-
-        then('renderResult.text be: "$expected"',
-            () => renderResult.text.should.be(expected));
+      when('calling: await engine.render(parseResult)', () {
+        then('renderResult.text be: "$expected"', () async {
+          var renderResult = await engine.render(parseResult);
+          renderResult.text.should.be(expected);
+        });
       });
     });
 
@@ -51,36 +51,39 @@ void main() {
       then('parseResult.errorMessage should be empty',
           () => parseResult.errorMessage.should.beNullOrEmpty());
 
-      when('calling: await engine.render(parseResult)', () async {
-        var renderResult = await engine.render(parseResult);
-
-        then('renderResult.errorMessage should be empty',
-            () => renderResult.errorMessage.should.beNullOrEmpty());
-        then('renderResult.text be: "$expected"',
-            () => renderResult.text.should.be(expected));
+      when('calling: await engine.render(parseResult)', () {
+        then('renderResult.errorMessage should be empty', () async {
+          var renderResult = await engine.render(parseResult);
+          renderResult.errorMessage.should.beNullOrEmpty();
+        });
+        then('renderResult.text be: "$expected"', () async {
+          var renderResult = await engine.render(parseResult);
+          renderResult.text.should.be(expected);
+        });
       });
     });
 
     when(
         "call: engine.parse(const "
-        "TextTemplate('{{functionDocumentation()}}'))", () async {
+        "TextTemplate('{{functionDocumentation()}}'))", () {
       var template = TextTemplate('{{functionDocumentation()}}');
       var parseResult = engine.parseTemplate(template);
-      var expected = await FunctionDocumentation().function(
-          '',
-          RenderContext(
-              engine: engine,
-              templateBeingRendered: template,
-              parsedTemplates: []),
-          {'titleLevel': 1});
 
       then('parseResult.errorMessage should be empty',
           () => parseResult.errorMessage.should.beNullOrEmpty());
-      when('calling: await engine.render(parseResult)', () async {
-        var renderResult = await engine.render(parseResult);
-
-        then('renderResult.text be: "$expected"',
-            () => renderResult.text.should.be(expected));
+      when('calling: await engine.render(parseResult)', () {
+        then('renderResult.text be the documentation function result',
+            () async {
+          var renderResult = await engine.render(parseResult);
+          var expected = await FunctionDocumentation().function(
+              '',
+              RenderContext(
+                  engine: engine,
+                  templateBeingRendered: template,
+                  parsedTemplates: []),
+              {'titleLevel': 1});
+          renderResult.text.should.be(expected);
+        });
       });
     });
   });
