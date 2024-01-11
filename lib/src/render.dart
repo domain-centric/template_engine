@@ -44,7 +44,8 @@ class ParserTree<T> extends Renderer<IntermediateRenderResult> {
     for (var child in children) {
       try {
         var result = await renderNode(context, child);
-        textBuffer.write(result);
+        textBuffer.write(resultToString(result));
+        errors.addAll(resultErrors(result));
       } on TemplateError catch (e) {
         errors.add(e);
         textBuffer.write(context.renderedError);
@@ -62,20 +63,46 @@ class ParserTree<T> extends Renderer<IntermediateRenderResult> {
   String position(child) =>
       child is ExpressionWithSourcePosition ? child.position : '?';
 
-  Future<String> renderNode(RenderContext context, T node) async {
+  /// returns either an:
+  /// * [IntermediateRenderResult] containing a text and possible errors
+  /// * an [Object] that can be converted to a [String]
+  /// * a [List] of [Object]s that can be converted to a [String]
+  Future<dynamic> renderNode(RenderContext context, T node) async {
     if (node is Renderer) {
       var result = await node.render(context);
-      return result.toString();
+      return result;
     } else if (node is List) {
-      var values = <String>[];
+      var values = [];
       for (var item in node) {
         var value = await renderNode(context, item);
         values.add(value);
       }
-      return values.join();
+      return values;
     } else {
       return node.toString();
     }
+  }
+
+  String resultToString(result) {
+    if (result is List) {
+      return result.join();
+    } else {
+      return result.toString();
+    }
+  }
+
+  Iterable<TemplateError> resultErrors(result) {
+    if (result is IntermediateRenderResult) {
+      return result.errors;
+    }
+    if (result is List) {
+      var errors = <TemplateError>[];
+      for (var node in result) {
+        errors.addAll(resultErrors(node));
+      }
+      return errors;
+    }
+    return [];
   }
 }
 

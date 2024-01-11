@@ -12,6 +12,23 @@ void main() {
     var template = FileTemplate.fromProjectFilePath(templatePath);
     var parseResult = engine.parseTemplate(template);
     var renderResult = await engine.render(parseResult);
+// Expected:
+// Errors in: test/src/parser/tag/expression/function/import/import_template_with_errors1.md.template:
+//   Parse error:
+//     3:35: Found tag end: }}, but it was not preceded with a tag start: {{
+//   Render errors:
+//     1:3: Error importing template: Error reading: test/src/parser/tag/expression/function/import/none_existing.file, PathNotFoundException: Cannot open file, path =
+//     2:3: Errors while importing test/src/parser/tag/expression/function/import/import_template_with_errors2.md.template:
+//       1:3: Error importing template: Error reading: test/src/parser/tag/expression/function/import/none_existing.file, PathNotFoundException: Cannot open file, path =
+//       2:3: Errors while importing test/src/parser/tag/expression/function/import/import_template_with_errors3.md.template:
+//         1:3: Error importing template: Error reading: /invalid.path, PathNotFoundException: Cannot open file, path =
+//         2:12: Variable does not exist: name
+//       3:12: Variable does not exist: name
+//     3:12: Variable does not exist: name
+// Parse error in: test/src/parser/tag/expression/function/import/import_template_with_errors2.md.template:
+//   3:35: Found tag end: }}, but it was not preceded with a tag start: {{
+// Parse error in: test/src/parser/tag/expression/function/import/import_template_with_errors3.md.template:
+//   2:35: Found tag end: }}, but it was not preceded with a tag start: {{
     renderResult.errorMessage.should.contain(
         'Errors in: test/src/parser/tag/expression/function/import/import_template_with_errors1.md.template:\n');
     renderResult.errorMessage.should.contain('  Parse error:\n');

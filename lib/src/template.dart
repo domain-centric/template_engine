@@ -37,16 +37,12 @@ class TextTemplate extends Template {
         );
 
   static createSource(String text) {
-    String textToShow = text.split(RegExp('\\n')).first;
+    String firstLine = text.trim().split(RegExp('\\n')).first;
 
-    if (textToShow.length > 40) {
-      textToShow = textToShow.substring(0, 40);
-    }
-
-    if (text.length > textToShow.length) {
-      return "'$textToShow...'";
+    if (firstLine.length > 40) {
+      return "'${firstLine.substring(0, 40)}...'";
     } else {
-      return "'$textToShow'";
+      return "'$firstLine'";
     }
   }
 }

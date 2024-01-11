@@ -78,7 +78,7 @@ void main() {
         TextTemplate('Welcome in {{location}}.')
       ]);
 
-      var expectedError = 'Render error in: \'Hello {{name}}. \':\n'
+      var expectedError = 'Render error in: \'Hello {{name}}.\':\n'
           '  1:9: Variable does not exist: name\n'
           'Render error in: \'Welcome in {{location}}.\':\n'
           '  1:14: Variable does not exist: location';
@@ -104,7 +104,7 @@ void main() {
         TextTemplate('Welcome in {{location}}.')
       ]);
 
-      var expectedError = 'Errors in: \'}}Hello {{name}}. \':\n'
+      var expectedError = 'Errors in: \'}}Hello {{name}}.\':\n'
           '  Parse error:\n'
           '    1:1: Found tag end: }}, but it was not '
           'preceded with a tag start: {{\n'

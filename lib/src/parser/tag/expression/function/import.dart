@@ -16,7 +16,7 @@ class ImportFunctions extends FunctionGroup {
         ]);
 }
 
-class ImportTemplate extends ExpressionFunction<String> {
+class ImportTemplate extends ExpressionFunction<IntermediateRenderResult> {
   ImportTemplate()
       : super(
             name: 'importTemplate',
@@ -46,24 +46,22 @@ class ImportTemplate extends ExpressionFunction<String> {
                   renderContext.parsedTemplates.add(parseResult);
                 }
                 var renderResult = await parseResult.render(renderContext);
-                //TODO return renderResult;
-                if (renderResult.errors.isNotEmpty) {
-                  throw ImportError(position, template, renderResult.errors);
+                var errors = renderResult.errors;
+                if (errors.isNotEmpty) {
+                  var error = ImportError(position, template, [...errors]);
+                  renderResult.errors.clear();
+                  renderResult.errors.add(error);
                 }
-                return renderResult.text;
+                return renderResult;
               } on Exception catch (e) {
-                if (e is ImportError) {
-                  rethrow;
-                } else {
-                  var message = e
-                      .toString()
-                      .replaceFirst('Exception: ', '')
-                      .replaceAll('\r', '')
-                      .replaceAll('\n', '');
-                  throw RenderError(
-                      message: 'Error importing template: $message',
-                      position: position);
-                }
+                var message = e
+                    .toString()
+                    .replaceFirst('Exception: ', '')
+                    .replaceAll('\r', '')
+                    .replaceAll('\n', '');
+                throw RenderError(
+                    message: 'Error importing template: $message',
+                    position: position);
               }
             });
 }
