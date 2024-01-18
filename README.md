@@ -42,9 +42,9 @@ See: [Installing](https://pub.dev/packages/template_engine/install)
 import 'package:shouldly/shouldly.dart';
 import 'package:template_engine/template_engine.dart';
 
-void main() {
+Future<void> main() async {
   var engine = TemplateEngine();
-  var parseResult = engine.parseText('Hello {{name}}.');
+  var parseResult = await engine.parseText('Hello {{name}}.');
   var renderResult = await engine.render(parseResult, {'name': 'world'});
   renderResult.text.should.be('Hello world.');
 }
@@ -391,7 +391,7 @@ See [Example](https://github.com/domain-centric/template_engine/blob/main/test/s
 <table>
 <tr><th colspan="5">importTemplate</th></tr>
 <tr><td>description:</td><td colspan="4">Imports, parses and renders a template file</td></tr>
-<tr><td>return type:</td><td colspan="4">String</td></tr>
+<tr><td>return type:</td><td colspan="4">IntermediateRenderResult</td></tr>
 <tr><td>expression example:</td><td colspan="4">{{importTemplate('doc/template/common/generated_comment.template')}}</td></tr>
 <tr><td>code example:</td><td colspan="4"><a href="https://github.com/domain-centric/template_engine/blob/main/test/src/parser/tag/expression/function/import/import_template_test.dart">import_template_test.dart</a></td></tr>
 <tr><td>parameter:</td><td>source</td><td>String</td><td>mandatory</td><td>The project path of the template file</td></tr>
@@ -403,7 +403,7 @@ See [Example](https://github.com/domain-centric/template_engine/blob/main/test/s
 <tr><td>return type:</td><td colspan="4">String</td></tr>
 <tr><td>expression example:</td><td colspan="4">{{importPure('test/src/template_engine_template_example_test.dart')}}</td></tr>
 <tr><td>code example:</td><td colspan="4"><a href="https://github.com/domain-centric/template_engine/blob/main/test/src/parser/tag/expression/function/import/import_pure_test.dart">import_pure_test.dart</a></td></tr>
-<tr><td>parameter:</td><td>source</td><td>String</td><td>mandatory</td><td>The project path of the file</td></tr>
+<tr><td>parameter:</td><td>source</td><td>String</td><td>mandatory</td><td>The project path of the file. This path can be a absolute or relative file path or URI.</td></tr>
 </table>
 
 <table>
@@ -412,7 +412,7 @@ See [Example](https://github.com/domain-centric/template_engine/blob/main/test/s
 <tr><td>return type:</td><td colspan="4">Map<String, dynamic></td></tr>
 <tr><td>expression example:</td><td colspan="4">{{json=importJson('test/src/parser/tag/expression/function/import/person.json')}}{{json.person.child.name}}</td></tr>
 <tr><td>code example:</td><td colspan="4"><a href="https://github.com/domain-centric/template_engine/blob/main/test/src/parser/tag/expression/function/import/import_json_test.dart">import_json_test.dart</a></td></tr>
-<tr><td>parameter:</td><td>source</td><td>String</td><td>mandatory</td><td>The project path of the JSON file</td></tr>
+<tr><td>parameter:</td><td>source</td><td>String</td><td>mandatory</td><td>The project path of the JSON file. This path can be a absolute or relative file path or URI.</td></tr>
 </table>
 
 <table>
@@ -421,7 +421,7 @@ See [Example](https://github.com/domain-centric/template_engine/blob/main/test/s
 <tr><td>return type:</td><td colspan="4">Map<String, dynamic></td></tr>
 <tr><td>expression example:</td><td colspan="4">{{xml=importXml('test/src/parser/tag/expression/function/import/person.xml')}}{{xml.person.child.name}}</td></tr>
 <tr><td>code example:</td><td colspan="4"><a href="https://github.com/domain-centric/template_engine/blob/main/test/src/parser/tag/expression/function/import/import_xml_test.dart">import_xml_test.dart</a></td></tr>
-<tr><td>parameter:</td><td>source</td><td>String</td><td>mandatory</td><td>The project path of the XML file</td></tr>
+<tr><td>parameter:</td><td>source</td><td>String</td><td>mandatory</td><td>The project path of the XML file. This path can be a absolute or relative file path or URI.</td></tr>
 </table>
 
 <table>
@@ -430,7 +430,7 @@ See [Example](https://github.com/domain-centric/template_engine/blob/main/test/s
 <tr><td>return type:</td><td colspan="4">Map<String, dynamic></td></tr>
 <tr><td>expression example:</td><td colspan="4">{{yaml=importYaml('test/src/parser/tag/expression/function/import/person.yaml')}}{{yaml.person.child.name}}</td></tr>
 <tr><td>code example:</td><td colspan="4"><a href="https://github.com/domain-centric/template_engine/blob/main/test/src/parser/tag/expression/function/import/import_yaml_test.dart">import_yaml_test.dart</a></td></tr>
-<tr><td>parameter:</td><td>source</td><td>String</td><td>mandatory</td><td>The project path of the YAML file</td></tr>
+<tr><td>parameter:</td><td>source</td><td>String</td><td>mandatory</td><td>The project path of the YAML file. This path can be a absolute or relative file path or URI.</td></tr>
 </table>
 
 

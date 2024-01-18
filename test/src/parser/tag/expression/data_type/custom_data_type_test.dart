@@ -8,7 +8,7 @@ void main() {
       () async {
     var engine = TemplateEngine();
     engine.dataTypes.insert(0, Binary());
-    var parseResult = engine.parseTemplate(TextTemplate('{{1110b}}'));
+    var parseResult = await engine.parseTemplate(TextTemplate('{{1110b}}'));
     var renderResult = await engine.render(parseResult);
     renderResult.text.should.be('14');
   });

@@ -165,18 +165,18 @@ class TemplateRenderResult extends RenderResult {
     var renderErrors =
         errors.where((error) => error is RenderError || error is ImportError);
     if (parseErrors.isNotEmpty && renderErrors.isNotEmpty) {
-      return 'Errors in: ${template.source}:\n'
+      return 'Errors in: ${template.sourceTitle}:\n'
           '  Parse error${parseErrors.length > 1 ? "s" : ""}:\n'
           '${parseErrors.map((error) => error.toIndentedString(2)).join('\n')}\n'
           '  Render error${renderErrors.length > 1 ? "s" : ""}:\n'
           '${renderErrors.map((error) => error.toIndentedString(2)).join('\n')}';
     } else if (parseErrors.isNotEmpty) {
       return 'Parse error${parseErrors.length > 1 ? "s" : ""} '
-          'in: ${template.source}:\n'
+          'in: ${template.sourceTitle}:\n'
           '${parseErrors.map((error) => error.toIndentedString(1)).join('\n')}';
     } else {
       return 'Render error${renderErrors.length > 1 ? "s" : ""} '
-          'in: ${template.source}:\n'
+          'in: ${template.sourceTitle}:\n'
           '${renderErrors.map((error) => error.toIndentedString(1)).join('\n')}';
     }
   }

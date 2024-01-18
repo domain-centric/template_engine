@@ -10,17 +10,18 @@ void main() {
     when(
         "engine.parseTemplates([TextTemplate('Hello '), "
         "TextTemplate('{{name}.')])", () {
-      var parseResult = engine
-          .parseTemplates([TextTemplate('Hello '), TextTemplate('{{name}.')]);
-
       var expectedError = 'Parse error in: \'{{name}.\':\n'
           '  1:1: Found tag start: {{, but it was not followed with a tag end: }}';
       then('renderResult.errorMessage should be "$expectedError"', () async {
+        var parseResult = await engine
+            .parseTemplates([TextTemplate('Hello '), TextTemplate('{{name}.')]);
         var renderResult = await engine.render(parseResult, {'name': 'world'});
         renderResult.errorMessage.should.be(expectedError);
       });
       var expectedText = 'Hello {{';
       then('renderResult.text should be "$expectedText"', () async {
+        var parseResult = await engine
+            .parseTemplates([TextTemplate('Hello '), TextTemplate('{{name}.')]);
         var renderResult = await engine.render(parseResult, {'name': 'world'});
         renderResult.text.should.be(expectedText);
       });
@@ -30,18 +31,19 @@ void main() {
     when(
         "engine.parseTemplates([TextTemplate('Hello '), "
         "TextTemplate('}}name{{.')])", () {
-      var parseResult = engine
-          .parseTemplates([TextTemplate('Hello '), TextTemplate('}}name{{.')]);
-
       var expectedError = 'Parse errors in: \'}}name{{.\':\n'
           '  1:1: Found tag end: }}, but it was not preceded with a tag start: {{\n'
           '  1:7: Found tag start: {{, but it was not followed with a tag end: }}';
       then('renderResult.errorMessage should be "$expectedError"', () async {
+        var parseResult = await engine.parseTemplates(
+            [TextTemplate('Hello '), TextTemplate('}}name{{.')]);
         var renderResult = await engine.render(parseResult, {'name': 'world'});
         renderResult.errorMessage.should.be(expectedError);
       });
       var expectedText = 'Hello }}name{{';
       then('renderResult.text should be "$expectedText"', () async {
+        var parseResult = await engine.parseTemplates(
+            [TextTemplate('Hello '), TextTemplate('}}name{{.')]);
         var renderResult = await engine.render(parseResult, {'name': 'world'});
         renderResult.text.should.be(expectedText);
       });
@@ -51,17 +53,18 @@ void main() {
     when(
         "engine.parseTemplates([TextTemplate('Hello '), "
         "TextTemplate('{{name}}.')])", () {
-      var parseResult = engine
-          .parseTemplates([TextTemplate('Hello '), TextTemplate('{{name}}.')]);
-
       var expectedError = 'Render error in: \'{{name}}.\':\n'
           '  1:3: Variable does not exist: name';
       then('renderResult.errorMessage should be "$expectedError"', () async {
+        var parseResult = await engine.parseTemplates(
+            [TextTemplate('Hello '), TextTemplate('{{name}}.')]);
         var renderResult = await engine.render(parseResult, {'age': '13'});
         renderResult.errorMessage.should.be(expectedError);
       });
       var expectedText = 'Hello {{ERROR}}.';
       then('renderResult.text should be "$expectedText"', () async {
+        var parseResult = await engine.parseTemplates(
+            [TextTemplate('Hello '), TextTemplate('{{name}}.')]);
         var renderResult = await engine.render(parseResult, {'age': '13'});
         renderResult.text.should.be(expectedText);
       });
@@ -73,21 +76,24 @@ void main() {
         "TextTemplate('Hello {{name}}. '),"
         "TextTemplate('Welcome in {{location}}.')"
         "])", () {
-      var parseResult = engine.parseTemplates([
-        TextTemplate('Hello {{name}}. '),
-        TextTemplate('Welcome in {{location}}.')
-      ]);
-
       var expectedError = 'Render error in: \'Hello {{name}}.\':\n'
           '  1:9: Variable does not exist: name\n'
           'Render error in: \'Welcome in {{location}}.\':\n'
           '  1:14: Variable does not exist: location';
       then('renderResult.errorMessage should be "$expectedError"', () async {
+        var parseResult = await engine.parseTemplates([
+          TextTemplate('Hello {{name}}. '),
+          TextTemplate('Welcome in {{location}}.')
+        ]);
         var renderResult = await engine.render(parseResult, {'age': '13'});
         renderResult.errorMessage.should.be(expectedError);
       });
       var expectedText = 'Hello {{ERROR}}. Welcome in {{ERROR}}.';
       then('renderResult.text should be "$expectedText"', () async {
+        var parseResult = await engine.parseTemplates([
+          TextTemplate('Hello {{name}}. '),
+          TextTemplate('Welcome in {{location}}.')
+        ]);
         var renderResult = await engine.render(parseResult, {'age': '13'});
         renderResult.text.should.be(expectedText);
       });
@@ -99,11 +105,6 @@ void main() {
         "TextTemplate('}}Hello {{name}}. '),"
         "TextTemplate('Welcome in {{location}}.')"
         "])", () {
-      var parseResult = engine.parseTemplates([
-        TextTemplate('}}Hello {{name}}. '),
-        TextTemplate('Welcome in {{location}}.')
-      ]);
-
       var expectedError = 'Errors in: \'}}Hello {{name}}.\':\n'
           '  Parse error:\n'
           '    1:1: Found tag end: }}, but it was not '
@@ -113,11 +114,19 @@ void main() {
           'Render error in: \'Welcome in {{location}}.\':\n'
           '  1:14: Variable does not exist: location';
       then('renderResult.errorMessage should be "$expectedError"', () async {
+        var parseResult = await engine.parseTemplates([
+          TextTemplate('}}Hello {{name}}. '),
+          TextTemplate('Welcome in {{location}}.')
+        ]);
         var renderResult = await engine.render(parseResult, {'age': '13'});
         renderResult.errorMessage.should.be(expectedError);
       });
       var expectedText = '}}Hello {{ERROR}}. Welcome in {{ERROR}}.';
       then('renderResult.text should be "$expectedText"', () async {
+        var parseResult = await engine.parseTemplates([
+          TextTemplate('}}Hello {{name}}. '),
+          TextTemplate('Welcome in {{location}}.')
+        ]);
         var renderResult = await engine.render(parseResult, {'age': '13'});
         renderResult.text.should.be(expectedText);
       });

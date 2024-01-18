@@ -17,23 +17,25 @@ void main() {
       }
     };
     var engine = TemplateEngine();
-    var parseResult = engine.parseText("{{importXml('$path')}}");
+    var parseResult = await engine.parseText("{{importXml('$path')}}");
     var renderResult = await engine.render(parseResult);
     renderResult.text.should.be(xmlMap.toString());
   });
 
   test('test assigning importXml to a variable', () async {
     var engine = TemplateEngine();
-    var parseResult = engine.parseText("{{xml=importXml('$path')}}"
-        "{{xml.person.child.name}}");
+    var input = "{{xml=importXml('$path')}}"
+        "{{xml.person.child.name}}";
+    var parseResult = await engine.parseText(input);
     var renderResult = await engine.render(parseResult);
     renderResult.text.should.be('Jane Doe');
   });
 
   test('test importXml with none existing file', () async {
     var engine = TemplateEngine();
-    var parseResult = engine.parseText("{{xml=importXml('none_existing.xml')}}"
-        "{{xml.person.child.name}}");
+    var input = "{{xml=importXml('none_existing.xml')}}"
+        "{{xml.person.child.name}}";
+    var parseResult = await engine.parseText(input);
     var renderResult = await engine.render(parseResult);
     renderResult.text.should.be('{{ERROR}}{{ERROR}}');
     renderResult.errorMessage.should.contain("Render errors in: "

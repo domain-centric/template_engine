@@ -6,7 +6,7 @@ void main() {
   test('Variable "east" to be found and not taken hostage by constant "e"',
       () async {
     var engine = TemplateEngine();
-    var parseResult = engine.parseText('{{east}}');
+    var parseResult = await engine.parseText('{{east}}');
     parseResult.errorMessage.should.beBlank();
     var renderResult = await engine
         .render(parseResult, {'east': 'Direction of where the sun rises.'});

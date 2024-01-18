@@ -6,16 +6,22 @@ void main() {
   given('TemplateEngine', () {
     var engine = TemplateEngine();
     when("calling: engine.parseTemplates();", () {
-      var path = ProjectFilePath('test/src/hello.template.md');
-      var parseResult = engine.parseTemplates(
-          [FileTemplate.fromProjectFilePath(path), TextTemplate('{{name}}.')]);
+      var path = ProjectFilePath('test/src/hello.template');
 
       then('renderResult.errorMessage should be empty', () async {
+        var parseResult = await engine.parseTemplates([
+          FileTemplate.fromProjectFilePath(path),
+          TextTemplate('{{name}}.')
+        ]);
         var renderResult = await engine.render(parseResult, {'name': 'world'});
         renderResult.errorMessage.should.beNullOrEmpty();
       });
       var expected = 'Hello world.';
       then('renderResult.text should be "$expected"', () async {
+        var parseResult = await engine.parseTemplates([
+          FileTemplate.fromProjectFilePath(path),
+          TextTemplate('{{name}}.')
+        ]);
         var renderResult = await engine.render(parseResult, {'name': 'world'});
         renderResult.text.should.be(expected);
       });

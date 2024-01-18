@@ -7,7 +7,7 @@ import 'package:test/test.dart';
 void main() {
   test('{{log10e}} should render: $log10e', () async {
     var engine = TemplateEngine();
-    var parseResult = engine.parseTemplate(TextTemplate('{{log10e}}'));
+    var parseResult = await engine.parseTemplate(TextTemplate('{{log10e}}'));
     var renderResult = await engine.render(parseResult);
     renderResult.text.should.be(log10e.toString());
   });

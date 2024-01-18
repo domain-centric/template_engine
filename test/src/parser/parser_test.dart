@@ -9,38 +9,46 @@ void main() {
       var engine = TemplateEngine();
 
       when('call: parse(template)', () {
-        var parseResult = engine.parseTemplate(template);
-        var templateParseResult = parseResult.children.first;
+        then('expect: 3 child nodes', () async {
+          var parseResult = await engine.parseTemplate(template);
+          var templateParseResult = parseResult.children.first;
+          templateParseResult.children.length.should.be(3);
+        });
+        then('expect: first child node to be a String with text "Hallo "',
+            () async {
+          var parseResult = await engine.parseTemplate(template);
+          var templateParseResult = parseResult.children.first;
+          templateParseResult.children.first.should
+              .beOfType<String>()!
+              .should
+              .be('Hello ');
+        });
 
-        then('expect: 3 child nodes',
-            () => templateParseResult.children.length.should.be(3));
-        then(
-            'expect: first child node to be a String with text "Hallo "',
-            () => templateParseResult.children.first.should
-                .beOfType<String>()!
-                .should
-                .be('Hello '));
+        then('expect: second child node to be a String with text "{{"',
+            () async {
+          var parseResult = await engine.parseTemplate(template);
+          var templateParseResult = parseResult.children.first;
+          templateParseResult.children[1].should
+              .beOfType<String>()!
+              .should
+              .be('{{');
+        });
 
-        then(
-            'expect: second child node to be a String with text "{{"',
-            () => templateParseResult.children[1].should
-                .beOfType<String>()!
-                .should
-                .be('{{'));
-
-        then(
-            'expect: last child node to be a String with text " world."',
-            () => templateParseResult.children.last.should
-                .beOfType<String>()!
-                .should
-                .be(' world.'));
+        then('expect: last child node to be a String with text " world."',
+            () async {
+          var parseResult = await engine.parseTemplate(template);
+          var templateParseResult = parseResult.children.first;
+          templateParseResult.children.last.should
+              .beOfType<String>()!
+              .should
+              .be(' world.');
+        });
       });
 
       when('call: render(parseResult)', () {
-        var parseResult = engine.parseTemplate(template);
-        var variables = {'name': 'world'};
-
         then('return: "Hello {{ world."', () async {
+          var parseResult = await engine.parseTemplate(template);
+          var variables = {'name': 'world'};
           var result = await engine.render(parseResult, variables);
           result.text.should.be('Hello {{ world.');
         });
@@ -52,37 +60,46 @@ void main() {
       var engine = TemplateEngine();
 
       when('call: parse(template)', () {
-        var parseResult = engine.parseTemplate(template);
-        var templateParseResult = parseResult.children.first;
-        then('expect: 3 child nodes',
-            () => templateParseResult.children.length.should.be(3));
-        then(
-            'expect: first child node to be a String with text "Hallo "',
-            () => templateParseResult.children.first.should
-                .beOfType<String>()!
-                .should
-                .be('Hello '));
+        then('expect: 3 child nodes', () async {
+          var parseResult = await engine.parseTemplate(template);
+          var templateParseResult = parseResult.children.first;
+          templateParseResult.children.length.should.be(3);
+        });
+        then('expect: first child node to be a String with text "Hallo "',
+            () async {
+          var parseResult = await engine.parseTemplate(template);
+          var templateParseResult = parseResult.children.first;
+          templateParseResult.children.first.should
+              .beOfType<String>()!
+              .should
+              .be('Hello ');
+        });
 
-        then(
-            'expect: second child node to be a String with text "}}"',
-            () => templateParseResult.children[1].should
-                .beOfType<String>()!
-                .should
-                .be('}}'));
+        then('expect: second child node to be a String with text "}}"',
+            () async {
+          var parseResult = await engine.parseTemplate(template);
+          var templateParseResult = parseResult.children.first;
+          templateParseResult.children[1].should
+              .beOfType<String>()!
+              .should
+              .be('}}');
+        });
 
-        then(
-            'expect: last child node to be a String with text " world. "',
-            () => templateParseResult.children.last.should
-                .beOfType<String>()!
-                .should
-                .be(' world.'));
+        then('expect: last child node to be a String with text " world. "',
+            () async {
+          var parseResult = await engine.parseTemplate(template);
+          var templateParseResult = parseResult.children.first;
+          templateParseResult.children.last.should
+              .beOfType<String>()!
+              .should
+              .be(' world.');
+        });
       });
 
       when('call: render(parseResult)', () {
-        var parseResult = engine.parseTemplate(template);
-        var variables = {'name': 'world'};
-
         then('return text: "Hello }} world."', () async {
+          var parseResult = await engine.parseTemplate(template);
+          var variables = {'name': 'world'};
           var result = await engine.render(parseResult, variables);
           result.text.should.be('Hello }} world.');
         });
@@ -94,39 +111,47 @@ void main() {
       var engine = TemplateEngine();
 
       when('call: parse(template)', () {
-        var parseResult = engine.parseTemplate(template);
-        var templateParseResult = parseResult.children.first;
-        then('expect: 3 child nodes',
-            () => templateParseResult.children.length.should.be(3));
-        then(
-            'expect: first child node to be a String with text "{{"',
-            () => templateParseResult.children.first.should
-                .beOfType<String>()!
-                .should
-                .be('{{'));
+        then('expect: 3 child nodes', () async {
+          var parseResult = await engine.parseTemplate(template);
+          var templateParseResult = parseResult.children.first;
+          return templateParseResult.children.length.should.be(3);
+        });
+        then('expect: first child node to be a String with text "{{"',
+            () async {
+          var parseResult = await engine.parseTemplate(template);
+          var templateParseResult = parseResult.children.first;
+          templateParseResult.children.first.should
+              .beOfType<String>()!
+              .should
+              .be('{{');
+        });
 
         then(
             'expect: second child node to be a String '
-            'with text " this is not a tag or variable "',
-            () => templateParseResult.children[1].should
-                .beOfType<String>()!
-                .should
-                .be(' this is not a tag or variable '));
+            'with text " this is not a tag or variable "', () async {
+          var parseResult = await engine.parseTemplate(template);
+          var templateParseResult = parseResult.children.first;
+          templateParseResult.children[1].should
+              .beOfType<String>()!
+              .should
+              .be(' this is not a tag or variable ');
+        });
 
-        then(
-            'expect: last child node to be a String with text "}}"',
-            () => templateParseResult.children.last.should
-                .beOfType<String>()!
-                .should
-                .be('}}'));
+        then('expect: last child node to be a String with text "}}"', () async {
+          var parseResult = await engine.parseTemplate(template);
+          var templateParseResult = parseResult.children.first;
+          templateParseResult.children.last.should
+              .beOfType<String>()!
+              .should
+              .be('}}');
+        });
       });
 
       when('call: render(parseResult)', () {
-        var parseResult = engine.parseTemplate(template);
-        var variables = {'name': 'world'};
-
         then('expect: result.text "{{ this is not a tag or variable }}"',
             () async {
+          var parseResult = await engine.parseTemplate(template);
+          var variables = {'name': 'world'};
           var result = await engine.render(parseResult, variables);
           result.text.should.be('{{ this is not a tag or variable }}');
         });

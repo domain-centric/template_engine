@@ -14,5 +14,5 @@ class TemplateSource extends ExpressionFunction<String> {
                 'test/src/parser/tag/expression/function/template/template_test.dart'),
             function: (String position, RenderContext renderContext,
                     Map<String, Object> parameterValues) =>
-                Future.value(renderContext.templateBeingRendered.source));
+                Future.value(renderContext.templateBeingRendered.sourceTitle));
 }

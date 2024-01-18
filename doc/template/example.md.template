@@ -3,4 +3,5 @@
 * <a href="https://github.com/domain-centric/template_engine/blob/main/test/src/template_engine_text_test.dart">template_engine_text_test.dart</a>
 * <a href="https://github.com/domain-centric/template_engine/blob/main/test/src/template_engine_template_test.dart">template_engine_template_test.dart</a>
 * <a href="https://github.com/domain-centric/template_engine/blob/main/test/src/template_engine_templates_test.dart">template_engine_templates_test.dart</a>
+* <a href="https://github.com/domain-centric/template_engine/blob/main/test/src/template_engine_template_type_test.dart">template_engine_template_type_test.dart</a>
 {{exampleDocumentation()}}

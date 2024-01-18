@@ -17,24 +17,25 @@ void main() {
       }
     };
     var engine = TemplateEngine();
-    var parseResult = engine.parseText("{{importYaml('$path')}}");
+    var parseResult = await engine.parseText("{{importYaml('$path')}}");
     var renderResult = await engine.render(parseResult);
     renderResult.text.should.be(yamlMap.toString());
   });
 
   test('test assigning importYaml to a variable', () async {
     var engine = TemplateEngine();
-    var parseResult = engine.parseText("{{yaml=importYaml('$path')}}"
-        "{{yaml.person.child.name}}");
+    var input = "{{yaml=importYaml('$path')}}"
+        "{{yaml.person.child.name}}";
+    var parseResult = await engine.parseText(input);
     var renderResult = await engine.render(parseResult);
     renderResult.text.should.be('Jane Doe');
   });
 
   test('test importYaml with none existing file', () async {
     var engine = TemplateEngine();
-    var parseResult =
-        engine.parseText("{{yaml=importYaml('none_existing.yaml')}}"
-            "{{yaml.person.child.name}}");
+    var input = "{{yaml=importYaml('none_existing.yaml')}}"
+        "{{yaml.person.child.name}}";
+    var parseResult = await engine.parseText(input);
     var renderResult = await engine.render(parseResult);
     renderResult.text.should.be('{{ERROR}}{{ERROR}}');
     renderResult.errorMessage.should.contain("Render errors in: "

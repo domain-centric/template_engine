@@ -5,13 +5,12 @@ import 'package:template_engine/template_engine.dart';
 void main() {
   given('Template engine', () {
     var engine = TemplateEngine();
-
+    var template = TemplateWithTemplateSourceFunction();
     when("call: engine.parse(TemplateWithTemplateSourceFunction())", () {
-      var parseResult =
-          engine.parseTemplate(TemplateWithTemplateSourceFunction());
       when('calling: await engine.render(parseResult)', () {
-        var expected = TemplateWithTemplateSourceFunction().source;
+        var expected = template.source;
         then('renderResult.text be: "$expected"', () async {
+          var parseResult = await engine.parseTemplate(template);
           var renderResult = await engine.render(parseResult);
           return renderResult.text.should.be(expected);
         });
@@ -21,8 +20,9 @@ void main() {
 }
 
 class TemplateWithTemplateSourceFunction extends Template {
-  TemplateWithTemplateSourceFunction()
-      : super(
-            source: 'doc/template/generic/generated.md.template',
-            text: '{{templateSource()}}');
+  TemplateWithTemplateSourceFunction() {
+    source = 'doc/template/generic/generated.md.template';
+    sourceTitle = source;
+    text = Future.value('{{templateSource()}}');
+  }
 }

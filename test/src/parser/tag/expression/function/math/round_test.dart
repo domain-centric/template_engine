@@ -5,7 +5,7 @@ import 'package:test/test.dart';
 void main() {
   test('{{round(4.5)}} should render as: 5', () async {
     var engine = TemplateEngine();
-    var parseResult = engine.parseTemplate(TextTemplate('{{round(4.5)}}'));
+    var parseResult = await engine.parseText('{{round(4.5)}}');
     var renderResult = await engine.render(parseResult);
     renderResult.text.should.be('5');
   });

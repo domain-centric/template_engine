@@ -18,18 +18,20 @@ void main() {
     when(
         "call: engine.parse(const "
         "TextTemplate('{{tagDocumentation()}}'))", () {
-      var parseResult =
-          engine.parseTemplate(TextTemplate('{{tagDocumentation()}}'));
-      var expected = '<table>\n'
-          '<tr><th colspan="2">ExpressionTag</th></tr>\n'
-          '<tr><td>description:</td><td>Evaluates an expression that can contain:<br>* Data Types (e.g. boolean, number or String)<br>* Constants (e.g. pi)<br>* Variables (e.g. person.name )<br>* Operators (e.g. + - * /)<br>* Functions (e.g. cos(7) )<br>* or any combination of the above</td></tr>\n'
-          '<tr><td>expression example:</td><td colspan="4">The volume of a sphere = {{ round( (3/4) * pi * (radius ^ 3) )}}.</td></tr>\n'
-          '<tr><td>code example:</td><td colspan="4"><a href="https://github.com/domain-centric/template_engine/blob/main/test/src/parser/tag/expression/tag_expression_parser_test.dart">tag_expression_parser_test.dart</a></td></tr>\n'
-          '</table>\n';
-      then('parseResult.errorMessage should be empty',
-          () => parseResult.errorMessage.should.beNullOrEmpty());
+      then('parseResult.errorMessage should be empty', () async {
+        var parseResult = await engine.parseText('{{tagDocumentation()}}');
+        parseResult.errorMessage.should.beNullOrEmpty();
+      });
       when('calling: await engine.render(parseResult)', () {
+        var expected = '<table>\n'
+            '<tr><th colspan="2">ExpressionTag</th></tr>\n'
+            '<tr><td>description:</td><td>Evaluates an expression that can contain:<br>* Data Types (e.g. boolean, number or String)<br>* Constants (e.g. pi)<br>* Variables (e.g. person.name )<br>* Operators (e.g. + - * /)<br>* Functions (e.g. cos(7) )<br>* or any combination of the above</td></tr>\n'
+            '<tr><td>expression example:</td><td colspan="4">The volume of a sphere = {{ round( (3/4) * pi * (radius ^ 3) )}}.</td></tr>\n'
+            '<tr><td>code example:</td><td colspan="4"><a href="https://github.com/domain-centric/template_engine/blob/main/test/src/parser/tag/expression/tag_expression_parser_test.dart">tag_expression_parser_test.dart</a></td></tr>\n'
+            '</table>\n';
+
         then('renderResult.text be: "$expected"', () async {
+          var parseResult = await engine.parseText('{{tagDocumentation()}}');
           var renderResult = await engine.render(parseResult);
           renderResult.text.should.be(expected);
         });
@@ -39,8 +41,7 @@ void main() {
     when(
         "call: engine.parse(const "
         "TextTemplate('{{dataTypeDocumentation()}}'))", () {
-      var parseResult =
-          engine.parseTemplate(TextTemplate('{{dataTypeDocumentation()}}'));
+      var template = TextTemplate('{{dataTypeDocumentation()}}');
       var expected = '<table>\n'
           '<tr><th colspan="2">Boolean</th></tr>\n'
           '<tr><td>description:</td><td>A form of data with only two possible values: true or false</td></tr>\n'
@@ -48,15 +49,19 @@ void main() {
           '<tr><td>example:</td><td><a href="https://github.com/domain-centric/template_engine/blob/main/test/src/parser/tag/expression/data_type/bool_test.dart">bool_test.dart</a></td></tr>\n'
           '</table>\n';
 
-      then('parseResult.errorMessage should be empty',
-          () => parseResult.errorMessage.should.beNullOrEmpty());
+      then('parseResult.errorMessage should be empty', () async {
+        var parseResult = await engine.parseTemplate(template);
+        parseResult.errorMessage.should.beNullOrEmpty();
+      });
 
       when('calling: await engine.render(parseResult)', () {
         then('renderResult.errorMessage should be empty', () async {
+          var parseResult = await engine.parseTemplate(template);
           var renderResult = await engine.render(parseResult);
           renderResult.errorMessage.should.beNullOrEmpty();
         });
         then('renderResult.text be: "$expected"', () async {
+          var parseResult = await engine.parseTemplate(template);
           var renderResult = await engine.render(parseResult);
           renderResult.text.should.be(expected);
         });
@@ -67,13 +72,15 @@ void main() {
         "call: engine.parse(const "
         "TextTemplate('{{functionDocumentation()}}'))", () {
       var template = TextTemplate('{{functionDocumentation()}}');
-      var parseResult = engine.parseTemplate(template);
 
-      then('parseResult.errorMessage should be empty',
-          () => parseResult.errorMessage.should.beNullOrEmpty());
+      then('parseResult.errorMessage should be empty', () async {
+        var parseResult = await engine.parseTemplate(template);
+        parseResult.errorMessage.should.beNullOrEmpty();
+      });
       when('calling: await engine.render(parseResult)', () {
         then('renderResult.text be the documentation function result',
             () async {
+          var parseResult = await engine.parseTemplate(template);
           var renderResult = await engine.render(parseResult);
           var expected = await FunctionDocumentation().function(
               '',
@@ -90,8 +97,7 @@ void main() {
 
   test('example documentation should contain existing urls only', () async {
     var engine = TemplateEngine();
-    var parseResult = engine.parseText('{{exampleDocumentation()}}');
-
+    var parseResult = await engine.parseText('{{exampleDocumentation()}}');
     parseResult.errorMessage.should.beNullOrEmpty();
     var renderResult = await engine.render(parseResult);
     var text = renderResult.text;

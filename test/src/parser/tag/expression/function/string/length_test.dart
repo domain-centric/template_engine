@@ -5,16 +5,15 @@ import 'package:test/test.dart';
 void main() {
   test('{{length(\'Hello\'}} should render: 5', () async {
     var engine = TemplateEngine();
-    var parseResult =
-        engine.parseTemplate(TextTemplate('{{length(\'Hello\')}}'));
+    var parseResult = await engine.parseText('{{length(\'Hello\')}}');
     var renderResult = await engine.render(parseResult);
     renderResult.text.should.be('5');
   });
 
   test('{{length(\'Hello\' + " world"}} should render: 5', () async {
     var engine = TemplateEngine();
-    var parseResult =
-        engine.parseTemplate(TextTemplate('{{length(\'Hello\' + " world")}}'));
+    var input = '{{length(\'Hello\' + " world")}}';
+    var parseResult = await engine.parseText(input);
     var renderResult = await engine.render(parseResult);
     renderResult.text.should.be('11');
   });

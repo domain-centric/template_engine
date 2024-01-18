@@ -56,6 +56,6 @@ class ImportError extends TemplateError {
   String toIndentedString(int indent) =>
       '${indentation(indent)}$positionOfImport: '
       'Error${importErrors.length > 1 ? 's' : ''} '
-      'while importing ${template.source}:\n'
+      'while importing ${template.sourceTitle}:\n'
       '${importErrors.map((e) => e.toIndentedString(indent + 1)).join('\n')}';
 }

@@ -10,7 +10,7 @@ void main() {
     var templatePath = ProjectFilePath(
         'test/src/parser/tag/expression/function/import/import_template_with_errors1.md.template');
     var template = FileTemplate.fromProjectFilePath(templatePath);
-    var parseResult = engine.parseTemplate(template);
+    var parseResult = await engine.parseTemplate(template);
     var renderResult = await engine.render(parseResult);
 // Expected:
 // Errors in: test/src/parser/tag/expression/function/import/import_template_with_errors1.md.template:

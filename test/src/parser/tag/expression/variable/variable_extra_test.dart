@@ -9,7 +9,7 @@ void main() {
       '"Hello {{name}}." should render a an error '
       'if the variable does not exist', () async {
     var engine = TemplateEngine();
-    var parseResult = engine.parseTemplate(TextTemplate('Hello {{name}}.'));
+    var parseResult = await engine.parseText('Hello {{name}}.');
     var renderResult = await engine.render(parseResult);
     renderResult.errorMessage.should
         .be('Render error in: \'Hello {{name}}.\':\n'
@@ -18,24 +18,21 @@ void main() {
 
   test('"Hello {{  \t name}}." should render a proper greeting', () async {
     var engine = TemplateEngine();
-    var parseResult =
-        engine.parseTemplate(TextTemplate('Hello {{  \t name}}.'));
+    var parseResult = await engine.parseText('Hello {{  \t name}}.');
     var renderResult = await engine.render(parseResult, {'name': 'world'});
     renderResult.text.should.be('Hello world.');
   });
 
   test('"Hello {{name  \t\n }}." should render a proper greeting', () async {
     var engine = TemplateEngine();
-    var parseResult =
-        engine.parseTemplate(TextTemplate('Hello {{name  \t\n }}.'));
+    var parseResult = await engine.parseText('Hello {{name  \t\n }}.');
     var renderResult = await engine.render(parseResult, {'name': 'world'});
     renderResult.text.should.be('Hello world.');
   });
 
   test('"Hello {{   name  \t\n }}." should render a proper greeting', () async {
     var engine = TemplateEngine();
-    var parseResult =
-        engine.parseTemplate(TextTemplate('Hello {{   name  \t\n }}.'));
+    var parseResult = await engine.parseText('Hello {{   name  \t\n }}.');
     var renderResult = await engine.render(parseResult, {'name': 'world'});
     renderResult.text.should.be('Hello world.');
   });

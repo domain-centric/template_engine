@@ -8,35 +8,37 @@ import 'package:template_engine/template_engine.dart';
 /// [TagRenderer]s are replaced with some other text, depending on the
 /// implementation of the [TagRenderer]
 abstract class Template {
-  /// Explains where the template text came form.
-  final String source;
+  /// Explains where the template text came from.
+  /// A [source] results in a [text].
+  /// We use the [source] to identify and cash [Template]s for performance.
+  late String source;
+
+  /// Explains where the template text came from.
+  /// It is used in [Error]s and can be shorter then [source]
+  late String sourceTitle;
 
   /// The text to be parsed by the [TemplateEngine]
-  final String text;
+  late Future<String> text;
 
-  const Template({
-    required this.source,
-    required this.text,
-  });
+  /// Assuming that the text is the same for the same source
+  /// so we can cash the Templates for performance
 
   @override
   bool operator ==(Object other) =>
-      other is Template &&
-      other.source.toLowerCase() == source.toLowerCase() &&
-      other.text == text;
+      other is Template && other.source.toLowerCase() == source.toLowerCase();
 
   @override
   int get hashCode => source.toLowerCase().hashCode ^ text.hashCode;
 }
 
 class TextTemplate extends Template {
-  TextTemplate(String text)
-      : super(
-          source: createSource(text),
-          text: text,
-        );
+  TextTemplate(String text) {
+    super.source = text;
+    super.sourceTitle = createTitle(text);
+    super.text = Future.value(text);
+  }
 
-  static createSource(String text) {
+  String createTitle(String text) {
     String firstLine = text.trim().split(RegExp('\\n')).first;
 
     if (firstLine.length > 40) {
@@ -48,13 +50,32 @@ class TextTemplate extends Template {
 }
 
 class FileTemplate extends Template {
-  FileTemplate(File source)
-      : super(source: source.path, text: source.readAsStringSync());
+  @override
+  FileTemplate(File file) {
+    super.source = file.path;
+    super.sourceTitle = file.path;
+    super.text = readFromFilePath(file.path);
+  }
 
-  FileTemplate.fromProjectFilePath(ProjectFilePath path)
-      : super(source: path.relativePath, text: path.file.readAsStringSync());
+  FileTemplate.fromProjectFilePath(ProjectFilePath projectFilePath) {
+    super.source = projectFilePath.toString();
+    super.sourceTitle = projectFilePath.toString();
+    super.text = readFromFilePath(projectFilePath.file.path);
+  }
+}
+
+class HttpTemplate extends Template {
+  HttpTemplate(Uri url) {
+    super.source = url.toString();
+    super.sourceTitle = url.toString();
+    super.text = readFromHttpUri(url.toString());
+  }
 }
 
 class ImportedTemplate extends Template {
-  ImportedTemplate({required super.source, required super.text});
+  ImportedTemplate({required String source, required String text}) {
+    super.source = source;
+    super.sourceTitle = source;
+    super.text = Future.value(text);
+  }
 }

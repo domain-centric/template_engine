@@ -24,7 +24,7 @@ Future<void> generate(
     required ProjectFilePath templatePath,
     required ProjectFilePath outputPath}) async {
   var template = FileTemplate(templatePath.file);
-  var parseResult = engine.parseTemplate(template);
+  var parseResult = await engine.parseTemplate(template);
   var renderResult = await engine.render(parseResult);
   if (parseResult.errorMessage.isNotEmpty) {
     print(parseResult.errorMessage);

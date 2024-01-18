@@ -5,15 +5,15 @@ import 'package:template_engine/template_engine.dart';
 void main() {
   given('TemplateEngine', () {
     var engine = TemplateEngine();
-    when("calling: engine.parseTemplate(TextTemplate('Hello {{name}}.'))", () {
-      var parseResult = engine.parseTemplate(TextTemplate('Hello {{name}}.'));
-
+    when("calling: await engine.parseText('Hello {{name}}.')", () {
       then('renderResult.errorMessage should be empty', () async {
+        var parseResult = await engine.parseText('Hello {{name}}.');
         var renderResult = await engine.render(parseResult, {'name': 'world'});
         renderResult.errorMessage.should.beNullOrEmpty();
       });
       var expected = 'Hello world.';
       then('renderResult.text should be "$expected"', () async {
+        var parseResult = await engine.parseText('Hello {{name}}.');
         var renderResult = await engine.render(parseResult, {'name': 'world'});
         renderResult.text.should.be(expected);
       });

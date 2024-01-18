@@ -6,12 +6,12 @@ void main() {
   test('Multiple imports of the same file, should only parse it once',
       () async {
     var engine = TemplateEngine();
-    var parseResults = engine.parseText(
+    var input =
         "{{importTemplate('doc/template/common/generated_comment.template')}}\n"
         "{{importTemplate('doc/template/common/generated_comment.template')}}\n"
         "Hello World.\n"
-        "{{importTemplate('doc/template/common/generated_comment.template')}}");
-
+        "{{importTemplate('doc/template/common/generated_comment.template')}}";
+    var parseResults = await engine.parseText(input);
     var parseResult = parseResults.children.first;
     var template = parseResult.template;
     var renderContext = RenderContext(

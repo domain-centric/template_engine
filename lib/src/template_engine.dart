@@ -61,18 +61,20 @@ class TemplateEngine {
     validateNamesAreUnique();
   }
 
-  ParseResult parseText(String text) => parseTemplate(TextTemplate(text));
+  Future<ParseResult> parseText(String text) =>
+      parseTemplate(TextTemplate(text));
 
   /// Parse the [Template] text into a
   /// [parser tree](https://en.wikipedia.org/wiki/Parse_tree).
   /// See [Renderer]
-  ParseResult parseTemplate(Template template) {
+  Future<ParseResult> parseTemplate(Template template) async {
     var context = ParserContext(
       this,
       template,
     );
     var parser = templateParser(context);
-    var result = parser.parse(template.text);
+    var text = await template.text;
+    var result = parser.parse(text);
 
     if (result is Failure) {
       context.errors.add(ParseError.fromFailure(result));
@@ -85,7 +87,7 @@ class TemplateEngine {
   /// Parse text from [Template]s into a
   /// [parser tree](https://en.wikipedia.org/wiki/Parse_tree).
   /// See [Renderer]
-  ParseResult parseTemplates(List<Template> templates) {
+  Future<ParseResult> parseTemplates(List<Template> templates) async {
     var parseResults = <TemplateParseResult>[];
     for (var template in templates) {
       var context = ParserContext(
@@ -93,7 +95,8 @@ class TemplateEngine {
         template,
       );
       var parser = templateParser(context);
-      var result = parser.parse(template.text);
+      var text = await template.text;
+      var result = parser.parse(text);
 
       if (result is Failure) {
         context.errors.add(ParseError.fromFailure(result));

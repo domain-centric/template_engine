@@ -17,24 +17,25 @@ void main() {
       }
     };
     var engine = TemplateEngine();
-    var parseResult = engine.parseText("{{importJson('$path')}}");
+    var parseResult = await engine.parseText("{{importJson('$path')}}");
     var renderResult = await engine.render(parseResult);
     renderResult.text.should.be(jsonMap.toString());
   });
 
   test('test assigning importJson to a variable', () async {
     var engine = TemplateEngine();
-    var parseResult = engine.parseText("{{json=importJson('$path')}}"
-        "{{json.person.child.name}}");
+    var input = "{{json=importJson('$path')}}"
+        "{{json.person.child.name}}";
+    var parseResult = await engine.parseText(input);
     var renderResult = await engine.render(parseResult);
     renderResult.text.should.be('Jane Doe');
   });
 
   test('test importJson with none existing file', () async {
     var engine = TemplateEngine();
-    var parseResult =
-        engine.parseText("{{json=importJson('none_existing.json')}}"
-            "{{json.person.child.name}}");
+    var input = "{{json=importJson('none_existing.json')}}"
+        "{{json.person.child.name}}";
+    var parseResult = await engine.parseText(input);
     var renderResult = await engine.render(parseResult);
     renderResult.text.should.be('{{ERROR}}{{ERROR}}');
     renderResult.errorMessage.should.contain("Render errors in: "

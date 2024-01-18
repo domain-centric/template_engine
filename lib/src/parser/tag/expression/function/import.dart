@@ -38,14 +38,17 @@ class ImportTemplate extends ExpressionFunction<IntermediateRenderResult> {
               try {
                 var text = await readSource(source);
                 var template = ImportedTemplate(source: source, text: text);
-                TemplateParseResult? parseResult = renderContext.parsedTemplates
+                TemplateParseResult? templateParseResult = renderContext
+                    .parsedTemplates
                     .firstWhereOrNull((pt) => pt.template == template);
-                if (parseResult == null) {
+                if (templateParseResult == null) {
                   var engine = renderContext.engine;
-                  parseResult = engine.parseTemplate(template).children.first;
-                  renderContext.parsedTemplates.add(parseResult);
+                  var parseResult = await engine.parseTemplate(template);
+                  templateParseResult = parseResult.children.first;
+                  renderContext.parsedTemplates.add(templateParseResult);
                 }
-                var renderResult = await parseResult.render(renderContext);
+                var renderResult =
+                    await templateParseResult.render(renderContext);
                 var errors = renderResult.errors;
                 if (errors.isNotEmpty) {
                   var error = ImportError(position, template, [...errors]);

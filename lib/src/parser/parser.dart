@@ -105,9 +105,11 @@ class TemplateParseResult extends ParserTree<Object> {
       case 0:
         return '';
       case 1:
-        return 'Parse error in: ${template.source}:\n${errors.map((error) => '  $error').join('\n')}';
+        return 'Parse error in: ${template.sourceTitle}:\n'
+            '${errors.map((error) => '  $error').join('\n')}';
       default:
-        return 'Parse errors in: ${template.source}:\n${errors.map((error) => '  $error').join('\n')}';
+        return 'Parse errors in: ${template.sourceTitle}:\n'
+            '${errors.map((error) => '  $error').join('\n')}';
     }
   }
 }
