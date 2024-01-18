@@ -2,8 +2,6 @@ import 'package:shouldly/shouldly.dart';
 import 'package:template_engine/template_engine.dart';
 import 'package:test/test.dart';
 
-// TODO add  different template_tests to doc\template\example.md.template
-
 void main() {
   group('Template types', () {
     final variables = {'name': 'World'};
