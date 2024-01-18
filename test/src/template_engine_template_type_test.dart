@@ -7,6 +7,7 @@ void main() {
     final variables = {'name': 'World'};
     final templatePath = ProjectFilePath("test/src/hello_name.template");
     const expected = "Hello World.";
+    
     test('using engine.parseText()', () async {
       var engine = TemplateEngine();
       var parseResult = await engine.parseText('Hello {{name}}.');
