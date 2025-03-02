@@ -1,5 +1,3 @@
-library template_engine;
-
 export 'src/template_engine.dart';
 export 'src/template.dart';
 export 'src/source.dart';

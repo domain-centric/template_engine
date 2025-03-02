@@ -1,4 +1,4 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
+// ignore_for_file: public_member_api_docs, sort_constructors_first, unintended_html_in_doc_comment
 import 'package:template_engine/template_engine.dart';
 
 /// Renders some value depending on the implementation of the [Renderer]

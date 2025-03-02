@@ -1,3 +1,5 @@
+// ignore_for_file: unintended_html_in_doc_comment
+
 import 'package:petitparser/petitparser.dart';
 import 'package:template_engine/template_engine.dart';
 

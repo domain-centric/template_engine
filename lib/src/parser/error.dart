@@ -19,7 +19,7 @@ abstract class TemplateError implements Exception {
 class RenderError extends TemplateError {
   final String message;
 
-  /// A cursor position within the [Template.text] in format <row>, <column>
+  /// A cursor position within the [Template.text] in format row, column
   final String position;
 
   RenderError({required this.message, required this.position});
@@ -32,7 +32,7 @@ class RenderError extends TemplateError {
 class ParseError extends TemplateError {
   final String message;
 
-  /// A cursor position within the [Template.text] in format <row>, <column>
+  /// A cursor position within the [Template.text] in format row, column
   final String position;
 
   ParseError({required this.message, required this.position});

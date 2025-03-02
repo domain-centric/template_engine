@@ -20,7 +20,7 @@ class OverrideMessageParser<R> extends Parser<R> {
       delegate.fastParseOn(buffer, position);
 
   @override
-  bool hasEqualProperties(FlattenParser<R> other) =>
+  bool hasEqualProperties(FlattenParser other) =>
       super.hasEqualProperties(other) && message == other.message;
 
   @override
