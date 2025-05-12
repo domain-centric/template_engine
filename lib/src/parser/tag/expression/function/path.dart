@@ -1,7 +1,7 @@
 import 'package:template_engine/template_engine.dart';
 
-class TemplateFunctions extends FunctionGroup {
-  TemplateFunctions() : super('Template Functions', [TemplateSource()]);
+class PathFunctions extends FunctionGroup {
+  PathFunctions() : super('Path Functions', [TemplateSource()]);
 }
 
 class TemplateSource extends ExpressionFunction<String> {
