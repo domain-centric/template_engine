@@ -18,15 +18,16 @@ class ParenthesesOperator extends Operator {
   @override
   List<String> createMarkdownDocumentation(
       RenderContext renderContext, int titleLevel) {
-    var writer =
-        HtmlTableWriter();
-        writer.setHeader(titleLevel, 'Parentheses Operator');
-    //FIXME writer.addHeaderRow(['symbols: ( ... )'], [2]);
+    var writer = HtmlTableWriter();
+    writer.setHeader(titleLevel, 'Parentheses Operator ()');
     writer.addRow([
       'description:',
-      'Groups expressions together so that the are calculated first'
+      'Groups expressions together: What is between parentheses gets processed first'
     ]);
-    writer.addRow(['expression example:', '{{(2+1)*3}} should render: 9']);
+    writer.addRow([
+      'expression example:',
+      '{{2+1*3}} should render: 6<br>{{(2+1)*3}} should render: 9'
+    ]);
     writer.addRow(['code example:', codeExample.githubMarkdownLink]);
     return writer.toHtmlLines();
   }

@@ -28,7 +28,7 @@ class Constant<T> implements DocumentationFactory, ExampleFactory {
   List<String> createMarkdownDocumentation(
       RenderContext renderContext, int titleLevel) {
     var writer = HtmlTableWriter();
-    writer.setHeader(titleLevel+1, '$name Constant');
+    writer.setHeader(titleLevel + 1, '$name Constant');
     writer.addRow(['description:', description]);
     writer.addRow(['return type:', typeDescription<T>()]);
     if (codeExample != null) {

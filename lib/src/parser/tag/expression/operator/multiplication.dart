@@ -15,47 +15,56 @@ class Multiplication extends OperatorGroup {
 
 class CaretOperator extends OperatorWith2Values {
   CaretOperator()
-      : super('^', OperatorAssociativity.right, [
-          TwoValueOperatorVariant<num, num>(
-              description:
-                  'Calculates a number to the power of the exponent number',
-              expressionExample: '{{2^3}}',
-              expressionExampleResult: '8',
-              codeExample: ProjectFilePath(
-                  'test/src/parser/tag/expression/operator/multiplication/'
-                  'num_power_test.dart'),
-              function: (left, right) => pow(left, right)),
-          TwoValueOperatorVariant<bool, bool>(
-              description: 'Logical XOR with two booleans',
-              expressionExample: '{{true^false}}',
-              expressionExampleResult: 'true',
-              codeExample: ProjectFilePath(
-                  'test/src/parser/tag/expression/operator/multiplication/'
-                  'bool_xor_test.dart'),
-              function: (left, right) => left ^ right)
-        ]);
+      : super(
+            name: 'Caret',
+            symbol: '^',
+            associativity: OperatorAssociativity.right,
+            variants: [
+              TwoValueOperatorVariant<num, num>(
+                  description:
+                      'Calculates a number to the power of the exponent number',
+                  expressionExample: '{{2^3}}',
+                  expressionExampleResult: '8',
+                  codeExample: ProjectFilePath(
+                      'test/src/parser/tag/expression/operator/multiplication/'
+                      'num_power_test.dart'),
+                  function: (left, right) => pow(left, right)),
+              TwoValueOperatorVariant<bool, bool>(
+                  description: 'Logical XOR with two booleans',
+                  expressionExample: '{{true^false}}',
+                  expressionExampleResult: 'true',
+                  codeExample: ProjectFilePath(
+                      'test/src/parser/tag/expression/operator/multiplication/'
+                      'bool_xor_test.dart'),
+                  function: (left, right) => left ^ right)
+            ]);
 }
 
 class MultiplyOperator extends OperatorWith2Values {
   MultiplyOperator()
-      : super('*', OperatorAssociativity.left, [
-          TwoValueOperatorVariant<num, num>(
-              description: 'Multiplies 2 numbers',
-              expressionExample: '{{2*3}}',
-              expressionExampleResult: '6',
-              codeExample: ProjectFilePath(
-                  'test/src/parser/tag/expression/operator/multiplication/'
-                  'num_multiply_test.dart'),
-              function: (left, right) => left * right)
-        ]);
+      : super(
+            name: 'Multiply',
+            symbol: '*',
+            associativity: OperatorAssociativity.left,
+            variants: [
+              TwoValueOperatorVariant<num, num>(
+                  description: 'Multiplies 2 numbers',
+                  expressionExample: '{{2*3}}',
+                  expressionExampleResult: '6',
+                  codeExample: ProjectFilePath(
+                      'test/src/parser/tag/expression/operator/multiplication/'
+                      'num_multiply_test.dart'),
+                  function: (left, right) => left * right)
+            ]);
 }
 
 class DivideOperator extends OperatorWith2Values {
   DivideOperator()
       : super(
-          '/',
-          OperatorAssociativity.left,
-          [
+          name: 'Divide',
+          symbol: '/',
+          associativity: OperatorAssociativity.left,
+          variants: [
             TwoValueOperatorVariant<num, num>(
                 description: 'Divides 2 numbers',
                 expressionExample: '{{6/4}}',
@@ -71,9 +80,10 @@ class DivideOperator extends OperatorWith2Values {
 class ModuloOperator extends OperatorWith2Values {
   ModuloOperator()
       : super(
-          '%',
-          OperatorAssociativity.left,
-          [
+          name: 'Modulo',
+          symbol: '%',
+          associativity: OperatorAssociativity.left,
+          variants: [
             TwoValueOperatorVariant<num, num>(
                 description: 'Calculates the modulo (rest value of a division)',
                 expressionExample: '{{8%3}}',
@@ -89,9 +99,10 @@ class ModuloOperator extends OperatorWith2Values {
 class AndOperator extends OperatorWith2Values {
   AndOperator()
       : super(
-          '&',
-          OperatorAssociativity.left,
-          [
+          name: 'And',
+          symbol: '&',
+          associativity: OperatorAssociativity.left,
+          variants: [
             TwoValueOperatorVariant<bool, bool>(
                 description: 'Logical AND operation on two booleans',
                 expressionExample: '{{true&true}}',

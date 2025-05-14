@@ -5,7 +5,7 @@ import 'package:template_engine/template_engine.dart';
 class ExpressionTag extends Tag {
   ExpressionTag()
       : super(
-          name: 'ExpressionTag',
+          name: 'Expression',
           description: [
             'Evaluates an expression that can contain:',
             '* Data Types (e.g. boolean, number or String)',

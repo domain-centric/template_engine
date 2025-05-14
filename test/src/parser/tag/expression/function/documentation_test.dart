@@ -23,8 +23,8 @@ void main() {
         parseResult.errorMessage.should.beNullOrEmpty();
       });
       when('calling: await engine.render(parseResult)', () {
-        var expected = '<table id="tag-expression-tag">\n'
-            '<tr><th colspan="2">ExpressionTag</th></tr>\n'
+        var expected = '# Expression Tag\n'
+            '<table>\n'
             '<tr><td>description:</td><td>Evaluates an expression that can contain:<br>* Data Types (e.g. boolean, number or String)<br>* Constants (e.g. pi)<br>* Variables (e.g. person.name )<br>* Operators (e.g. + - * /)<br>* Functions (e.g. cos(7) )<br>* or any combination of the above</td></tr>\n'
             '<tr><td>expression example:</td><td colspan="4">The volume of a sphere = {{ round( (3/4) * pi * (radius ^ 3) )}}.</td></tr>\n'
             '<tr><td>code example:</td><td colspan="4"><a href="https://github.com/domain-centric/template_engine/blob/main/test/src/parser/tag/expression/tag_expression_parser_test.dart">tag_expression_parser_test.dart</a></td></tr>\n'
@@ -42,8 +42,8 @@ void main() {
         "call: engine.parse(const "
         "TextTemplate('{{dataTypeDocumentation()}}'))", () {
       var template = TextTemplate('{{dataTypeDocumentation()}}');
-      var expected = '<table id="data-type-boolean">\n'
-          '<tr><th colspan="2">Boolean</th></tr>\n'
+      var expected = '## Boolean Data Type\n'
+          '<table>\n'
           '<tr><td>description:</td><td>A form of data with only two possible values: true or false</td></tr>\n'
           '<tr><td>syntax:</td><td>A boolean is declared with the word true or false. The letters are case insensitive.</td></tr>\n'
           '<tr><td>example:</td><td><a href="https://github.com/domain-centric/template_engine/blob/main/test/src/parser/tag/expression/data_type/bool_test.dart">bool_test.dart</a></td></tr>\n'

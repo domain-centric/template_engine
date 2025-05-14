@@ -16,8 +16,7 @@ class AssignmentOperator extends Operator {
   List<String> createMarkdownDocumentation(
       RenderContext renderContext, int titleLevel) {
     var writer = HtmlTableWriter();
-    writer.setHeader(titleLevel, 'Assignment Operator');
-    //FIXME writer.addHeaderRow(['symbol: ='], [2]);
+    writer.setHeader(titleLevel, 'Assignment Operator =');
     writer.addRow([
       'description:',
       'Assigns a value to a variable. '

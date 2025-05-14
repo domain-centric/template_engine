@@ -163,23 +163,21 @@ class HtmlTableWriter {
   /// * From the wiki navigation pane
   /// * Deep linking using [Uri.fragment]
   void setHeader(int titleLevel, String title) {
-    headerLine="${'#'*(titleLevel)} $title";
+    headerLine = "${'#' * (titleLevel)} $title";
   }
 
+  void addHeaderRow(List<String> values, [List<int>? columnSpans]) {
+    var row = HtmlTableRow(values, columnSpans, CellType.tableHeader);
+    rows.add(row.toHtml());
+  }
 
-  // void addHeaderRow(List<String> values, [List<int>? columnSpans]) {
-  //   var row = HtmlTableRow(values, columnSpans, CellType.tableHeader);
-  //   rows.add(row.toHtml());
-  // }
-
-  
   void addRow(List<String> values, [List<int>? columnSpans]) {
     var row = HtmlTableRow(values, columnSpans, CellType.tableData);
     rows.add(row.toHtml());
   }
 
   List<String> toHtmlLines() => [
-        if (headerLine!=null) headerLine!,
+        if (headerLine != null) headerLine!,
         '<table>',
         ...rows,
         '</table>',

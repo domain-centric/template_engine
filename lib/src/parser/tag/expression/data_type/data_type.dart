@@ -26,7 +26,7 @@ abstract class DataType<T extends Object>
   List<String> createMarkdownDocumentation(
       RenderContext renderContext, int titleLevel) {
     var writer = HtmlTableWriter();
-    writer.setHeader(titleLevel+1, '$name Data Type');
+    writer.setHeader(titleLevel + 1, '$name Data Type');
     writer.addRow(['description:', description]);
     writer.addRow(['syntax:', syntaxDescription]);
 

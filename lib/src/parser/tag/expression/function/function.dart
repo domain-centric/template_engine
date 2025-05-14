@@ -206,13 +206,13 @@ class FunctionGroup extends DelegatingList<ExpressionFunction>
   List<String> createMarkdownExamples(
       RenderContext renderContext, int titleLevel) {
     var examples = map((function) =>
-            function.createMarkdownExamples(renderContext, titleLevel +2))
+            function.createMarkdownExamples(renderContext, titleLevel + 2))
         .flattened;
     if (examples.isEmpty) {
       return [];
     } else {
       return [
-        '${"#" * (titleLevel+1)} $name',
+        '${"#" * (titleLevel + 1)} $name',
         ...examples,
       ];
     }

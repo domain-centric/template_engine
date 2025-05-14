@@ -157,9 +157,8 @@ class PrefixOperator<PARAMETER_TYPE extends Object> extends Operator {
   List<String> createMarkdownDocumentation(
       RenderContext renderContext, int titleLevel) {
     var writer = HtmlTableWriter();
-    writer.setHeader(titleLevel, '$name Operator');
-   //FIXME writer.addHeaderRow(['symbol: $symbol'], [2]);
-   //FIXME writer.addHeaderRow(['parameter type: $parameterTypeDescription'], [2]);
+    writer.setHeader(titleLevel, '$name Operator $symbol');
+    writer.addHeaderRow(['parameter type: $parameterTypeDescription'], [2]);
     writer.addRow(['description:', description]);
     writer.addRow([
       'expression example:',
@@ -194,23 +193,26 @@ class PrefixOperator<PARAMETER_TYPE extends Object> extends Operator {
 }
 
 abstract class OperatorWith2Values extends Operator {
-  final String operator;
+  final String name;
+  final String symbol;
   final OperatorAssociativity associativity;
   final List<TwoValueOperatorVariant> variants;
 
-  OperatorWith2Values(
-    this.operator,
-    this.associativity,
-    this.variants,
-  );
+  OperatorWith2Values({
+    required this.name,
+    required this.symbol,
+    required this.associativity,
+    required this.variants,
+  });
 
   @override
   List<String> createMarkdownDocumentation(
       RenderContext renderContext, int titleLevel) {
     var writer = HtmlTableWriter();
-    //FIXME writer.addHeaderRow(['operator: $operator'], [2]);
+    writer.setHeader(titleLevel, '$name Operator $symbol');
     for (var variant in variants) {
-      //FIXMEwriter.addHeaderRow(          ['parameter type: ${variant.parameterTypeDescription}'], [2]);
+      writer.addHeaderRow(
+          ['parameter type: ${variant.parameterTypeDescription}'], [2]);
       writer.addRow(['description:', variant.description]);
       writer.addRow([
         'expression example:',
@@ -236,26 +238,26 @@ abstract class OperatorWith2Values extends Operator {
           .toList();
 
   @override
-  String toString() => 'Operator{$operator}';
+  String toString() => 'Operator{$symbol}';
 
   @override
   addParser(Template template, ExpressionGroup2<Expression<Object>> group) {
     if (associativity == OperatorAssociativity.right) {
       group.right(
-          string(operator).trim(),
+          string(symbol).trim(),
           (context, left, op, right) => OperatorVariantExpression(
                 position: context.toPositionString(),
-                operator: operator,
+                operator: symbol,
                 variants: variants,
                 left: left,
                 right: right,
               ));
     } else {
       group.left(
-          string(operator).trim(),
+          string(symbol).trim(),
           (context, left, op, right) => OperatorVariantExpression(
                 position: context.toPositionString(),
-                operator: operator,
+                operator: symbol,
                 variants: variants,
                 left: left,
                 right: right,
@@ -305,7 +307,7 @@ class OperatorGroup extends DelegatingList<Operator>
   List<String> createMarkdownDocumentation(
           RenderContext renderContext, int titleLevel) =>
       [
-        '${"#" * (titleLevel+1)} $name',
+        '${"#" * (titleLevel + 1)} $name',
         ...map((operator) => operator.createMarkdownDocumentation(
             renderContext, titleLevel + 2)).flattened
       ];
@@ -326,5 +328,3 @@ class OperatorGroup extends DelegatingList<Operator>
     }
   }
 }
-
-
