@@ -102,14 +102,31 @@ void main() {
     var renderResult = await engine.render(parseResult);
     var text = renderResult.text;
     var urls = urlParser().allMatches(text);
-    urls.should.not.beEmpty();
-    final noneExistingUrls = <String>[];
-    await Future.forEach(urls, (url) async {
-      if (!await urlExists(url)) {
-        noneExistingUrls.add(url);
+    final errors = <String>[];
+    for (final url in urls) {
+      Uri? uri;
+      try {
+        uri = Uri.parse(url);
+        if (!uri.hasScheme || !uri.hasAuthority) {
+          errors.add('Invalid URI structure: $url');
+          continue;
+        }
+      } catch (_) {
+        errors.add('Invalid URI format: $url');
+        continue;
       }
-    });
-    noneExistingUrls.should.beEmpty();
+
+      try {
+        final response = await http.head(uri);
+        if (response.statusCode < 200 || response.statusCode >= 400) {
+          errors.add('URL "$url" responded with status ${response.statusCode}');
+        }
+      } catch (e) {
+        errors.add('Request to "$url" failed: $e');
+      }
+    }
+
+    errors.should.beEmpty();
   });
 
   group('HtmlElementId class', () {
@@ -187,11 +204,6 @@ Parser<String> urlParser() =>
             (letter() | digit() | char('-') | pattern('\$_.+! *\'(),/&?=: %'))
                 .plus())
         .flatten();
-
-Future<bool> urlExists(String url) async {
-  final response = await http.get(Uri.parse(url));
-  return response.statusCode == 200;
-}
 
 class DummyFunctionGroup extends FunctionGroup {
   DummyFunctionGroup() : super('Test Functions', [DummyFunction()]);
