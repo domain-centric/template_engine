@@ -19,8 +19,9 @@ class ParenthesesOperator extends Operator {
   List<String> createMarkdownDocumentation(
       RenderContext renderContext, int titleLevel) {
     var writer =
-        HtmlTableWriter(HtmlElementId.fromText('operator-parentheses'));
-    writer.addHeaderRow(['operator: ( ... )'], [2]);
+        HtmlTableWriter();
+        writer.setHeader(titleLevel, 'Parentheses Operator');
+    //FIXME writer.addHeaderRow(['symbols: ( ... )'], [2]);
     writer.addRow([
       'description:',
       'Groups expressions together so that the are calculated first'

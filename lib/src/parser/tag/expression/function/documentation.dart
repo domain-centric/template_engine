@@ -154,24 +154,33 @@ abstract class ExampleFactory {
 }
 
 class HtmlTableWriter {
-  /// For direct linking to Documentation using [Uri.fragment]
-  final HtmlElementId id;
+  String? headerLine;
   List<String> rows = [];
 
-  HtmlTableWriter(this.id);
+  HtmlTableWriter();
 
-  void addHeaderRow(List<String> values, [List<int>? columnSpans]) {
-    var row = HtmlTableRow(values, columnSpans, CellType.tableHeader);
-    rows.add(row.toHtml());
+  /// Adds a title above the Table for navigation
+  /// * From the wiki navigation pane
+  /// * Deep linking using [Uri.fragment]
+  void setHeader(int titleLevel, String title) {
+    headerLine="${'#'*(titleLevel)} $title";
   }
 
+
+  // void addHeaderRow(List<String> values, [List<int>? columnSpans]) {
+  //   var row = HtmlTableRow(values, columnSpans, CellType.tableHeader);
+  //   rows.add(row.toHtml());
+  // }
+
+  
   void addRow(List<String> values, [List<int>? columnSpans]) {
     var row = HtmlTableRow(values, columnSpans, CellType.tableData);
     rows.add(row.toHtml());
   }
 
   List<String> toHtmlLines() => [
-        '<table id="$id">',
+        if (headerLine!=null) headerLine!,
+        '<table>',
         ...rows,
         '</table>',
         '',

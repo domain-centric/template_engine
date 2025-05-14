@@ -20,13 +20,13 @@ class PrefixExpression<PARAMETER_TYPE extends Object>
     }
     throw RenderException(
         message:
-            '${typeDescription<PARAMETER_TYPE>()} expected after the ${operator.operator} operator',
+            '${typeDescription<PARAMETER_TYPE>()} expected after the ${operator.symbol} operator',
         position: super.position);
   }
 
   @override
   String toString() {
-    return 'PrefixExpression{${operator.operator}}';
+    return 'PrefixExpression{${operator.symbol}}';
   }
 }
 
@@ -133,7 +133,8 @@ abstract class Operator implements DocumentationFactory, ExampleFactory {
 }
 
 class PrefixOperator<PARAMETER_TYPE extends Object> extends Operator {
-  final String operator;
+  final String name;
+  final String symbol;
   final String description;
   final PARAMETER_TYPE Function(PARAMETER_TYPE value) function;
   final String expressionExample;
@@ -141,7 +142,8 @@ class PrefixOperator<PARAMETER_TYPE extends Object> extends Operator {
   final ProjectFilePath? codeExample;
 
   PrefixOperator({
-    required this.operator,
+    required this.name,
+    required this.symbol,
     required this.description,
     required this.function,
     required this.expressionExample,
@@ -154,9 +156,10 @@ class PrefixOperator<PARAMETER_TYPE extends Object> extends Operator {
   @override
   List<String> createMarkdownDocumentation(
       RenderContext renderContext, int titleLevel) {
-    var writer = HtmlTableWriter(createOperatorHtmlElementId(this));
-    writer.addHeaderRow(['operator: $operator'], [2]);
-    writer.addHeaderRow(['parameter type: $parameterTypeDescription'], [2]);
+    var writer = HtmlTableWriter();
+    writer.setHeader(titleLevel, '$name Operator');
+   //FIXME writer.addHeaderRow(['symbol: $symbol'], [2]);
+   //FIXME writer.addHeaderRow(['parameter type: $parameterTypeDescription'], [2]);
     writer.addRow(['description:', description]);
     writer.addRow([
       'expression example:',
@@ -177,12 +180,12 @@ class PrefixOperator<PARAMETER_TYPE extends Object> extends Operator {
       codeExample == null ? [] : ['* ${codeExample!.githubMarkdownLink}'];
 
   @override
-  String toString() => 'Operator{$operator}';
+  String toString() => 'Operator{$symbol}';
 
   @override
   addParser(Template template, ExpressionGroup2<Expression<Object>> group) {
     group.prefix(
-        string(operator).trim(),
+        string(symbol).trim(),
         (context, op, value) => PrefixExpression<PARAMETER_TYPE>(
             operator: this,
             position: context.toPositionString(),
@@ -204,11 +207,10 @@ abstract class OperatorWith2Values extends Operator {
   @override
   List<String> createMarkdownDocumentation(
       RenderContext renderContext, int titleLevel) {
-    var writer = HtmlTableWriter(createOperatorHtmlElementId(this));
-    writer.addHeaderRow(['operator: $operator'], [2]);
+    var writer = HtmlTableWriter();
+    //FIXME writer.addHeaderRow(['operator: $operator'], [2]);
     for (var variant in variants) {
-      writer.addHeaderRow(
-          ['parameter type: ${variant.parameterTypeDescription}'], [2]);
+      //FIXMEwriter.addHeaderRow(          ['parameter type: ${variant.parameterTypeDescription}'], [2]);
       writer.addRow(['description:', variant.description]);
       writer.addRow([
         'expression example:',
@@ -303,9 +305,9 @@ class OperatorGroup extends DelegatingList<Operator>
   List<String> createMarkdownDocumentation(
           RenderContext renderContext, int titleLevel) =>
       [
-        '${"#" * titleLevel} $name',
+        '${"#" * (titleLevel+1)} $name',
         ...map((operator) => operator.createMarkdownDocumentation(
-            renderContext, titleLevel + 1)).flattened
+            renderContext, titleLevel + 2)).flattened
       ];
 
   @override
@@ -325,6 +327,4 @@ class OperatorGroup extends DelegatingList<Operator>
   }
 }
 
-HtmlElementId createOperatorHtmlElementId(Operator operator) =>
-    HtmlElementId.fromText(
-        'operator-${operator.runtimeType.toString().replaceAll(RegExp(r'Operator$'), '')}');
+

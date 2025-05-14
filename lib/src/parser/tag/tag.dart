@@ -47,8 +47,8 @@ abstract class Tag<T extends Object>
   @override
   List<String> createMarkdownDocumentation(
       RenderContext renderContext, int titleLevel) {
-    var writer = HtmlTableWriter(HtmlElementId.fromText('tag-$name'));
-    writer.addHeaderRow([name], [2]);
+    var writer = HtmlTableWriter();
+    writer.setHeader(titleLevel, '$name Tag');
     writer.addRow(['description:', description.join('<br>')]);
     writer.addRow(['expression example:', _createExpressionExample()], [1, 4]);
     writer.addRow(['code example:', exampleCode.githubMarkdownLink], [1, 4]);

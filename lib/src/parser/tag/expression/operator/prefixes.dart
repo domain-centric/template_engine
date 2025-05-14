@@ -9,7 +9,8 @@ class Prefixes extends OperatorGroup {
 class PositiveOperator extends PrefixOperator<num> {
   PositiveOperator()
       : super(
-          operator: '+',
+        name: 'Positive',
+          symbol: '+',
           description: 'Optional prefix for positive numbers',
           expressionExample: '{{+3}}',
           expressionExampleResult: '3',
@@ -22,7 +23,8 @@ class PositiveOperator extends PrefixOperator<num> {
 class NegativeOperator extends PrefixOperator<num> {
   NegativeOperator()
       : super(
-          operator: '-',
+        name:'Negative',
+          symbol: '-',
           description: 'Prefix for a negative number',
           expressionExample: '{{-3}}',
           expressionExampleResult: '-3',
@@ -35,7 +37,8 @@ class NegativeOperator extends PrefixOperator<num> {
 class NotOperator extends PrefixOperator<bool> {
   NotOperator()
       : super(
-          operator: '!',
+        name: 'Not',
+          symbol: '!',
           description: 'Prefix to invert a boolean, e.g.: !true =false',
           expressionExample: '{{!true}}',
           expressionExampleResult: 'false',

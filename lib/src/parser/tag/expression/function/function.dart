@@ -113,8 +113,8 @@ class ExpressionFunction<R extends Object>
   @override
   List<String> createMarkdownDocumentation(
       RenderContext renderContext, int titleLevel) {
-    var writer = HtmlTableWriter(HtmlElementId.fromText('function-$name'));
-    writer.addHeaderRow([name], [5]);
+    var writer = HtmlTableWriter();
+    writer.setHeader(titleLevel, '$name Function');
     if (description != null) {
       writer.addRow(['description:', description!], [1, 4]);
     }
@@ -206,13 +206,13 @@ class FunctionGroup extends DelegatingList<ExpressionFunction>
   List<String> createMarkdownExamples(
       RenderContext renderContext, int titleLevel) {
     var examples = map((function) =>
-            function.createMarkdownExamples(renderContext, titleLevel + 1))
+            function.createMarkdownExamples(renderContext, titleLevel +2))
         .flattened;
     if (examples.isEmpty) {
       return [];
     } else {
       return [
-        '${"#" * titleLevel} $name',
+        '${"#" * (titleLevel+1)} $name',
         ...examples,
       ];
     }
