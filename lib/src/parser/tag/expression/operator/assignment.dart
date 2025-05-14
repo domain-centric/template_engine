@@ -15,7 +15,7 @@ class AssignmentOperator extends Operator {
   @override
   List<String> createMarkdownDocumentation(
       RenderContext renderContext, int titleLevel) {
-    var writer = HtmlTableWriter();
+    var writer = HtmlTableWriter(HtmlElementId.fromText('operator-assignment'));
     writer.addHeaderRow(['operator: ='], [2]);
     writer.addRow([
       'description:',

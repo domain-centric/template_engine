@@ -23,7 +23,7 @@ void main() {
         parseResult.errorMessage.should.beNullOrEmpty();
       });
       when('calling: await engine.render(parseResult)', () {
-        var expected = '<table>\n'
+        var expected = '<table id="tag-expression-tag">\n'
             '<tr><th colspan="2">ExpressionTag</th></tr>\n'
             '<tr><td>description:</td><td>Evaluates an expression that can contain:<br>* Data Types (e.g. boolean, number or String)<br>* Constants (e.g. pi)<br>* Variables (e.g. person.name )<br>* Operators (e.g. + - * /)<br>* Functions (e.g. cos(7) )<br>* or any combination of the above</td></tr>\n'
             '<tr><td>expression example:</td><td colspan="4">The volume of a sphere = {{ round( (3/4) * pi * (radius ^ 3) )}}.</td></tr>\n'
@@ -42,7 +42,7 @@ void main() {
         "call: engine.parse(const "
         "TextTemplate('{{dataTypeDocumentation()}}'))", () {
       var template = TextTemplate('{{dataTypeDocumentation()}}');
-      var expected = '<table>\n'
+      var expected = '<table id="data-type-boolean">\n'
           '<tr><th colspan="2">Boolean</th></tr>\n'
           '<tr><td>description:</td><td>A form of data with only two possible values: true or false</td></tr>\n'
           '<tr><td>syntax:</td><td>A boolean is declared with the word true or false. The letters are case insensitive.</td></tr>\n'
@@ -110,6 +110,75 @@ void main() {
       }
     });
     noneExistingUrls.should.beEmpty();
+  });
+
+  group('HtmlElementId class', () {
+    group('validate method', () {
+      test('should accept valid IDs', () {
+        final validIds = [
+          'a',
+          'header1',
+          'main-content',
+          'footer_section',
+          'nav.menu',
+          'A1-b_c.d'
+        ];
+        Should.satisfyAllConditions([
+          for (var id in validIds)
+            () => Should.notThrowError(() => HtmlElementId.validate(id)),
+        ]);
+      });
+
+      test('should reject invalid IDs', () {
+        final invalidIds = [
+          '',
+          '1startWithDigit',
+          '-dashStart',
+          '_underscoreStart',
+          '.dotStart',
+          'has space',
+          'has@symbol',
+          'has#hash',
+          'white space'
+        ];
+
+        Should.satisfyAllConditions([
+          for (var id in invalidIds)
+            () => Should.throwError<ArgumentError>(
+                () => HtmlElementId.validate(id)),
+        ]);
+      });
+    });
+
+    group('normalize method', () {
+      test('should normalize and validate valid input', () {
+        final input = 'Main Content';
+        final normalized = HtmlElementId.normalize(input);
+        normalized.should.be('main-content');
+      });
+
+      test('should remove invalid characters and normalize', () {
+        final input = 'Header@# !Section';
+        final normalized = HtmlElementId.normalize(input);
+        normalized.should.be('header-section');
+      });
+
+      test('should throw if normalization results in invalid ID', () {
+        // Will be stripped to '123', which is invalid
+        Should.throwError<ArgumentError>(
+            () => HtmlElementId.normalize('123@#'));
+      });
+    });
+
+    group('constructor', () {
+      test('should create instance with normalized ID', () {
+        final element = HtmlElementId.fromText('Main Content');
+        Should.satisfyAllConditions([
+          () => element.id.should.be('main-content'),
+          () => element.toString().should.be('main-content'),
+        ]);
+      });
+    });
   });
 }
 

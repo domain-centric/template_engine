@@ -82,7 +82,7 @@ if your template contains HTML or XML.
 The TemplateEngine comes with default tags. You can replace or add your
 own tags by manipulating the the TemplateEngine.tags field.
 
-<table>
+<table id="tag-expression-tag">
 <tr><th colspan="2">ExpressionTag</th></tr>
 <tr><td>description:</td><td>Evaluates an expression that can contain:<br>* Data Types (e.g. boolean, number or String)<br>* Constants (e.g. pi)<br>* Variables (e.g. person.name )<br>* Operators (e.g. + - * /)<br>* Functions (e.g. cos(7) )<br>* or any combination of the above</td></tr>
 <tr><td>expression example:</td><td colspan="4">The volume of a sphere = {{ round( (3/4) * pi * (radius ^ 3) )}}.</td></tr>
@@ -104,21 +104,21 @@ manipulating the TemplateEngine.dataTypes field.
 See [Example](https://github.com/domain-centric/template_engine/blob/main/test/src/parser/tag/expression/data_type/custom_data_type_test.dart). 
 
 ## Available DataTypes
-<table>
+<table id="data-type-string">
 <tr><th colspan="2">String</th></tr>
 <tr><td>description:</td><td>A form of data containing a sequence of characters</td></tr>
 <tr><td>syntax:</td><td>A string is declared with a chain of characters, surrounded by two single (') or double (") quotes to indicate the start and end of a string. In example: 'Hello' or "Hello"</td></tr>
 <tr><td>example:</td><td><a href="https://github.com/domain-centric/template_engine/blob/main/test/src/parser/tag/expression/data_type/string_test.dart">string_test.dart</a></td></tr>
 </table>
 
-<table>
+<table id="data-type-number">
 <tr><th colspan="2">Number</th></tr>
 <tr><td>description:</td><td>A form of data to express the size of something.</td></tr>
 <tr><td>syntax:</td><td>A number is declared with:<br>* optional: positive (e.g. +12) or negative (e.g. -12) prefix or no prefix (12=positive)<br>* one or more digits (e.g. 12)<br>* optional fragments (e.g. 0.12)<br>* optional: scientific notation: the letter E is used to mean"10 to the power of." (e.g. 1.314E+1 means 1.314 * 10^1which is 13.14).<br></td></tr>
 <tr><td>example:</td><td><a href="https://github.com/domain-centric/template_engine/blob/main/test/src/parser/tag/expression/data_type/num_test.dart">num_test.dart</a></td></tr>
 </table>
 
-<table>
+<table id="data-type-boolean">
 <tr><th colspan="2">Boolean</th></tr>
 <tr><td>description:</td><td>A form of data with only two possible values: true or false</td></tr>
 <tr><td>syntax:</td><td>A boolean is declared with the word true or false. The letters are case insensitive.</td></tr>
@@ -138,42 +138,42 @@ manipulating the TemplateEngine.constants field.
 See [Example](https://github.com/domain-centric/template_engine/blob/main/test/src/parser/tag/expression/constant/custom_constant_test.dart).
 
 ## Available Constants
-<table>
+<table id="constant-e">
 <tr><th colspan="2">e</th></tr>
 <tr><td>description:</td><td>Base of the natural logarithms.</td></tr>
 <tr><td>return type:</td><td>double</td></tr>
 <tr><td>code example:</td><td><a href="https://github.com/domain-centric/template_engine/blob/main/test/src/parser/tag/expression/constant/e_test.dart">e_test.dart</a></td></tr>
 </table>
 
-<table>
+<table id="constant-ln10">
 <tr><th colspan="2">ln10</th></tr>
 <tr><td>description:</td><td>Natural logarithm of 10.</td></tr>
 <tr><td>return type:</td><td>double</td></tr>
 <tr><td>code example:</td><td><a href="https://github.com/domain-centric/template_engine/blob/main/test/src/parser/tag/expression/constant/ln10_test.dart">ln10_test.dart</a></td></tr>
 </table>
 
-<table>
+<table id="constant-ln2">
 <tr><th colspan="2">ln2</th></tr>
 <tr><td>description:</td><td>Natural logarithm of 2.</td></tr>
 <tr><td>return type:</td><td>double</td></tr>
 <tr><td>code example:</td><td><a href="https://github.com/domain-centric/template_engine/blob/main/test/src/parser/tag/expression/constant/ln2_test.dart">ln2_test.dart</a></td></tr>
 </table>
 
-<table>
+<table id="constant-log10e">
 <tr><th colspan="2">log10e</th></tr>
 <tr><td>description:</td><td>Base-10 logarithm of e.</td></tr>
 <tr><td>return type:</td><td>double</td></tr>
 <tr><td>code example:</td><td><a href="https://github.com/domain-centric/template_engine/blob/main/test/src/parser/tag/expression/constant/log10e_test.dart">log10e_test.dart</a></td></tr>
 </table>
 
-<table>
+<table id="constant-log2e">
 <tr><th colspan="2">log2e</th></tr>
 <tr><td>description:</td><td>Base-2 logarithm of e.</td></tr>
 <tr><td>return type:</td><td>double</td></tr>
 <tr><td>code example:</td><td><a href="https://github.com/domain-centric/template_engine/blob/main/test/src/parser/tag/expression/constant/log2e_test.dart">log2e_test.dart</a></td></tr>
 </table>
 
-<table>
+<table id="constant-pi">
 <tr><th colspan="2">pi</th></tr>
 <tr><td>description:</td><td>The ratio of a circle's circumference to its diameter</td></tr>
 <tr><td>return type:</td><td>double</td></tr>
@@ -259,7 +259,7 @@ See [Example](https://github.com/domain-centric/template_engine/blob/main/test/s
 
 ## Available Functions
 ## Math Functions
-<table>
+<table id="function-exp">
 <tr><th colspan="5">exp</th></tr>
 <tr><td>description:</td><td colspan="4">Returns the natural exponent e, to the power of the value</td></tr>
 <tr><td>return type:</td><td colspan="4">number</td></tr>
@@ -268,7 +268,7 @@ See [Example](https://github.com/domain-centric/template_engine/blob/main/test/s
 <tr><td>parameter:</td><td>value</td><td>number</td><td colspan="2">mandatory</td></tr>
 </table>
 
-<table>
+<table id="function-log">
 <tr><th colspan="5">log</th></tr>
 <tr><td>description:</td><td colspan="4">Returns the natural logarithm of the value</td></tr>
 <tr><td>return type:</td><td colspan="4">number</td></tr>
@@ -277,7 +277,7 @@ See [Example](https://github.com/domain-centric/template_engine/blob/main/test/s
 <tr><td>parameter:</td><td>value</td><td>number</td><td colspan="2">mandatory</td></tr>
 </table>
 
-<table>
+<table id="function-sin">
 <tr><th colspan="5">sin</th></tr>
 <tr><td>description:</td><td colspan="4">Returns the sine of the radians</td></tr>
 <tr><td>return type:</td><td colspan="4">number</td></tr>
@@ -286,7 +286,7 @@ See [Example](https://github.com/domain-centric/template_engine/blob/main/test/s
 <tr><td>parameter:</td><td>radians</td><td>number</td><td colspan="2">mandatory</td></tr>
 </table>
 
-<table>
+<table id="function-asin">
 <tr><th colspan="5">asin</th></tr>
 <tr><td>description:</td><td colspan="4">Returns the values arc sine in radians</td></tr>
 <tr><td>return type:</td><td colspan="4">number</td></tr>
@@ -295,7 +295,7 @@ See [Example](https://github.com/domain-centric/template_engine/blob/main/test/s
 <tr><td>parameter:</td><td>value</td><td>number</td><td colspan="2">mandatory</td></tr>
 </table>
 
-<table>
+<table id="function-cos">
 <tr><th colspan="5">cos</th></tr>
 <tr><td>description:</td><td colspan="4">Returns the cosine of the radians</td></tr>
 <tr><td>return type:</td><td colspan="4">number</td></tr>
@@ -304,7 +304,7 @@ See [Example](https://github.com/domain-centric/template_engine/blob/main/test/s
 <tr><td>parameter:</td><td>radians</td><td>number</td><td colspan="2">mandatory</td></tr>
 </table>
 
-<table>
+<table id="function-acos">
 <tr><th colspan="5">acos</th></tr>
 <tr><td>description:</td><td colspan="4">Returns the values arc cosine in radians</td></tr>
 <tr><td>return type:</td><td colspan="4">number</td></tr>
@@ -313,7 +313,7 @@ See [Example](https://github.com/domain-centric/template_engine/blob/main/test/s
 <tr><td>parameter:</td><td>value</td><td>number</td><td colspan="2">mandatory</td></tr>
 </table>
 
-<table>
+<table id="function-tan">
 <tr><th colspan="5">tan</th></tr>
 <tr><td>description:</td><td colspan="4">Returns the the tangent of the radians</td></tr>
 <tr><td>return type:</td><td colspan="4">number</td></tr>
@@ -322,7 +322,7 @@ See [Example](https://github.com/domain-centric/template_engine/blob/main/test/s
 <tr><td>parameter:</td><td>radians</td><td>number</td><td colspan="2">mandatory</td></tr>
 </table>
 
-<table>
+<table id="function-atan">
 <tr><th colspan="5">atan</th></tr>
 <tr><td>description:</td><td colspan="4">Returns the values arc tangent in radians</td></tr>
 <tr><td>return type:</td><td colspan="4">number</td></tr>
@@ -331,7 +331,7 @@ See [Example](https://github.com/domain-centric/template_engine/blob/main/test/s
 <tr><td>parameter:</td><td>value</td><td>number</td><td colspan="2">mandatory</td></tr>
 </table>
 
-<table>
+<table id="function-sqrt">
 <tr><th colspan="5">sqrt</th></tr>
 <tr><td>description:</td><td colspan="4">Returns the positive square root of the value.</td></tr>
 <tr><td>return type:</td><td colspan="4">number</td></tr>
@@ -340,7 +340,7 @@ See [Example](https://github.com/domain-centric/template_engine/blob/main/test/s
 <tr><td>parameter:</td><td>value</td><td>number</td><td colspan="2">mandatory</td></tr>
 </table>
 
-<table>
+<table id="function-round">
 <tr><th colspan="5">round</th></tr>
 <tr><td>description:</td><td colspan="4">Returns the a rounded number.</td></tr>
 <tr><td>return type:</td><td colspan="4">number</td></tr>
@@ -350,7 +350,7 @@ See [Example](https://github.com/domain-centric/template_engine/blob/main/test/s
 </table>
 
 ## String Functions
-<table>
+<table id="function-length">
 <tr><th colspan="5">length</th></tr>
 <tr><td>description:</td><td colspan="4">Returns the length of a string</td></tr>
 <tr><td>return type:</td><td colspan="4">number</td></tr>
@@ -360,7 +360,7 @@ See [Example](https://github.com/domain-centric/template_engine/blob/main/test/s
 </table>
 
 ## Documentation Functions
-<table>
+<table id="function-tag-documentation">
 <tr><th colspan="5">tagDocumentation</th></tr>
 <tr><td>description:</td><td colspan="4">Generates markdown documentation of all the tags within a TemplateEngine</td></tr>
 <tr><td>return type:</td><td colspan="4">String</td></tr>
@@ -368,7 +368,7 @@ See [Example](https://github.com/domain-centric/template_engine/blob/main/test/s
 <tr><td>parameter:</td><td>titleLevel</td><td>number</td><td>optional (default=1)</td><td>The level of the tag title</td></tr>
 </table>
 
-<table>
+<table id="function-data-type-documentation">
 <tr><th colspan="5">dataTypeDocumentation</th></tr>
 <tr><td>description:</td><td colspan="4">Generates markdown documentation of all the data types that can be used within a ExpressionTag of a TemplateEngine</td></tr>
 <tr><td>return type:</td><td colspan="4">String</td></tr>
@@ -376,7 +376,7 @@ See [Example](https://github.com/domain-centric/template_engine/blob/main/test/s
 <tr><td>parameter:</td><td>titleLevel</td><td>number</td><td>optional (default=1)</td><td>The level of the tag title</td></tr>
 </table>
 
-<table>
+<table id="function-constant-documentation">
 <tr><th colspan="5">constantDocumentation</th></tr>
 <tr><td>description:</td><td colspan="4">Generates markdown documentation of all the constants that can be used within a ExpressionTag of a TemplateEngine</td></tr>
 <tr><td>return type:</td><td colspan="4">String</td></tr>
@@ -384,7 +384,7 @@ See [Example](https://github.com/domain-centric/template_engine/blob/main/test/s
 <tr><td>parameter:</td><td>titleLevel</td><td>number</td><td>optional (default=1)</td><td>The level of the tag title</td></tr>
 </table>
 
-<table>
+<table id="function-function-documentation">
 <tr><th colspan="5">functionDocumentation</th></tr>
 <tr><td>description:</td><td colspan="4">Generates markdown documentation of all the functions that can be used within a ExpressionTag of a TemplateEngine</td></tr>
 <tr><td>return type:</td><td colspan="4">String</td></tr>
@@ -392,7 +392,7 @@ See [Example](https://github.com/domain-centric/template_engine/blob/main/test/s
 <tr><td>parameter:</td><td>titleLevel</td><td>number</td><td>optional (default=1)</td><td>The level of the tag title</td></tr>
 </table>
 
-<table>
+<table id="function-operator-documentation">
 <tr><th colspan="5">operatorDocumentation</th></tr>
 <tr><td>description:</td><td colspan="4">Generates markdown documentation of all the operators that can be used within a ExpressionTag of a TemplateEngine</td></tr>
 <tr><td>return type:</td><td colspan="4">String</td></tr>
@@ -400,7 +400,7 @@ See [Example](https://github.com/domain-centric/template_engine/blob/main/test/s
 <tr><td>parameter:</td><td>titleLevel</td><td>number</td><td>optional (default=1)</td><td>The level of the tag title</td></tr>
 </table>
 
-<table>
+<table id="function-example-documentation">
 <tr><th colspan="5">exampleDocumentation</th></tr>
 <tr><td>description:</td><td colspan="4">Generates markdown documentation of all the examples. This could be used to generate example.md file.</td></tr>
 <tr><td>return type:</td><td colspan="4">String</td></tr>
@@ -409,7 +409,7 @@ See [Example](https://github.com/domain-centric/template_engine/blob/main/test/s
 </table>
 
 ## Path Functions
-<table>
+<table id="function-template-source">
 <tr><th colspan="5">templateSource</th></tr>
 <tr><td>description:</td><td colspan="4">Gives the relative path of the current template</td></tr>
 <tr><td>return type:</td><td colspan="4">String</td></tr>
@@ -418,7 +418,7 @@ See [Example](https://github.com/domain-centric/template_engine/blob/main/test/s
 </table>
 
 ## Import Functions
-<table>
+<table id="function-import-template">
 <tr><th colspan="5">importTemplate</th></tr>
 <tr><td>description:</td><td colspan="4">Imports, parses and renders a template file</td></tr>
 <tr><td>return type:</td><td colspan="4">IntermediateRenderResult</td></tr>
@@ -427,7 +427,7 @@ See [Example](https://github.com/domain-centric/template_engine/blob/main/test/s
 <tr><td>parameter:</td><td>source</td><td>String</td><td>mandatory</td><td>The project path of the template file</td></tr>
 </table>
 
-<table>
+<table id="function-import-pure">
 <tr><th colspan="5">importPure</th></tr>
 <tr><td>description:</td><td colspan="4">Imports a file as is (without parsing and rendering)</td></tr>
 <tr><td>return type:</td><td colspan="4">String</td></tr>
@@ -436,7 +436,7 @@ See [Example](https://github.com/domain-centric/template_engine/blob/main/test/s
 <tr><td>parameter:</td><td>source</td><td>String</td><td>mandatory</td><td>The project path of the file. This path can be a absolute or relative file path or URI.</td></tr>
 </table>
 
-<table>
+<table id="function-import-json">
 <tr><th colspan="5">importJson</th></tr>
 <tr><td>description:</td><td colspan="4">Imports a JSON file and decode it to a Map<String, dynamic>, which could be assigned it to a variable.</td></tr>
 <tr><td>return type:</td><td colspan="4">Map<String, dynamic></td></tr>
@@ -445,7 +445,7 @@ See [Example](https://github.com/domain-centric/template_engine/blob/main/test/s
 <tr><td>parameter:</td><td>source</td><td>String</td><td>mandatory</td><td>The project path of the JSON file. This path can be a absolute or relative file path or URI.</td></tr>
 </table>
 
-<table>
+<table id="function-import-xml">
 <tr><th colspan="5">importXml</th></tr>
 <tr><td>description:</td><td colspan="4">Imports a XML file and decode it to a Map<String, dynamic>, which could be assigned it to a variable.</td></tr>
 <tr><td>return type:</td><td colspan="4">Map<String, dynamic></td></tr>
@@ -454,7 +454,7 @@ See [Example](https://github.com/domain-centric/template_engine/blob/main/test/s
 <tr><td>parameter:</td><td>source</td><td>String</td><td>mandatory</td><td>The project path of the XML file. This path can be a absolute or relative file path or URI.</td></tr>
 </table>
 
-<table>
+<table id="function-import-yaml">
 <tr><th colspan="5">importYaml</th></tr>
 <tr><td>description:</td><td colspan="4">Imports a YAML file and decode it to a Map<String, dynamic>, which could be assigned it to a variable.</td></tr>
 <tr><td>return type:</td><td colspan="4">Map<String, dynamic></td></tr>
@@ -483,7 +483,7 @@ See [Example](https://github.com/domain-centric/template_engine/blob/main/test/s
 
 ## Available Operators
 ## Parentheses
-<table>
+<table id="operator-parentheses">
 <tr><th colspan="2">operator: ( ... )</th></tr>
 <tr><td>description:</td><td>Groups expressions together so that the are calculated first</td></tr>
 <tr><td>expression example:</td><td>{{(2+1)*3}} should render: 9</td></tr>
@@ -491,7 +491,7 @@ See [Example](https://github.com/domain-centric/template_engine/blob/main/test/s
 </table>
 
 ## Prefixes
-<table>
+<table id="operator-positive">
 <tr><th colspan="2">operator: +</th></tr>
 <tr><th colspan="2">parameter type: number</th></tr>
 <tr><td>description:</td><td>Optional prefix for positive numbers</td></tr>
@@ -499,7 +499,7 @@ See [Example](https://github.com/domain-centric/template_engine/blob/main/test/s
 <tr><td>code example:</td><td><a href="https://github.com/domain-centric/template_engine/blob/main/test/src/parser/tag/expression/operator/prefix/positive_test.dart">positive_test.dart</a></td></tr>
 </table>
 
-<table>
+<table id="operator-negative">
 <tr><th colspan="2">operator: -</th></tr>
 <tr><th colspan="2">parameter type: number</th></tr>
 <tr><td>description:</td><td>Prefix for a negative number</td></tr>
@@ -507,7 +507,7 @@ See [Example](https://github.com/domain-centric/template_engine/blob/main/test/s
 <tr><td>code example:</td><td><a href="https://github.com/domain-centric/template_engine/blob/main/test/src/parser/tag/expression/operator/prefix/negative_test.dart">negative_test.dart</a></td></tr>
 </table>
 
-<table>
+<table id="operator-not">
 <tr><th colspan="2">operator: !</th></tr>
 <tr><th colspan="2">parameter type: boolean</th></tr>
 <tr><td>description:</td><td>Prefix to invert a boolean, e.g.: !true =false</td></tr>
@@ -516,7 +516,7 @@ See [Example](https://github.com/domain-centric/template_engine/blob/main/test/s
 </table>
 
 ## Multiplication
-<table>
+<table id="operator-caret">
 <tr><th colspan="2">operator: ^</th></tr>
 <tr><th colspan="2">parameter type: number</th></tr>
 <tr><td>description:</td><td>Calculates a number to the power of the exponent number</td></tr>
@@ -528,7 +528,7 @@ See [Example](https://github.com/domain-centric/template_engine/blob/main/test/s
 <tr><td>code example:</td><td><a href="https://github.com/domain-centric/template_engine/blob/main/test/src/parser/tag/expression/operator/multiplication/bool_xor_test.dart">bool_xor_test.dart</a></td></tr>
 </table>
 
-<table>
+<table id="operator-multiply">
 <tr><th colspan="2">operator: *</th></tr>
 <tr><th colspan="2">parameter type: number</th></tr>
 <tr><td>description:</td><td>Multiplies 2 numbers</td></tr>
@@ -536,7 +536,7 @@ See [Example](https://github.com/domain-centric/template_engine/blob/main/test/s
 <tr><td>code example:</td><td><a href="https://github.com/domain-centric/template_engine/blob/main/test/src/parser/tag/expression/operator/multiplication/num_multiply_test.dart">num_multiply_test.dart</a></td></tr>
 </table>
 
-<table>
+<table id="operator-divide">
 <tr><th colspan="2">operator: /</th></tr>
 <tr><th colspan="2">parameter type: number</th></tr>
 <tr><td>description:</td><td>Divides 2 numbers</td></tr>
@@ -544,7 +544,7 @@ See [Example](https://github.com/domain-centric/template_engine/blob/main/test/s
 <tr><td>code example:</td><td><a href="https://github.com/domain-centric/template_engine/blob/main/test/src/parser/tag/expression/operator/multiplication/num_divide_test.dart">num_divide_test.dart</a></td></tr>
 </table>
 
-<table>
+<table id="operator-modulo">
 <tr><th colspan="2">operator: %</th></tr>
 <tr><th colspan="2">parameter type: number</th></tr>
 <tr><td>description:</td><td>Calculates the modulo (rest value of a division)</td></tr>
@@ -552,7 +552,7 @@ See [Example](https://github.com/domain-centric/template_engine/blob/main/test/s
 <tr><td>code example:</td><td><a href="https://github.com/domain-centric/template_engine/blob/main/test/src/parser/tag/expression/operator/multiplication/num_modulo_test.dart">num_modulo_test.dart</a></td></tr>
 </table>
 
-<table>
+<table id="operator-and">
 <tr><th colspan="2">operator: &</th></tr>
 <tr><th colspan="2">parameter type: boolean</th></tr>
 <tr><td>description:</td><td>Logical AND operation on two booleans</td></tr>
@@ -565,7 +565,7 @@ See [Example](https://github.com/domain-centric/template_engine/blob/main/test/s
 </table>
 
 ## Additions
-<table>
+<table id="operator-add">
 <tr><th colspan="2">operator: +</th></tr>
 <tr><th colspan="2">parameter type: number</th></tr>
 <tr><td>description:</td><td>Adds two numbers</td></tr>
@@ -577,7 +577,7 @@ See [Example](https://github.com/domain-centric/template_engine/blob/main/test/s
 <tr><td>code example:</td><td><a href="https://github.com/domain-centric/template_engine/blob/main/test/src/parser/tag/expression/operator/addition/string_concatenate_test.dart">string_concatenate_test.dart</a></td></tr>
 </table>
 
-<table>
+<table id="operator-subtract">
 <tr><th colspan="2">operator: -</th></tr>
 <tr><th colspan="2">parameter type: number</th></tr>
 <tr><td>description:</td><td>Subtracts two numbers</td></tr>
@@ -585,7 +585,7 @@ See [Example](https://github.com/domain-centric/template_engine/blob/main/test/s
 <tr><td>code example:</td><td><a href="https://github.com/domain-centric/template_engine/blob/main/test/src/parser/tag/expression/operator/addition/num_subtract_test.dart">num_subtract_test.dart</a></td></tr>
 </table>
 
-<table>
+<table id="operator-or">
 <tr><th colspan="2">operator: |</th></tr>
 <tr><th colspan="2">parameter type: boolean</th></tr>
 <tr><td>description:</td><td>Logical OR operation on two booleans</td></tr>
@@ -594,7 +594,7 @@ See [Example](https://github.com/domain-centric/template_engine/blob/main/test/s
 </table>
 
 ## Comparisons
-<table>
+<table id="operator-equals">
 <tr><th colspan="2">operator: ==</th></tr>
 <tr><th colspan="2">parameter type: Object</th></tr>
 <tr><td>description:</td><td>Checks if two values are equal</td></tr>
@@ -602,7 +602,7 @@ See [Example](https://github.com/domain-centric/template_engine/blob/main/test/s
 <tr><td>code example:</td><td><a href="https://github.com/domain-centric/template_engine/blob/main/test/src/parser/tag/expression/operator/comparison/equals_test.dart">equals_test.dart</a></td></tr>
 </table>
 
-<table>
+<table id="operator-not-equals">
 <tr><th colspan="2">operator: !=</th></tr>
 <tr><th colspan="2">parameter type: Object</th></tr>
 <tr><td>description:</td><td>Checks if two values are NOT equal</td></tr>
@@ -610,7 +610,7 @@ See [Example](https://github.com/domain-centric/template_engine/blob/main/test/s
 <tr><td>code example:</td><td><a href="https://github.com/domain-centric/template_engine/blob/main/test/src/parser/tag/expression/operator/comparison/not_equals_test.dart">not_equals_test.dart</a></td></tr>
 </table>
 
-<table>
+<table id="operator-greater-than-or-qual">
 <tr><th colspan="2">operator: >=</th></tr>
 <tr><th colspan="2">parameter type: number</th></tr>
 <tr><td>description:</td><td>Checks if the left value is greater than or equal to the right value</td></tr>
@@ -618,7 +618,7 @@ See [Example](https://github.com/domain-centric/template_engine/blob/main/test/s
 <tr><td>code example:</td><td><a href="https://github.com/domain-centric/template_engine/blob/main/test/src/parser/tag/expression/operator/comparison/greater_than_or_equal_test.dart">greater_than_or_equal_test.dart</a></td></tr>
 </table>
 
-<table>
+<table id="operator-greater-than">
 <tr><th colspan="2">operator: ></th></tr>
 <tr><th colspan="2">parameter type: number</th></tr>
 <tr><td>description:</td><td>Checks if the left value is greater than the right value</td></tr>
@@ -626,7 +626,7 @@ See [Example](https://github.com/domain-centric/template_engine/blob/main/test/s
 <tr><td>code example:</td><td><a href="https://github.com/domain-centric/template_engine/blob/main/test/src/parser/tag/expression/operator/comparison/greater_than_test.dart">greater_than_test.dart</a></td></tr>
 </table>
 
-<table>
+<table id="operator-less-than-or-qual">
 <tr><th colspan="2">operator: <=</th></tr>
 <tr><th colspan="2">parameter type: number</th></tr>
 <tr><td>description:</td><td>Checks if the left value is less than or equal to the right value</td></tr>
@@ -634,7 +634,7 @@ See [Example](https://github.com/domain-centric/template_engine/blob/main/test/s
 <tr><td>code example:</td><td><a href="https://github.com/domain-centric/template_engine/blob/main/test/src/parser/tag/expression/operator/comparison/less_than_or_equal_test.dart">less_than_or_equal_test.dart</a></td></tr>
 </table>
 
-<table>
+<table id="operator-less-than">
 <tr><th colspan="2">operator: <</th></tr>
 <tr><th colspan="2">parameter type: number</th></tr>
 <tr><td>description:</td><td>Checks if the left value is less than the right value</td></tr>
@@ -643,7 +643,7 @@ See [Example](https://github.com/domain-centric/template_engine/blob/main/test/s
 </table>
 
 ## Assignment
-<table>
+<table id="operator-assignment">
 <tr><th colspan="2">operator: =</th></tr>
 <tr><td>description:</td><td>Assigns a value to a variable. A new variable will be created when it did not exist before, otherwise it will be overridden with a new value.</td></tr>
 <tr><td>expression example:</td><td>{{x=2}}{{x=x+3}}{{x}} should render: 5</td></tr>

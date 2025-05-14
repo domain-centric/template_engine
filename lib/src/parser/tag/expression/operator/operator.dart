@@ -154,7 +154,7 @@ class PrefixOperator<PARAMETER_TYPE extends Object> extends Operator {
   @override
   List<String> createMarkdownDocumentation(
       RenderContext renderContext, int titleLevel) {
-    var writer = HtmlTableWriter();
+    var writer = HtmlTableWriter(createOperatorHtmlElementId(this));
     writer.addHeaderRow(['operator: $operator'], [2]);
     writer.addHeaderRow(['parameter type: $parameterTypeDescription'], [2]);
     writer.addRow(['description:', description]);
@@ -204,7 +204,7 @@ abstract class OperatorWith2Values extends Operator {
   @override
   List<String> createMarkdownDocumentation(
       RenderContext renderContext, int titleLevel) {
-    var writer = HtmlTableWriter();
+    var writer = HtmlTableWriter(createOperatorHtmlElementId(this));
     writer.addHeaderRow(['operator: $operator'], [2]);
     for (var variant in variants) {
       writer.addHeaderRow(
@@ -324,3 +324,7 @@ class OperatorGroup extends DelegatingList<Operator>
     }
   }
 }
+
+HtmlElementId createOperatorHtmlElementId(Operator operator) =>
+    HtmlElementId.fromText(
+        'operator-${operator.runtimeType.toString().replaceAll(RegExp(r'Operator$'), '')}');

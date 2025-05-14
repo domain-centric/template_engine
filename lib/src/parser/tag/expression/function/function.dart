@@ -113,7 +113,7 @@ class ExpressionFunction<R extends Object>
   @override
   List<String> createMarkdownDocumentation(
       RenderContext renderContext, int titleLevel) {
-    var writer = HtmlTableWriter();
+    var writer = HtmlTableWriter(HtmlElementId.fromText('function-$name'));
     writer.addHeaderRow([name], [5]);
     if (description != null) {
       writer.addRow(['description:', description!], [1, 4]);

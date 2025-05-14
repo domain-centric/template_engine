@@ -18,7 +18,8 @@ class ParenthesesOperator extends Operator {
   @override
   List<String> createMarkdownDocumentation(
       RenderContext renderContext, int titleLevel) {
-    var writer = HtmlTableWriter();
+    var writer =
+        HtmlTableWriter(HtmlElementId.fromText('operator-parentheses'));
     writer.addHeaderRow(['operator: ( ... )'], [2]);
     writer.addRow([
       'description:',
