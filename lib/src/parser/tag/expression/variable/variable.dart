@@ -1,6 +1,7 @@
 // ignore_for_file: unintended_html_in_doc_comment
 
 import 'package:petitparser/petitparser.dart';
+import 'package:template_engine/src/parser/tag/expression/identifier.dart';
 import 'package:template_engine/template_engine.dart';
 
 /// A [variable](https://en.wikipedia.org/wiki/Variable_(computer_science)) is
@@ -110,9 +111,10 @@ class VariableException extends RenderException {
 /// in the [VariableMap] map.
 ///
 /// The [VariableName]:
+/// * are [case sensitive](https://en.wikipedia.org/wiki/Case_sensitivity)
+/// * must start with a lower case letter, optionally followed by (lower or upper) letters and or digits.
+/// * conventions: use [lowerCamelCase](https://en.wikipedia.org/wiki/Camel_case)
 /// * must be unique and does not match a other [Tag] syntax
-/// * must start with a letter, optionally followed by letters and or digits
-/// * is case sensitive (convention: use [camelCase](https://en.wikipedia.org/wiki/Camel_case))
 ///
 /// Variables can be nested. Concatenate [VariableName]s separated with dot's
 /// to get the [VariableValue] of a nested [Variable].
@@ -122,7 +124,7 @@ class VariableException extends RenderException {
 /// Variable Name person.name: refers to the variable value of 'John Doe'
 
 class VariableName {
-  static final nameParser = (letter().plus() & digit().star()).plus();
+  static final nameParser = IdentifierName.parser;
   static final namePathParser = (nameParser & (char('.') & nameParser).star());
 
   static validateName(String name) {

@@ -14,7 +14,7 @@ void main() {
     var engine = TemplateEngine();
     var parseResult = await engine.parseText('{{Hello"}}');
     parseResult.errorMessage.should.be('Parse error in: \'{{Hello"}}\':\n'
-        '  1:8: invalid tag syntax');
+        '  1:3: invalid tag syntax');
   });
 
   test("{{'Hello'}} should render: 'Hello'", () async {

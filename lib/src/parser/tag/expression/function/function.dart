@@ -1,6 +1,7 @@
 import 'package:collection/collection.dart';
 import 'package:petitparser/petitparser.dart';
 import 'package:template_engine/src/parser/override_message_parser.dart';
+import 'package:template_engine/src/parser/tag/expression/identifier.dart';
 import 'package:template_engine/template_engine.dart';
 
 Parser<Expression> functionsParser({
@@ -28,7 +29,7 @@ Parser<Expression> functionParser({
 }) {
   return (string(function.name, 'expected function name: ${function.name}') &
           char('(').trim() &
-          ParametersParser(
+          ArgumentsParser(
               parserContext: context,
               parameters: function.parameters,
               loopbackParser: loopbackParser) &
@@ -44,24 +45,6 @@ class FunctionException implements Exception {
   FunctionException(this.message);
 }
 
-/// The [FunctionName]:
-/// * must start with a lower case letter, optionally followed by letters and or digits.
-/// * is case sensitive .
-///
-/// E.g.: myValue1
-class FunctionName {
-  static final Parser<String> parser =
-      (lowercase() & (letter() | digit()).star()).flatten();
-
-  static validate(String name) {
-    var result = parser.end('letter OR digit expected').parse(name);
-    if (result is Failure) {
-      throw FunctionException("Invalid function name: '$name', "
-          "${result.message} at position ${result.position}");
-    }
-  }
-}
-
 class FunctionExpression<R extends Object>
     extends ExpressionWithSourcePosition<R> {
   final ExpressionFunction<R> function;
@@ -75,7 +58,7 @@ class FunctionExpression<R extends Object>
 
   @override
   Future<R> render(RenderContext context) async {
-    ParameterMap parameterMap = <String, Object>{};
+    Arguments parameterMap = <String, Object>{};
     for (var name in parameterExpressionMap.keys) {
       var value = await parameterExpressionMap[name]!.render(context);
       parameterMap[name] = value;
@@ -88,12 +71,12 @@ class FunctionExpression<R extends Object>
 }
 
 /// A function is a piece of dart code that performs a specific task.
-/// So a function can basically do anything that dart code can do.
+// So a function can basically do anything that dart code can do.
 ///
-/// A function can be used anywhere in an tag expression
-/// wherever that particular task should be performed.
+/// A function can be used anywhere in an tag expression. Wherever that particular task should be performed.
 ///
-/// The [TemplateEngine] supports several standard functions.
+/// An example of a function call: cos(pi)
+/// Should result in: -1
 ///
 /// ## Custom Functions
 /// You can adopt existing functions or add your own custom functions by
@@ -101,7 +84,7 @@ class FunctionExpression<R extends Object>
 /// See [custom_function_test.dart](https://github.com/domain-centric/template_engine/blob/main/test/src/parser/tag/expression/function/custom_function_test.dart).
 ///
 
-// A function of a [Expression]
+// A function of an [ExpressionTag]
 // It has the [Expression] prefix in the name since [Function]
 // is already taken by Dart core.
 class ExpressionFunction<R extends Object>
@@ -115,7 +98,7 @@ class ExpressionFunction<R extends Object>
     this.parameters = const [],
     required this.function,
   }) {
-    FunctionName.validate(name);
+    IdentifierName.validate(name);
   }
 
   final String name;
@@ -251,10 +234,7 @@ class FunctionGroup extends DelegatingList<ExpressionFunction>
 ///  * Can be optional
 ///  * Can have an default value when the attribute is optional
 class Parameter<T> implements DocumentationFactory {
-  /// The name of the [Parameter]:
-  /// * may not be empty
-  /// * is case un-sensitive
-  /// * may contain letters and numbers: 'title'
+  /// See [ParameterName]
   final String name;
 
   /// Optional description
@@ -302,7 +282,7 @@ class Presence {
   Presence.optional()
       : name = 'optional',
         defaultValue = null;
-  Presence.optionalWithDefaultValue(Object this.defaultValue)
+  Presence.optionalWithDefaultValue(this.defaultValue)
       : name = 'optionalWithDefaultValue';
 
   bool get mandatory => name == 'mandatory';
@@ -322,13 +302,13 @@ class Presence {
   }
 }
 
-/// The [ParameterName]:
-/// * must start with a letter, optionally followed by letters and or digits.
+/// A [ParameterName]:
+/// * must start with a loewe case letter, optionally followed by (lower or upper) letters and or digits.
 /// * is case sensitive .
 ///
 /// E.g.: myValue1
 class ParameterName {
-  static final parser = FunctionName.parser;
+  static final parser = IdentifierName.parser;
 
   static validate(String name) {
     var result = parser.end('letter OR digit expected').parse(name);
@@ -350,113 +330,165 @@ class ParameterExceptions implements Exception {
   ParameterExceptions(this.messages);
 }
 
-typedef ParameterMap = Map<String, Object>;
+/// [Arguments] is a [Map] of parameter names and values
+typedef Arguments = Map<String, Object>;
 
-/// Creates parsers for each parameter:
-/// * no parameters
-/// * one parameter: value or name=value
-/// * multiple parameters: name=value, name=value etc...
-/// Then validates the result and converts parameters to a name-value [Map]
-class ParametersParser extends Parser<Map<String, Expression>> {
+/// Parses an function argument expression and:
+/// * validates the result
+/// * and converts the values to [Arguments]
+///
+/// **Function arguments:**
+/// * Multiple arguments are separated with a comma, e.g. single argument: `cos(pi)` multiple arguments: `volume(10,20,30)`
+/// * There are different types of arguments
+///   * Positional Arguments: These are passed in the order the function defines them. e.g.: `volume(10, 20, 30)`
+///   * Named Arguments: You can specify which parameter you're assigning a value to, regardless of order. e.g.: `volume(l=30, h=10, w=20)`
+/// * Arguments can set a parameter only once
+/// * You can mix positional arguments and named arguments, but positional arguments must come first
+/// * Named arguments remove ambiguity: If you want to skip an optional argument or specify one out of order, you must name it explicitly
+///
+/// **Argument values:**
+/// * must match the expected parameter type. e.g. `area(length='hello', width='world')` will result in a failure
+/// * may be a tag expression such as a variable, constant, operation, function, or combination. e.g. `cos(2*pi)`
+class ArgumentsParser extends Parser<Arguments> {
+  static final _endOfArgumentsParser =
+      (whitespace().starLazy(char(')'))).flatten().trim();
   static final _remainingParser = (any().starLazy(char(')'))).flatten().trim();
   static final _commaParser = char(',').flatten('comma expected').trim();
   final ParserContext parserContext;
-  final List<ParameterParser> parameterParsers;
   final List<Parameter> parameters;
   final SettableParser loopbackParser;
 
-  ParametersParser(
+  ArgumentsParser(
       {required this.parserContext,
       required this.parameters,
-      required this.loopbackParser})
-      : parameterParsers = parameters
-            .map((parameter) => parameterParser(
-                parserContext: parserContext,
-                parameter: parameter,
-                loopbackParser: loopbackParser,
-                withName: parameters.length > 1))
-            .toList();
+      required this.loopbackParser});
 
   @override
   Result<Map<String, Expression>> parseOn(Context context) {
-    var parameterMap = <String, Expression>{};
+    var arguments = <String, Expression>{};
     var current = context;
-    var unUsedParameterParsers = [...parameterParsers];
-    ParameterParser? parserWithSuccess;
-    bool firstParameter = true;
-    do {
-      parserWithSuccess = null;
+    var index = 0;
+    var seenNamed = false;
 
-      for (var parser in unUsedParameterParsers) {
-        if (parserWithSuccess == null) {
-          var result = parser.parseOn(current);
-          if (result is Success) {
-            parserWithSuccess = parser;
-            parameterMap.addEntries([result.value]);
-            current = result;
+    while (true) {
+      // Try if we are at the end
+      var endResult = _endOfArgumentsParser.parseOn(current);
+      if (endResult is Success) {
+        current = endResult;
+        break;
+      }
+
+      // Try to parse a comma if this is not the first argument
+      if (arguments.isNotEmpty) {
+        final commaResult = _commaParser.parseOn(current);
+        if (commaResult is Failure) return commaResult;
+        current = commaResult;
+      }
+
+      // If we've parsed all parameters, stop
+      if (index >= parameters.length) break;
+
+      // Try to parse a positional argument
+      final positionalParameter = parameters[index];
+      final positionalParser = positionalArgumentParser(
+        parserContext: parserContext,
+        positionalParameter: positionalParameter,
+        parameters: parameters,
+        loopbackParser: loopbackParser,
+      );
+      final positionalResult = positionalParser.parseOn(current);
+
+      if (positionalResult is Success) {
+        // If we've already seen a named argument, positional arguments are not allowed
+        if (seenNamed) {
+          return current
+              .failure('positional arguments must come before named arguments');
+        }
+        final entry = positionalResult.value;
+        if (arguments.containsKey(entry.key)) {
+          return current
+              .failure('parameter "${entry.key}" specified more than once');
+        }
+        arguments[entry.key] = entry.value;
+        current = positionalResult;
+        index++;
+        continue;
+      }
+
+      // Try to parse a remaining named arguments
+      var foundNamed = false;
+      var namedParameters = parameters.skip(index);
+      for (var parameter in namedParameters) {
+        final namedParser = namedArgumentParser(
+          parserContext: parserContext,
+          parameter: parameter,
+          loopbackParser: loopbackParser,
+        );
+        final namedResult = namedParser.parseOn(current);
+        if (namedResult is Success) {
+          foundNamed = true;
+          seenNamed = true;
+          final entry = namedResult.value;
+          if (arguments.containsKey(entry.key)) {
+            return current.failure(
+                'parameter "${entry.key}" was specified more than once');
           }
+          arguments[entry.key] = entry.value;
+          current = namedResult;
+          break;
         }
       }
-      if (parserWithSuccess != null) {
-        // remove parser for efficiency
-        unUsedParameterParsers.remove(parserWithSuccess);
-        if (firstParameter) {
-          firstParameter = false;
-          //add commaParsers before parameterParsers
-          var withCommaPrefixParsers = unUsedParameterParsers
-              .map((parser) => (_commaParser & parser)
-                  .map((values) => values[1] as MapEntry<String, Expression>))
-              .toList();
-          unUsedParameterParsers = withCommaPrefixParsers;
-        }
-      }
-    } while (parserWithSuccess != null && unUsedParameterParsers.isNotEmpty);
 
-    var result = _remainingParser.parseOn(current);
-    if (result is Success) {
-      var remainingText = result.value;
-      if (remainingText.isNotEmpty) {
-        return current
-            .failure('invalid function parameter syntax: $remainingText');
+      if (!foundNamed) {
+        break;
       }
-      current = result;
     }
 
-    var validationError =
-        _validateIfMandatoryParametersWhereFound(parameterMap, current);
+    // Check for remaining unexpected input
+    final remainingResult = _remainingParser.parseOn(current);
+    if (remainingResult is Success) {
+      final remainingText = remainingResult.value;
+      if (remainingText.isNotEmpty) {
+        return current.failure('invalid syntax in function argument');
+      }
+      current = remainingResult;
+    }
+
+    final validationError =
+        _validateIfMandatoryParametersWhereFound(arguments, current);
     if (validationError != null) {
       return current.failure(validationError);
     }
 
-    parameterMap.addAll(_missingDefaultValues(parameterMap));
+    arguments.addAll(_missingDefaultValues(parameters, arguments));
 
-    return current.success(parameterMap);
+    return current.success(arguments);
   }
 
   @override
-  ParametersParser copy() => ParametersParser(
+  ArgumentsParser copy() => ArgumentsParser(
       parserContext: parserContext,
       parameters: parameters,
       loopbackParser: loopbackParser);
 
   /// returns an validation error message or null when valid
   String? _validateIfMandatoryParametersWhereFound(
-      ParameterMap parameterMap, Context context) {
-    var missingMandatoryParameters = parameters.where((parameter) =>
-        parameter.presence.mandatory &&
-        !parameterMap.containsKey(parameter.name));
-    if (missingMandatoryParameters.isNotEmpty) {
-      if (missingMandatoryParameters.length == 1) {
-        return 'missing mandatory function parameter: ${missingMandatoryParameters.first.name}';
-      } else {
-        return 'missing mandatory function parameters: ${missingMandatoryParameters.map((e) => e.name).join(', ')}';
-      }
+      Arguments arguments, Context context) {
+    var missingMandatoryParameters = parameters
+        .where((p) => p.presence.mandatory && !arguments.containsKey(p.name));
+    if (missingMandatoryParameters.isEmpty) {
+      return null;
     }
-    return null;
+    if (missingMandatoryParameters.length == 1) {
+      return 'missing argument for parameter: ${missingMandatoryParameters.first.name}';
+    } else {
+      return 'missing arguments for parameters: ${missingMandatoryParameters.map((e) => e.name).join(', ')}';
+    }
   }
 
+  /// Adds missing default values in [namesAndValues]
   Map<String, Expression> _missingDefaultValues(
-      Map<String, Expression> namesAndValues) {
+      List<Parameter> parameters, Map<String, Expression> namesAndValues) {
     Map<String, Expression> missingDefaultValues = {};
 
     var optionalParametersWithDefaultValue = parameters
@@ -471,23 +503,36 @@ class ParametersParser extends Parser<Map<String, Expression>> {
   }
 }
 
-typedef ParameterParser = Parser<MapEntry<String, Expression>>;
+typedef ArgumentEntry = MapEntry<String, Expression>;
+typedef ArgumentEntryParser = Parser<ArgumentEntry>;
 
+/// Accepts a name=value expression and converts it to a [ArgumentEntry]
 /// Returns a parser that returns the value of an [ExpressionFunction] parameter
 /// It uses a loopback parser which is an [expressionParser] so that it can
 /// parse any known expression to a parameter value.
-/// The [loopbackParser] is a SettableParser because the [expressionParser]
-/// does not exist when this [parameterParser] is created.
-ParameterParser parameterParser({
+/// The [loopbackParser] is a [SettableParser] because the [expressionParser]
+/// does not exist when this [namedArgumentParser] is created.
+ArgumentEntryParser namedArgumentParser({
   required ParserContext parserContext,
   required Parameter parameter,
   required SettableParser loopbackParser,
-  required bool withName,
-}) {
-  if (withName) {
-    return (string(parameter.name).trim() & char('=').trim() & loopbackParser)
-        .map((values) => MapEntry(parameter.name, values[2]));
-  } else {
-    return loopbackParser.map((value) => MapEntry(parameter.name, value));
-  }
-}
+}) =>
+    (string(parameter.name).trim() & char('=').trim() & loopbackParser)
+        .map((values) => ArgumentEntry(parameter.name, values[2]));
+
+/// Accepts a value expression (not starting with name=) and converts it to a [ArgumentEntry]
+/// It uses a loopback parser which is an [expressionParser] so that it can
+/// parse any known expression to a parameter value.
+/// The [loopbackParser] is a [SettableParser] because the [expressionParser]
+/// does not exist when this [positionalArgumentParser] is created.
+ArgumentEntryParser positionalArgumentParser({
+  required ParserContext parserContext,
+  required positionalParameter,
+  required List<Parameter> parameters,
+  required SettableParser loopbackParser,
+}) =>
+    ([for (var p in parameters) (string(p.name).trim() & char('=').trim())]
+                .toChoiceParser()
+                .not() &
+            loopbackParser)
+        .map((values) => ArgumentEntry(positionalParameter.name, values[1]));
