@@ -1,6 +1,6 @@
 name: template_engine
 description: A Dart package to parse and render templates, using (nested) variables and custom tags.
-version: 1.5.0
+version: 1.5.1
 repository: https://github.com/domain-centric/template_engine
 
 environment:
