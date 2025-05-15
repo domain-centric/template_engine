@@ -1,7 +1,5 @@
 import 'package:collection/collection.dart';
-import 'package:petitparser/petitparser.dart';
 import 'package:template_engine/template_engine.dart';
-import 'package:change_case/change_case.dart';
 
 /// Functions that create documentation of the [TemplateEngine] configuration
 class DocumentationFunctions extends FunctionGroup {
@@ -238,51 +236,4 @@ String typeDescription<T>() {
     default:
       return T.toString();
   }
-}
-
-/// A parser that validates HTML element IDs according to common syntax rules:
-///
-/// - Must start with a letter (A-Z or a-z)
-/// - Can contain letters, digits, hyphens (-), underscores (_), and periods (.)
-/// - Must not contain spaces or special characters
-/// - Must be at least one character long
-class HtmlElementId {
-  final String id;
-
-  HtmlElementId.fromText(String text) : id = normalize(text);
-
-  /// Returns a parser that matches a valid HTML element ID.
-  static Parser<String> parser() {
-    final startChar = letter(); // A-Z or a-z
-    final validChar =
-        pattern('A-Za-z0-9-_.'); // Allowed characters after the first
-
-    return (startChar & validChar.star())
-        .flatten()
-        .trim()
-        .end(); // Ensures the entire input is consumed
-  }
-
-  /// Validates the input string as a valid HTML ID.
-  /// Throws an [ArgumentError] when it is invalid
-  static validate(String id) {
-    final result = parser().parse(id);
-    if (result is Failure) {
-      throw ArgumentError('"$id" is an invalid: ${result.message}', 'id');
-    }
-  }
-
-  /// Tries to normalize a text to an [HtmlElementId]
-  static String normalize(String input) {
-    var id = input
-        .trim()
-        .toParamCase()
-        .replaceAll(RegExp(r'\s+'), '-') // Replace spaces with hyphens
-        .replaceAll(RegExp(r'[^a-z0-9\-_.]'), ''); // Remove invalid characters
-    validate(id);
-    return id;
-  }
-
-  @override
-  String toString() => id;
 }

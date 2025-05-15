@@ -1,85 +1,65 @@
+import 'package:test/test.dart';
 import 'package:shouldly/shouldly.dart';
-import 'package:given_when_then_unit_test/given_when_then_unit_test.dart';
 import 'package:template_engine/template_engine.dart';
 
 void main() {
-  given('TemplateEngine', () {
-    var engine = TemplateEngine();
+  group('TemplateEngine', () {
+    final engine = TemplateEngine();
 
-    var helloNameWithInvalidEndBrace = 'Hello {{name}.';
-    // with single parse error
-    when("calling: await engine.parseText('$helloNameWithInvalidEndBrace')",
-        () {
-      var expectedError = 'Parse error in: \'Hello {{name}.\':\n'
-          '  1:7: Found tag start: {{, but it was not followed with a tag end: }}';
-      then('renderResult.errorMessage should be "$expectedError"', () async {
-        var parseResult = await engine.parseText(helloNameWithInvalidEndBrace);
-        var renderResult = await engine.render(parseResult, {'name': 'world'});
-        renderResult.errorMessage.should.be(expectedError);
-      });
-      var expectedText = 'Hello {{';
-      then('renderResult.text should be "$expectedText"', () async {
-        var parseResult = await engine.parseText(helloNameWithInvalidEndBrace);
-        var renderResult = await engine.render(parseResult, {'name': 'world'});
-        renderResult.text.should.be(expectedText);
-      });
+    test('should handle single parse error', () async {
+      final parseResult = await engine.parseText('Hello {{name}.');
+      final renderResult = await engine.render(parseResult, {'name': 'world'});
+
+      Should.satisfyAllConditions([
+        () => renderResult.errorMessage.should.be(
+              'Parse error in: \'Hello {{name}.\':\n'
+              '  1:7: Found tag start: {{, but it was not followed with a tag end: }}',
+            ),
+        () => renderResult.text.should.be('Hello {{'),
+      ]);
     });
 
-    var halloNameWithInvalidBraces = 'Hello }}name{{.';
-    // with multiple parse errors
-    when("calling: engine.parseText('$halloNameWithInvalidBraces')", () {
-      var expectedError = 'Parse errors in: \'Hello }}name{{.\':\n'
-          '  1:7: Found tag end: }}, but it was not preceded with a tag start: {{\n'
-          '  1:13: Found tag start: {{, but it was not followed with a tag end: }}';
-      then('renderResult.errorMessage should be "$expectedError"', () async {
-        var parseResult = await engine.parseText(halloNameWithInvalidBraces);
-        var renderResult = await engine.render(parseResult, {'name': 'world'});
-        renderResult.errorMessage.should.be(expectedError);
-      });
-      var expectedText = 'Hello }}name{{';
-      then('renderResult.text should be "$expectedText"', () async {
-        var parseResult = await engine.parseText(halloNameWithInvalidBraces);
-        var renderResult = await engine.render(parseResult, {'name': 'world'});
-        renderResult.text.should.be(expectedText);
-      });
+    test('should handle multiple parse errors', () async {
+      final parseResult = await engine.parseText('Hello }}name{{.');
+      final renderResult = await engine.render(parseResult, {'name': 'world'});
+
+      Should.satisfyAllConditions([
+        () => renderResult.errorMessage.should.be(
+              'Parse errors in: \'Hello }}name{{.\':\n'
+              '  1:7: Found tag end: }}, but it was not preceded with a tag start: {{\n'
+              '  1:13: Found tag start: {{, but it was not followed with a tag end: }}',
+            ),
+        () => renderResult.text.should.be('Hello }}name{{'),
+      ]);
     });
 
-    var helloName = 'Hello {{name}}.';
-    // with single render error
-    when("calling: await engine.parseText('$helloName')", () {
-      var expectedError = 'Render error in: \'Hello {{name}}.\':\n'
-          '  1:9: Variable does not exist: name';
-      then('renderResult.errorMessage should be "$expectedError"', () async {
-        var parseResult = await engine.parseText(helloName);
-        var renderResult = await engine.render(parseResult, {'age': '13'});
-        renderResult.errorMessage.should.be(expectedError);
-      });
-      var expectedText = 'Hello {{ERROR}}.';
-      then('renderResult.text should be "$expectedText"', () async {
-        var parseResult = await engine.parseText(helloName);
-        var renderResult = await engine.render(parseResult, {'age': '13'});
-        renderResult.text.should.be(expectedText);
-      });
+    test('should handle single render error', () async {
+      final parseResult = await engine.parseText('Hello {{name}}.');
+      final renderResult = await engine.render(parseResult, {'age': '13'});
+
+      Should.satisfyAllConditions([
+        () => renderResult.errorMessage.should.be(
+              'Render error in: \'Hello {{name}}.\':\n'
+              '  1:9: Variable does not exist: name',
+            ),
+        () => renderResult.text.should.be('Hello {{ERROR}}.'),
+      ]);
     });
 
-    var inputWithTwoVariables = 'Hello {{name}}. Welcome in {{location}}.';
-    // with multiple render errors
-    when("await engine.parseText('$inputWithTwoVariables')", () {
-      var expectedError =
-          'Render errors in: \'Hello {{name}}. Welcome in {{location}}.\':\n'
-          '  1:9: Variable does not exist: name\n'
-          '  1:30: Variable does not exist: location';
-      then('renderResult.errorMessage should be "$expectedError"', () async {
-        var parseResult = await engine.parseText(inputWithTwoVariables);
-        var renderResult = await engine.render(parseResult, {'age': '13'});
-        renderResult.errorMessage.should.be(expectedError);
-      });
-      var expectedText = 'Hello {{ERROR}}. Welcome in {{ERROR}}.';
-      then('renderResult.text should be "$expectedText"', () async {
-        var parseResult = await engine.parseText(inputWithTwoVariables);
-        var renderResult = await engine.render(parseResult, {'age': '13'});
-        renderResult.text.should.be(expectedText);
-      });
+    test('should handle multiple render errors', () async {
+      final parseResult =
+          await engine.parseText('Hello {{name}}. Welcome in {{location}}.');
+      final renderResult = await engine.render(parseResult, {'age': '13'});
+
+      Should.satisfyAllConditions([
+        () => renderResult.errorMessage.should.be(
+              'Render errors in: \'Hello {{name}}. Welcome in {{location}}.\':\n'
+              '  1:9: Variable does not exist: name\n'
+              '  1:30: Variable does not exist: location',
+            ),
+        () => renderResult.text.should
+            .be('Hello {{ERROR}}. Welcome in {{ERROR}}.'),
+      ]);
     });
   });
 }
