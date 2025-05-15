@@ -1,7 +1,6 @@
 // ignore_for_file: unintended_html_in_doc_comment
 
 import 'package:petitparser/petitparser.dart';
-import 'package:template_engine/src/parser/tag/expression/identifier.dart';
 import 'package:template_engine/template_engine.dart';
 
 /// A [variable](https://en.wikipedia.org/wiki/Variable_(computer_science)) is

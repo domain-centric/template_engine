@@ -1,6 +1,5 @@
 import 'package:collection/collection.dart';
 import 'package:petitparser/petitparser.dart';
-import 'package:template_engine/src/parser/override_message_parser.dart';
 import 'package:template_engine/template_engine.dart';
 
 /// A [data type](https://en.wikipedia.org/wiki/Data_type) defines what the
