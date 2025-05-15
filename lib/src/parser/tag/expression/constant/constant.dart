@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:collection/collection.dart';
 import 'package:petitparser/petitparser.dart';
+import 'package:template_engine/src/parser/tag/expression/identifier.dart';
 import 'package:template_engine/template_engine.dart';
 
 /// A [Constant] is a value that does not change value over time.
@@ -14,15 +15,19 @@ import 'package:template_engine/template_engine.dart';
 /// See [Example](https://github.com/domain-centric/template_engine/blob/main/test/src/parser/tag/expression/function/custom_function_test.dart).
 
 class Constant<T> implements DocumentationFactory, ExampleFactory {
-  Constant(
-      {required this.name,
-      required this.description,
-      this.codeExample,
-      required this.value});
+  /// See [IdentifierName]
   final String name;
   final String description;
   final ProjectFilePath? codeExample;
   final T value;
+
+  Constant(
+      {required this.name,
+      required this.description,
+      this.codeExample,
+      required this.value}) {
+    IdentifierName.validate(name);
+  }
 
   @override
   List<String> createMarkdownDocumentation(
