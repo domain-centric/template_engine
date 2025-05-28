@@ -1,0 +1,3 @@
+![]({{gitHubWikiUri('/template_engine.png')}})
+
+{{importDartDoc('lib/src/template_engine.dart#TemplateEngine')}}

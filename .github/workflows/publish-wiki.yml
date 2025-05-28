@@ -1,0 +1,43 @@
+name: Publish Wiki
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - doc/wiki/**
+      - .github/workflows/publish-wiki.yml
+
+permissions:
+  contents: write
+
+jobs:
+  publish-wiki:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout main repository
+        uses: actions/checkout@v3
+      - name: Set up Git
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+      - name: Clone the wiki repository
+        run: |
+          git clone "https://github.com/domain-centric/template_engine.wiki.git" /tmp/wiki
+      - name: Remove existing files in wiki
+        run: |
+          rm -rf /tmp/wiki/*
+      - name: Copy wiki files
+        run: |
+          cp -r doc/wiki/* /tmp/wiki/
+      - name: Commit and push changes to wiki
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          cd /tmp/wiki
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git remote set-url origin https://x-access-token:${GITHUB_TOKEN}@github.com/${{ github.repository }}.wiki.git
+          git add .
+          git commit -m "Update wiki from main repo [skip ci]" || echo "No changes to commit"
+          git push origin HEAD:master
+

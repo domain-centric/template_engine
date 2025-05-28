@@ -1,0 +1,18 @@
+ An operator behaves generally like functions,
+  but differs syntactically or semantically.
+
+ Common simple examples include arithmetic (e.g. addition with +) and
+ logical operations (e.g. &).
+
+ An operator can be used anywhere in an tag expression
+ wherever that particular Operator should be performed.
+
+ The TemplateEngine supports several standard operators.
+
+ ## Custom Operators
+ You can adopt existing operators or add your own custom operators by
+ manipulating the TemplateEngine.operatorGroups field.
+ See [custom_operator_test.dart](https://github.com/domain-centric/template_engine/blob/main/test/src/parser/tag/expression/operator/custom_operator_test.dart).
+
+## Available Operators
+{{operatorDocumentation(2)}}

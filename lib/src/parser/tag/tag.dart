@@ -6,13 +6,13 @@ import 'package:template_engine/template_engine.dart';
 /// [TemplateEngine] with other information.
 ///
 /// A [Tag]:
-/// * Starts with some bracket and/or character combination, e.g.: {{
+/// * Starts with some bracket and/or character combination, e.g.: \{{
 /// * Followed by some contents
-/// * Ends with some closing bracket and/or character combination, e.g.: }}
+/// * Ends with some closing bracket and/or character combination, e.g.: \}}
 ///
-/// A tag example: {{customer.name}}
+/// A tag example: \{{customer.name\}}
 ///
-/// By default the TemplateEngine [Tag]s start with {{ and end with }} brackets,
+/// By default the TemplateEngine [Tag]s start with \{{ and end with \}} brackets,
 /// just like the popular template engines
 /// [Mustache](https://mustache.github.io/) and
 /// [Handlebars](https://handlebarsjs.com).
@@ -27,7 +27,6 @@ import 'package:template_engine/template_engine.dart';
 ///
 /// The [TemplateEngine] comes with [DefaultTags]. You can replace or add your
 /// own [Tag]s by manipulating the the [TemplateEngine.tags] field.
-
 abstract class Tag<T extends Object>
     implements DocumentationFactory, ExampleFactory {
   final String name;

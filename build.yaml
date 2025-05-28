@@ -1,0 +1,12 @@
+targets:
+  $default:
+    sources:
+    - doc/**
+    - lib/**
+    - bin/**
+    - test/**
+    - pubspec.*
+    - $package$
+    builders:
+      documentation_builder|documentation_builder:
+        enabled: True

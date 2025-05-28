@@ -1,19 +1,33 @@
 import 'package:petitparser/petitparser.dart';
 import 'package:template_engine/template_engine.dart';
 
-/// The [TemplateEngine] does the following:
+/// The [TemplateEngine] can:
 /// * Parse the [Template] text into a
-///   [parser tree](https://en.wikipedia.org/wiki/Parse_tree), see [Renderer]
+///   [parser tree](https://en.wikipedia.org/wiki/Parse_tree)
 /// * Render the [parser tree](https://en.wikipedia.org/wiki/Parse_tree)
 ///   to a output such as:
 ///   * [Html](https://en.wikipedia.org/wiki/HTML)
 ///   * [Programming code](https://en.wikipedia.org/wiki/Programming_language)
 ///   * [Markdown](https://en.wikipedia.org/wiki/Markdown)
 ///   * [Xml](https://en.wikipedia.org/wiki/XML),
-///     [Json](https://en.wikipedia.org/wiki/JSON),
-///     [Yaml](https://en.wikipedia.org/wiki/YAML)
+///   * [Json](https://en.wikipedia.org/wiki/JSON),
+///   * [Yaml](https://en.wikipedia.org/wiki/YAML)
 ///   * Etc...
-
+///
+/// # Features
+/// * Template expressions that can contain (combinations of):
+///   * Data types
+///   * Constants
+///   * Variables
+///   * Operators
+///   * Functions
+///     e.g. functions to import:
+///     * Pure files (to be imported as is)
+///     * Template files (to be parsed and rendered)
+///     * XML files (to be used as a data source)
+///     * JSON files (to be used as a data source)
+///     * YAML files (to be used as a data source)
+/// * All of the above can be customized or you could add your own.
 class TemplateEngine {
   /// If null it will use [StandardTagParsers]
   final List<Tag> tags;

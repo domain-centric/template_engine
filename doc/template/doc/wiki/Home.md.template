@@ -1,0 +1,4 @@
+{{allPubGitHubBadges()}}
+
+**Table of contents**
+{{tableOfContents(path='doc/template/doc/wiki', gitHubWiki=true)}}
