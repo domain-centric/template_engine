@@ -1,4 +1,4 @@
-[//]: # (This file was generated from: doc/template/example/example.md.template using the documentation_builder package)
+[//]: # (This file was generated from: doc/template/doc/wiki/10-Examples.md.template using the documentation_builder package)
 # TemplateEngine usage
 * [template_engine_text_test.dart](https://raw.githubusercontent.com/domain-centric/template_engine/refs/heads/main/test/src/template_engine_text_test.dart)
 * [template_engine_template_test.dart](https://raw.githubusercontent.com/domain-centric/template_engine/refs/heads/main/test/src/template_engine_template_test.dart)
@@ -104,3 +104,4 @@ The documentation of the [template_engine](https://pub.dev/packages/template_eng
 ### Wiki pages
 * [Template examples](https://github.com/domain-centric/template_engine/blob/main/doc/template/doc/wiki) (click on the raw button to see the generated markdown)
 * [Rendered examples](https://github.com/domain-centric/template_engine/wiki)
+

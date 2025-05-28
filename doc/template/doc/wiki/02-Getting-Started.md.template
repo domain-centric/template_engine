@@ -1,5 +1,5 @@
 To get started:
-* {{gitHubWikiLink(title='Read the wiki documentation')}}
-* {{gitHubWikiLink(title='See the examples', suffix='/9 Examples')}}
-* {{pubDevInstallLink(title='Install the template_engine package in your project')}}
+* {{gitHubWikiLink(text='Read the wiki documentation')}}
+* {{gitHubWikiLink(text='See the examples', suffix='/10 Examples')}}
+* {{pubDevInstallLink(text='Install the template_engine package in your project')}}
 * Start coding

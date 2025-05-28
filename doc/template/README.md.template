@@ -3,7 +3,7 @@
 ![]({{gitHubWikiUri('/template_engine.png')}})
 
 # Features
-{{importTemplate('doc/template/doc/wiki/01-Features.md.template')}}
+{{importTemplate('doc/template/doc/wiki/01-Template-Engine.md.template')}}
 
 # Getting Started
 {{importTemplate('doc/template/doc/wiki/02-Getting-Started.md.template')}}
