@@ -1,7 +1,7 @@
 [//]: # (This file was generated from: doc/template/doc/wiki/01-Template-Engine.md.template using the documentation_builder package)
 ![](https://github.com/domain-centric/template_engine/wiki/template_engine.png)
 
-The [TemplateEngine](https://github.com/domain-centric/template_engine/blob/451e02fd54473c314e038a56b1be06088d141938/lib/src/template_engine.dart#L4) can:
+The [TemplateEngine](https://github.com/domain-centric/template_engine/blob/eff1f977ab2f22184c35d1c5829a956d27b80064/lib/src/template_engine.dart#L4) can:
 * Parse the [Template](https://pub.dev/packages/Template) text into a
   [parser tree](https://en.wikipedia.org/wiki/Parse_tree)
 * Render the [parser tree](https://en.wikipedia.org/wiki/Parse_tree)

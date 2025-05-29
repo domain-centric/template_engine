@@ -1,2 +1,2 @@
-{{importTemplate('doc/template/common/generated_comment.template')}}
+{{importTemplate('test/src/parser/tag/expression/function/import/to_import.md.template')}}
 Hello World.

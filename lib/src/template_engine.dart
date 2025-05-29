@@ -70,7 +70,7 @@ class TemplateEngine {
   })  : dataTypes = dataTypes ?? DefaultDataTypes(),
         constants = constants ?? DefaultConstants(),
         functionGroups = functionGroups ?? DefaultFunctionGroups(),
-        operatorGroups = operatorGroups ?? StandardOperators(),
+        operatorGroups = operatorGroups ?? DefaultOperatorGroups(),
         tags = tags ?? DefaultTags() {
     validateNamesAreUnique();
   }

@@ -22,7 +22,7 @@ class ImportTemplate extends ExpressionFunction<IntermediateRenderResult> {
             name: 'importTemplate',
             description: 'Imports, parses and renders a template file',
             exampleExpression:
-                "{{importTemplate('doc/template/common/generated_comment.template')}}",
+                "{{importTemplate('test/src/parser/tag/expression/function/import/to_import.md.template')}}",
             exampleCode: ProjectFilePath(
                 'test/src/parser/tag/expression/function/import/'
                 'import_template_test.dart'),

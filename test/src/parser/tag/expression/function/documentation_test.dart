@@ -42,14 +42,9 @@ void main() {
 
       Should.satisfyAllConditions([
         () => renderResult.errorMessage.should.beNullOrEmpty(),
-        () => renderResult.text.should.be(
-              '## Boolean Data Type\n'
-              '<table>\n'
-              '<tr><td>description:</td><td>A form of data with only two possible values: true or false</td></tr>\n'
-              '<tr><td>syntax:</td><td>A boolean is declared with the word true or false. The letters are case insensitive.</td></tr>\n'
-              '<tr><td>example:</td><td><a href="https://github.com/domain-centric/template_engine/blob/main/test/src/parser/tag/expression/data_type/bool_test.dart">bool_test.dart</a></td></tr>\n'
-              '</table>\n',
-            ),
+        () => renderResult.text.should.contain('## Boolean Data Type\n'),
+        () => renderResult.text.should.contain('## String Data Type\n'),
+        () => renderResult.text.should.contain('## Number Data Type\n'),
       ]);
     });
 

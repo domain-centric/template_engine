@@ -328,3 +328,15 @@ class OperatorGroup extends DelegatingList<Operator>
     }
   }
 }
+
+class DefaultOperatorGroups extends DelegatingList<OperatorGroup> {
+  DefaultOperatorGroups()
+      : super([
+          Parentheses(),
+          Prefixes(),
+          Multiplication(),
+          Additions(),
+          Comparisons(),
+          Assignments(),
+        ]);
+}

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:collection/collection.dart';
 import 'package:template_engine/template_engine.dart';
 
@@ -52,18 +54,33 @@ abstract class DocumentationFunction extends ExpressionFunction<String> {
   }
 }
 
+// Checks if the current directory is named 'template_engine'
+// This uses the current working directory from Dart:io
+// and compares the last segment to 'template_engine'
+bool get isTemplateEngineProject {
+  try {
+    return Directory.current.path.split(Platform.pathSeparator).last ==
+        'template_engine';
+  } catch (_) {
+    // If Directory.current is not available (e.g., web), return false
+    return false;
+  }
+}
+
 class TagDocumentation extends DocumentationFunction {
   TagDocumentation()
       : super(
             name: 'tagDocumentation',
             description: 'Generates markdown documentation of all the tags '
                 'within a TemplateEngine',
-            documentationFunction: (renderContext, titleLevel) => renderContext
-                .engine.tags
-                .map((tag) =>
-                    tag.createMarkdownDocumentation(renderContext, titleLevel))
-                .flattened
-                .toList());
+            documentationFunction: (renderContext, titleLevel) =>
+                (isTemplateEngineProject
+                        ? DefaultTags()
+                        : renderContext.engine.tags)
+                    .map((tag) => tag.createMarkdownDocumentation(
+                        renderContext, titleLevel))
+                    .flattened
+                    .toList());
 }
 
 class DataTypeDocumentation extends DocumentationFunction {
@@ -73,12 +90,14 @@ class DataTypeDocumentation extends DocumentationFunction {
             description: 'Generates markdown documentation of all the data '
                 'types that can be used within a ExpressionTag of a '
                 'TemplateEngine',
-            documentationFunction: (renderContext, titleLevel) => renderContext
-                .engine.dataTypes
-                .map((dataType) => dataType.createMarkdownDocumentation(
-                    renderContext, titleLevel))
-                .flattened
-                .toList());
+            documentationFunction: (renderContext, titleLevel) =>
+                (isTemplateEngineProject
+                        ? DefaultDataTypes()
+                        : renderContext.engine.dataTypes)
+                    .map((dataType) => dataType.createMarkdownDocumentation(
+                        renderContext, titleLevel))
+                    .flattened
+                    .toList());
 }
 
 class ConstantDocumentation extends DocumentationFunction {
@@ -88,12 +107,14 @@ class ConstantDocumentation extends DocumentationFunction {
             description:
                 'Generates markdown documentation of all the constants '
                 'that can be used within a ExpressionTag of a TemplateEngine',
-            documentationFunction: (renderContext, titleLevel) => renderContext
-                .engine.constants
-                .map((constant) => constant.createMarkdownDocumentation(
-                    renderContext, titleLevel))
-                .flattened
-                .toList());
+            documentationFunction: (renderContext, titleLevel) =>
+                (isTemplateEngineProject
+                        ? DefaultConstants()
+                        : renderContext.engine.constants)
+                    .map((constant) => constant.createMarkdownDocumentation(
+                        renderContext, titleLevel))
+                    .flattened
+                    .toList());
 }
 
 class FunctionDocumentation extends DocumentationFunction {
@@ -103,12 +124,14 @@ class FunctionDocumentation extends DocumentationFunction {
             description:
                 'Generates markdown documentation of all the functions '
                 'that can be used within a ExpressionTag of a TemplateEngine',
-            documentationFunction: (renderContext, titleLevel) => renderContext
-                .engine.functionGroups
-                .map((functionGroup) => functionGroup
-                    .createMarkdownDocumentation(renderContext, titleLevel))
-                .flattened
-                .toList());
+            documentationFunction: (renderContext, titleLevel) =>
+                (isTemplateEngineProject
+                        ? DefaultFunctionGroups()
+                        : renderContext.engine.functionGroups)
+                    .map((functionGroup) => functionGroup
+                        .createMarkdownDocumentation(renderContext, titleLevel))
+                    .flattened
+                    .toList());
 }
 
 class OperatorDocumentation extends DocumentationFunction {
@@ -118,12 +141,14 @@ class OperatorDocumentation extends DocumentationFunction {
             description:
                 'Generates markdown documentation of all the operators '
                 'that can be used within a ExpressionTag of a TemplateEngine',
-            documentationFunction: (renderContext, titleLevel) => renderContext
-                .engine.operatorGroups
-                .map((operatorGroup) => operatorGroup
-                    .createMarkdownDocumentation(renderContext, titleLevel))
-                .flattened
-                .toList());
+            documentationFunction: (renderContext, titleLevel) =>
+                (isTemplateEngineProject
+                        ? DefaultOperatorGroups()
+                        : renderContext.engine.operatorGroups)
+                    .map((operatorGroup) => operatorGroup
+                        .createMarkdownDocumentation(renderContext, titleLevel))
+                    .flattened
+                    .toList());
 }
 
 class ExampleDocumentation extends DocumentationFunction {
@@ -133,12 +158,14 @@ class ExampleDocumentation extends DocumentationFunction {
             description:
                 'Generates markdown documentation of all the examples. '
                 'This could be used to generate example.md file.',
-            documentationFunction: (renderContext, titleLevel) => renderContext
-                .engine.tags
-                .map((tag) =>
-                    tag.createMarkdownExamples(renderContext, titleLevel))
-                .flattened
-                .toList());
+            documentationFunction: (renderContext, titleLevel) =>
+                (isTemplateEngineProject
+                        ? DefaultTags()
+                        : renderContext.engine.tags)
+                    .map((tag) =>
+                        tag.createMarkdownExamples(renderContext, titleLevel))
+                    .flattened
+                    .toList());
 }
 
 abstract class DocumentationFactory {

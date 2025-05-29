@@ -1,5 +1,4 @@
 [//]: # (This file was generated from: doc/template/doc/wiki/05-Data-types-in-tag-expressions.md.template using the documentation_builder package)
-# Data types in tag expressions
 [//]: # (TODO: This text should be imported from the dart doc of the DataType class using document_generator package)
 A [data type](https://en.wikipedia.org/wiki/Data_type) defines what the
 possible values an expression, such as a variable, operator
