@@ -21,6 +21,7 @@ It is recommended to use a start and end combination that is not used
 elsewhere in your templates, e.g.: Do not use < > as Tag start and end
 if your template contains HTML or XML
 
+## Custom tags  
 The [template_engine](https://pub.dev/packages/template_engine) comes with DefaultTags. You can replace or add your
 own Tags by manipulating the the TemplateEngine.tags field.
 

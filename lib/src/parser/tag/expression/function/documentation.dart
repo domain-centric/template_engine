@@ -102,6 +102,7 @@ class TagDocumentation extends DocumentationFunction {
                   'elsewhere in your templates, e.g.: Do not use < > as Tag start and end',
                   'if your template contains HTML or XML',
                   '',
+                  _title(titleLevel, 'Custom tags'),
                   'The $_templateEngineHyperLink comes with DefaultTags. '
                       'You can replace or add your',
                   'own Tags by manipulating the the TemplateEngine.tags field.',
