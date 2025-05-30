@@ -1,19 +1,18 @@
 [//]: # (This file was generated from: doc/template/doc/wiki/08-Functions-in-tag-expressions.md.template using the documentation_builder package)
-[//]: # (TODO: This text should be imported from the dart doc of the ExpressionFunction class using document_generator package)
-A function is a piece of dart code that performs a specific task. 
+A [function](https://en.wikipedia.org/wiki/Function_(computer_programming)) is a piece of dart code that performs a specific task.
 So a function can basically do anything that dart code can do.
- 
+
 A function can be used anywhere in an tag expression. Wherever that particular task should be performed.
 
 An example of a function call: cos(pi)
 Should result in: -1
 
-[//]: # (TODO: This text should be imported from the dart doc of the Identifier class using document_generator package)
+## Parameters and Arguments  
 **Function & Parameter & argument names:**
-* are [case sensitive](https://en.wikipedia.org/wiki/Case_sensitivity) 
+* are [case sensitive](https://en.wikipedia.org/wiki/Case_sensitivity)
 * must start with a lower case letter, optionally followed by (lower or upper case) letters and or digits.
 * conventions: use [lowerCamelCase](https://en.wikipedia.org/wiki/Camel_case)
-* must be unique and does not match a other [Tag] syntax
+* must be unique and does not match a other tag syntax
 
 **Parameters vs Arguments**
 * Parameters are the names used in the function definition.
@@ -24,7 +23,6 @@ Should result in: -1
 * Parameters are defined as either mandatory or optional
 * Optional parameters can have a default value
 
-[//]: # (TODO: This text should be imported from the dart doc of the ArgumentParser class using document_generator package)
 **Arguments:**
 * Multiple arguments are separated with a comma, e.g. single argument: `cos(pi)` multiple arguments: `volume(10,20,30)`
 * There are different types of arguments
@@ -37,15 +35,14 @@ Should result in: -1
 **Argument values:**
 * must match the expected parameter type. e.g. `area(length='hello', width='world')` will result in a failure
 * may be a tag expression such as a variable, constant, operation, function, or combination. e.g. `cos(2*pi)`
- 
-## Custom Functions
-You can use prepackaged [template_engine] functions or add your own custom functions by manipulating the TemplateEngine.functionGroups field.
-[//]: # (TODO: replace link with function)
-See [Example](https://github.com/domain-centric/template_engine/blob/main/test/src/parser/tag/expression/function/custom_function_test.dart). 
 
-## Available Functions
-## Math Functions
-### exp Function
+## Custom Functions  
+You can use prepackaged [template_engine] functions or add your own custom functions by manipulating the TemplateEngine.functionGroups field.  
+See [Example](https://github.com/domain-centric/template_engine/blob/main/test/src/parser/tag/expression/function/custom_function_test.dart).
+
+## Available Functions  
+### Math Functions
+#### exp Function
 <table>
 <tr><td>description:</td><td colspan="4">Returns the natural exponent e, to the power of the value</td></tr>
 <tr><td>return type:</td><td colspan="4">number</td></tr>
@@ -54,7 +51,7 @@ See [Example](https://github.com/domain-centric/template_engine/blob/main/test/s
 <tr><td>parameter:</td><td>value</td><td>number</td><td colspan="2">mandatory</td></tr>
 </table>
 
-### log Function
+#### log Function
 <table>
 <tr><td>description:</td><td colspan="4">Returns the natural logarithm of the value</td></tr>
 <tr><td>return type:</td><td colspan="4">number</td></tr>
@@ -63,7 +60,7 @@ See [Example](https://github.com/domain-centric/template_engine/blob/main/test/s
 <tr><td>parameter:</td><td>value</td><td>number</td><td colspan="2">mandatory</td></tr>
 </table>
 
-### sin Function
+#### sin Function
 <table>
 <tr><td>description:</td><td colspan="4">Returns the sine of the radians</td></tr>
 <tr><td>return type:</td><td colspan="4">number</td></tr>
@@ -72,7 +69,7 @@ See [Example](https://github.com/domain-centric/template_engine/blob/main/test/s
 <tr><td>parameter:</td><td>radians</td><td>number</td><td colspan="2">mandatory</td></tr>
 </table>
 
-### asin Function
+#### asin Function
 <table>
 <tr><td>description:</td><td colspan="4">Returns the values arc sine in radians</td></tr>
 <tr><td>return type:</td><td colspan="4">number</td></tr>
@@ -81,7 +78,7 @@ See [Example](https://github.com/domain-centric/template_engine/blob/main/test/s
 <tr><td>parameter:</td><td>value</td><td>number</td><td colspan="2">mandatory</td></tr>
 </table>
 
-### cos Function
+#### cos Function
 <table>
 <tr><td>description:</td><td colspan="4">Returns the cosine of the radians</td></tr>
 <tr><td>return type:</td><td colspan="4">number</td></tr>
@@ -90,7 +87,7 @@ See [Example](https://github.com/domain-centric/template_engine/blob/main/test/s
 <tr><td>parameter:</td><td>radians</td><td>number</td><td colspan="2">mandatory</td></tr>
 </table>
 
-### acos Function
+#### acos Function
 <table>
 <tr><td>description:</td><td colspan="4">Returns the values arc cosine in radians</td></tr>
 <tr><td>return type:</td><td colspan="4">number</td></tr>
@@ -99,7 +96,7 @@ See [Example](https://github.com/domain-centric/template_engine/blob/main/test/s
 <tr><td>parameter:</td><td>value</td><td>number</td><td colspan="2">mandatory</td></tr>
 </table>
 
-### tan Function
+#### tan Function
 <table>
 <tr><td>description:</td><td colspan="4">Returns the the tangent of the radians</td></tr>
 <tr><td>return type:</td><td colspan="4">number</td></tr>
@@ -108,7 +105,7 @@ See [Example](https://github.com/domain-centric/template_engine/blob/main/test/s
 <tr><td>parameter:</td><td>radians</td><td>number</td><td colspan="2">mandatory</td></tr>
 </table>
 
-### atan Function
+#### atan Function
 <table>
 <tr><td>description:</td><td colspan="4">Returns the values arc tangent in radians</td></tr>
 <tr><td>return type:</td><td colspan="4">number</td></tr>
@@ -117,7 +114,7 @@ See [Example](https://github.com/domain-centric/template_engine/blob/main/test/s
 <tr><td>parameter:</td><td>value</td><td>number</td><td colspan="2">mandatory</td></tr>
 </table>
 
-### sqrt Function
+#### sqrt Function
 <table>
 <tr><td>description:</td><td colspan="4">Returns the positive square root of the value.</td></tr>
 <tr><td>return type:</td><td colspan="4">number</td></tr>
@@ -126,7 +123,7 @@ See [Example](https://github.com/domain-centric/template_engine/blob/main/test/s
 <tr><td>parameter:</td><td>value</td><td>number</td><td colspan="2">mandatory</td></tr>
 </table>
 
-### round Function
+#### round Function
 <table>
 <tr><td>description:</td><td colspan="4">Returns the a rounded number.</td></tr>
 <tr><td>return type:</td><td colspan="4">number</td></tr>
@@ -135,8 +132,8 @@ See [Example](https://github.com/domain-centric/template_engine/blob/main/test/s
 <tr><td>parameter:</td><td>value</td><td>number</td><td colspan="2">mandatory</td></tr>
 </table>
 
-## String Functions
-### length Function
+### String Functions
+#### length Function
 <table>
 <tr><td>description:</td><td colspan="4">Returns the length of a string</td></tr>
 <tr><td>return type:</td><td colspan="4">number</td></tr>
@@ -145,8 +142,8 @@ See [Example](https://github.com/domain-centric/template_engine/blob/main/test/s
 <tr><td>parameter:</td><td>string</td><td>String</td><td colspan="2">mandatory</td></tr>
 </table>
 
-## Documentation Functions
-### tagDocumentation Function
+### Documentation Functions
+#### tagDocumentation Function
 <table>
 <tr><td>description:</td><td colspan="4">Generates markdown documentation of all the tags within a TemplateEngine</td></tr>
 <tr><td>return type:</td><td colspan="4">String</td></tr>
@@ -154,7 +151,7 @@ See [Example](https://github.com/domain-centric/template_engine/blob/main/test/s
 <tr><td>parameter:</td><td>titleLevel</td><td>number</td><td>optional (default=1)</td><td>The level of the tag title</td></tr>
 </table>
 
-### dataTypeDocumentation Function
+#### dataTypeDocumentation Function
 <table>
 <tr><td>description:</td><td colspan="4">Generates markdown documentation of all the data types that can be used within a ExpressionTag of a TemplateEngine</td></tr>
 <tr><td>return type:</td><td colspan="4">String</td></tr>
@@ -162,7 +159,7 @@ See [Example](https://github.com/domain-centric/template_engine/blob/main/test/s
 <tr><td>parameter:</td><td>titleLevel</td><td>number</td><td>optional (default=1)</td><td>The level of the tag title</td></tr>
 </table>
 
-### constantDocumentation Function
+#### constantDocumentation Function
 <table>
 <tr><td>description:</td><td colspan="4">Generates markdown documentation of all the constants that can be used within a ExpressionTag of a TemplateEngine</td></tr>
 <tr><td>return type:</td><td colspan="4">String</td></tr>
@@ -170,7 +167,15 @@ See [Example](https://github.com/domain-centric/template_engine/blob/main/test/s
 <tr><td>parameter:</td><td>titleLevel</td><td>number</td><td>optional (default=1)</td><td>The level of the tag title</td></tr>
 </table>
 
-### functionDocumentation Function
+#### variableDocumentation Function
+<table>
+<tr><td>description:</td><td colspan="4">Generates markdown documentation of variables that can be used within a ExpressionTag of a TemplateEngine</td></tr>
+<tr><td>return type:</td><td colspan="4">String</td></tr>
+<tr><td>expression example:</td><td colspan="4">{{ variableDocumentation() }}</td></tr>
+<tr><td>parameter:</td><td>titleLevel</td><td>number</td><td>optional (default=1)</td><td>The level of the tag title</td></tr>
+</table>
+
+#### functionDocumentation Function
 <table>
 <tr><td>description:</td><td colspan="4">Generates markdown documentation of all the functions that can be used within a ExpressionTag of a TemplateEngine</td></tr>
 <tr><td>return type:</td><td colspan="4">String</td></tr>
@@ -178,7 +183,7 @@ See [Example](https://github.com/domain-centric/template_engine/blob/main/test/s
 <tr><td>parameter:</td><td>titleLevel</td><td>number</td><td>optional (default=1)</td><td>The level of the tag title</td></tr>
 </table>
 
-### operatorDocumentation Function
+#### operatorDocumentation Function
 <table>
 <tr><td>description:</td><td colspan="4">Generates markdown documentation of all the operators that can be used within a ExpressionTag of a TemplateEngine</td></tr>
 <tr><td>return type:</td><td colspan="4">String</td></tr>
@@ -186,7 +191,7 @@ See [Example](https://github.com/domain-centric/template_engine/blob/main/test/s
 <tr><td>parameter:</td><td>titleLevel</td><td>number</td><td>optional (default=1)</td><td>The level of the tag title</td></tr>
 </table>
 
-### exampleDocumentation Function
+#### exampleDocumentation Function
 <table>
 <tr><td>description:</td><td colspan="4">Generates markdown documentation of all the examples. This could be used to generate example.md file.</td></tr>
 <tr><td>return type:</td><td colspan="4">String</td></tr>
@@ -194,8 +199,8 @@ See [Example](https://github.com/domain-centric/template_engine/blob/main/test/s
 <tr><td>parameter:</td><td>titleLevel</td><td>number</td><td>optional (default=1)</td><td>The level of the tag title</td></tr>
 </table>
 
-## Path Functions
-### templateSource Function
+### Path Functions
+#### templateSource Function
 <table>
 <tr><td>description:</td><td colspan="4">Gives the relative path of the current template</td></tr>
 <tr><td>return type:</td><td colspan="4">String</td></tr>
@@ -203,8 +208,8 @@ See [Example](https://github.com/domain-centric/template_engine/blob/main/test/s
 <tr><td>code example:</td><td colspan="4"><a href="https://github.com/domain-centric/template_engine/blob/main/test/src/parser/tag/expression/function/template/template_test.dart">template_test.dart</a></td></tr>
 </table>
 
-## Import Functions
-### importTemplate Function
+### Import Functions
+#### importTemplate Function
 <table>
 <tr><td>description:</td><td colspan="4">Imports, parses and renders a template file</td></tr>
 <tr><td>return type:</td><td colspan="4">IntermediateRenderResult</td></tr>
@@ -213,7 +218,7 @@ See [Example](https://github.com/domain-centric/template_engine/blob/main/test/s
 <tr><td>parameter:</td><td>source</td><td>String</td><td>mandatory</td><td>The project path of the template file</td></tr>
 </table>
 
-### importPure Function
+#### importPure Function
 <table>
 <tr><td>description:</td><td colspan="4">Imports a file as is (without parsing and rendering)</td></tr>
 <tr><td>return type:</td><td colspan="4">String</td></tr>
@@ -222,7 +227,7 @@ See [Example](https://github.com/domain-centric/template_engine/blob/main/test/s
 <tr><td>parameter:</td><td>source</td><td>String</td><td>mandatory</td><td>The project path of the file. This path can be a absolute or relative file path or URI.</td></tr>
 </table>
 
-### importJson Function
+#### importJson Function
 <table>
 <tr><td>description:</td><td colspan="4">Imports a JSON file and decode it to a Map<String, dynamic>, which could be assigned it to a variable.</td></tr>
 <tr><td>return type:</td><td colspan="4">Map<String, dynamic></td></tr>
@@ -231,7 +236,7 @@ See [Example](https://github.com/domain-centric/template_engine/blob/main/test/s
 <tr><td>parameter:</td><td>source</td><td>String</td><td>mandatory</td><td>The project path of the JSON file. This path can be a absolute or relative file path or URI.</td></tr>
 </table>
 
-### importXml Function
+#### importXml Function
 <table>
 <tr><td>description:</td><td colspan="4">Imports a XML file and decode it to a Map<String, dynamic>, which could be assigned it to a variable.</td></tr>
 <tr><td>return type:</td><td colspan="4">Map<String, dynamic></td></tr>
@@ -240,7 +245,7 @@ See [Example](https://github.com/domain-centric/template_engine/blob/main/test/s
 <tr><td>parameter:</td><td>source</td><td>String</td><td>mandatory</td><td>The project path of the XML file. This path can be a absolute or relative file path or URI.</td></tr>
 </table>
 
-### importYaml Function
+#### importYaml Function
 <table>
 <tr><td>description:</td><td colspan="4">Imports a YAML file and decode it to a Map<String, dynamic>, which could be assigned it to a variable.</td></tr>
 <tr><td>return type:</td><td colspan="4">Map<String, dynamic></td></tr>

@@ -7,12 +7,6 @@ import 'package:template_engine/template_engine.dart';
 /// A [Constant] is a value that does not change value over time.
 ///
 /// The [TemplateEngine] comes with several mathematical constants.
-///
-/// ## Custom Constants
-/// You can create and add your own [Constant]s by
-/// manipulating the [TemplateEngine.constants] field.
-/// See [Example](https://github.com/domain-centric/template_engine/blob/main/test/src/parser/tag/expression/function/custom_function_test.dart).
-
 class Constant<T> implements DocumentationFactory, ExampleFactory {
   /// See [IdentifierName]
   final String name;

@@ -13,7 +13,7 @@
 # Features
 ![](https://github.com/domain-centric/template_engine/wiki/template_engine.png)
 
-The [TemplateEngine](https://github.com/domain-centric/template_engine/blob/eff1f977ab2f22184c35d1c5829a956d27b80064/lib/src/template_engine.dart#L4) can:
+The [TemplateEngine](https://github.com/domain-centric/template_engine/blob/7f25304a5a769c58bc81d218456d839fcde5b5bc/lib/src/template_engine.dart#L4) can:
 * Parse the [Template](https://pub.dev/packages/Template) text into a
   [parser tree](https://en.wikipedia.org/wiki/Parse_tree)
 * Render the [parser tree](https://en.wikipedia.org/wiki/Parse_tree)

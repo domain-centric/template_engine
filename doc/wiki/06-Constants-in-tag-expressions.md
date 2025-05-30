@@ -1,16 +1,14 @@
 [//]: # (This file was generated from: doc/template/doc/wiki/06-Constants-in-tag-expressions.md.template using the documentation_builder package)
-[//]: # (TODO: This text should be imported from the dart doc of the Constant class using document_generator package)
-A Constant is a value that does not change value over time.
+A [Constant](https://en.wikipedia.org/wiki/Constant_(computer_programming)) is a value that does not change value over time.
 
-The TemplateEngine comes with several mathematical constants.
+The [template_engine](https://pub.dev/packages/template_engine) comes with several mathematical constants.
 
-## Custom Constants
+## Custom Constants  
 You can create and add your own Constants by
-manipulating the TemplateEngine.constants field.
-[//]: # (TODO: use function for link)
-See [Example](https://github.com/domain-centric/template_engine/blob/main/test/src/parser/tag/expression/constant/custom_constant_test.dart).
+manipulating the TemplateEngine.constants field.  
+See [Example](https://github.com/domain-centric/template_engine/blob/main/test/src/parser/tag/expression/constant/custom_constant_test.dart)
 
-## Available Constants
+## Available Constants  
 ### e Constant
 <table>
 <tr><td>description:</td><td>Base of the natural logarithms.</td></tr>

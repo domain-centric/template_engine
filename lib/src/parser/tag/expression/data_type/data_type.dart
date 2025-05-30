@@ -4,15 +4,9 @@ import 'package:template_engine/template_engine.dart';
 
 /// A [data type](https://en.wikipedia.org/wiki/Data_type) defines what the
 /// possible values an expression, such as a variable, operator
-/// or a function call, might take.
+/// or a function call, might use.
 ///
 /// The [TemplateEngine] supports several default [DataType]s.
-///
-/// ## Custom DataTypes
-/// You can adopt existing DataTypes or add your own custom DataTypes by
-/// manipulating the TemplateEngine.dataTypes field.
-/// See [Example](https://github.com/domain-centric/template_engine/blob/main/test/src/parser/tag/expression/data_type/custom_data_type_test.dart).
-
 abstract class DataType<T extends Object>
     implements DocumentationFactory, ExampleFactory {
   String get name;

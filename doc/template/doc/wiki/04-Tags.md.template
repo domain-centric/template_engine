@@ -1,3 +1,1 @@
-{{importDartDoc('lib/src/parser/tag/tag.dart#Tag')}}
-
 {{tagDocumentation(2)}}

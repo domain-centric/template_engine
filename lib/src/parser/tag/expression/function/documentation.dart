@@ -3,6 +3,11 @@ import 'dart:io';
 import 'package:collection/collection.dart';
 import 'package:template_engine/template_engine.dart';
 
+const String _templateEngineHyperLink =
+    '[template_engine](https://pub.dev/packages/template_engine)';
+const String templateEngineGitHubBlobMainUri =
+    'https://github.com/domain-centric/template_engine/blob/main';
+
 /// Functions that create documentation of the [TemplateEngine] configuration
 class DocumentationFunctions extends FunctionGroup {
   DocumentationFunctions()
@@ -10,7 +15,7 @@ class DocumentationFunctions extends FunctionGroup {
           TagDocumentation(),
           DataTypeDocumentation(),
           ConstantDocumentation(),
-          //Note: variable documentation can not be generated (=template text)
+          VariableDocumentation(),
           FunctionDocumentation(),
           OperatorDocumentation(),
           ExampleDocumentation()
@@ -73,14 +78,42 @@ class TagDocumentation extends DocumentationFunction {
             name: 'tagDocumentation',
             description: 'Generates markdown documentation of all the tags '
                 'within a TemplateEngine',
-            documentationFunction: (renderContext, titleLevel) =>
-                (isTemplateEngineProject
-                        ? DefaultTags()
-                        : renderContext.engine.tags)
-                    .map((tag) => tag.createMarkdownDocumentation(
-                        renderContext, titleLevel))
-                    .flattened
-                    .toList());
+            documentationFunction: (renderContext, titleLevel) => [
+                  'Tags are specific texts in templates that are replaced by the '
+                      '$_templateEngineHyperLink with other information.',
+                  '',
+                  'A tag:',
+                  '* Starts with some bracket and/or character combination, e.g.: {{',
+                  '* Followed by some contents',
+                  '* Ends with some closing bracket and/or character combination, e.g.: }}',
+                  '',
+                  'A tag example: {{customer.name}}',
+                  '',
+                  'By default the TemplateEngine tags start with {{ and end with }} brackets,',
+                  'just like the popular template engines',
+                  '[Mustache](https://mustache.github.io/) and',
+                  '[Handlebars](https://handlebarsjs.com).',
+                  '',
+                  'You can also define alternative Tag brackets in the TemplateEngine',
+                  'constructor parameters. See TemplateEngine.tagStart and',
+                  'TemplateEngine.tagEnd',
+                  '',
+                  'It is recommended to use a start and end combination that is not used',
+                  'elsewhere in your templates, e.g.: Do not use < > as Tag start and end',
+                  'if your template contains HTML or XML',
+                  '',
+                  'The $_templateEngineHyperLink comes with DefaultTags. '
+                      'You can replace or add your',
+                  'own Tags by manipulating the the TemplateEngine.tags field.',
+                  '',
+                  _title(titleLevel, 'Available tags'),
+                  ...(isTemplateEngineProject
+                          ? DefaultTags()
+                          : renderContext.engine.tags)
+                      .map((tag) => tag.createMarkdownDocumentation(
+                          renderContext, titleLevel + 1))
+                      .flattened
+                ]);
 }
 
 class DataTypeDocumentation extends DocumentationFunction {
@@ -90,15 +123,30 @@ class DataTypeDocumentation extends DocumentationFunction {
             description: 'Generates markdown documentation of all the data '
                 'types that can be used within a ExpressionTag of a '
                 'TemplateEngine',
-            documentationFunction: (renderContext, titleLevel) =>
-                (isTemplateEngineProject
-                        ? DefaultDataTypes()
-                        : renderContext.engine.dataTypes)
-                    .map((dataType) => dataType.createMarkdownDocumentation(
-                        renderContext, titleLevel))
-                    .flattened
-                    .toList());
+            documentationFunction: (renderContext, titleLevel) => [
+                  'A [data type](https://en.wikipedia.org/wiki/Data_type) defines what the',
+                  'possible values an expression, such as a variable, operator',
+                  'or a function call, might use.',
+                  '',
+                  'The $_templateEngineHyperLink supports several default DataTypes.',
+                  '',
+                  _title(titleLevel, 'Custom DataTypes'),
+                  'You can adopt existing DataTypes or add your own custom DataTypes by',
+                  'manipulating the TemplateEngine.dataTypes field.  ',
+                  'See [example]($templateEngineGitHubBlobMainUri'
+                      '/test/src/parser/tag/expression/data_type/custom_data_type_test.dart)',
+                  '',
+                  _title(titleLevel, 'Available Data Types'),
+                  ...(isTemplateEngineProject
+                          ? DefaultDataTypes()
+                          : renderContext.engine.dataTypes)
+                      .map((dataType) => dataType.createMarkdownDocumentation(
+                          renderContext, titleLevel))
+                      .flattened
+                ]);
 }
+
+String _title(int titleLevel, String title) => '${'#' * titleLevel} $title  ';
 
 class ConstantDocumentation extends DocumentationFunction {
   ConstantDocumentation()
@@ -107,14 +155,72 @@ class ConstantDocumentation extends DocumentationFunction {
             description:
                 'Generates markdown documentation of all the constants '
                 'that can be used within a ExpressionTag of a TemplateEngine',
-            documentationFunction: (renderContext, titleLevel) =>
-                (isTemplateEngineProject
-                        ? DefaultConstants()
-                        : renderContext.engine.constants)
-                    .map((constant) => constant.createMarkdownDocumentation(
-                        renderContext, titleLevel))
-                    .flattened
-                    .toList());
+            documentationFunction: (renderContext, titleLevel) => [
+                  'A [Constant](https://en.wikipedia.org/wiki/Constant_(computer_programming))'
+                      ' is a value that does not change value over time.',
+                  '',
+                  'The $_templateEngineHyperLink comes with several mathematical constants.',
+                  '',
+                  _title(titleLevel, 'Custom Constants'),
+                  'You can create and add your own Constants by',
+                  'manipulating the TemplateEngine.constants field.  ',
+                  'See [Example]($templateEngineGitHubBlobMainUri/test/src/parser/tag/expression/constant/custom_constant_test.dart)',
+                  '',
+                  _title(titleLevel, 'Available Constants'),
+                  ...(isTemplateEngineProject
+                          ? DefaultConstants()
+                          : renderContext.engine.constants)
+                      .map((constant) => constant.createMarkdownDocumentation(
+                          renderContext, titleLevel))
+                      .flattened
+                ]);
+}
+
+class VariableDocumentation extends DocumentationFunction {
+  VariableDocumentation()
+      : super(
+            name: 'variableDocumentation',
+            description: 'Generates markdown documentation of variables '
+                'that can be used within a ExpressionTag of a TemplateEngine',
+            documentationFunction: (renderContext, titleLevel) => [
+                  'A [variable](https://en.wikipedia.org/wiki/Variable_(computer_science)) is',
+                  'a named container for some type of information',
+                  '(like a [number](https://en.wikipedia.org/wiki/Double-precision_floating-point_format), '
+                      '[boolean](https://en.wikipedia.org/wiki/Boolean_data_type), '
+                      '[string](https://en.wikipedia.org/wiki/String_(computer_science)), etc...)',
+                  '',
+                  '* Variables are stored as key, value pairs in a dart Map<String, dynamic> where:',
+                  '  * String=Variable name',
+                  '  * dynamic=Variable value',
+                  '* Variables can be used in an ExpressionTag',
+                  '* Initial variable values are passed to the TemplateEngine.render method',
+                  '* Variables can be modified during rendering',
+                  '',
+                  'The [variable name](https://en.wikipedia.org/wiki/Variable_(computer_science)) ',
+                  'identifies the variable and corresponds with the keys',
+                  'in the variable map.',
+                  '',
+                  'The [variable names](https://en.wikipedia.org/wiki/Variable_(computer_science)):  ',
+                  '* are [case sensitive](https://en.wikipedia.org/wiki/Case_sensitivity)',
+                  '* must start with a lower case letter, optionally followed by (lower or upper) letters and or digits.',
+                  '* conventions: use [lowerCamelCase](https://en.wikipedia.org/wiki/Camel_case)',
+                  '* must be unique and does not match a other tag syntax',
+                  '',
+                  'Variables can be nested. Concatenate '
+                      '[variable names](https://en.wikipedia.org/wiki/Variable_(computer_science)) separated with dot\'s',
+                  'to get the variable value of a nested '
+                      '[variable name](https://en.wikipedia.org/wiki/Variable_(computer_science)):'
+                      '',
+                  'E.g.:<br>',
+                  'Variable map: {\'person\': {\'name\': \'John Doe\', \'age\',30}}<br>',
+                  'Variable name person.name: refers to the variable value of \'John Doe\'',
+                  '',
+                  'Examples:',
+                  '* [Variable Example]($templateEngineGitHubBlobMainUri'
+                      '/test/src/parser/tag/expression/variable/variable_test.dart)',
+                  '* [Nested Variable Example]($templateEngineGitHubBlobMainUri'
+                      '/test/src/parser/tag/expression/variable/nested_variable_test.dart)'
+                ]);
 }
 
 class FunctionDocumentation extends DocumentationFunction {
@@ -124,14 +230,69 @@ class FunctionDocumentation extends DocumentationFunction {
             description:
                 'Generates markdown documentation of all the functions '
                 'that can be used within a ExpressionTag of a TemplateEngine',
-            documentationFunction: (renderContext, titleLevel) =>
-                (isTemplateEngineProject
-                        ? DefaultFunctionGroups()
-                        : renderContext.engine.functionGroups)
-                    .map((functionGroup) => functionGroup
-                        .createMarkdownDocumentation(renderContext, titleLevel))
-                    .flattened
-                    .toList());
+            documentationFunction: (renderContext, titleLevel) => [
+                  'A [function](https://en.wikipedia.org/wiki/Function_(computer_programming)) '
+                      'is a piece of dart code that performs a specific task.',
+                  'So a function can basically do anything that dart code can do.',
+                  '',
+                  'A function can be used anywhere in an tag expression. '
+                      'Wherever that particular task should be performed.',
+                  '',
+                  'An example of a function call: cos(pi)',
+                  'Should result in: -1',
+                  '',
+                  _title(titleLevel, 'Parameters and Arguments'),
+                  '**Function & Parameter & argument names:**',
+                  '* are [case sensitive](https://en.wikipedia.org/wiki/Case_sensitivity)',
+                  '* must start with a lower case letter, optionally followed by '
+                      '(lower or upper case) letters and or digits.',
+                  '* conventions: use [lowerCamelCase](https://en.wikipedia.org/wiki/Camel_case)',
+                  '* must be unique and does not match a other tag syntax',
+                  '',
+                  '**Parameters vs Arguments**',
+                  '* Parameters are the names used in the function definition.',
+                  '* Arguments are the actual values passed when calling the function.',
+                  '',
+                  '**Parameters:**',
+                  '* A function can have zero or more parameters',
+                  '* Parameters are defined as either mandatory or optional',
+                  '* Optional parameters can have a default value',
+                  '',
+                  '**Arguments:**',
+                  '* Multiple arguments are separated with a comma, e.g. single argument: '
+                      '`cos(pi)` multiple arguments: `volume(10,20,30)`',
+                  '* There are different types of arguments',
+                  '  * Positional Arguments: These are passed in the order the function '
+                      'defines them. e.g.: `volume(10, 20, 30)`',
+                  '  * Named Arguments: You can specify which parameter you\'re assigning a '
+                      'value to, regardless of order. e.g.: `volume(l=30, h=10, w=20)`',
+                  '* Arguments can set a parameter only once',
+                  '* You can mix positional arguments and named arguments, but positional '
+                      'arguments must come first',
+                  '* Named arguments remove ambiguity: If you want to skip an optional '
+                      'argument or specify one out of order, you must name it explicitly',
+                  '',
+                  '**Argument values:**',
+                  '* must match the expected parameter type. e.g. '
+                      '`area(length=\'hello\', width=\'world\')` will result in a failure',
+                  '* may be a tag expression such as a variable, constant, operation, '
+                      'function, or combination. e.g. `cos(2*pi)`',
+                  '',
+                  _title(titleLevel, 'Custom Functions'),
+                  'You can use prepackaged [template_engine] functions or add your own custom '
+                      'functions by manipulating the TemplateEngine.functionGroups field.  ',
+                  'See [Example]($templateEngineGitHubBlobMainUri'
+                      '/test/src/parser/tag/expression/function/custom_function_test.dart).',
+                  '',
+                  _title(titleLevel, 'Available Functions'),
+                  ...(isTemplateEngineProject
+                          ? DefaultFunctionGroups()
+                          : renderContext.engine.functionGroups)
+                      .map((functionGroup) =>
+                          functionGroup.createMarkdownDocumentation(
+                              renderContext, titleLevel + 1))
+                      .flattened
+                ]);
 }
 
 class OperatorDocumentation extends DocumentationFunction {
@@ -141,14 +302,34 @@ class OperatorDocumentation extends DocumentationFunction {
             description:
                 'Generates markdown documentation of all the operators '
                 'that can be used within a ExpressionTag of a TemplateEngine',
-            documentationFunction: (renderContext, titleLevel) =>
-                (isTemplateEngineProject
-                        ? DefaultOperatorGroups()
-                        : renderContext.engine.operatorGroups)
-                    .map((operatorGroup) => operatorGroup
-                        .createMarkdownDocumentation(renderContext, titleLevel))
-                    .flattened
-                    .toList());
+            documentationFunction: (renderContext, titleLevel) => [
+                  'An [operator](https://en.wikipedia.org/wiki/Operator_(computer_programming)) '
+                      'behaves generally like functions,',
+                  'but differs syntactically or semantically.',
+                  '',
+                  'Common simple examples include arithmetic (e.g. addition with `+`) and',
+                  'logical operations (e.g. `&`).',
+                  '',
+                  'An operator can be used anywhere in a tag expression',
+                  'wherever that particular operator should be performed.',
+                  '',
+                  'The TemplateEngine supports several standard operators.',
+                  '',
+                  _title(titleLevel, 'Custom Operators'),
+                  'You can use prepackaged [template_engine] operators or add your own custom ',
+                  'operators by manipulating the TemplateEngine.operatorGroups field.  ',
+                  'See [Example]($templateEngineGitHubBlobMainUri'
+                      '/test/src/parser/tag/expression/operator/custom_operator_test.dart).',
+                  '',
+                  _title(titleLevel, 'Available Operators'),
+                  ...(isTemplateEngineProject
+                          ? DefaultOperatorGroups()
+                          : renderContext.engine.operatorGroups)
+                      .map((operatorGroup) =>
+                          operatorGroup.createMarkdownDocumentation(
+                              renderContext, titleLevel + 1))
+                      .flattened,
+                ]);
 }
 
 class ExampleDocumentation extends DocumentationFunction {
