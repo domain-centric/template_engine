@@ -15,8 +15,9 @@ void main() {
 
 class TemplateEngineUrl extends Constant<String> {
   TemplateEngineUrl()
-      : super(
-            name: 'templateEngineUrl',
-            description: 'A URL to the template_engine dart package on pub.dev',
-            value: 'https://pub.dev/packages/template_engine');
+    : super(
+        name: 'templateEngineUrl',
+        description: 'A URL to the template_engine dart package on pub.dev',
+        value: 'https://pub.dev/packages/template_engine',
+      );
 }

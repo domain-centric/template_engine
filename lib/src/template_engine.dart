@@ -67,11 +67,11 @@ class TemplateEngine {
     List<Tag>? tags,
     this.tagStart = '{{',
     this.tagEnd = '}}',
-  })  : dataTypes = dataTypes ?? DefaultDataTypes(),
-        constants = constants ?? DefaultConstants(),
-        functionGroups = functionGroups ?? DefaultFunctionGroups(),
-        operatorGroups = operatorGroups ?? DefaultOperatorGroups(),
-        tags = tags ?? DefaultTags() {
+  }) : dataTypes = dataTypes ?? DefaultDataTypes(),
+       constants = constants ?? DefaultConstants(),
+       functionGroups = functionGroups ?? DefaultFunctionGroups(),
+       operatorGroups = operatorGroups ?? DefaultOperatorGroups(),
+       tags = tags ?? DefaultTags() {
     validateNamesAreUnique();
   }
 
@@ -82,10 +82,7 @@ class TemplateEngine {
   /// [parser tree](https://en.wikipedia.org/wiki/Parse_tree).
   /// See [Renderer]
   Future<ParseResult> parseTemplate(Template template) async {
-    var context = ParserContext(
-      this,
-      template,
-    );
+    var context = ParserContext(this, template);
     var parser = templateParser(context);
     var text = await template.text;
     var result = parser.parse(text);
@@ -94,7 +91,10 @@ class TemplateEngine {
       context.errors.add(ParseError.fromFailure(result));
     }
     var templateParseResult = TemplateParseResult(
-        template: template, children: result.value, errors: context.errors);
+      template: template,
+      children: result.value,
+      errors: context.errors,
+    );
     return ParseResult([templateParseResult]);
   }
 
@@ -104,10 +104,7 @@ class TemplateEngine {
   Future<ParseResult> parseTemplates(List<Template> templates) async {
     var parseResults = <TemplateParseResult>[];
     for (var template in templates) {
-      var context = ParserContext(
-        this,
-        template,
-      );
+      var context = ParserContext(this, template);
       var parser = templateParser(context);
       var text = await template.text;
       var result = parser.parse(text);
@@ -116,7 +113,10 @@ class TemplateEngine {
         context.errors.add(ParseError.fromFailure(result));
       }
       var parseResult = TemplateParseResult(
-          template: template, children: result.value, errors: context.errors);
+        template: template,
+        children: result.value,
+        errors: context.errors,
+      );
       parseResults.add(parseResult);
     }
     return ParseResult(parseResults);
@@ -124,16 +124,19 @@ class TemplateEngine {
 
   /// Render the [parser tree](https://en.wikipedia.org/wiki/Parse_tree)
   /// to a string (and write it as files when needed)
-  Future<RenderResult> render(ParseResult parseResults,
-      [VariableMap? variables]) async {
+  Future<RenderResult> render(
+    ParseResult parseResults, [
+    VariableMap? variables,
+  ]) async {
     var results = TemplatesRenderResult([]);
     for (var parseResult in [...parseResults.children]) {
       var template = parseResult.template;
       var renderContext = RenderContext(
-          engine: this,
-          templateBeingRendered: template,
-          variables: variables,
-          parsedTemplates: parseResults.children);
+        engine: this,
+        templateBeingRendered: template,
+        variables: variables,
+        parsedTemplates: parseResults.children,
+      );
       var renderResult = await parseResult.render(renderContext);
       var result = TemplateRenderResult(
         template: template,
@@ -141,10 +144,13 @@ class TemplateEngine {
         errors: [...parseResult.errors, ...renderResult.errors],
       );
       results = results.add(result);
-      for (var parseResult in renderContext.parsedTemplates
-          .where((parseResult) => parseResult.template is ImportedTemplate)) {
+      for (var parseResult in renderContext.parsedTemplates.where(
+        (parseResult) => parseResult.template is ImportedTemplate,
+      )) {
         var result = ImportedTemplateParseErrors(
-            parseResult.template, parseResult.errorMessage);
+          parseResult.template,
+          parseResult.errorMessage,
+        );
         results = results.add(result);
       }
     }
@@ -155,8 +161,9 @@ class TemplateEngine {
   void validateNamesAreUnique() {
     Set<String> processedNames = {};
     List<String> allNames = tags.map((tag) => tag.name.toLowerCase()).toList();
-    Set<String> doubleNames =
-        allNames.where((name) => !processedNames.add(name)).toSet();
+    Set<String> doubleNames = allNames
+        .where((name) => !processedNames.add(name))
+        .toSet();
     switch (doubleNames.length) {
       case 0:
         break;
@@ -164,7 +171,8 @@ class TemplateEngine {
         throw TagException('Tag name: ${doubleNames.first} is not unique');
       default:
         throw TagException(
-            'Tag names: ${doubleNames.join(', ')} are not unique');
+          'Tag names: ${doubleNames.join(', ')} are not unique',
+        );
     }
   }
 }

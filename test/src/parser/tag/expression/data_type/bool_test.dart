@@ -20,24 +20,27 @@ void main() {
 
     test('{{   TRue}} should be rendered as true', () async {
       var engine = TemplateEngine();
-      var parserResult =
-          await engine.parseTemplate(TextTemplate('{{   TRue}}'));
+      var parserResult = await engine.parseTemplate(
+        TextTemplate('{{   TRue}}'),
+      );
       var renderResult = await engine.render(parserResult);
       renderResult.text.should.be('true');
     });
 
     test('{{trUE  }} should be rendered as true', () async {
       var engine = TemplateEngine();
-      var parserResult =
-          await engine.parseTemplate(TextTemplate('{{trUE   }}'));
+      var parserResult = await engine.parseTemplate(
+        TextTemplate('{{trUE   }}'),
+      );
       var renderResult = await engine.render(parserResult);
       renderResult.text.should.be('true');
     });
 
     test('{{  true  }} should be rendered as true', () async {
       var engine = TemplateEngine();
-      var parserResult =
-          await engine.parseTemplate(TextTemplate('{{  true  }}'));
+      var parserResult = await engine.parseTemplate(
+        TextTemplate('{{  true  }}'),
+      );
       var renderResult = await engine.render(parserResult);
       renderResult.text.should.be('true');
     });
@@ -59,24 +62,27 @@ void main() {
 
     test('{{   FAlse}} should be rendered as false', () async {
       var engine = TemplateEngine();
-      var parserResult =
-          await engine.parseTemplate(TextTemplate('{{   FAlse}}'));
+      var parserResult = await engine.parseTemplate(
+        TextTemplate('{{   FAlse}}'),
+      );
       var renderResult = await engine.render(parserResult);
       renderResult.text.should.be('false');
     });
 
     test('{{faLSE  }} should be rendered as false', () async {
       var engine = TemplateEngine();
-      var parserResult =
-          await engine.parseTemplate(TextTemplate('{{faLSE   }}'));
+      var parserResult = await engine.parseTemplate(
+        TextTemplate('{{faLSE   }}'),
+      );
       var renderResult = await engine.render(parserResult);
       renderResult.text.should.be('false');
     });
 
     test('{{  false  }} should be rendered as false', () async {
       var engine = TemplateEngine();
-      var parserResult =
-          await engine.parseTemplate(TextTemplate('{{  false  }}'));
+      var parserResult = await engine.parseTemplate(
+        TextTemplate('{{  false  }}'),
+      );
       var renderResult = await engine.render(parserResult);
       renderResult.text.should.be('false');
     });

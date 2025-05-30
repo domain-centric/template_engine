@@ -11,13 +11,14 @@ abstract class Variable {}
 class VariableExamples implements ExampleFactory {
   @override
   List<String> createMarkdownExamples(
-          RenderContext renderContext, int titleLevel) =>
-      [
-        '* ${ProjectFilePath('test/src/parser/tag/expression/variable/'
-            'variable_test.dart').githubMarkdownLink}',
-        '* ${ProjectFilePath('test/src/parser/tag/expression/variable/'
-            'nested_variable_test.dart').githubMarkdownLink}',
-      ];
+    RenderContext renderContext,
+    int titleLevel,
+  ) => [
+    '* ${ProjectFilePath('test/src/parser/tag/expression/variable/'
+    'variable_test.dart').githubMarkdownLink}',
+    '* ${ProjectFilePath('test/src/parser/tag/expression/variable/'
+    'nested_variable_test.dart').githubMarkdownLink}',
+  ];
 }
 
 /// A [DataMap] is a structure that stores information with keys and values.
@@ -61,7 +62,10 @@ class VariableExpression extends ExpressionWithSourcePosition {
   String toString() => 'Variable{$namePath}';
 
   Future<Object> _findVariableValue(
-      VariableMap variables, List<String> namePath, namePathIndex) async {
+    VariableMap variables,
+    List<String> namePath,
+    namePathIndex,
+  ) async {
     var name = namePath[namePathIndex];
 
     if (variables.containsKey(name)) {
@@ -69,8 +73,9 @@ class VariableExpression extends ExpressionWithSourcePosition {
       if (namePath.length == namePathIndex + 1) {
         if (value == null) {
           throw VariableException(
-              message: 'Variable: $namePath may not be null',
-              position: super.position);
+            message: 'Variable: $namePath may not be null',
+            position: super.position,
+          );
         }
         return Future.value(value!);
       } else if (value is VariableMap) {
@@ -79,9 +84,11 @@ class VariableExpression extends ExpressionWithSourcePosition {
       }
     }
     throw VariableException(
-        message: 'Variable does not exist: '
-            '${namePath.sublist(0, namePathIndex + 1).join('.')}',
-        position: super.position);
+      message:
+          'Variable does not exist: '
+          '${namePath.sublist(0, namePathIndex + 1).join('.')}',
+      position: super.position,
+    );
   }
 
   @override
@@ -98,8 +105,12 @@ Parser<Expression<Object>> variableParser(Template template) {
   return (VariableName.namePathParser & char('(').trim().not())
       .flatten('variable expected')
       .trim()
-      .valueContextMap((name, context) => VariableExpression(
-          namePath: name, position: context.toPositionString()));
+      .valueContextMap(
+        (name, context) => VariableExpression(
+          namePath: name,
+          position: context.toPositionString(),
+        ),
+      );
 }
 
 class VariableException extends RenderException {
@@ -126,20 +137,23 @@ class VariableName {
   static final nameParser = IdentifierName.parser;
   static final namePathParser = (nameParser & (char('.') & nameParser).star());
 
-  static validateName(String name) {
+  static void validateName(String name) {
     var result = nameParser.end().parse(name);
     if (result is Failure) {
-      throw Exception('Variable name: "$name" is invalid: ${result.message} '
-          'at position: ${result.position}');
+      throw Exception(
+        'Variable name: "$name" is invalid: ${result.message} '
+        'at position: ${result.position}',
+      );
     }
   }
 
-  static validateNamePath(String namePath) {
+  static void validateNamePath(String namePath) {
     var result = namePathParser.end().parse(namePath);
     if (result is Failure) {
       throw Exception(
-          'Variable name: "$namePath" is invalid: ${result.message} '
-          'at position: ${result.position}');
+        'Variable name: "$namePath" is invalid: ${result.message} '
+        'at position: ${result.position}',
+      );
     }
   }
 }

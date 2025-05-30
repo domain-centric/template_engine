@@ -51,12 +51,14 @@ Parser<List<Object>> delegatingParser({
 }
 
 Parser<String> untilEndOfTagParser(String tagStart, String tagEnd) => any()
-    .plusLazy(ChoiceParser([
-      string('\\$tagStart'),
-      string('\\$tagEnd'),
-      string(tagStart),
-      string(tagEnd),
-    ]))
+    .plusLazy(
+      ChoiceParser([
+        string('\\$tagStart'),
+        string('\\$tagEnd'),
+        string(tagStart),
+        string(tagEnd),
+      ]),
+    )
     .flatten();
 
 Parser<String> untilEndParser() => any().plus().flatten();
@@ -81,10 +83,7 @@ class ParserContext {
 
   final List<ParseError> errors;
 
-  ParserContext(
-    this.engine,
-    this.template,
-  ) : errors = [];
+  ParserContext(this.engine, this.template) : errors = [];
 }
 
 /// The result of parsing a single [Template]
@@ -114,9 +113,7 @@ class TemplateParseResult extends ParserTree<Object> {
 
 /// The result of parsing one or more [Template]s
 class ParseResult extends ParserTree<TemplateParseResult> {
-  ParseResult(
-    super.templateParseResults,
-  );
+  ParseResult(super.templateParseResults);
 
   String get errorMessage => children
       .where((result) => result.errorMessage.isNotEmpty)

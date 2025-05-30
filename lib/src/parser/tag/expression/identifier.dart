@@ -9,11 +9,13 @@ class IdentifierName {
   static final Parser<String> parser =
       (lowercase() & (letter() | digit()).star()).flatten();
 
-  static validate(String name) {
+  static void validate(String name) {
     var result = parser.end('letter OR digit expected').parse(name);
     if (result is Failure) {
-      throw IdentifierException("Invalid identifier name: '$name', "
-          "${result.message} at position ${result.position}");
+      throw IdentifierException(
+        "Invalid identifier name: '$name', "
+        "${result.message} at position ${result.position}",
+      );
     }
   }
 }

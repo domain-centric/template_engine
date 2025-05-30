@@ -4,7 +4,7 @@ version: 1.5.1
 repository: https://github.com/domain-centric/template_engine
 
 environment:
-  sdk: '>=3.1.0 <4.0.0'
+  sdk: ^3.8.0
 
 dependencies:
   collection: ^1.19.1
@@ -16,7 +16,7 @@ dependencies:
 
 
 dev_dependencies:
-  lints: ^5.1.1
+  lints: ^6.0.0
   test: ^1.25.1
   shouldly: ^0.5.0+1
   build_runner: ^2.4.15

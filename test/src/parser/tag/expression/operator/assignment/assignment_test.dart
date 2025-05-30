@@ -43,9 +43,11 @@ void main() {
     var parseResult = await engine.parseText('{{1=2}}');
     var renderResult = await engine.render(parseResult);
     renderResult.text.should.be('{{ERROR}}');
-    renderResult.errorMessage.should.be("Render error in: '{{1=2}}':\n"
-        "  1:4: The left side of the = operation "
-        "must be a valid variable name");
+    renderResult.errorMessage.should.be(
+      "Render error in: '{{1=2}}':\n"
+      "  1:4: The left side of the = operation "
+      "must be a valid variable name",
+    );
   });
 
   test('{{x.y=2}} should result in an error', () async {
@@ -53,8 +55,10 @@ void main() {
     var parseResult = await engine.parseText('{{x.y=2}}');
     var renderResult = await engine.render(parseResult);
     renderResult.text.should.be('{{ERROR}}');
-    renderResult.errorMessage.should.be("Render error in: '{{x.y=2}}':\n"
-        "  1:6: The left side of the = operation "
-        "must be a name of a root variable (not contain dots)");
+    renderResult.errorMessage.should.be(
+      "Render error in: '{{x.y=2}}':\n"
+      "  1:6: The left side of the = operation "
+      "must be a name of a root variable (not contain dots)",
+    );
   });
 }

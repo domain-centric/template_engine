@@ -34,18 +34,21 @@ abstract class Tag<T extends Object>
   final String exampleExpression;
   final ProjectFilePath exampleCode;
   final String? exampleResult;
-  Tag(
-      {required this.name,
-      required this.description,
-      required this.exampleExpression,
-      this.exampleResult,
-      required this.exampleCode}) {
+  Tag({
+    required this.name,
+    required this.description,
+    required this.exampleExpression,
+    this.exampleResult,
+    required this.exampleCode,
+  }) {
     TagName.validate(name);
   }
 
   @override
   List<String> createMarkdownDocumentation(
-      RenderContext renderContext, int titleLevel) {
+    RenderContext renderContext,
+    int titleLevel,
+  ) {
     var writer = HtmlTableWriter();
     writer.setHeader(titleLevel, '$name Tag');
     writer.addRow(['description:', description.join('<br>')]);
@@ -54,7 +57,7 @@ abstract class Tag<T extends Object>
     return writer.toHtmlLines();
   }
 
-  _createExpressionExample() {
+  String _createExpressionExample() {
     var example = exampleExpression;
     if (exampleResult != null && exampleResult!.trim().isNotEmpty) {
       example += ' should render: $exampleResult';
@@ -78,11 +81,13 @@ class TagName {
   static final namePathParser = (nameParser & (char('.') & nameParser).star());
   static final namePathParserUntilEnd = namePathParser.end();
 
-  static validate(String namePath) {
+  static void validate(String namePath) {
     var result = namePathParserUntilEnd.parse(namePath);
     if (result is Failure) {
-      throw TagException('Tag name: "$namePath" is invalid: ${result.message} '
-          'at position: ${result.position}');
+      throw TagException(
+        'Tag name: "$namePath" is invalid: ${result.message} '
+        'at position: ${result.position}',
+      );
     }
   }
 }

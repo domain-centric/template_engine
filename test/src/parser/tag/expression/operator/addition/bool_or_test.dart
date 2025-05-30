@@ -45,8 +45,9 @@ void main() {
     var parseResult = await engine.parseText('{{"text"|"text"}}');
     var renderResult = await engine.render(parseResult);
     renderResult.text.should.be('{{ERROR}}');
-    renderResult.errorMessage.should
-        .be('Render error in: \'{{"text"|"text"}}\':\n'
-            '  1:9: left and right of the | operator must be a boolean');
+    renderResult.errorMessage.should.be(
+      'Render error in: \'{{"text"|"text"}}\':\n'
+      '  1:9: left and right of the | operator must be a boolean',
+    );
   });
 }

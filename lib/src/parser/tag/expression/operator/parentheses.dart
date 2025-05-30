@@ -7,26 +7,32 @@ class Parentheses extends OperatorGroup {
 
 class ParenthesesOperator extends Operator {
   static final codeExample = ProjectFilePath(
-      'test/src/parser/tag/expression/operator/parentheses_test.dart');
+    'test/src/parser/tag/expression/operator/parentheses_test.dart',
+  );
 
   @override
   addParser(Template template, ExpressionGroup2<Expression<Object>> group) {
     group.wrapper(
-        char('(').trim(), char(')').trim(), (left, value, right) => value);
+      char('(').trim(),
+      char(')').trim(),
+      (left, value, right) => value,
+    );
   }
 
   @override
   List<String> createMarkdownDocumentation(
-      RenderContext renderContext, int titleLevel) {
+    RenderContext renderContext,
+    int titleLevel,
+  ) {
     var writer = HtmlTableWriter();
     writer.setHeader(titleLevel, 'Parentheses Operator ()');
     writer.addRow([
       'description:',
-      'Groups expressions together: What is between parentheses gets processed first'
+      'Groups expressions together: What is between parentheses gets processed first',
     ]);
     writer.addRow([
       'expression example:',
-      '{{2+1*3}} should render: 6<br>{{(2+1)*3}} should render: 9'
+      '{{2+1*3}} should render: 6<br>{{(2+1)*3}} should render: 9',
     ]);
     writer.addRow(['code example:', codeExample.githubMarkdownLink]);
     return writer.toHtmlLines();
@@ -34,8 +40,9 @@ class ParenthesesOperator extends Operator {
 
   @override
   List<String> createMarkdownExamples(
-          RenderContext renderContext, int titleLevel) =>
-      ['* ${codeExample.githubMarkdownLink}'];
+    RenderContext renderContext,
+    int titleLevel,
+  ) => ['* ${codeExample.githubMarkdownLink}'];
 
   @override
   String toString() => 'ParenthesesOperator{}';

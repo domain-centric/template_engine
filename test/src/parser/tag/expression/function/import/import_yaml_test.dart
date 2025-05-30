@@ -10,11 +10,8 @@ void main() {
       'person': {
         'name': 'John Doe',
         'age': 30,
-        'child': {
-          'name': 'Jane Doe',
-          'age': 5,
-        }
-      }
+        'child': {'name': 'Jane Doe', 'age': 5},
+      },
     };
     var engine = TemplateEngine();
     var parseResult = await engine.parseText("{{importYaml('$path')}}");
@@ -24,7 +21,8 @@ void main() {
 
   test('test assigning importYaml to a variable', () async {
     var engine = TemplateEngine();
-    var input = "{{yaml=importYaml('$path')}}"
+    var input =
+        "{{yaml=importYaml('$path')}}"
         "{{yaml.person.child.name}}";
     var parseResult = await engine.parseText(input);
     var renderResult = await engine.render(parseResult);
@@ -33,19 +31,25 @@ void main() {
 
   test('test importYaml with none existing file', () async {
     var engine = TemplateEngine();
-    var input = "{{yaml=importYaml('none_existing.yaml')}}"
+    var input =
+        "{{yaml=importYaml('none_existing.yaml')}}"
         "{{yaml.person.child.name}}";
     var parseResult = await engine.parseText(input);
     var renderResult = await engine.render(parseResult);
     renderResult.text.should.be('{{ERROR}}{{ERROR}}');
-    renderResult.errorMessage.should.contain("Render errors in: "
-        "'{{yaml=importYaml('none_existing.yaml')}");
     renderResult.errorMessage.should.contain(
-        "  1:8: Error importing a YAML file: "
-        "Error reading: none_existing.yaml, "
-        "PathNotFoundException: Cannot open file, path = 'none_existing.yaml'");
+      "Render errors in: "
+      "'{{yaml=importYaml('none_existing.yaml')}",
+    );
+    renderResult.errorMessage.should.contain(
+      "  1:8: Error importing a YAML file: "
+      "Error reading: none_existing.yaml, "
+      "PathNotFoundException: Cannot open file, path = 'none_existing.yaml'",
+    );
     renderResult.errorMessage.should.contain("none_existing.yaml");
-    renderResult.errorMessage.should.contain(" 1:44: Variable "
-        "does not exist: yaml");
+    renderResult.errorMessage.should.contain(
+      " 1:44: Variable "
+      "does not exist: yaml",
+    );
   });
 }

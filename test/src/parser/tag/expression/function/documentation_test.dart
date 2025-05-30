@@ -20,8 +20,9 @@ void main() {
       ]);
 
       final renderResult = await engine.render(parseResult);
-      renderResult.text.should
-          .contain('Evaluates an expression that can contain');
+      renderResult.text.should.contain(
+        'Evaluates an expression that can contain',
+      );
       renderResult.text.should.contain('<table>');
     });
 
@@ -113,18 +114,21 @@ class DummyFunctionGroup extends FunctionGroup {
 
 class DummyFunction extends ExpressionFunction {
   DummyFunction()
-      : super(
-            name: 'testFunction',
-            description: 'TestDescription',
-            exampleCode: ProjectFilePath(
-                'test/src/parser/tag/expression/function/math/exp_test.dart'),
-            parameters: [
-              Parameter<String>(
-                  name: 'parameter1',
-                  presence: Presence.optionalWithDefaultValue('Hello')),
-              Parameter<double>(name: 'parameter2'),
-              Parameter<bool>(name: 'parameter3')
-            ],
-            function: (position, renderContext, parameters) =>
-                Future.value('Dummy'));
+    : super(
+        name: 'testFunction',
+        description: 'TestDescription',
+        exampleCode: ProjectFilePath(
+          'test/src/parser/tag/expression/function/math/exp_test.dart',
+        ),
+        parameters: [
+          Parameter<String>(
+            name: 'parameter1',
+            presence: Presence.optionalWithDefaultValue('Hello'),
+          ),
+          Parameter<double>(name: 'parameter2'),
+          Parameter<bool>(name: 'parameter3'),
+        ],
+        function: (position, renderContext, parameters) =>
+            Future.value('Dummy'),
+      );
 }

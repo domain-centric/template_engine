@@ -4,16 +4,18 @@ import 'package:template_engine/template_engine.dart';
 
 void main() {
   group('TemplateEngine with TemplateSource function', () {
-    test('should render templateSource() to the template source path',
-        () async {
-      final engine = TemplateEngine();
-      final template = TemplateWithTemplateSourceFunction();
+    test(
+      'should render templateSource() to the template source path',
+      () async {
+        final engine = TemplateEngine();
+        final template = TemplateWithTemplateSourceFunction();
 
-      final parseResult = await engine.parseTemplate(template);
-      final renderResult = await engine.render(parseResult);
+        final parseResult = await engine.parseTemplate(template);
+        final renderResult = await engine.render(parseResult);
 
-      renderResult.text.should.be(template.source);
-    });
+        renderResult.text.should.be(template.source);
+      },
+    );
   });
 }
 

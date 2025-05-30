@@ -42,8 +42,11 @@ Future<String> readFromHttpUri(String source) async {
       var request = await HttpClient().getUrl(url);
       var response = await request.close();
       if (response.statusCode != 200) {
-        return Future.error(Exception(
-            'Error reading: $source, status code: ${response.statusCode}'));
+        return Future.error(
+          Exception(
+            'Error reading: $source, status code: ${response.statusCode}',
+          ),
+        );
       }
       return response.transform(const Utf8Decoder()).join();
     } on Exception catch (e) {

@@ -6,13 +6,18 @@ class PathFunctions extends FunctionGroup {
 
 class TemplateSource extends ExpressionFunction<String> {
   TemplateSource()
-      : super(
-            name: "templateSource",
-            description: 'Gives the relative path of the current template',
-            exampleExpression: "{{templateSource()}}",
-            exampleCode: ProjectFilePath(
-                'test/src/parser/tag/expression/function/template/template_test.dart'),
-            function: (String position, RenderContext renderContext,
-                    Map<String, Object> parameterValues) =>
-                Future.value(renderContext.templateBeingRendered.sourceTitle));
+    : super(
+        name: "templateSource",
+        description: 'Gives the relative path of the current template',
+        exampleExpression: "{{templateSource()}}",
+        exampleCode: ProjectFilePath(
+          'test/src/parser/tag/expression/function/template/template_test.dart',
+        ),
+        function:
+            (
+              String position,
+              RenderContext renderContext,
+              Map<String, Object> parameterValues,
+            ) => Future.value(renderContext.templateBeingRendered.sourceTitle),
+      );
 }

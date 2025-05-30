@@ -4,14 +4,16 @@ import 'package:template_engine/template_engine.dart';
 import 'package:test/test.dart';
 
 void main() {
-  test('{{1110b}} should be rendered as 14 by a custom binary data type',
-      () async {
-    var engine = TemplateEngine();
-    engine.dataTypes.insert(0, Binary());
-    var parseResult = await engine.parseTemplate(TextTemplate('{{1110b}}'));
-    var renderResult = await engine.render(parseResult);
-    renderResult.text.should.be('14');
-  });
+  test(
+    '{{1110b}} should be rendered as 14 by a custom binary data type',
+    () async {
+      var engine = TemplateEngine();
+      engine.dataTypes.insert(0, Binary());
+      var parseResult = await engine.parseTemplate(TextTemplate('{{1110b}}'));
+      var renderResult = await engine.render(parseResult);
+      renderResult.text.should.be('14');
+    },
+  );
 }
 
 class Binary extends DataType {

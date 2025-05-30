@@ -6,23 +6,26 @@ void main(List<String> args) {
   try {
     var engine = TemplateEngine();
     generate(
-        engine: engine,
-        templatePath: ProjectFilePath('doc/template/README.md.template'),
-        outputPath: ProjectFilePath('README.md'));
+      engine: engine,
+      templatePath: ProjectFilePath('doc/template/README.md.template'),
+      outputPath: ProjectFilePath('README.md'),
+    );
     generate(
-        engine: engine,
-        templatePath: ProjectFilePath('doc/template/example.md.template'),
-        outputPath: ProjectFilePath('example/example.md'));
+      engine: engine,
+      templatePath: ProjectFilePath('doc/template/example.md.template'),
+      outputPath: ProjectFilePath('example/example.md'),
+    );
   } on Exception catch (e, stackTrace) {
     print(e);
     print(stackTrace);
   }
 }
 
-Future<void> generate(
-    {required TemplateEngine engine,
-    required ProjectFilePath templatePath,
-    required ProjectFilePath outputPath}) async {
+Future<void> generate({
+  required TemplateEngine engine,
+  required ProjectFilePath templatePath,
+  required ProjectFilePath outputPath,
+}) async {
   var template = FileTemplate(templatePath.file);
   var parseResult = await engine.parseTemplate(template);
   var renderResult = await engine.render(parseResult);

@@ -6,16 +6,14 @@ class ProjectFilePath {
   final String relativePath;
 
   static Parser<String> _fileOrFolderName() => (ChoiceParser([
-        letter(),
-        digit(),
-        char('('),
-        char(')'),
-        char('_'),
-        char('-'),
-        char('.'),
-      ], failureJoiner: selectFarthestJoined))
-          .plus()
-          .flatten();
+    letter(),
+    digit(),
+    char('('),
+    char(')'),
+    char('_'),
+    char('-'),
+    char('.'),
+  ], failureJoiner: selectFarthestJoined)).plus().flatten();
 
   static Parser<String> _slashAndFileOrFolderName() =>
       (char('/') & _fileOrFolderName()).map((values) => values[1]);
@@ -32,8 +30,10 @@ class ProjectFilePath {
   void validate(String path) {
     var result = _pathParser().parse(path);
     if (result is Failure) {
-      throw Exception("Invalid project file path: '$path': ${result.message} "
-          "at position: ${result.position + 1}");
+      throw Exception(
+        "Invalid project file path: '$path': ${result.message} "
+        "at position: ${result.position + 1}",
+      );
     }
   }
 
@@ -51,9 +51,10 @@ class ProjectFilePath {
     return File(filePath);
   }
 
-  Uri get githubUri =>
-      Uri.parse('https://github.com/domain-centric/template_engine/blob/main/'
-          '$relativePath');
+  Uri get githubUri => Uri.parse(
+    'https://github.com/domain-centric/template_engine/blob/main/'
+    '$relativePath',
+  );
 
   String get githubMarkdownLink => '<a href="$githubUri">$fileName</a>';
 

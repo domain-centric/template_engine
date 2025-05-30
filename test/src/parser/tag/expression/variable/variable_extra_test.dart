@@ -5,15 +5,15 @@ import 'package:test/test.dart';
 /// Variable tests that are not suited as an example
 
 void main() {
-  test(
-      '"Hello {{name}}." should render a an error '
+  test('"Hello {{name}}." should render a an error '
       'if the variable does not exist', () async {
     var engine = TemplateEngine();
     var parseResult = await engine.parseText('Hello {{name}}.');
     var renderResult = await engine.render(parseResult);
-    renderResult.errorMessage.should
-        .be('Render error in: \'Hello {{name}}.\':\n'
-            '  1:9: Variable does not exist: name');
+    renderResult.errorMessage.should.be(
+      'Render error in: \'Hello {{name}}.\':\n'
+      '  1:9: Variable does not exist: name',
+    );
   });
 
   test('"Hello {{  \t name}}." should render a proper greeting', () async {

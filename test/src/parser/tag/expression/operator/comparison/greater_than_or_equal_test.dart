@@ -61,7 +61,9 @@ void main() {
     var parseResult = await engine.parseText("{{'2'>=1}}");
     var renderResult = await engine.render(parseResult);
     renderResult.text.should.be('{{ERROR}}');
-    renderResult.errorMessage.should.be("Render error in: '{{'2'>=1}}':\n"
-        "  1:6: left of the >= operator must be a number");
+    renderResult.errorMessage.should.be(
+      "Render error in: '{{'2'>=1}}':\n"
+      "  1:6: left of the >= operator must be a number",
+    );
   });
 }

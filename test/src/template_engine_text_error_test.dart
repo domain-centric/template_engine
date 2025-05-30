@@ -12,9 +12,9 @@ void main() {
 
       Should.satisfyAllConditions([
         () => renderResult.errorMessage.should.be(
-              'Parse error in: \'Hello {{name}.\':\n'
-              '  1:7: Found tag start: {{, but it was not followed with a tag end: }}',
-            ),
+          'Parse error in: \'Hello {{name}.\':\n'
+          '  1:7: Found tag start: {{, but it was not followed with a tag end: }}',
+        ),
         () => renderResult.text.should.be('Hello {{'),
       ]);
     });
@@ -25,10 +25,10 @@ void main() {
 
       Should.satisfyAllConditions([
         () => renderResult.errorMessage.should.be(
-              'Parse errors in: \'Hello }}name{{.\':\n'
-              '  1:7: Found tag end: }}, but it was not preceded with a tag start: {{\n'
-              '  1:13: Found tag start: {{, but it was not followed with a tag end: }}',
-            ),
+          'Parse errors in: \'Hello }}name{{.\':\n'
+          '  1:7: Found tag end: }}, but it was not preceded with a tag start: {{\n'
+          '  1:13: Found tag start: {{, but it was not followed with a tag end: }}',
+        ),
         () => renderResult.text.should.be('Hello }}name{{'),
       ]);
     });
@@ -39,26 +39,28 @@ void main() {
 
       Should.satisfyAllConditions([
         () => renderResult.errorMessage.should.be(
-              'Render error in: \'Hello {{name}}.\':\n'
-              '  1:9: Variable does not exist: name',
-            ),
+          'Render error in: \'Hello {{name}}.\':\n'
+          '  1:9: Variable does not exist: name',
+        ),
         () => renderResult.text.should.be('Hello {{ERROR}}.'),
       ]);
     });
 
     test('should handle multiple render errors', () async {
-      final parseResult =
-          await engine.parseText('Hello {{name}}. Welcome in {{location}}.');
+      final parseResult = await engine.parseText(
+        'Hello {{name}}. Welcome in {{location}}.',
+      );
       final renderResult = await engine.render(parseResult, {'age': '13'});
 
       Should.satisfyAllConditions([
         () => renderResult.errorMessage.should.be(
-              'Render errors in: \'Hello {{name}}. Welcome in {{location}}.\':\n'
-              '  1:9: Variable does not exist: name\n'
-              '  1:30: Variable does not exist: location',
-            ),
-        () => renderResult.text.should
-            .be('Hello {{ERROR}}. Welcome in {{ERROR}}.'),
+          'Render errors in: \'Hello {{name}}. Welcome in {{location}}.\':\n'
+          '  1:9: Variable does not exist: name\n'
+          '  1:30: Variable does not exist: location',
+        ),
+        () => renderResult.text.should.be(
+          'Hello {{ERROR}}. Welcome in {{ERROR}}.',
+        ),
       ]);
     });
   });

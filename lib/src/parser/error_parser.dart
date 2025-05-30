@@ -11,10 +11,12 @@ class InvalidTagParser extends Parser<Object> {
   final Parser<String> anythingBeforeEndParser;
   final Parser<String> tagEndParser;
   InvalidTagParser(this.parserContext)
-      : tagStartParser = string(parserContext.engine.tagStart),
-        anythingBeforeEndParser = untilEndOfTagParser(
-            parserContext.engine.tagStart, parserContext.engine.tagEnd),
-        tagEndParser = string(parserContext.engine.tagEnd);
+    : tagStartParser = string(parserContext.engine.tagStart),
+      anythingBeforeEndParser = untilEndOfTagParser(
+        parserContext.engine.tagStart,
+        parserContext.engine.tagEnd,
+      ),
+      tagEndParser = string(parserContext.engine.tagEnd);
 
   @override
   Parser<Object> copy() => InvalidTagParser(parserContext);
@@ -27,23 +29,28 @@ class InvalidTagParser extends Parser<Object> {
     if (tagStartResult is Failure) {
       return tagStartResult;
     }
-    var expressionResult = expressionParser(parserContext, verboseErrors: true)
-        .parseOn(tagStartResult);
+    var expressionResult = expressionParser(
+      parserContext,
+      verboseErrors: true,
+    ).parseOn(tagStartResult);
     if (expressionResult.position > tagStartResult.position) {
       if (expressionResult is Failure) {
         errors.add(ParseError.fromFailure(expressionResult));
       }
     }
 
-    var anythingBeforeEndResult =
-        anythingBeforeEndParser.parseOn(expressionResult);
+    var anythingBeforeEndResult = anythingBeforeEndParser.parseOn(
+      expressionResult,
+    );
     if (errors.isEmpty &&
         anythingBeforeEndResult is Success &&
         anythingBeforeEndResult.value.isNotEmpty) {
-      errors.add(ParseError(
-        message: 'invalid tag syntax',
-        position: expressionResult.toPositionString(),
-      ));
+      errors.add(
+        ParseError(
+          message: 'invalid tag syntax',
+          position: expressionResult.toPositionString(),
+        ),
+      );
     }
 
     var tagEndResult = tagEndParser.parseOn(anythingBeforeEndResult);
@@ -53,8 +60,10 @@ class InvalidTagParser extends Parser<Object> {
 
     if (errors.isNotEmpty) {
       parserContext.errors.addAll(errors);
-      String tag =
-          context.buffer.substring(context.position, tagEndResult.position);
+      String tag = context.buffer.substring(
+        context.position,
+        tagEndResult.position,
+      );
       return tagEndResult.success(tag);
     } else {
       return tagEndResult.failure('not an invalid tag');
@@ -66,11 +75,15 @@ class InvalidTagParser extends Parser<Object> {
 /// It replaces the [Tag] end to a [String] e.g. containing: }}
 Parser<String> missingTagStartParser(ParserContext parserContext) =>
     string(parserContext.engine.tagEnd).valueContextMap((value, context) {
-      parserContext.errors.add(ParseError(
-          message: 'Found tag end: ${parserContext.engine.tagEnd}, '
+      parserContext.errors.add(
+        ParseError(
+          message:
+              'Found tag end: ${parserContext.engine.tagEnd}, '
               'but it was not preceded with a tag start: '
               '${parserContext.engine.tagStart}',
-          position: context.toPositionString()));
+          position: context.toPositionString(),
+        ),
+      );
       return value;
     });
 
@@ -82,10 +95,14 @@ Parser<String> missingTagEndParser(ParserContext parserContext) =>
             any().star() &
             string(parserContext.engine.tagEnd).not())
         .valueContextMap((values, context) {
-      parserContext.errors.add(ParseError(
-          message: 'Found tag start: ${parserContext.engine.tagStart}, '
-              'but it was not followed with a tag end: '
-              '${parserContext.engine.tagEnd}',
-          position: context.toPositionString()));
-      return values.first;
-    });
+          parserContext.errors.add(
+            ParseError(
+              message:
+                  'Found tag start: ${parserContext.engine.tagStart}, '
+                  'but it was not followed with a tag end: '
+                  '${parserContext.engine.tagEnd}',
+              position: context.toPositionString(),
+            ),
+          );
+          return values.first;
+        });

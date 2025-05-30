@@ -6,15 +6,19 @@ void main() {
   test("{{'Hello}} should return a correct error message", () async {
     var engine = TemplateEngine();
     var parseResult = await engine.parseText("{{'Hello}}");
-    parseResult.errorMessage.should.be('Parse error in: \'{{\'Hello}}\':\n'
-        '  1:3: invalid tag syntax');
+    parseResult.errorMessage.should.be(
+      'Parse error in: \'{{\'Hello}}\':\n'
+      '  1:3: invalid tag syntax',
+    );
   });
 
   test('{{Hello"}} should return a correct error message', () async {
     var engine = TemplateEngine();
     var parseResult = await engine.parseText('{{Hello"}}');
-    parseResult.errorMessage.should.be('Parse error in: \'{{Hello"}}\':\n'
-        '  1:3: invalid tag syntax');
+    parseResult.errorMessage.should.be(
+      'Parse error in: \'{{Hello"}}\':\n'
+      '  1:3: invalid tag syntax',
+    );
   });
 
   test("{{'Hello'}} should render: 'Hello'", () async {

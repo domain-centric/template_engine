@@ -7,10 +7,11 @@ class PrefixExpression<PARAMETER_TYPE extends Object>
   final PrefixOperator<PARAMETER_TYPE> operator;
   final Expression valueExpression;
 
-  PrefixExpression(
-      {required this.operator,
-      required super.position,
-      required this.valueExpression});
+  PrefixExpression({
+    required this.operator,
+    required super.position,
+    required this.valueExpression,
+  });
 
   @override
   Future<PARAMETER_TYPE> render(RenderContext context) async {
@@ -19,9 +20,10 @@ class PrefixExpression<PARAMETER_TYPE extends Object>
       return operator.function(value);
     }
     throw RenderException(
-        message:
-            '${typeDescription<PARAMETER_TYPE>()} expected after the ${operator.symbol} operator',
-        position: super.position);
+      message:
+          '${typeDescription<PARAMETER_TYPE>()} expected after the ${operator.symbol} operator',
+      position: super.position,
+    );
   }
 
   @override
@@ -30,20 +32,23 @@ class PrefixExpression<PARAMETER_TYPE extends Object>
   }
 }
 
-class TwoValueOperatorVariant<LEFT_TYPE extends Object,
-    RIGHT_TYPE extends Object> {
+class TwoValueOperatorVariant<
+  LEFT_TYPE extends Object,
+  RIGHT_TYPE extends Object
+> {
   final String description;
   final Object Function(LEFT_TYPE left, RIGHT_TYPE right) function;
   final String expressionExample;
   final String? expressionExampleResult;
   final ProjectFilePath? codeExample;
 
-  TwoValueOperatorVariant(
-      {required this.description,
-      required this.function,
-      required this.expressionExample,
-      this.expressionExampleResult,
-      this.codeExample});
+  TwoValueOperatorVariant({
+    required this.description,
+    required this.function,
+    required this.expressionExample,
+    this.expressionExampleResult,
+    this.codeExample,
+  });
 
   String get parameterTypeDescription => typeDescription<LEFT_TYPE>();
 
@@ -58,17 +63,21 @@ class TwoValueOperatorVariant<LEFT_TYPE extends Object,
         !rightTypeOk) {
       return [
         'left and right of the $operator operator '
-            'must be a ${typeDescription<LEFT_TYPE>()}'
+            'must be a ${typeDescription<LEFT_TYPE>()}',
       ];
     }
     var errors = <String>[];
     if (!leftTypeOk) {
-      errors.add('left of the $operator operator '
-          'must be a ${typeDescription<LEFT_TYPE>()}');
+      errors.add(
+        'left of the $operator operator '
+        'must be a ${typeDescription<LEFT_TYPE>()}',
+      );
     }
     if (!rightTypeOk) {
-      errors.add('right of the $operator operator '
-          'must be a ${typeDescription<RIGHT_TYPE>()}');
+      errors.add(
+        'right of the $operator operator '
+        'must be a ${typeDescription<RIGHT_TYPE>()}',
+      );
     }
     return errors;
   }
@@ -85,12 +94,13 @@ class OperatorVariantExpression extends ExpressionWithSourcePosition {
   final Expression left;
   final Expression right;
 
-  OperatorVariantExpression(
-      {required super.position,
-      required this.operator,
-      required this.variants,
-      required this.left,
-      required this.right});
+  OperatorVariantExpression({
+    required super.position,
+    required this.operator,
+    required this.variants,
+    required this.left,
+    required this.right,
+  });
 
   @override
   Future<Object> render(RenderContext context) async {
@@ -99,8 +109,11 @@ class OperatorVariantExpression extends ExpressionWithSourcePosition {
 
     var errors = <String>[];
     for (var operatorVariant in variants) {
-      var variantErrors =
-          operatorVariant.validate(operator, leftValue, rightValue);
+      var variantErrors = operatorVariant.validate(
+        operator,
+        leftValue,
+        rightValue,
+      );
       if (variantErrors.isEmpty) {
         return operatorVariant.eval(leftValue, rightValue);
       } else {
@@ -108,7 +121,9 @@ class OperatorVariantExpression extends ExpressionWithSourcePosition {
       }
     }
     throw RenderException(
-        message: errors.join(', or '), position: super.position);
+      message: errors.join(', or '),
+      position: super.position,
+    );
   }
 }
 
@@ -129,7 +144,7 @@ class OperatorVariantExpression extends ExpressionWithSourcePosition {
 /// See [custom_operator_test.dart](https://github.com/domain-centric/template_engine/blob/main/test/src/parser/tag/expression/operator/custom_operator_test.dart).
 ///
 abstract class Operator implements DocumentationFactory, ExampleFactory {
-  addParser(Template template, ExpressionGroup2<Expression> group);
+  void addParser(Template template, ExpressionGroup2<Expression> group);
 }
 
 class PrefixOperator<PARAMETER_TYPE extends Object> extends Operator {
@@ -155,7 +170,9 @@ class PrefixOperator<PARAMETER_TYPE extends Object> extends Operator {
 
   @override
   List<String> createMarkdownDocumentation(
-      RenderContext renderContext, int titleLevel) {
+    RenderContext renderContext,
+    int titleLevel,
+  ) {
     var writer = HtmlTableWriter();
     writer.setHeader(titleLevel, '$name Operator $symbol');
     writer.addHeaderRow(['parameter type: $parameterTypeDescription'], [2]);
@@ -165,7 +182,7 @@ class PrefixOperator<PARAMETER_TYPE extends Object> extends Operator {
       expressionExampleResult == null
           ? expressionExample
           : '$expressionExample '
-              'should render: $expressionExampleResult'
+                'should render: $expressionExampleResult',
     ]);
     if (codeExample != null) {
       writer.addRow(['code example:', codeExample!.githubMarkdownLink]);
@@ -175,8 +192,9 @@ class PrefixOperator<PARAMETER_TYPE extends Object> extends Operator {
 
   @override
   List<String> createMarkdownExamples(
-          RenderContext renderContext, int titleLevel) =>
-      codeExample == null ? [] : ['* ${codeExample!.githubMarkdownLink}'];
+    RenderContext renderContext,
+    int titleLevel,
+  ) => codeExample == null ? [] : ['* ${codeExample!.githubMarkdownLink}'];
 
   @override
   String toString() => 'Operator{$symbol}';
@@ -184,11 +202,13 @@ class PrefixOperator<PARAMETER_TYPE extends Object> extends Operator {
   @override
   addParser(Template template, ExpressionGroup2<Expression<Object>> group) {
     group.prefix(
-        string(symbol).trim(),
-        (context, op, value) => PrefixExpression<PARAMETER_TYPE>(
-            operator: this,
-            position: context.toPositionString(),
-            valueExpression: value));
+      string(symbol).trim(),
+      (context, op, value) => PrefixExpression<PARAMETER_TYPE>(
+        operator: this,
+        position: context.toPositionString(),
+        valueExpression: value,
+      ),
+    );
   }
 }
 
@@ -207,23 +227,29 @@ abstract class OperatorWith2Values extends Operator {
 
   @override
   List<String> createMarkdownDocumentation(
-      RenderContext renderContext, int titleLevel) {
+    RenderContext renderContext,
+    int titleLevel,
+  ) {
     var writer = HtmlTableWriter();
     writer.setHeader(titleLevel, '$name Operator $symbol');
     for (var variant in variants) {
       writer.addHeaderRow(
-          ['parameter type: ${variant.parameterTypeDescription}'], [2]);
+        ['parameter type: ${variant.parameterTypeDescription}'],
+        [2],
+      );
       writer.addRow(['description:', variant.description]);
       writer.addRow([
         'expression example:',
         variant.expressionExampleResult == null
             ? variant.expressionExample
             : '${variant.expressionExample} '
-                'should render: ${variant.expressionExampleResult}'
+                  'should render: ${variant.expressionExampleResult}',
       ]);
       if (variant.codeExample != null) {
-        writer
-            .addRow(['code example:', variant.codeExample!.githubMarkdownLink]);
+        writer.addRow([
+          'code example:',
+          variant.codeExample!.githubMarkdownLink,
+        ]);
       }
     }
     return writer.toHtmlLines();
@@ -231,11 +257,12 @@ abstract class OperatorWith2Values extends Operator {
 
   @override
   List<String> createMarkdownExamples(
-          RenderContext renderContext, int titleLevel) =>
-      variants
-          .where((variant) => variant.codeExample != null)
-          .map((variant) => '* ${variant.codeExample!.githubMarkdownLink}')
-          .toList();
+    RenderContext renderContext,
+    int titleLevel,
+  ) => variants
+      .where((variant) => variant.codeExample != null)
+      .map((variant) => '* ${variant.codeExample!.githubMarkdownLink}')
+      .toList();
 
   @override
   String toString() => 'Operator{$symbol}';
@@ -244,24 +271,26 @@ abstract class OperatorWith2Values extends Operator {
   addParser(Template template, ExpressionGroup2<Expression<Object>> group) {
     if (associativity == OperatorAssociativity.right) {
       group.right(
-          string(symbol).trim(),
-          (context, left, op, right) => OperatorVariantExpression(
-                position: context.toPositionString(),
-                operator: symbol,
-                variants: variants,
-                left: left,
-                right: right,
-              ));
+        string(symbol).trim(),
+        (context, left, op, right) => OperatorVariantExpression(
+          position: context.toPositionString(),
+          operator: symbol,
+          variants: variants,
+          left: left,
+          right: right,
+        ),
+      );
     } else {
       group.left(
-          string(symbol).trim(),
-          (context, left, op, right) => OperatorVariantExpression(
-                position: context.toPositionString(),
-                operator: symbol,
-                variants: variants,
-                left: left,
-                right: right,
-              ));
+        string(symbol).trim(),
+        (context, left, op, right) => OperatorVariantExpression(
+          position: context.toPositionString(),
+          operator: symbol,
+          variants: variants,
+          left: left,
+          right: right,
+        ),
+      );
     }
   }
 }
@@ -305,38 +334,41 @@ class OperatorGroup extends DelegatingList<Operator>
 
   @override
   List<String> createMarkdownDocumentation(
-          RenderContext renderContext, int titleLevel) =>
-      [
-        '${"#" * (titleLevel + 1)} $name',
-        ...map((operator) => operator.createMarkdownDocumentation(
-            renderContext, titleLevel + 2)).flattened
-      ];
+    RenderContext renderContext,
+    int titleLevel,
+  ) => [
+    '${"#" * (titleLevel + 1)} $name',
+    ...map(
+      (operator) =>
+          operator.createMarkdownDocumentation(renderContext, titleLevel + 2),
+    ).flattened,
+  ];
 
   @override
   List<String> createMarkdownExamples(
-      RenderContext renderContext, int titleLevel) {
-    var examples = map((function) =>
-            function.createMarkdownExamples(renderContext, titleLevel + 1))
-        .flattened;
+    RenderContext renderContext,
+    int titleLevel,
+  ) {
+    var examples = map(
+      (function) =>
+          function.createMarkdownExamples(renderContext, titleLevel + 1),
+    ).flattened;
     if (examples.isEmpty) {
       return [];
     } else {
-      return [
-        '${"#" * titleLevel} $name',
-        ...examples,
-      ];
+      return ['${"#" * titleLevel} $name', ...examples];
     }
   }
 }
 
 class DefaultOperatorGroups extends DelegatingList<OperatorGroup> {
   DefaultOperatorGroups()
-      : super([
-          Parentheses(),
-          Prefixes(),
-          Multiplication(),
-          Additions(),
-          Comparisons(),
-          Assignments(),
-        ]);
+    : super([
+        Parentheses(),
+        Prefixes(),
+        Multiplication(),
+        Additions(),
+        Comparisons(),
+        Assignments(),
+      ]);
 }

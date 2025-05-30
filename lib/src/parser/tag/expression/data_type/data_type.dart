@@ -17,7 +17,9 @@ abstract class DataType<T extends Object>
 
   @override
   List<String> createMarkdownDocumentation(
-      RenderContext renderContext, int titleLevel) {
+    RenderContext renderContext,
+    int titleLevel,
+  ) {
     var writer = HtmlTableWriter();
     writer.setHeader(titleLevel + 1, '$name Data Type');
     writer.addRow(['description:', description]);
@@ -26,7 +28,7 @@ abstract class DataType<T extends Object>
     if (examples.isNotEmpty) {
       writer.addRow([
         examples.length == 1 ? 'example:' : 'examples:',
-        examples.map((example) => example.githubMarkdownLink).join('<br>\n')
+        examples.map((example) => example.githubMarkdownLink).join('<br>\n'),
       ]);
     }
     return writer.toHtmlLines();
@@ -34,17 +36,13 @@ abstract class DataType<T extends Object>
 
   @override
   List<String> createMarkdownExamples(
-          RenderContext renderContext, int titleLevel) =>
-      examples.map((e) => '* ${e.githubMarkdownLink}').toList();
+    RenderContext renderContext,
+    int titleLevel,
+  ) => examples.map((e) => '* ${e.githubMarkdownLink}').toList();
 }
 
 class DefaultDataTypes extends DelegatingList<DataType> {
-  DefaultDataTypes()
-      : super([
-          QuotesString(),
-          Number(),
-          Boolean(),
-        ]);
+  DefaultDataTypes() : super([QuotesString(), Number(), Boolean()]);
 }
 
 List<Parser<Expression>> dataTypeParsers(List<DataType> dataTypes) =>
@@ -65,9 +63,8 @@ class Boolean extends DataType<bool> {
 
   @override
   List<ProjectFilePath> get examples => [
-        ProjectFilePath(
-            'test/src/parser/tag/expression/data_type/bool_test.dart')
-      ];
+    ProjectFilePath('test/src/parser/tag/expression/data_type/bool_test.dart'),
+  ];
 
   @override
   Parser<Value<bool>> createParser() =>
@@ -85,7 +82,8 @@ class Number extends DataType<num> {
   String get description => 'A form of data to express the size of something.';
 
   @override
-  String get syntaxDescription => 'A number is declared with:<br>'
+  String get syntaxDescription =>
+      'A number is declared with:<br>'
       '* optional: positive (e.g. +12) or negative (e.g. -12) prefix or no prefix (12=positive)<br>'
       '* one or more digits (e.g. 12)<br>'
       '* optional fragments (e.g. 0.12)<br>'
@@ -95,18 +93,18 @@ class Number extends DataType<num> {
 
   @override
   List<ProjectFilePath> get examples => [
-        ProjectFilePath(
-            'test/src/parser/tag/expression/data_type/num_test.dart')
-      ];
+    ProjectFilePath('test/src/parser/tag/expression/data_type/num_test.dart'),
+  ];
 
   @override
-  Parser<Value<num>> createParser() => (digit().plus() &
-          (char('.') & digit().plus()).optional() &
-          (pattern('eE') & pattern('+-').optional() & digit().plus())
-              .optional())
-      .flatten('number expected')
-      .trim()
-      .map((value) => Value<num>(num.parse(value)));
+  Parser<Value<num>> createParser() =>
+      (digit().plus() &
+              (char('.') & digit().plus()).optional() &
+              (pattern('eE') & pattern('+-').optional() & digit().plus())
+                  .optional())
+          .flatten('number expected')
+          .trim()
+          .map((value) => Value<num>(num.parse(value)));
 }
 
 class QuotesString extends DataType<String> {
@@ -125,15 +123,17 @@ class QuotesString extends DataType<String> {
 
   @override
   List<ProjectFilePath> get examples => [
-        ProjectFilePath(
-            'test/src/parser/tag/expression/data_type/string_test.dart')
-      ];
+    ProjectFilePath(
+      'test/src/parser/tag/expression/data_type/string_test.dart',
+    ),
+  ];
 
   @override
   Parser<Value<String>> createParser() => OverrideMessageParser(
-      ((char("'") & any().starLazy(char("'")).flatten() & char("'")) |
-              (char('"') & any().starLazy(char('"')).flatten() & char('"')))
-          .trim()
-          .map((values) => Value<String>(values[1])),
-      'quoted string expected');
+    ((char("'") & any().starLazy(char("'")).flatten() & char("'")) |
+            (char('"') & any().starLazy(char('"')).flatten() & char('"')))
+        .trim()
+        .map((values) => Value<String>(values[1])),
+    'quoted string expected',
+  );
 }

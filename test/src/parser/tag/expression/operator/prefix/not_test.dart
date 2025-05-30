@@ -29,7 +29,9 @@ void main() {
     var parseResult = await engine.parseText('{{!"text"}}');
     var renderResult = await engine.render(parseResult);
     renderResult.text.should.be('{{ERROR}}');
-    renderResult.errorMessage.should.be('Render error in: \'{{!"text"}}\':\n'
-        '  1:3: boolean expected after the ! operator');
+    renderResult.errorMessage.should.be(
+      'Render error in: \'{{!"text"}}\':\n'
+      '  1:3: boolean expected after the ! operator',
+    );
   });
 }

@@ -14,8 +14,7 @@ extension ValueContextMapParserExtension<R> on Parser<R> {
     Callback2<R, S> callback, {
     @Deprecated('All callbacks are considered to have side-effects')
     bool hasSideEffects = true,
-  }) =>
-      ValueContextMapParser<R, S>(this, callback);
+  }) => ValueContextMapParser<R, S>(this, callback);
 }
 
 /// A parser that performs a transformation with a given function on the

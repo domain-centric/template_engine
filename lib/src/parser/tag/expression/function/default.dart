@@ -3,11 +3,11 @@ import 'package:template_engine/template_engine.dart';
 
 class DefaultFunctionGroups extends DelegatingList<FunctionGroup> {
   DefaultFunctionGroups()
-      : super([
-          MathFunctions(),
-          StringFunctions(),
-          DocumentationFunctions(),
-          PathFunctions(),
-          ImportFunctions()
-        ]);
+    : super([
+        MathFunctions(),
+        StringFunctions(),
+        DocumentationFunctions(),
+        PathFunctions(),
+        ImportFunctions(),
+      ]);
 }

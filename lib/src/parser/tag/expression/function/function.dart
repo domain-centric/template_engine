@@ -7,12 +7,19 @@ Parser<Expression> functionsParser({
   required SettableParser loopback,
   required bool verboseErrors,
 }) {
-  var functions =
-      context.engine.functionGroups.expand((function) => function).toList();
+  var functions = context.engine.functionGroups
+      .expand((function) => function)
+      .toList();
   var parser = ChoiceParser<Expression>(
-      functions.map((function) => functionParser(
-          context: context, function: function, loopbackParser: loopback)),
-      failureJoiner: selectFarthest);
+    functions.map(
+      (function) => functionParser(
+        context: context,
+        function: function,
+        loopbackParser: loopback,
+      ),
+    ),
+    failureJoiner: selectFarthest,
+  );
   if (verboseErrors) {
     return parser;
   } else {
@@ -28,14 +35,18 @@ Parser<Expression> functionParser({
   return (string(function.name, 'expected function name: ${function.name}') &
           char('(').trim() &
           ArgumentsParser(
-              parserContext: context,
-              parameters: function.parameters,
-              loopbackParser: loopbackParser) &
+            parserContext: context,
+            parameters: function.parameters,
+            loopbackParser: loopbackParser,
+          ) &
           char(')').trim())
-      .valueContextMap((values, context) => FunctionExpression(
+      .valueContextMap(
+        (values, context) => FunctionExpression(
           context.toPositionString(),
           function,
-          values[2] as Map<String, Expression>));
+          values[2] as Map<String, Expression>,
+        ),
+      );
 }
 
 class FunctionException implements Exception {
@@ -105,12 +116,18 @@ class ExpressionFunction<R extends Object>
   final String? exampleResult;
   final ProjectFilePath? exampleCode;
   final List<Parameter> parameters;
-  final Future<R> Function(String position, RenderContext renderContext,
-      Map<String, Object> parameters) function;
+  final Future<R> Function(
+    String position,
+    RenderContext renderContext,
+    Map<String, Object> parameters,
+  )
+  function;
 
   @override
   List<String> createMarkdownDocumentation(
-      RenderContext renderContext, int titleLevel) {
+    RenderContext renderContext,
+    int titleLevel,
+  ) {
     var writer = HtmlTableWriter();
     writer.setHeader(titleLevel, '$name Function');
     if (description != null) {
@@ -122,8 +139,10 @@ class ExpressionFunction<R extends Object>
       writer.addRow(['code example:', exampleCode!.githubMarkdownLink], [1, 4]);
     }
     var parameterRows = parameters
-        .map((parameter) =>
-            parameter.createMarkdownDocumentation(renderContext, titleLevel))
+        .map(
+          (parameter) =>
+              parameter.createMarkdownDocumentation(renderContext, titleLevel),
+        )
         .flattened;
     writer.rows.addAll(parameterRows);
     return writer.toHtmlLines();
@@ -131,17 +150,20 @@ class ExpressionFunction<R extends Object>
 
   @override
   List<String> createMarkdownExamples(
-          RenderContext renderContext, int titleLevel) =>
-      exampleCode == null ? [] : ['* ${exampleCode!.githubMarkdownLink}'];
+    RenderContext renderContext,
+    int titleLevel,
+  ) => exampleCode == null ? [] : ['* ${exampleCode!.githubMarkdownLink}'];
 
   String _createExampleExpression() {
     var expression = StringBuffer();
     expression.write('{{ $name(');
-    var mandatoryParameters =
-        parameters.where((parameter) => parameter.presence.mandatory);
+    var mandatoryParameters = parameters.where(
+      (parameter) => parameter.presence.mandatory,
+    );
     if (mandatoryParameters.length == 1) {
       expression.write(
-          _createExampleExpressionParameterValue(mandatoryParameters.first));
+        _createExampleExpressionParameterValue(mandatoryParameters.first),
+      );
     } else {
       var commaNeeded = false;
       for (var mandatoryParameter in mandatoryParameters) {
@@ -150,8 +172,9 @@ class ExpressionFunction<R extends Object>
         }
         expression.write(mandatoryParameter.name);
         expression.write('=');
-        expression
-            .write(_createExampleExpressionParameterValue(mandatoryParameter));
+        expression.write(
+          _createExampleExpressionParameterValue(mandatoryParameter),
+        );
         commaNeeded = true;
       }
     }
@@ -159,7 +182,7 @@ class ExpressionFunction<R extends Object>
     return expression.toString();
   }
 
-  _createExpressionExample() {
+  String _createExpressionExample() {
     var example = exampleExpression ?? _createExampleExpression();
     if (exampleResult != null && exampleResult!.trim().isNotEmpty) {
       example += ' should render: $exampleResult';
@@ -193,26 +216,29 @@ class FunctionGroup extends DelegatingList<ExpressionFunction>
 
   @override
   List<String> createMarkdownDocumentation(
-          RenderContext renderContext, int titleLevel) =>
-      [
-        '${"#" * titleLevel} $name',
-        ...map((function) => function.createMarkdownDocumentation(
-            renderContext, titleLevel + 1)).flattened
-      ];
+    RenderContext renderContext,
+    int titleLevel,
+  ) => [
+    '${"#" * titleLevel} $name',
+    ...map(
+      (function) =>
+          function.createMarkdownDocumentation(renderContext, titleLevel + 1),
+    ).flattened,
+  ];
 
   @override
   List<String> createMarkdownExamples(
-      RenderContext renderContext, int titleLevel) {
-    var examples = map((function) =>
-            function.createMarkdownExamples(renderContext, titleLevel + 2))
-        .flattened;
+    RenderContext renderContext,
+    int titleLevel,
+  ) {
+    var examples = map(
+      (function) =>
+          function.createMarkdownExamples(renderContext, titleLevel + 2),
+    ).flattened;
     if (examples.isEmpty) {
       return [];
     } else {
-      return [
-        '${"#" * (titleLevel + 1)} $name',
-        ...examples,
-      ];
+      return ['${"#" * (titleLevel + 1)} $name', ...examples];
     }
   }
 }
@@ -242,46 +268,37 @@ class Parameter<T> implements DocumentationFactory {
 
   Type get valueType => T;
 
-  Parameter({
-    required this.name,
-    this.description,
-    Presence? presence,
-  }) : presence = presence ?? Presence.mandatory() {
+  Parameter({required this.name, this.description, Presence? presence})
+    : presence = presence ?? Presence.mandatory() {
     ParameterName.validate(name);
   }
 
   @override
   List<String> createMarkdownDocumentation(
-          RenderContext renderContext, int titleLevel) =>
+    RenderContext renderContext,
+    int titleLevel,
+  ) => [
+    HtmlTableRow(
       [
-        HtmlTableRow([
-          'parameter:',
-          name,
-          typeDescription<T>(),
-          presence.toString(),
-          if (description != null) description!
-        ], [
-          1,
-          1,
-          1,
-          description == null ? 2 : 1,
-          1
-        ]).toHtml()
-      ];
+        'parameter:',
+        name,
+        typeDescription<T>(),
+        presence.toString(),
+        if (description != null) description!,
+      ],
+      [1, 1, 1, description == null ? 2 : 1, 1],
+    ).toHtml(),
+  ];
 }
 
 class Presence {
   final String name;
   final dynamic defaultValue;
 
-  Presence.mandatory()
-      : name = 'mandatory',
-        defaultValue = null;
-  Presence.optional()
-      : name = 'optional',
-        defaultValue = null;
+  Presence.mandatory() : name = 'mandatory', defaultValue = null;
+  Presence.optional() : name = 'optional', defaultValue = null;
   Presence.optionalWithDefaultValue(this.defaultValue)
-      : name = 'optionalWithDefaultValue';
+    : name = 'optionalWithDefaultValue';
 
   bool get mandatory => name == 'mandatory';
 
@@ -308,11 +325,12 @@ class Presence {
 class ParameterName {
   static final parser = IdentifierName.parser;
 
-  static validate(String name) {
+  static void validate(String name) {
     var result = parser.end('letter OR digit expected').parse(name);
     if (result is Failure) {
       throw ParameterException(
-          'Invalid parameter name: "$name", ${result.message} at position ${result.position}');
+        'Invalid parameter name: "$name", ${result.message} at position ${result.position}',
+      );
     }
   }
 }
@@ -348,18 +366,20 @@ typedef Arguments = Map<String, Object>;
 /// * must match the expected parameter type. e.g. `area(length='hello', width='world')` will result in a failure
 /// * may be a tag expression such as a variable, constant, operation, function, or combination. e.g. `cos(2*pi)`
 class ArgumentsParser extends Parser<Arguments> {
-  static final _endOfArgumentsParser =
-      (whitespace().starLazy(char(')'))).flatten().trim();
+  static final _endOfArgumentsParser = (whitespace().starLazy(
+    char(')'),
+  )).flatten().trim();
   static final _remainingParser = (any().starLazy(char(')'))).flatten().trim();
   static final _commaParser = char(',').flatten('comma expected').trim();
   final ParserContext parserContext;
   final List<Parameter> parameters;
   final SettableParser loopbackParser;
 
-  ArgumentsParser(
-      {required this.parserContext,
-      required this.parameters,
-      required this.loopbackParser});
+  ArgumentsParser({
+    required this.parserContext,
+    required this.parameters,
+    required this.loopbackParser,
+  });
 
   @override
   Result<Map<String, Expression>> parseOn(Context context) {
@@ -399,13 +419,15 @@ class ArgumentsParser extends Parser<Arguments> {
       if (positionalResult is Success) {
         // If we've already seen a named argument, positional arguments are not allowed
         if (seenNamed) {
-          return current
-              .failure('positional arguments must come before named arguments');
+          return current.failure(
+            'positional arguments must come before named arguments',
+          );
         }
         final entry = positionalResult.value;
         if (arguments.containsKey(entry.key)) {
-          return current
-              .failure('parameter "${entry.key}" specified more than once');
+          return current.failure(
+            'parameter "${entry.key}" specified more than once',
+          );
         }
         arguments[entry.key] = entry.value;
         current = positionalResult;
@@ -429,7 +451,8 @@ class ArgumentsParser extends Parser<Arguments> {
           final entry = namedResult.value;
           if (arguments.containsKey(entry.key)) {
             return current.failure(
-                'parameter "${entry.key}" was specified more than once');
+              'parameter "${entry.key}" was specified more than once',
+            );
           }
           arguments[entry.key] = entry.value;
           current = namedResult;
@@ -452,8 +475,10 @@ class ArgumentsParser extends Parser<Arguments> {
       current = remainingResult;
     }
 
-    final validationError =
-        _validateIfMandatoryParametersWhereFound(arguments, current);
+    final validationError = _validateIfMandatoryParametersWhereFound(
+      arguments,
+      current,
+    );
     if (validationError != null) {
       return current.failure(validationError);
     }
@@ -465,15 +490,19 @@ class ArgumentsParser extends Parser<Arguments> {
 
   @override
   ArgumentsParser copy() => ArgumentsParser(
-      parserContext: parserContext,
-      parameters: parameters,
-      loopbackParser: loopbackParser);
+    parserContext: parserContext,
+    parameters: parameters,
+    loopbackParser: loopbackParser,
+  );
 
   /// returns an validation error message or null when valid
   String? _validateIfMandatoryParametersWhereFound(
-      Arguments arguments, Context context) {
-    var missingMandatoryParameters = parameters
-        .where((p) => p.presence.mandatory && !arguments.containsKey(p.name));
+    Arguments arguments,
+    Context context,
+  ) {
+    var missingMandatoryParameters = parameters.where(
+      (p) => p.presence.mandatory && !arguments.containsKey(p.name),
+    );
     if (missingMandatoryParameters.isEmpty) {
       return null;
     }
@@ -486,15 +515,19 @@ class ArgumentsParser extends Parser<Arguments> {
 
   /// Adds missing default values in [namesAndValues]
   Map<String, Expression> _missingDefaultValues(
-      List<Parameter> parameters, Map<String, Expression> namesAndValues) {
+    List<Parameter> parameters,
+    Map<String, Expression> namesAndValues,
+  ) {
     Map<String, Expression> missingDefaultValues = {};
 
-    var optionalParametersWithDefaultValue = parameters
-        .where((parameter) => parameter.presence.optionalWithDefaultValue);
+    var optionalParametersWithDefaultValue = parameters.where(
+      (parameter) => parameter.presence.optionalWithDefaultValue,
+    );
     for (var optionalParameter in optionalParametersWithDefaultValue) {
       if (!namesAndValues.containsKey(optionalParameter.name)) {
-        missingDefaultValues[optionalParameter.name] =
-            Value(optionalParameter.presence.defaultValue);
+        missingDefaultValues[optionalParameter.name] = Value(
+          optionalParameter.presence.defaultValue,
+        );
       }
     }
     return missingDefaultValues;
@@ -514,9 +547,9 @@ ArgumentEntryParser namedArgumentParser({
   required ParserContext parserContext,
   required Parameter parameter,
   required SettableParser loopbackParser,
-}) =>
-    (string(parameter.name).trim() & char('=').trim() & loopbackParser)
-        .map((values) => ArgumentEntry(parameter.name, values[2]));
+}) => (string(parameter.name).trim() & char('=').trim() & loopbackParser).map(
+  (values) => ArgumentEntry(parameter.name, values[2]),
+);
 
 /// Accepts a value expression (not starting with name=) and converts it to a [ArgumentEntry]
 /// It uses a loopback parser which is an [expressionParser] so that it can

@@ -50,17 +50,21 @@ class ParserTree<T> extends Renderer<IntermediateRenderResult> {
         errors.add(e);
         textBuffer.write(context.renderedError);
       } catch (e) {
-        var error =
-            RenderError(message: e.toString(), position: position(child));
+        var error = RenderError(
+          message: e.toString(),
+          position: position(child),
+        );
         errors.add(error);
         textBuffer.write(context.renderedError);
       }
     }
     return IntermediateRenderResult(
-        text: textBuffer.toString(), errors: errors);
+      text: textBuffer.toString(),
+      errors: errors,
+    );
   }
 
-  String position(child) =>
+  String position(dynamic child) =>
       child is ExpressionWithSourcePosition ? child.position : '?';
 
   /// returns either an:
@@ -83,7 +87,7 @@ class ParserTree<T> extends Renderer<IntermediateRenderResult> {
     }
   }
 
-  String resultToString(result) {
+  String resultToString(dynamic result) {
     if (result is List) {
       return result.join();
     } else {
@@ -91,7 +95,7 @@ class ParserTree<T> extends Renderer<IntermediateRenderResult> {
     }
   }
 
-  Iterable<TemplateError> resultErrors(result) {
+  Iterable<TemplateError> resultErrors(dynamic result) {
     if (result is IntermediateRenderResult) {
       return result.errors;
     }
@@ -115,25 +119,23 @@ class RenderContext {
   final Template templateBeingRendered;
 
   final List<TemplateParseResult> parsedTemplates;
-  RenderContext(
-      {required this.engine,
-      required this.parsedTemplates,
-      required this.templateBeingRendered,
+  RenderContext({
+    required this.engine,
+    required this.parsedTemplates,
+    required this.templateBeingRendered,
 
-      /// How errors need to be rendered
-      String? renderedError,
-      VariableMap? variables})
-      : variables = variables ?? {},
-        renderedError =
-            renderedError ?? '${engine.tagStart}ERROR${engine.tagEnd}';
+    /// How errors need to be rendered
+    String? renderedError,
+    VariableMap? variables,
+  }) : variables = variables ?? {},
+       renderedError =
+           renderedError ?? '${engine.tagStart}ERROR${engine.tagEnd}';
 }
 
 abstract class RenderResult {
   final String text;
 
-  RenderResult({
-    required this.text,
-  });
+  RenderResult({required this.text});
 
   String get errorMessage;
 
@@ -153,8 +155,11 @@ class TemplateRenderResult extends RenderResult {
   final Template template;
   final List<TemplateError> errors;
 
-  TemplateRenderResult(
-      {required this.template, required super.text, this.errors = const []});
+  TemplateRenderResult({
+    required this.template,
+    required super.text,
+    this.errors = const [],
+  });
 
   @override
   String get errorMessage {
@@ -162,8 +167,9 @@ class TemplateRenderResult extends RenderResult {
       return "";
     }
     var parseErrors = errors.whereType<ParseError>();
-    var renderErrors =
-        errors.where((error) => error is RenderError || error is ImportError);
+    var renderErrors = errors.where(
+      (error) => error is RenderError || error is ImportError,
+    );
     if (parseErrors.isNotEmpty && renderErrors.isNotEmpty) {
       return 'Errors in: ${template.sourceTitle}:\n'
           '  Parse error${parseErrors.length > 1 ? "s" : ""}:\n'
@@ -187,12 +193,12 @@ class TemplatesRenderResult extends RenderResult {
   final List<TemplateRenderResult> renderResults;
 
   TemplatesRenderResult(this.renderResults)
-      : super(
-            text: renderResults
-                .where((renderResult) =>
-                    renderResult.template is! ImportedTemplate)
-                .map((renderResult) => renderResult.text)
-                .join());
+    : super(
+        text: renderResults
+            .where((renderResult) => renderResult.template is! ImportedTemplate)
+            .map((renderResult) => renderResult.text)
+            .join(),
+      );
 
   @override
   String get errorMessage => renderResults

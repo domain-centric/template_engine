@@ -19,9 +19,7 @@ abstract class ExpressionWithSourcePosition<T extends Object>
 /// rendered (evaluated).
 /// e.g. it can be like a [num], [bool], [String] etc...
 class Value<T extends Object> extends Expression<T> {
-  Value(T value)
-      : _originalValue = value,
-        value = Future.value(value);
+  Value(T value) : _originalValue = value, value = Future.value(value);
 
   final Future<T> value;
   final T _originalValue;

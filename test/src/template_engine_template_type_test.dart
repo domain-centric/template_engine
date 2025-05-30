@@ -41,8 +41,9 @@ void main() {
 
     test('using HttpTemplate', () async {
       final url = Uri.parse(
-          "https://raw.githubusercontent.com/domain-centric/template_engine/"
-          "main/test/src/hello_name.template");
+        "https://raw.githubusercontent.com/domain-centric/template_engine/"
+        "main/test/src/hello_name.template",
+      );
       var template = HttpTemplate(url);
       var engine = TemplateEngine();
       var parseResult = await engine.parseTemplate(template);

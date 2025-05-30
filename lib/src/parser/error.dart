@@ -38,8 +38,8 @@ class ParseError extends TemplateError {
   ParseError({required this.message, required this.position});
 
   ParseError.fromFailure(Failure failure)
-      : message = failure.message,
-        position = failure.toPositionString();
+    : message = failure.message,
+      position = failure.toPositionString();
 
   @override
   String toIndentedString(int indent) =>

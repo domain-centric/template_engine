@@ -1,16 +1,19 @@
 import 'package:petitparser/petitparser.dart';
 import 'package:template_engine/template_engine.dart';
 
-Parser<Expression> expressionParser(ParserContext parserContext,
-    {bool verboseErrors = false}) {
+Parser<Expression> expressionParser(
+  ParserContext parserContext, {
+  bool verboseErrors = false,
+}) {
   final builder = ExpressionBuilder2<Expression>();
   builder.primitive(
     ChoiceParser([
       ...dataTypeParsers(parserContext.engine.dataTypes),
       functionsParser(
-          context: parserContext,
-          loopback: builder.loopback,
-          verboseErrors: verboseErrors),
+        context: parserContext,
+        loopback: builder.loopback,
+        verboseErrors: verboseErrors,
+      ),
       constantParser(parserContext.engine.constants),
       variableParser(parserContext.template),
     ], failureJoiner: selectFarthestJoined),
@@ -112,14 +115,14 @@ class ExpressionBuilder2<T> {
     return resolve(parser);
   }
 
-  void addOperators(
-    ParserContext parserContext,
-  ) {
+  void addOperators(ParserContext parserContext) {
     for (var operatorGroup in parserContext.engine.operatorGroups) {
       var builderGroup = group();
       for (var operator in operatorGroup) {
-        operator.addParser(parserContext.template,
-            builderGroup as ExpressionGroup2<Expression<Object>>);
+        operator.addParser(
+          parserContext.template,
+          builderGroup as ExpressionGroup2<Expression<Object>>,
+        );
       }
     }
   }
@@ -136,8 +139,10 @@ class ExpressionGroup2<T> {
   final Parser<T> _loopback;
 
   /// Defines a new primitive or literal [parser].
-  @Deprecated('Define primitive parsers directly on the builder using '
-      '`ExpressionBuilder.primitive`')
+  @Deprecated(
+    'Define primitive parsers directly on the builder using '
+    '`ExpressionBuilder.primitive`',
+  )
   void primitive(Parser<T> parser) => primitives.add(parser);
 
   final List<Parser<T>> primitives = [];
@@ -145,9 +150,11 @@ class ExpressionGroup2<T> {
   /// Defines a new wrapper using [left] and [right] parsers, that are typically
   /// used for parenthesis. Evaluates the [callback] with the parsed `left`
   /// delimiter, the `value` and `right` delimiter.
-  void wrapper<L, R>(Parser<L> left, Parser<R> right,
-          T Function(L left, T value, R right) callback) =>
-      _wrapper.add(seq3(left, _loopback, right).map3(callback));
+  void wrapper<L, R>(
+    Parser<L> left,
+    Parser<R> right,
+    T Function(L left, T value, R right) callback,
+  ) => _wrapper.add(seq3(left, _loopback, right).map3(callback));
 
   Parser<T> _buildWrapper(Parser<T> inner) => buildChoice([..._wrapper, inner]);
 
@@ -155,56 +162,88 @@ class ExpressionGroup2<T> {
 
   /// Adds a prefix operator [parser]. Evaluates the [callback] with the parsed
   /// `operator` and `value`.
-  void prefix<O>(Parser<O> parser,
-          T Function(Context context, O operator, T value) callback) =>
-      _prefix.add(parser.valueContextMap((operator, context) =>
-          ExpressionResultPrefix<T, O>(context, operator, callback)));
+  void prefix<O>(
+    Parser<O> parser,
+    T Function(Context context, O operator, T value) callback,
+  ) => _prefix.add(
+    parser.valueContextMap(
+      (operator, context) =>
+          ExpressionResultPrefix<T, O>(context, operator, callback),
+    ),
+  );
 
   Parser<T> _buildPrefix(Parser<T> inner) => _prefix.isEmpty
       ? inner
-      : seq2(buildChoice(_prefix).star(), inner).map2((prefix, value) =>
-          prefix.reversed.fold(value, (each, result) => result.call(each)));
+      : seq2(buildChoice(_prefix).star(), inner).map2(
+          (prefix, value) =>
+              prefix.reversed.fold(value, (each, result) => result.call(each)),
+        );
 
   final List<Parser<ExpressionResultPrefix<T, void>>> _prefix = [];
 
   /// Adds a postfix operator [parser]. Evaluates the [callback] with the parsed
   /// `value` and `operator`.
   void postfix<O>(Parser<O> parser, T Function(T value, O operator) callback) =>
-      _postfix.add(parser.map(
-          (operator) => ExpressionResultPostfix<T, O>(operator, callback)));
+      _postfix.add(
+        parser.map(
+          (operator) => ExpressionResultPostfix<T, O>(operator, callback),
+        ),
+      );
 
   Parser<T> _buildPostfix(Parser<T> inner) => _postfix.isEmpty
       ? inner
-      : seq2(inner, buildChoice(_postfix).star()).map2((value, postfix) =>
-          postfix.fold(value, (each, result) => result.call(each)));
+      : seq2(inner, buildChoice(_postfix).star()).map2(
+          (value, postfix) =>
+              postfix.fold(value, (each, result) => result.call(each)),
+        );
 
   final List<Parser<ExpressionResultPostfix<T, void>>> _postfix = [];
 
   /// Adds a right-associative operator [parser]. Evaluates the [callback] with
   /// the parsed `left` term, `operator`, and `right` term.
-  void right<O>(Parser<O> parser,
-          T Function(Context context, T left, O operator, T right) callback) =>
-      _right.add(parser.valueContextMap((operator, context) =>
-          ExpressionResultInfix<T, O>(context, operator, callback)));
+  void right<O>(
+    Parser<O> parser,
+    T Function(Context context, T left, O operator, T right) callback,
+  ) => _right.add(
+    parser.valueContextMap(
+      (operator, context) =>
+          ExpressionResultInfix<T, O>(context, operator, callback),
+    ),
+  );
 
   Parser<T> _buildRight(Parser<T> inner) => _right.isEmpty
       ? inner
-      : inner.plusSeparated(buildChoice(_right)).map((sequence) => sequence
-          .foldRight((left, result, right) => result.call(left, right)));
+      : inner
+            .plusSeparated(buildChoice(_right))
+            .map(
+              (sequence) => sequence.foldRight(
+                (left, result, right) => result.call(left, right),
+              ),
+            );
 
   final List<Parser<ExpressionResultInfix<T, void>>> _right = [];
 
   /// Adds a left-associative operator [parser]. Evaluates the [callback] with
   /// the parsed `left` term, `operator`, and `right` term.
-  void left<O>(Parser<O> parser,
-          T Function(Context context, T left, O operator, T right) callback) =>
-      _left.add(parser.valueContextMap((operator, context) =>
-          ExpressionResultInfix<T, O>(context, operator, callback)));
+  void left<O>(
+    Parser<O> parser,
+    T Function(Context context, T left, O operator, T right) callback,
+  ) => _left.add(
+    parser.valueContextMap(
+      (operator, context) =>
+          ExpressionResultInfix<T, O>(context, operator, callback),
+    ),
+  );
 
   Parser<T> _buildLeft(Parser<T> inner) => _left.isEmpty
       ? inner
-      : inner.plusSeparated(buildChoice(_left)).map((sequence) =>
-          sequence.foldLeft((left, result, right) => result.call(left, right)));
+      : inner
+            .plusSeparated(buildChoice(_left))
+            .map(
+              (sequence) => sequence.foldLeft(
+                (left, result, right) => result.call(left, right),
+              ),
+            );
 
   final List<Parser<ExpressionResultInfix<T, void>>> _left = [];
 
@@ -222,8 +261,9 @@ class ExpressionGroup2<T> {
   bool _optional = false;
 
   // Internal helper to build the group of parsers.
-  Parser<T> build(Parser<T> inner) => _buildOptional(_buildLeft(
-      _buildRight(_buildPostfix(_buildPrefix(_buildWrapper(inner))))));
+  Parser<T> build(Parser<T> inner) => _buildOptional(
+    _buildLeft(_buildRight(_buildPostfix(_buildPrefix(_buildWrapper(inner))))),
+  );
 }
 
 class ExpressionResultPrefix<V, O> {

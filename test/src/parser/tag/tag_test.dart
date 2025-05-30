@@ -36,38 +36,41 @@ void main() {
     });
 
     test('should throw for invalid name "ab@"', () {
-      Should.throwException<TagException>(() => TagName.validate('ab@'))!
-          .message
-          .should
-          .be('Tag name: "ab@" is invalid: end of input expected at position: 2');
+      Should.throwException<TagException>(
+        () => TagName.validate('ab@'),
+      )!.message.should.be(
+        'Tag name: "ab@" is invalid: end of input expected at position: 2',
+      );
     });
 
     test('should throw for invalid name "ab1.@"', () {
-      Should.throwException<TagException>(() => TagName.validate('ab1.@'))!
-          .message
-          .should
-          .be('Tag name: "ab1.@" is invalid: end of input expected at position: 3');
+      Should.throwException<TagException>(
+        () => TagName.validate('ab1.@'),
+      )!.message.should.be(
+        'Tag name: "ab1.@" is invalid: end of input expected at position: 3',
+      );
     });
   });
 
   group('Tag constructor', () {
     test('should throw TagException for invalid tag name', () {
-      Should.throwException<TagException>(() => TagWithInvalidName())!
-          .message
-          .should
-          .be('Tag name: "inv@lid" is invalid: end of input expected at position: 3');
+      Should.throwException<TagException>(
+        () => TagWithInvalidName(),
+      )!.message.should.be(
+        'Tag name: "inv@lid" is invalid: end of input expected at position: 3',
+      );
     });
   });
 }
 
 class TagWithInvalidName extends Tag<String> {
   TagWithInvalidName()
-      : super(
-          name: 'inv@lid',
-          description: ['A tag with an invalid name for testing'],
-          exampleExpression: 'dummy',
-          exampleCode: ProjectFilePath('dummy'),
-        );
+    : super(
+        name: 'inv@lid',
+        description: ['A tag with an invalid name for testing'],
+        exampleExpression: 'dummy',
+        exampleCode: ProjectFilePath('dummy'),
+      );
 
   @override
   Parser<String> createTagParser(ParserContext context) {
@@ -76,6 +79,7 @@ class TagWithInvalidName extends Tag<String> {
 
   @override
   List<String> createMarkdownExamples(
-          RenderContext renderContext, int titleLevel) =>
-      [];
+    RenderContext renderContext,
+    int titleLevel,
+  ) => [];
 }

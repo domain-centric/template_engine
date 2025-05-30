@@ -10,11 +10,8 @@ void main() {
       'person': {
         'name': 'John Doe',
         'age': 30,
-        'child': {
-          'name': 'Jane Doe',
-          'age': 5,
-        }
-      }
+        'child': {'name': 'Jane Doe', 'age': 5},
+      },
     };
     var engine = TemplateEngine();
     var parseResult = await engine.parseText("{{importXml('$path')}}");
@@ -24,7 +21,8 @@ void main() {
 
   test('test assigning importXml to a variable', () async {
     var engine = TemplateEngine();
-    var input = "{{xml=importXml('$path')}}"
+    var input =
+        "{{xml=importXml('$path')}}"
         "{{xml.person.child.name}}";
     var parseResult = await engine.parseText(input);
     var renderResult = await engine.render(parseResult);
@@ -33,19 +31,25 @@ void main() {
 
   test('test importXml with none existing file', () async {
     var engine = TemplateEngine();
-    var input = "{{xml=importXml('none_existing.xml')}}"
+    var input =
+        "{{xml=importXml('none_existing.xml')}}"
         "{{xml.person.child.name}}";
     var parseResult = await engine.parseText(input);
     var renderResult = await engine.render(parseResult);
     renderResult.text.should.be('{{ERROR}}{{ERROR}}');
-    renderResult.errorMessage.should.contain("Render errors in: "
-        "'{{xml=importXml('none_existing.xml')}");
     renderResult.errorMessage.should.contain(
-        "  1:7: Error importing a XML file: "
-        "Error reading: none_existing.xml, "
-        "PathNotFoundException: Cannot open file, path = 'none_existing.xml'");
+      "Render errors in: "
+      "'{{xml=importXml('none_existing.xml')}",
+    );
+    renderResult.errorMessage.should.contain(
+      "  1:7: Error importing a XML file: "
+      "Error reading: none_existing.xml, "
+      "PathNotFoundException: Cannot open file, path = 'none_existing.xml'",
+    );
     renderResult.errorMessage.should.contain("none_existing.xml");
-    renderResult.errorMessage.should.contain(" 1:41: Variable "
-        "does not exist: xml");
+    renderResult.errorMessage.should.contain(
+      " 1:41: Variable "
+      "does not exist: xml",
+    );
   });
 }

@@ -33,18 +33,20 @@ void main() {
   });
 
   group('missingTagStartParser', () {
-    test('should return error for missing tag end in "Hello {{ world."',
-        () async {
-      final template = TextTemplate('Hello {{ world.');
-      final engine = TemplateEngine();
+    test(
+      'should return error for missing tag end in "Hello {{ world."',
+      () async {
+        final template = TextTemplate('Hello {{ world.');
+        final engine = TemplateEngine();
 
-      final result = await engine.parseTemplate(template);
+        final result = await engine.parseTemplate(template);
 
-      result.errorMessage.should.be(
-        'Parse error in: \'Hello {{ world.\':\n'
-        '  1:7: Found tag start: {{, but it was not followed with a tag end: }}',
-      );
-    });
+        result.errorMessage.should.be(
+          'Parse error in: \'Hello {{ world.\':\n'
+          '  1:7: Found tag start: {{, but it was not followed with a tag end: }}',
+        );
+      },
+    );
 
     test('should return error for escaped and unclosed tag', () async {
       final template = TextTemplate('Hello \\{{ {{ world.');

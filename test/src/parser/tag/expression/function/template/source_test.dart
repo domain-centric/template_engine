@@ -17,11 +17,8 @@ void main() {
 
   test('readSource from URI with FILE schema', () async {
     var source = ProjectFilePath(
-            'test/src/parser/tag/expression/function/import/person.yaml')
-        .file
-        .absolute
-        .uri
-        .toString();
+      'test/src/parser/tag/expression/function/import/person.yaml',
+    ).file.absolute.uri.toString();
     var text = await readSource(source);
     text.should.contain('person');
     text.should.contain('name');
@@ -32,22 +29,22 @@ void main() {
     text.should.contain('Jane Doe');
   });
 
-  test('readSource with absolute file path (in style of operating system)',
-      () async {
-    var source = ProjectFilePath(
-            'test/src/parser/tag/expression/function/import/person.yaml')
-        .file
-        .absolute
-        .path;
-    var text = await readSource(source);
-    text.should.contain('person');
-    text.should.contain('name');
-    text.should.contain(':');
-    text.should.contain('John Doe');
-    text.should.contain('age');
-    text.should.contain('child');
-    text.should.contain('Jane Doe');
-  });
+  test(
+    'readSource with absolute file path (in style of operating system)',
+    () async {
+      var source = ProjectFilePath(
+        'test/src/parser/tag/expression/function/import/person.yaml',
+      ).file.absolute.path;
+      var text = await readSource(source);
+      text.should.contain('person');
+      text.should.contain('name');
+      text.should.contain(':');
+      text.should.contain('John Doe');
+      text.should.contain('age');
+      text.should.contain('child');
+      text.should.contain('Jane Doe');
+    },
+  );
 
   test('readSource with URI with HTTPS schema', () async {
     var source =
@@ -72,27 +69,30 @@ void main() {
     }
   });
 
-  test('readSource with URI with HTTPS schema to a none existing page',
-      () async {
-    try {
-      await readSource('https://your-site.webflow.io/does-not-exist');
-      throw Exception('Should have failed');
-    } on Exception catch (e) {
-      e
-          .toString()
-          .should
-          .contain("Error reading: https://your-site.webflow.io/does-not-exist,"
-              " status code: 404");
-    }
-  });
+  test(
+    'readSource with URI with HTTPS schema to a none existing page',
+    () async {
+      try {
+        await readSource('https://your-site.webflow.io/does-not-exist');
+        throw Exception('Should have failed');
+      } on Exception catch (e) {
+        e.toString().should.contain(
+          "Error reading: https://your-site.webflow.io/does-not-exist,"
+          " status code: 404",
+        );
+      }
+    },
+  );
 
   test('readSource with of a none existing file path', () async {
     try {
       await readSource('none_existing.file');
       throw Exception('Should have failed');
     } on Exception catch (e) {
-      e.toString().should.contain("Error reading: none_existing.file, "
-          "PathNotFoundException: Cannot open file");
+      e.toString().should.contain(
+        "Error reading: none_existing.file, "
+        "PathNotFoundException: Cannot open file",
+      );
     }
   });
 }
