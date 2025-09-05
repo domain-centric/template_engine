@@ -1,6 +1,7 @@
 export 'src/parser/error.dart';
 export 'src/parser/error_parser.dart';
 export 'src/parser/generic_parsers/override_message_parser.dart';
+export 'src/parser/generic_parsers/value_context_map_parser.dart';
 export 'src/parser/parser.dart';
 export 'src/parser/tag/expression/constant/constant.dart';
 export 'src/parser/tag/expression/data_type/data_type.dart';
@@ -25,7 +26,6 @@ export 'src/parser/tag/expression/tag_expression_parser.dart';
 export 'src/parser/tag/expression/variable/variable.dart';
 export 'src/parser/tag/group.dart';
 export 'src/parser/tag/tag.dart';
-export 'src/parser/generic_parsers/value_context_map_parser.dart';
 export 'src/project_file_path.dart';
 export 'src/render.dart';
 export 'src/source.dart';
