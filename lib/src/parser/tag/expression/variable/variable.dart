@@ -103,7 +103,7 @@ class VariableExpression extends ExpressionWithSourcePosition {
 
 Parser<Expression<Object>> variableParser(Template template) {
   return (VariableName.namePathParser & char('(').trim().not())
-      .flatten('variable expected')
+      .flatten(message: 'variable expected')
       .trim()
       .valueContextMap(
         (name, context) => VariableExpression(

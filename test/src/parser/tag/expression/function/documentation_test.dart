@@ -103,7 +103,8 @@ void main() {
 }
 
 Parser<String> urlParser() =>
-    ((stringIgnoreCase('https://') | stringIgnoreCase('http://')) &
+    ((string('https://', ignoreCase: true) |
+                string('http://', ignoreCase: true)) &
             (letter() | digit() | char('-') | pattern('\$_.+! *\'(),/&?=: %'))
                 .plus())
         .flatten();

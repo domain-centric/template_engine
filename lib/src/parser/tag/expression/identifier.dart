@@ -10,7 +10,7 @@ class IdentifierName {
       (lowercase() & (letter() | digit()).star()).flatten();
 
   static void validate(String name) {
-    var result = parser.end('letter OR digit expected').parse(name);
+    var result = parser.end(message: 'letter OR digit expected').parse(name);
     if (result is Failure) {
       throw IdentifierException(
         "Invalid identifier name: '$name', "

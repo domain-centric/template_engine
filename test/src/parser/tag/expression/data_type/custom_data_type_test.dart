@@ -33,7 +33,9 @@ class Binary extends DataType {
 
   @override
   Parser<Value<Object>> createParser() =>
-      ((char('0') | char('1')).plus().flatten('binary integer expected') &
+      ((char('0') | char('1')).plus().flatten(
+                message: 'binary integer expected',
+              ) &
               char('b'))
           .trim()
           .map((values) => Value<num>(int.parse(values.first, radix: 2)));

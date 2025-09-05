@@ -32,7 +32,10 @@ Parser<Expression> functionParser({
   required ExpressionFunction<Object> function,
   required SettableParser loopbackParser,
 }) {
-  return (string(function.name, 'expected function name: ${function.name}') &
+  return (string(
+            function.name,
+            message: 'expected function name: ${function.name}',
+          ) &
           char('(').trim() &
           ArgumentsParser(
             parserContext: context,
@@ -326,7 +329,7 @@ class ParameterName {
   static final parser = IdentifierName.parser;
 
   static void validate(String name) {
-    var result = parser.end('letter OR digit expected').parse(name);
+    var result = parser.end(message: 'letter OR digit expected').parse(name);
     if (result is Failure) {
       throw ParameterException(
         'Invalid parameter name: "$name", ${result.message} at position ${result.position}',
@@ -370,7 +373,9 @@ class ArgumentsParser extends Parser<Arguments> {
     char(')'),
   )).flatten().trim();
   static final _remainingParser = (any().starLazy(char(')'))).flatten().trim();
-  static final _commaParser = char(',').flatten('comma expected').trim();
+  static final _commaParser = char(
+    ',',
+  ).flatten(message: 'comma expected').trim();
   final ParserContext parserContext;
   final List<Parameter> parameters;
   final SettableParser loopbackParser;

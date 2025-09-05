@@ -68,8 +68,8 @@ class Boolean extends DataType<bool> {
 
   @override
   Parser<Value<bool>> createParser() =>
-      (stringIgnoreCase('true') | stringIgnoreCase('false'))
-          .flatten('boolean expected')
+      (string('true', ignoreCase: true) | string('false', ignoreCase: true))
+          .flatten(message: 'boolean expected')
           .trim()
           .map((value) => Value<bool>(value.toLowerCase() == 'true'));
 }
@@ -102,7 +102,7 @@ class Number extends DataType<num> {
               (char('.') & digit().plus()).optional() &
               (pattern('eE') & pattern('+-').optional() & digit().plus())
                   .optional())
-          .flatten('number expected')
+          .flatten(message: 'number expected')
           .trim()
           .map((value) => Value<num>(num.parse(value)));
 }

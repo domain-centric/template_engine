@@ -105,7 +105,7 @@ Parser<Expression> constantParser(List<Constant> constants) {
           (constant) => string(constant.name) & (letter() | digit()).not(),
         ),
       )
-      .flatten('constant expected')
+      .flatten(message: 'constant expected')
       .trim()
       .map(
         (name) => Value(

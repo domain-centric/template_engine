@@ -1,4 +1,3 @@
-import 'package:documentation_builder/documentation_builder.dart';
 import 'package:shouldly/shouldly.dart';
 import 'package:template_engine/template_engine.dart';
 import 'package:test/test.dart';
@@ -14,7 +13,7 @@ void main() {
     var renderResult = await engine.render(parseResult);
     renderResult.errorMessage.should.beNullOrEmpty();
     renderResult.text.should.be(
-      'Line to import.$newLine'
+      'Line to import.\r\n'
       'Hello World.',
     );
   });
