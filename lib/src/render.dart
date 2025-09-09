@@ -11,7 +11,7 @@ abstract class Renderer<T> {
 }
 
 class RenderException extends RenderError implements Exception {
-  RenderException({required super.message, required super.position});
+  RenderException(super.message, super.position);
 }
 
 /// Types returned by the [Renderer.render] method or
@@ -50,10 +50,7 @@ class ParserTree<T> extends Renderer<IntermediateRenderResult> {
         errors.add(e);
         textBuffer.write(context.renderedError);
       } catch (e) {
-        var error = RenderError(
-          message: e.toString(),
-          position: position(child),
-        );
+        var error = RenderError(e.toString(), position(child));
         errors.add(error);
         textBuffer.write(context.renderedError);
       }
@@ -64,8 +61,9 @@ class ParserTree<T> extends Renderer<IntermediateRenderResult> {
     );
   }
 
-  String position(dynamic child) =>
-      child is ExpressionWithSourcePosition ? child.position : '?';
+  Position position(dynamic child) => child is ExpressionWithSourcePosition
+      ? child.position
+      : Position.unknown();
 
   /// returns either an:
   /// * [IntermediateRenderResult] containing a text and possible errors

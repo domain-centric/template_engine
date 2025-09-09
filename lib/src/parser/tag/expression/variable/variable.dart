@@ -73,8 +73,8 @@ class VariableExpression extends ExpressionWithSourcePosition {
       if (namePath.length == namePathIndex + 1) {
         if (value == null) {
           throw VariableException(
-            message: 'Variable: $namePath may not be null',
-            position: super.position,
+            'Variable: $namePath may not be null',
+            super.position,
           );
         }
         return Future.value(value!);
@@ -84,10 +84,9 @@ class VariableExpression extends ExpressionWithSourcePosition {
       }
     }
     throw VariableException(
-      message:
-          'Variable does not exist: '
-          '${namePath.sublist(0, namePathIndex + 1).join('.')}',
-      position: super.position,
+      'Variable does not exist: '
+      '${namePath.sublist(0, namePathIndex + 1).join('.')}',
+      super.position,
     );
   }
 
@@ -96,7 +95,7 @@ class VariableExpression extends ExpressionWithSourcePosition {
     try {
       return _findVariableValue(context.variables, namePath.split('.'), 0);
     } on VariableException catch (e) {
-      throw RenderException(message: e.message, position: super.position);
+      throw RenderException(e.message, super.position);
     }
   }
 }
@@ -108,13 +107,13 @@ Parser<Expression<Object>> variableParser(Template template) {
       .valueContextMap(
         (name, context) => VariableExpression(
           namePath: name,
-          position: context.toPositionString(),
+          position: Position.ofContext(context),
         ),
       );
 }
 
 class VariableException extends RenderException {
-  VariableException({required super.message, required super.position});
+  VariableException(super.message, super.position);
 }
 
 /// The [VariableName] identifies the [Variable] and corresponds with the keys

@@ -83,7 +83,7 @@ class TemplateEngine {
   /// See [Renderer]
   Future<ParseResult> parseTemplate(Template template) async {
     var context = ParserContext(this, template);
-    var parser = templateParser(context);
+    var parser = TemplateParser(context);
     var text = await template.text;
     var result = parser.parse(text);
 
@@ -105,7 +105,7 @@ class TemplateEngine {
     var parseResults = <TemplateParseResult>[];
     for (var template in templates) {
       var context = ParserContext(this, template);
-      var parser = templateParser(context);
+      var parser = TemplateParser(context);
       var text = await template.text;
       var result = parser.parse(text);
 

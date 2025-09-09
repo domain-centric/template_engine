@@ -12,7 +12,7 @@ class InvalidTagParser extends Parser<Object> {
   final Parser<String> tagEndParser;
   InvalidTagParser(this.parserContext)
     : tagStartParser = string(parserContext.engine.tagStart),
-      anythingBeforeEndParser = untilEndOfTagParser(
+      anythingBeforeEndParser = untilTagStartOrEndParser(
         parserContext.engine.tagStart,
         parserContext.engine.tagEnd,
       ),
@@ -21,7 +21,6 @@ class InvalidTagParser extends Parser<Object> {
   @override
   Parser<Object> copy() => InvalidTagParser(parserContext);
 
-  /// see dart doc if this class.
   @override
   Result<Object> parseOn(Context context) {
     var errors = <ParseError>[];
@@ -46,10 +45,7 @@ class InvalidTagParser extends Parser<Object> {
         anythingBeforeEndResult is Success &&
         anythingBeforeEndResult.value.isNotEmpty) {
       errors.add(
-        ParseError(
-          message: 'invalid tag syntax',
-          position: expressionResult.toPositionString(),
-        ),
+        ParseError('invalid tag syntax', Position.ofContext(expressionResult)),
       );
     }
 
@@ -77,11 +73,10 @@ Parser<String> missingTagStartParser(ParserContext parserContext) =>
     string(parserContext.engine.tagEnd).valueContextMap((value, context) {
       parserContext.errors.add(
         ParseError(
-          message:
-              'Found tag end: ${parserContext.engine.tagEnd}, '
-              'but it was not preceded with a tag start: '
-              '${parserContext.engine.tagStart}',
-          position: context.toPositionString(),
+          'Found tag end: ${parserContext.engine.tagEnd}, '
+          'but it was not preceded with a tag start: '
+          '${parserContext.engine.tagStart}',
+          Position.ofContext(context),
         ),
       );
       return value;
@@ -97,11 +92,10 @@ Parser<String> missingTagEndParser(ParserContext parserContext) =>
         .valueContextMap((values, context) {
           parserContext.errors.add(
             ParseError(
-              message:
-                  'Found tag start: ${parserContext.engine.tagStart}, '
-                  'but it was not followed with a tag end: '
-                  '${parserContext.engine.tagEnd}',
-              position: context.toPositionString(),
+              'Found tag start: ${parserContext.engine.tagStart}, '
+              'but it was not followed with a tag end: '
+              '${parserContext.engine.tagEnd}',
+              Position.ofContext(context),
             ),
           );
           return values.first;

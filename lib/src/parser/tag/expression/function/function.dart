@@ -45,7 +45,7 @@ Parser<Expression> functionParser({
           char(')').trim())
       .valueContextMap(
         (values, context) => FunctionExpression(
-          context.toPositionString(),
+          Position.ofContext(context),
           function,
           values[2] as Map<String, Expression>,
         ),
@@ -63,7 +63,7 @@ class FunctionExpression<R extends Object>
   final Map<String, Expression> parameterExpressionMap;
 
   FunctionExpression(
-    String position,
+    Position position,
     this.function,
     this.parameterExpressionMap,
   ) : super(position: position);
@@ -120,7 +120,7 @@ class ExpressionFunction<R extends Object>
   final ProjectFilePath? exampleCode;
   final List<Parameter> parameters;
   final Future<R> Function(
-    String position,
+    Position position,
     RenderContext renderContext,
     Map<String, Object> parameters,
   )

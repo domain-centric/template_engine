@@ -15,7 +15,7 @@ class TemplateSource extends ExpressionFunction<String> {
         ),
         function:
             (
-              String position,
+              Position position,
               RenderContext renderContext,
               Map<String, Object> parameterValues,
             ) => Future.value(renderContext.templateBeingRendered.sourceTitle),

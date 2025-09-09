@@ -54,7 +54,7 @@ void main() {
 
       final renderResult = await engine.render(parseResult);
       final expected = await FunctionDocumentation().function(
-        '',
+        Position.unknown(),
         RenderContext(
           engine: engine,
           templateBeingRendered: template,

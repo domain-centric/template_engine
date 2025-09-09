@@ -20,9 +20,8 @@ class PrefixExpression<PARAMETER_TYPE extends Object>
       return operator.function(value);
     }
     throw RenderException(
-      message:
-          '${typeDescription<PARAMETER_TYPE>()} expected after the ${operator.symbol} operator',
-      position: super.position,
+      '${typeDescription<PARAMETER_TYPE>()} expected after the ${operator.symbol} operator',
+      super.position,
     );
   }
 
@@ -120,10 +119,7 @@ class OperatorVariantExpression extends ExpressionWithSourcePosition {
         errors.addAll(variantErrors);
       }
     }
-    throw RenderException(
-      message: errors.join(', or '),
-      position: super.position,
-    );
+    throw RenderException(errors.join(', or '), super.position);
   }
 }
 
@@ -205,7 +201,7 @@ class PrefixOperator<PARAMETER_TYPE extends Object> extends Operator {
       string(symbol).trim(),
       (context, op, value) => PrefixExpression<PARAMETER_TYPE>(
         operator: this,
-        position: context.toPositionString(),
+        position: Position.ofContext(context),
         valueExpression: value,
       ),
     );
@@ -273,7 +269,7 @@ abstract class OperatorWith2Values extends Operator {
       group.right(
         string(symbol).trim(),
         (context, left, op, right) => OperatorVariantExpression(
-          position: context.toPositionString(),
+          position: Position.ofContext(context),
           operator: symbol,
           variants: variants,
           left: left,
@@ -284,7 +280,7 @@ abstract class OperatorWith2Values extends Operator {
       group.left(
         string(symbol).trim(),
         (context, left, op, right) => OperatorVariantExpression(
-          position: context.toPositionString(),
+          position: Position.ofContext(context),
           operator: symbol,
           variants: variants,
           left: left,

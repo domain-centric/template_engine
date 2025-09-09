@@ -1,4 +1,5 @@
 import 'package:petitparser/petitparser.dart';
+import 'package:template_engine/src/parser/parser.dart';
 import 'package:template_engine/src/template.dart';
 
 /// Parser or Render error or warnings are collected as [TemplateError]s instead
@@ -20,9 +21,9 @@ class RenderError extends TemplateError {
   final String message;
 
   /// A cursor position within the [Template.text] in format row, column
-  final String position;
+  final Position position;
 
-  RenderError({required this.message, required this.position});
+  RenderError(this.message, this.position);
 
   @override
   String toIndentedString(int indent) =>
@@ -32,14 +33,14 @@ class RenderError extends TemplateError {
 class ParseError extends TemplateError {
   final String message;
 
-  /// A cursor position within the [Template.text] in format row, column
-  final String position;
+  /// The cursor position within the template
+  final Position position;
 
-  ParseError({required this.message, required this.position});
+  ParseError(this.message, this.position);
 
   ParseError.fromFailure(Failure failure)
     : message = failure.message,
-      position = failure.toPositionString();
+      position = Position.ofContext(failure);
 
   @override
   String toIndentedString(int indent) =>
@@ -48,7 +49,7 @@ class ParseError extends TemplateError {
 
 class ImportError extends TemplateError {
   final Template template;
-  final String positionOfImport;
+  final Position positionOfImport;
   final List<TemplateError> importErrors;
   ImportError(this.positionOfImport, this.template, this.importErrors);
 

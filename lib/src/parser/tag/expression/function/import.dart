@@ -63,10 +63,7 @@ class ImportTemplate extends ExpressionFunction<IntermediateRenderResult> {
                 .replaceFirst('Exception: ', '')
                 .replaceAll('\r', '')
                 .replaceAll('\n', '');
-            throw RenderError(
-              message: 'Error importing template: $message',
-              position: position,
-            );
+            throw RenderError('Error importing template: $message', position);
           }
         },
       );
@@ -103,8 +100,8 @@ class ImportPure extends ExpressionFunction<String> {
                 .replaceAll('\r', '')
                 .replaceAll('\n', '');
             throw RenderError(
-              message: 'Error importing a pure file: $message',
-              position: position,
+              'Error importing a pure file: $message',
+              position,
             );
           }
         },
@@ -147,8 +144,8 @@ class ImportJson extends ExpressionFunction<Map<String, dynamic>> {
                 .replaceAll('\r', '')
                 .replaceAll('\n', '');
             throw RenderError(
-              message: 'Error importing a Json file: $message',
-              position: position,
+              'Error importing a Json file: $message',
+              position,
             );
           }
         },
@@ -191,10 +188,7 @@ class ImportXml extends ExpressionFunction<Map<String, dynamic>> {
                 .replaceFirst('Exception: ', '')
                 .replaceAll('\r', '')
                 .replaceAll('\n', '');
-            throw RenderError(
-              message: 'Error importing a XML file: $message',
-              position: position,
-            );
+            throw RenderError('Error importing a XML file: $message', position);
           }
         },
       );
@@ -269,8 +263,8 @@ class ImportYaml extends ExpressionFunction<Map<String, dynamic>> {
                 .replaceAll('\r', '')
                 .replaceAll('\n', '');
             var error = RenderError(
-              message: 'Error importing a YAML file: $message',
-              position: position,
+              'Error importing a YAML file: $message',
+              position,
             );
             throw error;
           }

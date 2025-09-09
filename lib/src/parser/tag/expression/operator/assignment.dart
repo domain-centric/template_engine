@@ -48,7 +48,7 @@ class AssignmentOperator extends Operator {
     group.right(
       char(operator).trim(),
       (context, left, op, right) => AssignVariableExpression(
-        position: context.toPositionString(),
+        position: Position.ofContext(context),
         left: left,
         right: right,
       ),
@@ -71,18 +71,16 @@ class AssignVariableExpression extends ExpressionWithSourcePosition<String> {
     var variableExpression = left;
     if (variableExpression is! VariableExpression) {
       throw RenderException(
-        message:
-            'The left side of the = operation must be a valid variable name',
-        position: super.position,
+        'The left side of the = operation must be a valid variable name',
+        super.position,
       );
     }
     if (variableExpression.namePath.contains('.')) {
       throw RenderException(
-        message:
-            'The left side of the = operation '
-            'must be a name of a root variable '
-            '(not contain dots)',
-        position: super.position,
+        'The left side of the = operation '
+        'must be a name of a root variable '
+        '(not contain dots)',
+        super.position,
       );
     }
 
