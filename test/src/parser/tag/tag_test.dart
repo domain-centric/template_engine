@@ -1,3 +1,4 @@
+import 'package:petitparser/petitparser.dart';
 import 'package:test/test.dart';
 import 'package:shouldly/shouldly.dart';
 import 'package:template_engine/template_engine.dart';
@@ -68,8 +69,9 @@ class TagWithInvalidName extends Tag<String> {
     : super(
         name: 'inv@lid',
         description: ['A tag with an invalid name for testing'],
-        exampleExpression: 'dummy',
-        exampleCode: ProjectFilePath('dummy'),
+        exampleFile: ProjectFilePath('dummy'),
+        example: null,
+        exampleResult: null,
       );
 
   @override
@@ -82,4 +84,8 @@ class TagWithInvalidName extends Tag<String> {
     RenderContext renderContext,
     int titleLevel,
   ) => [];
+
+  @override
+  Parser<String> createInnerTagParser(ParserContext context) =>
+      any().plus().flatten();
 }

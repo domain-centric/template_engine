@@ -271,31 +271,22 @@ class AbstractStatementTree {
       rootBranch.findParentNode(currentBranch)!;
 }
 
-/// Represents a part of the template text as an object.
-/// Different texts can be converted to different objects.
-/// See the implementations of [Token2]
-abstract class Token2 {
-  /// The position where the [Token2]
-  /// originated from (needed for errors or warnings)
-  Position get position;
-}
-
 /// Defines the order tags should follow each other
 abstract class TagSequence {
   List<Type> get precededBy;
   List<Type> get followedBy;
 }
 
-abstract class BranchChanger implements Token2, TagSequence {
+abstract class BranchChanger implements HasPosition, TagSequence {
   /// returns the next branch on which to continue adding [Token]s
   Branch nextBranch(AbstractStatementTree ast);
 }
 
-abstract class BranchOwner implements Token2, TagSequence {
+abstract class BranchOwner implements HasPosition, TagSequence {
   List<Branch> get branches;
 }
 
-class Branch extends DelegatingList<Object> {
+class Branch extends DelegatingList<Object> implements Renderer {
   Branch() : super([]);
 
   Branch? findParentBranch(Branch branchToFind) {
@@ -341,9 +332,64 @@ class Branch extends DelegatingList<Object> {
     }
     return null;
   }
+
+  @override
+  Future render(RenderContext context) async {
+    var errors = <TemplateError>[];
+    var textBuffer = StringBuffer();
+    for (var token in this) {
+      try {
+        var result = await renderNode(context, token);
+        textBuffer.write(resultToString(result));
+        //errors.addAll(resultErrors(result));
+      } on TemplateError catch (e) {
+        errors.add(e);
+        textBuffer.write(context.renderedError);
+      } catch (e) {
+        var error = RenderError(e.toString(), position(token));
+        errors.add(error);
+        textBuffer.write(context.renderedError);
+      }
+    }
+    return IntermediateRenderResult(
+      text: textBuffer.toString(),
+      errors: errors,
+    );
+  }
+
+  Position position(dynamic child) =>
+      child is HasPosition ? child.position : Position.unknown();
+
+  String resultToString(dynamic result) {
+    if (result is List) {
+      return result.join();
+    } else {
+      return result.toString();
+    }
+  }
+
+  /// returns either an:
+  /// * [IntermediateRenderResult] containing a text and possible errors
+  /// * an [Object] that can be converted to a [String]
+  /// * a [List] of [Object]s that can be converted to a [String]
+  Future<dynamic> renderNode(RenderContext context, Object node) async {
+    if (node is Renderer) {
+      var result = await node.render(context);
+      return result;
+    } else if (node is List) {
+      var values = [];
+      for (var item in node) {
+        var value = await renderNode(context, item);
+        values.add(value);
+      }
+      return values;
+    } else {
+      return node.toString();
+    }
+  }
 }
 
-class UnsupportedTagSyntax implements Token2 {
+class UnsupportedTagSyntax implements HasPosition {
   @override
   final Position position;
   final String content;
@@ -376,4 +422,8 @@ class Position {
 
   @override
   String toString() => line < 0 || column < 0 ? '?' : '$line:$column';
+}
+
+abstract class HasPosition {
+  Position get position;
 }

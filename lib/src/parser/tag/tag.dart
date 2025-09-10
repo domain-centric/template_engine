@@ -31,15 +31,16 @@ abstract class Tag<T extends Object>
     implements DocumentationFactory, ExampleFactory {
   final String name;
   final List<String> description;
-  final String exampleExpression;
-  final ProjectFilePath exampleCode;
+  final String? example;
   final String? exampleResult;
+  final ProjectFilePath exampleFile;
+
   Tag({
     required this.name,
     required this.description,
-    required this.exampleExpression,
+    required this.example,
     this.exampleResult,
-    required this.exampleCode,
+    required this.exampleFile,
   }) {
     TagName.validate(name);
   }
@@ -52,13 +53,18 @@ abstract class Tag<T extends Object>
     var writer = HtmlTableWriter();
     writer.setHeader(titleLevel, '$name Tag');
     writer.addRow(['description:', description.join('<br>')]);
-    writer.addRow(['expression example:', _createExpressionExample()], [1, 4]);
-    writer.addRow(['code example:', exampleCode.githubMarkdownLink], [1, 4]);
+    if (example != null) {
+      writer.addRow(
+        ['expression example:', _createExpressionExample()],
+        [1, 4],
+      );
+    }
+    writer.addRow(['code example:', exampleFile.githubMarkdownLink], [1, 4]);
     return writer.toHtmlLines();
   }
 
   String _createExpressionExample() {
-    var example = exampleExpression;
+    var example = this.example!;
     if (exampleResult != null && exampleResult!.trim().isNotEmpty) {
       example += ' should render: $exampleResult';
     }
@@ -68,7 +74,15 @@ abstract class Tag<T extends Object>
   @override
   createMarkdownExamples(RenderContext renderContext, int titleLevel);
 
-  Parser<T> createTagParser(ParserContext context);
+  Parser<T> createTagParser(ParserContext context) =>
+      (string(context.engine.tagStart) &
+              (whitespace().star()) &
+              createInnerTagParser(context) &
+              (whitespace().star()) &
+              string(context.engine.tagEnd))
+          .valueContextMap((values, parsePosition) => values[2]);
+
+  Parser<T> createInnerTagParser(ParserContext context);
 }
 
 /// A [TagName]:

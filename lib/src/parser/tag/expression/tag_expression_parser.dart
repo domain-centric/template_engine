@@ -15,23 +15,19 @@ class ExpressionTag extends Tag {
           '* Functions (e.g. cos(7) )',
           '* or any combination of the above',
         ],
-        exampleExpression:
+        example:
             'The volume of a sphere = '
             '{{ round( (3/4) * pi * (radius ^ 3) )}}.',
-        exampleCode: ProjectFilePath(
+        exampleResult: null,
+        exampleFile: ProjectFilePath(
           'test/src/parser/tag/expression/'
           'tag_expression_parser_test.dart',
         ),
       );
 
   @override
-  Parser<Object> createTagParser(ParserContext context) =>
-      (string(context.engine.tagStart) &
-              (whitespace().star()) &
-              expressionParser(context) &
-              (whitespace().star()) &
-              string(context.engine.tagEnd))
-          .valueContextMap((values, parsePosition) => values[2]);
+  Parser<Object> createInnerTagParser(ParserContext context) =>
+      expressionParser(context);
 
   @override
   List<String> createMarkdownExamples(
@@ -39,7 +35,7 @@ class ExpressionTag extends Tag {
     int titleLevel,
   ) => [
     '${'#' * titleLevel} $name',
-    '* ${exampleCode.githubMarkdownLink}',
+    '* ${exampleFile.githubMarkdownLink}',
     ..._createMarkDownExamplesFor(
       renderContext: renderContext,
       title: 'Data Types',

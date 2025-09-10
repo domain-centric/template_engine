@@ -62,8 +62,8 @@ class TestTag extends Tag {
     : super(
         name: name,
         description: ['Tag to test unique tag names'],
-        exampleExpression: 'dummy',
-        exampleCode: ProjectFilePath('dummy'),
+        example: 'dummy',
+        exampleFile: ProjectFilePath('dummy'),
       );
 
   @override
@@ -76,6 +76,10 @@ class TestTag extends Tag {
     RenderContext renderContext,
     int titleLevel,
   ) => [];
+
+  @override
+  Parser<Object> createInnerTagParser(ParserContext context) =>
+      any().plus().flatten();
 }
 
 class DummyTemplate extends TextTemplate {

@@ -8,8 +8,12 @@ import 'package:template_engine/template_engine.dart';
 /// * [Operator]s
 abstract class Expression<T extends Object> extends Renderer<T> {}
 
+///TODO can we let renderer implement HasPosition? If so, we can eliminate [ExpressionWithSourcePosition]
+
 abstract class ExpressionWithSourcePosition<T extends Object>
-    extends Expression<T> {
+    extends Expression<T>
+    implements HasPosition {
+  @override
   final Position position;
 
   ExpressionWithSourcePosition({required this.position});
