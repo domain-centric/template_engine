@@ -9,19 +9,23 @@ void main() {
     test(
       'should render correctly using FileTemplate and TextTemplate',
       () async {
-        final parseResult = await engine.parseTemplates([
-          FileTemplate.fromProjectFilePath(
-            ProjectFilePath('test/src/hello.template'),
-          ),
+        final parseResults = await engine.parseTemplates([
+          FileTemplate.fromFilePath('test/src/hello.template'),
           TextTemplate('{{name}}.'),
         ]);
-        final renderResult = await engine.render(parseResult, {
-          'name': 'world',
-        });
+        final renderResults = await engine.renderAll(
+          parseResults,
+          variables: {'name': 'world'},
+        );
 
         Should.satisfyAllConditions([
-          () => renderResult.errorMessage.should.beNullOrEmpty(),
-          () => renderResult.text.should.be('Hello world.'),
+          () => renderResults
+              .map((r) => r.aggregatedErrorMessage)
+              .join()
+              .should
+              .beNullOrEmpty(),
+          () =>
+              renderResults.map((r) => r.text).join().should.be('Hello world.'),
         ]);
       },
     );

@@ -2,11 +2,7 @@ import 'dart:io';
 
 import 'package:template_engine/template_engine.dart';
 
-/// A template is a text that can contain [Tag]s.
-/// This text is parsed by the [TemplateEngine] into [Renderer]s.
-/// These [Renderer]s render a new text.
-/// [TagRenderer]s are replaced with some other text, depending on the
-/// implementation of the [TagRenderer]
+/// A [Template] is a text that can be parsed by the [TemplateEngine].
 abstract class Template {
   /// Explains where the template text came from.
   /// A [source] results in a [text].
@@ -50,25 +46,24 @@ class TextTemplate extends Template {
 }
 
 class FileTemplate extends Template {
-  @override
   FileTemplate(File file) {
     super.source = file.path;
     super.sourceTitle = file.path;
     super.text = readFromFilePath(file.path);
   }
 
-  FileTemplate.fromProjectFilePath(ProjectFilePath projectFilePath) {
-    super.source = projectFilePath.toString();
-    super.sourceTitle = projectFilePath.toString();
-    super.text = readFromFilePath(projectFilePath.file.path);
+  FileTemplate.fromFilePath(String projectFilePath) {
+    super.source = projectFilePath;
+    super.sourceTitle = projectFilePath;
+    super.text = readFromFilePath(projectFilePath);
   }
 }
 
-class HttpTemplate extends Template {
-  HttpTemplate(Uri url) {
-    super.source = url.toString();
-    super.sourceTitle = url.toString();
-    super.text = readFromHttpUri(url.toString());
+class UriTemplate extends Template {
+  UriTemplate(Uri uri) {
+    super.source = uri.toString();
+    super.sourceTitle = uri.toString();
+    super.text = readFromUri(uri);
   }
 }
 

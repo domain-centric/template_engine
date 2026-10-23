@@ -6,7 +6,10 @@ Future<void> main() async {
   test('example should work', () async {
     var engine = TemplateEngine();
     var parseResult = await engine.parseText('Hello {{name}}.');
-    var renderResult = await engine.render(parseResult, {'name': 'world'});
+    var renderResult = await engine.render(
+      parseResult,
+      variables: {'name': 'world'},
+    );
     renderResult.text.should.be('Hello world.');
   });
 }

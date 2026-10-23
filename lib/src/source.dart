@@ -4,71 +4,50 @@ import 'dart:io';
 /// [source] is the location of a file.
 /// [source] can be a [File.path], [ProjectFilePath] or [Uri]
 Future<String> readSource(String source) async {
-  try {
+  var sourceUri = Uri.tryParse(source);
+  if (sourceUri == null) {
     return await readFromFilePath(source);
-  } on UnsupportedSourceException {
-    try {
-      return await readFromHttpUri(source);
-    } on UnsupportedSourceException {
-      try {
-        return await readFromFileUri(source);
-      } on Exception catch (e) {
-        var message = e
-            .toString()
-            .replaceFirst('Exception: ', '')
-            .replaceAll('\r', '')
-            .replaceAll('\n', '');
-        throw Exception(message);
-      }
-    }
   }
+  return await readFromUri(sourceUri);
+}
+
+Future<String> readFromUri(Uri sourceUri) async {
+  if (sourceUri.isScheme('HTTP') || sourceUri.isScheme("HTTPS")) {
+    return await readFromHttpUri(sourceUri);
+  }
+  return await readFromFileUri(sourceUri);
 }
 
 /// Reads a file from a operation systems
 /// [File Path](https://en.wikipedia.org/wiki/Path_(computing))/
-Future<String> readFromFilePath(String source) async {
-  try {
-    var file = File(source);
-    return await file.readAsString();
-  } on Exception {
-    return Future.error(UnsupportedSourceException());
-  }
-}
+Future<String> readFromFilePath(String source) async =>
+    await File(source).readAsString();
 
-Future<String> readFromHttpUri(String source) async {
-  var url = Uri.parse(source);
-  if (url.isScheme('HTTP') || url.isScheme("HTTPS")) {
-    try {
-      var request = await HttpClient().getUrl(url);
-      var response = await request.close();
-      if (response.statusCode != 200) {
-        return Future.error(
-          Exception(
-            'Error reading: $source, status code: ${response.statusCode}',
-          ),
-        );
-      }
-      return response.transform(const Utf8Decoder()).join();
-    } on Exception catch (e) {
-      return Future.error(Exception('Error reading: $source, $e'));
+Future<String> readFromHttpUri(Uri source) async {
+  try {
+    var request = await HttpClient().getUrl(source);
+    var response = await request.close();
+    if (response.statusCode != 200) {
+      return await Future.error(
+        Exception(
+          'Error reading: $source, status code: ${response.statusCode}',
+        ),
+      );
     }
-  }
-  return Future.error(UnsupportedSourceException());
-}
-
-/// Reads from a
-/// [File URI scheme](https://en.wikipedia.org/wiki/File_URI_scheme).
-/// This includes a [ProjectFilePath].
-Future<String> readFromFileUri(String source) async {
-  try {
-    var uri = Uri.parse(source);
-    var file = File.fromUri(uri);
-    return await file.readAsString();
+    return await response.transform(const Utf8Decoder()).join();
   } on Exception catch (e) {
     return Future.error(Exception('Error reading: $source, $e'));
   }
 }
 
-class UnsupportedSourceException implements Exception {
-  UnsupportedSourceException();
+/// Reads from a
+/// [File URI scheme](https://en.wikipedia.org/wiki/File_URI_scheme).
+/// This includes a [ProjectFilePath].
+Future<String> readFromFileUri(Uri source) async {
+  try {
+    var file = File.fromUri(source);
+    return await file.readAsString();
+  } on Exception catch (e) {
+    return Future.error(Exception('Error reading: $source, $e'));
+  }
 }

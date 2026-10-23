@@ -7,96 +7,126 @@ void main() {
     final engine = TemplateEngine();
 
     test('should handle single parse error with parseTemplates', () async {
-      final parseResult = await engine.parseTemplates([
+      final parseResults = await engine.parseTemplates([
         TextTemplate('Hello '),
         TextTemplate('{{name}.'),
       ]);
-      final renderResult = await engine.render(parseResult, {'name': 'world'});
+      final renderResults = await engine.renderAll(
+        parseResults,
+        variables: {'name': 'world'},
+      );
 
       Should.satisfyAllConditions([
-        () => renderResult.errorMessage.should.be(
-          'Parse error in: \'{{name}.\':\n'
-          '  1:1: Found tag start: {{, but it was not followed with a tag end: }}',
+        () => renderResults.aggregatedErrorMessage.should.be(
+          "Error in: {{name}.\n"
+          "  Parse error:\n"
+          "    1:1 - Unexpected code block start delimiter `{{` without succeeding end delimiter `}}`",
         ),
-        () => renderResult.text.should.be('Hello {{'),
+        () => renderResults.map((r) => r.text).join().should.be('Hello {{'),
       ]);
     });
 
     test('should handle multiple parse errors with parseTemplates', () async {
-      final parseResult = await engine.parseTemplates([
+      final parseResults = await engine.parseTemplates([
         TextTemplate('Hello '),
         TextTemplate('}}name{{.'),
       ]);
-      final renderResult = await engine.render(parseResult, {'name': 'world'});
+      final renderResults = await engine.renderAll(
+        parseResults,
+        variables: {'name': 'world'},
+      );
 
       Should.satisfyAllConditions([
-        () => renderResult.errorMessage.should.be(
-          'Parse errors in: \'}}name{{.\':\n'
-          '  1:1: Found tag end: }}, but it was not preceded with a tag start: {{\n'
-          '  1:7: Found tag start: {{, but it was not followed with a tag end: }}',
+        () => renderResults.aggregatedErrorMessage.should.be(
+          "Errors in: }}name{{.\n"
+          "  Parse errors:\n"
+          "    1:1 - Unexpected code block end delimiter `}}` without preceding start delimiter `{{`\n"
+          "    1:7 - Unexpected code block start delimiter `{{` without succeeding end delimiter `}}`",
         ),
-        () => renderResult.text.should.be('Hello }}name{{'),
+        () =>
+            renderResults.map((r) => r.text).join().should.be('Hello }}name{{'),
       ]);
     });
 
     test('should handle single render error with parseTemplates', () async {
-      final parseResult = await engine.parseTemplates([
+      final parseResults = await engine.parseTemplates([
         TextTemplate('Hello '),
         TextTemplate('{{name}}.'),
       ]);
-      final renderResult = await engine.render(parseResult, {'age': '13'});
+      final renderResults = await engine.renderAll(
+        parseResults,
+        variables: {'age': '13'},
+      );
 
       Should.satisfyAllConditions([
-        () => renderResult.errorMessage.should.be(
-          'Render error in: \'{{name}}.\':\n'
-          '  1:3: Variable does not exist: name',
+        () => renderResults.aggregatedErrorMessage.should.be(
+          "Error in: {{name}}.\n"
+          "  Render error:\n"
+          "    1:3 - Variable `name` does not exist",
         ),
-        () => renderResult.text.should.be('Hello {{ERROR}}.'),
+        () => renderResults
+            .map((r) => r.text)
+            .join()
+            .should
+            .be('Hello {{ERROR}}.'),
       ]);
     });
 
     test('should handle multiple render errors with parseTemplates', () async {
-      final parseResult = await engine.parseTemplates([
+      final parseResults = await engine.parseTemplates([
         TextTemplate('Hello {{name}}. '),
         TextTemplate('Welcome in {{location}}.'),
       ]);
-      final renderResult = await engine.render(parseResult, {'age': '13'});
+      final renderResults = await engine.renderAll(
+        parseResults,
+        variables: {'age': '13'},
+      );
 
       Should.satisfyAllConditions([
-        () => renderResult.errorMessage.should.be(
-          'Render error in: \'Hello {{name}}.\':\n'
-          '  1:9: Variable does not exist: name\n'
-          'Render error in: \'Welcome in {{location}}.\':\n'
-          '  1:14: Variable does not exist: location',
+        () => renderResults.aggregatedErrorMessage.should.be(
+          "Error in: Hello {{name}}. \n"
+          "  Render error:\n"
+          "    1:9 - Variable `name` does not exist\n"
+          "Error in: Welcome in {{location}}.\n"
+          "  Render error:\n"
+          "    1:14 - Variable `location` does not exist",
         ),
-        () => renderResult.text.should.be(
-          'Hello {{ERROR}}. Welcome in {{ERROR}}.',
-        ),
+        () => renderResults
+            .map((r) => r.text)
+            .join()
+            .should
+            .be('Hello {{ERROR}}. Welcome in {{ERROR}}.'),
       ]);
     });
 
     test(
       'should handle multiple errors (parse and render) with parseTemplates',
       () async {
-        final parseResult = await engine.parseTemplates([
+        final parseResults = await engine.parseTemplates([
           TextTemplate('}}Hello {{name}}. '),
           TextTemplate('Welcome in {{location}}.'),
         ]);
-        final renderResult = await engine.render(parseResult, {'age': '13'});
+        final renderResults = await engine.renderAll(
+          parseResults,
+          variables: {'age': '13'},
+        );
 
         Should.satisfyAllConditions([
-          () => renderResult.errorMessage.should.be(
-            'Errors in: \'}}Hello {{name}}.\':\n'
-            '  Parse error:\n'
-            '    1:1: Found tag end: }}, but it was not preceded with a tag start: {{\n'
-            '  Render error:\n'
-            '    1:11: Variable does not exist: name\n'
-            'Render error in: \'Welcome in {{location}}.\':\n'
-            '  1:14: Variable does not exist: location',
+          () => renderResults.aggregatedErrorMessage.should.be(
+            "Errors in: }}Hello {{name}}. \n"
+            "  Parse error:\n"
+            "    1:1 - Unexpected code block end delimiter `}}` without preceding start delimiter `{{`\n"
+            "  Render error:\n"
+            "    1:11 - Variable `name` does not exist\n"
+            "Error in: Welcome in {{location}}.\n"
+            "  Render error:\n"
+            "    1:14 - Variable `location` does not exist",
           ),
-          () => renderResult.text.should.be(
-            '}}Hello {{ERROR}}. Welcome in {{ERROR}}.',
-          ),
+          () => renderResults
+              .map((r) => r.text)
+              .join()
+              .should
+              .be('}}Hello {{ERROR}}. Welcome in {{ERROR}}.'),
         ]);
       },
     );

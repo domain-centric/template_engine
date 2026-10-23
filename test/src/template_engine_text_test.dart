@@ -8,10 +8,13 @@ void main() {
 
     test('should render correctly with valid input', () async {
       final parseResult = await engine.parseText('Hello {{name}}.');
-      final renderResult = await engine.render(parseResult, {'name': 'world'});
+      final renderResult = await engine.render(
+        parseResult,
+        variables: {'name': 'world'},
+      );
 
       Should.satisfyAllConditions([
-        () => renderResult.errorMessage.should.beNullOrEmpty(),
+        () => renderResult.aggregatedErrorMessage.should.beNullOrEmpty(),
         () => renderResult.text.should.be('Hello world.'),
       ]);
     });

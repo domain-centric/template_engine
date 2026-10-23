@@ -1,0 +1,2 @@
+{{importTemplate('test/src/parser/expression/function/import/to_import.md.template')}}
+Hello World.
