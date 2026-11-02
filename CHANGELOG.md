@@ -1,4 +1,6 @@
 [//]: # (This file was generated from: doc/template/CHANGELOG.md.template using the documentation_builder package)
+## [2.0.2 Milestone](https://github.com/domain-centric/template_engine/milestone/15?closed=1)
+
 ## [2.0.1 Milestone](https://github.com/domain-centric/template_engine/milestone/14?closed=1)
 
 ## [1.5.3 Milestone](https://github.com/domain-centric/template_engine/milestone/13?closed=1)
