@@ -15,11 +15,11 @@ Should result in: -1
 * must be unique and does not match reserved key words (e.g. statements and constants)
 
 **Parameters vs Arguments**
-* Parameters are the names used in the ParameterOwner.function definition.
-* Arguments are the actual values passed when calling the ParameterOwner.function.
+* Parameters are the names used in the function definition.
+* Arguments are the actual values passed when calling the function.
 
 **Parameters:**
-* A ParameterOwner.function can have zero or more parameters
+* A function can have zero or more parameters
 * Parameters are defined as either mandatory or optional
 * Optional parameters can have a default value
 

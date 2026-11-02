@@ -21,6 +21,7 @@ dependencies:
   recase: ^4.1.0
   shouldly: ^0.5.0+1
   xml: ^7.1.0
+  yaml: ^3.1.4
   
 topics:
 - template

@@ -14,11 +14,11 @@ Should result in: 5
 * must be unique and does not match reserved key words (e.g. statements and constants)
 
 **Parameters vs Arguments**
-* Parameters are the names used in the ParameterOwner.method definition.
-* Arguments are the actual values passed when calling the ParameterOwner.method.
+* Parameters are the names used in the method definition.
+* Arguments are the actual values passed when calling the method.
 
 **Parameters:**
-* A ParameterOwner.method can have zero or more parameters
+* A method can have zero or more parameters
 * Parameters are defined as either mandatory or optional
 * Optional parameters can have a default value
 
