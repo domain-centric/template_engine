@@ -29,8 +29,8 @@ class MethodCallExpression implements Expression {
   final Expression owner;
 
   /// function arguments:
-  /// * [key] = parameter name of type [String]
-  /// * [value] = argument of type [Expression]
+  /// * `key` = parameter name of type [String]
+  /// * `value` = argument of type [Expression]
   final ArgumentExpressionList argumentExpressionList;
   final TemplateLocation location;
 

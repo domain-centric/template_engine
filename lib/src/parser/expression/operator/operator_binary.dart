@@ -58,11 +58,11 @@ enum BinaryOperatorPrecedence {
   multiplicative(9), // *, /, %
   exponentiation(10); // **(if supported)
 
-  /// unary: +, -, !, ~, ++, --, see [ExpressionGrammar.unaryOperators]
-  /// postfix: indexes[] and function calls, see [ExpressionGrammar.functionGroups]
+  /// unary: +, -, !, ~, ++, --, see [Grammar.unaryOperators]
+  /// postfix: indexes[] and function calls, see [Grammar.functionGroups]
   /// primary:
-  /// * literals (e.g. a number) see [ExpressionGrammar.dataTypes],
-  /// * identifiers (e.g. constants) see [ExpressionGrammar.constants],
+  /// * literals (e.g. a number) see [Grammar.dataTypes],
+  /// * identifiers (e.g. constants) see [Grammar.constants],
   /// * parentheses see [ExpressionParser]
 
   final int level;
@@ -76,7 +76,7 @@ enum BinaryOperatorPrecedence {
 /// selecting the first matching [BinaryOperatorSignature] that validates
 /// the operand types. If no signature matches, a [RenderError] is thrown.
 ///
-/// Multiple [signatures] allow operator overloading based on operand types.
+/// Multiple `signatures` allow operator overloading based on operand types.
 class BinaryOperatorExpression extends Expression {
   final TemplateLocation location;
   final BinaryOperatorDefinition definition;

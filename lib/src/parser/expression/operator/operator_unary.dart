@@ -7,7 +7,7 @@ import 'package:template_engine/template_engine.dart';
 /// selecting the first [UnaryOperatorSignature] that accepts the operand type.
 /// If no signature matches, a [RenderError] is thrown.
 ///
-/// Multiple [signatures] allow operator overloading based on operand type.
+/// Multiple `signatures` allow operator overloading based on operand type.
 class UnaryOperatorExpression extends Expression {
   final TemplateLocation location;
   // a value expression that the operand acts upon

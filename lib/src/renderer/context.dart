@@ -1,5 +1,9 @@
 import 'package:template_engine/template_engine.dart';
 
+/// Converts a template value to the truthiness used by conditional nodes.
+///
+/// Null, false, zero, empty strings, and empty iterables or maps are false;
+/// other values are true.
 bool isTruthy(dynamic value) {
   if (value == null) return false;
   if (value is bool) return value;
@@ -9,19 +13,27 @@ bool isTruthy(dynamic value) {
   return true;
 }
 
+/// Holds mutable state shared while rendering a parsed template.
 class RenderContext {
+  /// The grammar whose definitions are available during rendering.
   final Grammar grammar;
+
+  /// The variables currently available to template expressions.
   final Map<String, dynamic> variables;
+
+  /// Errors accumulated while rendering.
   final List<TemplateEngineException> errors = [];
 
-  /// The text that will be rendered in case the [AstNode] could not render
+  /// Text emitted when an [AstNode] cannot be rendered.
   final String errorPlaceholder;
 
+  /// The parse result currently being rendered.
   final ParseResult parseResult;
 
-  /// cached parsed imported templates
+  /// Parsed imported templates cached during rendering.
   final Set<ParseResult> parsedImportedTemplates;
 
+  /// Creates a rendering context, copying [variables] into a mutable map.
   RenderContext({
     required this.grammar,
     required this.parseResult,

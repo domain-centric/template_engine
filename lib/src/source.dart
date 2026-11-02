@@ -1,8 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
-/// [source] is the location of a file.
-/// [source] can be a [File.path], [ProjectFilePath] or [Uri]
+/// [source] is a file path or a [Uri].
 Future<String> readSource(String source) async {
   var sourceUri = Uri.tryParse(source);
   if (sourceUri == null) {
@@ -42,7 +41,7 @@ Future<String> readFromHttpUri(Uri source) async {
 
 /// Reads from a
 /// [File URI scheme](https://en.wikipedia.org/wiki/File_URI_scheme).
-/// This includes a [ProjectFilePath].
+/// This includes local files.
 Future<String> readFromFileUri(Uri source) async {
   try {
     var file = File.fromUri(source);

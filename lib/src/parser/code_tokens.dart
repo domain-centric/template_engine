@@ -51,7 +51,7 @@ class TemplateBlock {
 ///
 /// This class is responsible for converting raw source text into a
 /// structured sequence of tokens and exposing parsing-friendly APIs
-/// such as [peek], [consume], and [lookAhead].
+/// such as [peek], [consume], and [isAtEnd].
 ///
 /// It filters out whitespace tokens by default and appends an EOF token
 /// to simplify parsing logic.

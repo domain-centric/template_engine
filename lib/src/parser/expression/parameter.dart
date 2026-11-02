@@ -15,7 +15,7 @@ import 'package:template_engine/template_engine.dart';
 ///  * Can be optional
 ///  * Can have a default value when the attribute is optional
 class Parameter<T> {
-  /// See [ParameterName]
+  /// The name of the parameter.
   final String name;
 
   /// Optional description

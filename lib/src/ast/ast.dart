@@ -3,25 +3,37 @@ import 'dart:async';
 import 'package:template_engine/template_engine.dart';
 
 abstract class AstNode {
+  /// Renders this node using the supplied context.
   Future<String> render(RenderContext context);
 }
 
+/// A node containing literal template text.
 class TextNode extends AstNode {
+  /// The text represented by this node.
   final String text;
+
+  /// Whether to include [text] in rendered output.
   final bool renderText;
+
+  /// Creates a text node, optionally suppressing its output.
   TextNode(this.text, {this.renderText = true});
 
   @override
+  /// Returns the text when [renderText] is true, or an empty string.
   Future<String> render(RenderContext context) =>
       Future.value(renderText ? text : '');
 }
 
+/// A node that evaluates and renders an expression.
 class ExpressionBlockNode extends AstNode {
+  /// The expression to evaluate.
   final Expression expression;
 
+  /// Creates a node for the given expression.
   ExpressionBlockNode(this.expression);
 
   @override
+  /// Converts the evaluated value to text and records evaluation errors.
   Future<String> render(RenderContext context) async {
     try {
       final value = await expression.evaluate(context);
@@ -33,6 +45,10 @@ class ExpressionBlockNode extends AstNode {
   }
 }
 
+/// Converts a thrown value into the template-engine errors it contains.
+///
+/// Existing [TemplateEngineException]s and nested iterables of such errors
+/// are returned; unrelated values produce an empty iterable.
 Iterable<TemplateEngineException> templateEngineExceptionsFromException(
   dynamic exception,
 ) {
@@ -45,14 +61,22 @@ Iterable<TemplateEngineException> templateEngineExceptionsFromException(
   }
 }
 
+/// A conditional node with separate branches for true and false conditions.
 class IfNode extends AstNode {
+  /// The expression that selects a branch.
   final Expression condition;
+
+  /// Nodes rendered when [condition] is truthy.
   final List<AstNode> thenNodes;
+
+  /// Nodes rendered when [condition] is not truthy.
   final List<AstNode> elseNodes;
 
+  /// Creates a conditional node with its condition and branches.
   IfNode(this.condition, this.thenNodes, this.elseNodes);
 
   @override
+  /// Renders the branch selected by the evaluated condition.
   Future<String> render(RenderContext context) async {
     try {
       final result = await condition.evaluate(context);
@@ -67,6 +91,7 @@ class IfNode extends AstNode {
   }
 }
 
+/// Renders [nodes] in order and concatenates their output.
 Future<String> astNodesToString(
   List<AstNode> nodes,
   RenderContext context,
@@ -79,13 +104,17 @@ Future<String> astNodesToString(
 }
 
 class AssignmentNode extends AstNode {
-  /// the name of the variable or the variable.path
+  /// The variable name or dotted path to assign.
   final String variableNamePath;
+
+  /// The expression whose value is assigned.
   final Expression expression;
 
+  /// Creates an assignment to [variableNamePath].
   AssignmentNode(this.variableNamePath, this.expression);
 
   @override
+  /// Assigns the evaluated value and emits no text on success.
   Future<String> render(RenderContext context) async {
     try {
       final value = await expression.evaluate(context);
@@ -112,19 +141,31 @@ class AssignmentNode extends AstNode {
   }
 }
 
+/// A template comment that produces no rendered output.
 class CommentNode extends AstNode {
+  /// Creates an empty comment node.
   CommentNode();
 
   @override
+  /// Returns an empty string.
   Future<String> render(RenderContext context) => Future.value('');
 }
 
+/// A node that renders its body for each integer in an inclusive range.
 class ForNode extends AstNode {
+  /// The variable set to the current integer for each iteration.
   final String variableName;
+
+  /// The expression that produces the first integer in the range.
   final Expression startExpression;
+
+  /// The expression that produces the last integer in the range.
   final Expression endExpression;
+
+  /// The nodes rendered on each iteration.
   final List<AstNode> bodyNodes;
 
+  /// Creates a range loop over [startExpression] through [endExpression].
   ForNode(
     this.variableName,
     this.startExpression,
@@ -133,6 +174,7 @@ class ForNode extends AstNode {
   );
 
   @override
+  /// Renders each iteration and restores the variable's previous value.
   Future<String> render(RenderContext context) async {
     try {
       final startVal = await startExpression.evaluate(context);
@@ -175,14 +217,22 @@ class ForNode extends AstNode {
   }
 }
 
+/// A node that renders its body for each item in an iterable or map.
 class ForEachNode extends AstNode {
+  /// The variable set to the current item for each iteration.
   final String variableName;
+
+  /// The expression that produces the iterable or map.
   final Expression iterableExpression;
+
+  /// The nodes rendered on each iteration.
   final List<AstNode> bodyNodes;
 
+  /// Creates an iteration loop over [iterableExpression].
   ForEachNode(this.variableName, this.iterableExpression, this.bodyNodes);
 
   @override
+  /// Renders each item and restores the variable's previous value.
   Future<String> render(RenderContext context) async {
     try {
       final iterableValue = await iterableExpression.evaluate(context);
@@ -218,13 +268,19 @@ class ForEachNode extends AstNode {
   }
 }
 
+/// A node that repeatedly renders its body while a condition is truthy.
 class WhileNode extends AstNode {
+  /// The expression evaluated before each iteration.
   final Expression condition;
+
+  /// The nodes rendered while [condition] remains truthy.
   final List<AstNode> bodyNodes;
 
+  /// Creates a condition-controlled loop.
   WhileNode(this.condition, this.bodyNodes);
 
   @override
+  /// Renders the body until the condition is false.
   Future<String> render(RenderContext context) async {
     try {
       final buffer = StringBuffer();
@@ -239,21 +295,31 @@ class WhileNode extends AstNode {
   }
 }
 
+/// A node used when a code block could not be parsed.
 class ErrorNode extends AstNode {
+  /// The original code block contents.
   final String originalCode;
+
+  /// Whether to include [originalCode] in rendered output.
   final bool renderOriginalCode;
 
+  /// Creates an error node, optionally preserving the original code in output.
   ErrorNode(this.originalCode, {this.renderOriginalCode = false});
 
   @override
+  /// Returns the original code when enabled, or an empty string.
   Future<String> render(RenderContext context) =>
       Future.value(renderOriginalCode ? originalCode : '');
 }
 
+/// The parsed representation of a template and its syntax tree.
 class TemplateDocument {
-  /// the source of this document
+  /// The template from which this document was parsed.
   final Template template;
+
+  /// The ordered syntax-tree nodes in the template.
   final List<AstNode> nodes;
 
+  /// Creates a document for [template] containing [nodes].
   TemplateDocument({required this.template, required this.nodes});
 }

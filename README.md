@@ -10,11 +10,11 @@
  
 ![](https://github.com/domain-centric/template_engine/wiki/template_engine.png)
 
-The [TemplateEngine](https://github.com/domain-centric/template_engine/blob/c4d91128cc587bd1fa84a5ed5b293f6a6e56e3a1/lib/src/template_engine.dart#L4) can:
+The [TemplateEngine](https://github.com/domain-centric/template_engine/blob/7271af789c98ce24b7e39cb6639a9201c517e080/lib/src/template_engine.dart#L40) can:
 * Parse the [Template](https://pub.dev/packages/Template) text into a
   [parser tree](https://en.wikipedia.org/wiki/Parse_tree)
 * Render the [parser tree](https://en.wikipedia.org/wiki/Parse_tree)
-  to a output such as:
+  to an output such as:
   * [Html](https://en.wikipedia.org/wiki/HTML)
   * [Programming code](https://en.wikipedia.org/wiki/Programming_language)
   * [Markdown](https://en.wikipedia.org/wiki/Markdown)
@@ -24,11 +24,19 @@ The [TemplateEngine](https://github.com/domain-centric/template_engine/blob/c4d9
   * Etc...
 
 # Features
-* Template expressions that can contain (combinations of):
+Template code blocks support:
+* Statements, like
+  * comments
+  * variable assignments
+  * if, then, else
+  * loops
+  * etc...
+* Expressions that can contain (combinations of):
   * Data types
   * Constants
   * Variables
   * Operators
+  * Methods
   * Functions
     e.g. functions to import:
     * Pure files (to be imported as is)
@@ -36,7 +44,7 @@ The [TemplateEngine](https://github.com/domain-centric/template_engine/blob/c4d9
     * XML files (to be used as a data source)
     * JSON files (to be used as a data source)
     * YAML files (to be used as a data source)
-* All of the above can be customized or you could add your own.
+* All of the above can be customized by replacing or adding your own grammar.
 
 # Getting Started
 To get started:
@@ -58,7 +66,10 @@ Future<void> main() async {
   test('example should work', () async {
     var engine = TemplateEngine();
     var parseResult = await engine.parseText('Hello {{name}}.');
-    var renderResult = await engine.render(parseResult, {'name': 'world'});
+    var renderResult = await engine.render(
+      parseResult,
+      variables: {'name': 'world'},
+    );
     renderResult.text.should.be('Hello world.');
   });
 }

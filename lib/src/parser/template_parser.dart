@@ -66,8 +66,7 @@ abstract class TemplateParserDelegate {
 
   /// Advances the parser to the next block.
   ///
-  /// After calling this, [peekBlockTokens] and [currentBlockLocation]
-  /// will refer to the next block.
+  /// After calling this, [peekBlockTokens] will refer to the next block.
   void advanceBlock();
 
   /// Creates an [ExpressionParser] for the given [tokenStream].

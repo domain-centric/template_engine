@@ -19,8 +19,8 @@ class FunctionCallExpression implements Expression {
   final FunctionDefinition functionDefinition;
 
   /// function arguments:
-  /// * [key] = parameter name of type [String]
-  /// * [value] = argument of type [Expression]
+  /// * `key` = parameter name of type [String]
+  /// * `value` = argument of type [Expression]
   final ArgumentExpressionMap argumentExpressionMap;
   final TemplateLocation location;
 

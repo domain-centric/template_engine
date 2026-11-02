@@ -18,7 +18,7 @@ void main() {
   test('readSource with URI with HTTPS schema', () async {
     var source =
         'https://raw.githubusercontent.com/domain-centric/template_engine/'
-        'main/test/src/parser/tag/expression/function/import/person.yaml';
+        'main/test/src/parser/expression/function/import/person.yaml';
     var text = await readSource(source);
     Should.satisfyAllConditions([
       () => text.should.contain('person'),
