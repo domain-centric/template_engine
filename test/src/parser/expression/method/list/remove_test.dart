@@ -32,25 +32,29 @@ void main() {
     },
   );
 
-  test("{{items.remove('cherry')}}{{items}} should render: [3, apple]", () async {
-    var engine = TemplateEngine();
-    var parseResult = await engine.parseText(
-      "{{items.remove('cherry')}}{{items}}",
-    );
-    var renderResult = await engine.render(
-      parseResult,
-      variables: {
-        'items': [3, 'apple', 'banana'],
-      },
-    );
-    Should.satisfyAllConditions([
-      () => renderResult.text.should.be('[3, apple, banana]'),
-      () => renderResult.errors.should.haveCount(1),
-      () => renderResult.errors.first.message.should.be(
-        'Item `cherry` is not part of the List and can therefore not be removed',
-      ),
-      () =>
-          renderResult.errors.first.location.should.be(TemplateLocation(1, 16)),
-    ]);
-  });
+  test(
+    "{{items.remove('cherry')}}{{items}} should render: [3, apple]",
+    () async {
+      var engine = TemplateEngine();
+      var parseResult = await engine.parseText(
+        "{{items.remove('cherry')}}{{items}}",
+      );
+      var renderResult = await engine.render(
+        parseResult,
+        variables: {
+          'items': [3, 'apple', 'banana'],
+        },
+      );
+      Should.satisfyAllConditions([
+        () => renderResult.text.should.be('[3, apple, banana]'),
+        () => renderResult.errors.should.haveCount(1),
+        () => renderResult.errors.first.message.should.be(
+          'Item `cherry` is not part of the List and can therefore not be removed',
+        ),
+        () => renderResult.errors.first.location.should.be(
+          TemplateLocation(1, 16),
+        ),
+      ]);
+    },
+  );
 }

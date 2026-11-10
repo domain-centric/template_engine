@@ -36,9 +36,8 @@ void main() {
 
   group('TestFileExample', () {
     test('normalizes Windows path separators to GitHub paths', () {
-      TestFileExample.normalizeRelativePath(
-        r'src\file.dart',
-      ).should.be('src/file.dart');
+      TestFileExample.normalizeRelativePath(r'src\file.dart').should
+          .be('src/file.dart');
     });
   });
 }

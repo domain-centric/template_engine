@@ -392,21 +392,18 @@ void main() {
       ]);
     });
 
-    test(
-      'parser " PARAmeter=   \\"Hello\\"" should be successful (case unsensitive)',
-      () async {
-        var arguments = await _parseAndEvaluateArguments(
-          parameters,
-          errors,
-          '( PARAmeter=   "Hello")',
-        );
-        Should.satisfyAllConditions([
-          () => errors.should.beEmpty(),
-          () => arguments.should.containKey('parameter'),
-          () => (arguments['parameter'] as String).should.be('Hello'),
-        ]);
-      },
-    );
+    test('parser " PARAmeter=   \\"Hello\\"" should be successful (case unsensitive)', () async {
+      var arguments = await _parseAndEvaluateArguments(
+        parameters,
+        errors,
+        '( PARAmeter=   "Hello")',
+      );
+      Should.satisfyAllConditions([
+        () => errors.should.beEmpty(),
+        () => arguments.should.containKey('parameter'),
+        () => (arguments['parameter'] as String).should.be('Hello'),
+      ]);
+    });
 
     test("parses \" parameter  =   'Hello'   \" as 'Hello')", () async {
       var arguments = await _parseAndEvaluateArguments(

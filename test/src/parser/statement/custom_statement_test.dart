@@ -32,8 +32,7 @@ class LogStatement {
     return StatementDefinition(
       documentation: DefinitionDocumentation(
         title: 'Log statement',
-        description:
-            'Evaluates an expression and appends the result to the "log" variable of the render context.',
+        description: 'Evaluates an expression and appends the result to the "log" variable of the render context.',
         syntax: SyntaxDocumentation(
           codeBlockFunction: (delimiter) =>
               '${delimiter.start} log expression ${delimiter.end}',
@@ -46,8 +45,7 @@ class LogStatement {
           ExpressionBlockExample(
             (delimiter) =>
                 '${delimiter.start} log "Hello world" ${delimiter.end}',
-            explanation:
-                'Stores the string "Hello world" in the "log" variable of the render context.',
+            explanation: 'Stores the string "Hello world" in the "log" variable of the render context.',
             shouldRender: '',
           ),
         ],

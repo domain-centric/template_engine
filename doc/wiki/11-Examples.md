@@ -167,6 +167,7 @@
 * <a href="https://github.com/domain-centric/template_engine/blob/main/test/src/parser/expression/method/list/insert_test.dart">insert_test.dart</a>
 * <a href="https://github.com/domain-centric/template_engine/blob/main/test/src/parser/expression/method/list/contains_test.dart">contains_test.dart</a>
 * <a href="https://github.com/domain-centric/template_engine/blob/main/test/src/parser/expression/method/list/clear_test.dart">clear_test.dart</a>
+* <a href="https://github.com/domain-centric/template_engine/blob/main/test/src/parser/expression/method/list/join_test.dart">join_test.dart</a>
 ### Set<dynamic>
 * <a href="https://github.com/domain-centric/template_engine/blob/main/test/src/parser/expression/method/set/length_test.dart">length_test.dart</a>
 * <a href="https://github.com/domain-centric/template_engine/blob/main/test/src/parser/expression/method/set/first_test.dart">first_test.dart</a>
@@ -178,6 +179,7 @@
 * <a href="https://github.com/domain-centric/template_engine/blob/main/test/src/parser/expression/method/set/add_test.dart">add_test.dart</a>
 * <a href="https://github.com/domain-centric/template_engine/blob/main/test/src/parser/expression/method/set/remove_test.dart">remove_test.dart</a>
 * <a href="https://github.com/domain-centric/template_engine/blob/main/test/src/parser/expression/method/set/clear_test.dart">clear_test.dart</a>
+* <a href="https://github.com/domain-centric/template_engine/blob/main/test/src/parser/expression/method/set/join_test.dart">join_test.dart</a>
 ### Map<dynamic, dynamic>
 * <a href="https://github.com/domain-centric/template_engine/blob/main/test/src/parser/expression/method/map/length_test.dart">length_test.dart</a>
 * <a href="https://github.com/domain-centric/template_engine/blob/main/test/src/parser/expression/method/map/is_empty_test.dart">is_empty_test.dart</a>

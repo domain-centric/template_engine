@@ -3,8 +3,7 @@ import 'package:template_engine/template_engine.dart';
 final forEachStatement = StatementDefinition(
   documentation: DefinitionDocumentation(
     title: 'For each loop statement',
-    description:
-        'Iterate over an iterable or collection using `for each` and `next <variable>`.',
+    description: 'Iterate over an iterable or collection using `for each` and `next <variable>`.',
     syntax: SyntaxDocumentation(
       codeBlockFunction: (delimiter) =>
           '${delimiter.start} for each item in items ${delimiter.end}...${delimiter.start} next item ${delimiter.end}',

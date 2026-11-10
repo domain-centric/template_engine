@@ -198,8 +198,7 @@ final _toSetMethod = MethodDefinition<List, Set<dynamic>>(
   parameters: [],
   method: (context) => Future.value(context.owner.toSet()),
 
-  description:
-      'Returns the elements of the List as a Set (a set is a collection of unique items)',
+  description: 'Returns the elements of the List as a Set (a set is a collection of unique items)',
   examples: [
     ExpressionBlockExample(
       (delimiter) => '${delimiter.start}items.toSet()${delimiter.end}',
@@ -417,8 +416,7 @@ final _insertMethod = MethodDefinition<List, void>(
   parameters: [
     Parameter<int>(
       name: 'index',
-      description:
-          'The index where the value needs to be inserted into the List (index=is first position)',
+      description: 'The index where the value needs to be inserted into the List (index=is first position)',
       presence: PresenceMandatory(),
     ),
     Parameter<dynamic>(

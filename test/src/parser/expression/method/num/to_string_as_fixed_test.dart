@@ -51,17 +51,14 @@ void main() {
     },
   );
 
-  test(
-    "{{10000000000000000.toStringAsFixed(4)}} should render: 10000000000000000.0000",
-    () async {
-      var engine = TemplateEngine();
-      var parseResult = await engine.parseText(
-        "{{10000000000000000.toStringAsFixed(4)}}",
-      );
-      var renderResult = await engine.render(parseResult);
-      renderResult.text.should.be('10000000000000000.0000');
-    },
-  );
+  test("{{10000000000000000.toStringAsFixed(4)}} should render: 10000000000000000.0000", () async {
+    var engine = TemplateEngine();
+    var parseResult = await engine.parseText(
+      "{{10000000000000000.toStringAsFixed(4)}}",
+    );
+    var renderResult = await engine.render(parseResult);
+    renderResult.text.should.be('10000000000000000.0000');
+  });
 
   test("{{5.25.toStringAsFixed(0)}} should render: 5", () async {
     var engine = TemplateEngine();
@@ -85,18 +82,22 @@ void main() {
     ]);
   });
 
-  test("{{5.25.toStringAsFixed(2.5)}} should render: 5 with an error", () async {
-    var engine = TemplateEngine();
-    var parseResult = await engine.parseText("{{5.25.toStringAsFixed(2.5)}}");
-    var renderResult = await engine.render(parseResult);
-    Should.satisfyAllConditions([
-      () => renderResult.text.should.be('{{ERROR}}'),
-      () => renderResult.errors.should.haveCount(1),
-      () => renderResult.errors.first.message.should.be(
-        'Argument for parameter `fractionDigits` must be type int but was double',
-      ),
-      () =>
-          renderResult.errors.first.location.should.be(TemplateLocation(1, 24)),
-    ]);
-  });
+  test(
+    "{{5.25.toStringAsFixed(2.5)}} should render: 5 with an error",
+    () async {
+      var engine = TemplateEngine();
+      var parseResult = await engine.parseText("{{5.25.toStringAsFixed(2.5)}}");
+      var renderResult = await engine.render(parseResult);
+      Should.satisfyAllConditions([
+        () => renderResult.text.should.be('{{ERROR}}'),
+        () => renderResult.errors.should.haveCount(1),
+        () => renderResult.errors.first.message.should.be(
+          'Argument for parameter `fractionDigits` must be type int but was double',
+        ),
+        () => renderResult.errors.first.location.should.be(
+          TemplateLocation(1, 24),
+        ),
+      ]);
+    },
+  );
 }

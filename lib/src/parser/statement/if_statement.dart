@@ -3,8 +3,7 @@ import 'package:template_engine/template_engine.dart';
 final ifStatement = StatementDefinition(
   documentation: DefinitionDocumentation(
     title: 'If statement',
-    description:
-        'Conditionally render content using `if`, optional `else`, and `endif`.',
+    description: 'Conditionally render content using `if`, optional `else`, and `endif`.',
     syntax: SyntaxDocumentation(
       codeBlockFunction: (delimiter) =>
           '${delimiter.start} if condition ${delimiter.end}'

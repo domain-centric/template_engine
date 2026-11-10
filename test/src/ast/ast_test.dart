@@ -34,24 +34,20 @@ void main() {
       render.should.be('5');
     });
 
-    test(
-      'ExpressionBlockNode renders an errorPlaceHolder and has an error in the render context when expression throws an TemplateEngineException',
-      () async {
-        final expressionBlock = ExpressionBlockNode(
-          ExpressionThatThrowsAnTemplateEngineException(),
-        );
-        var render = await expressionBlock.render(renderContext);
-        Should.satisfyAllConditions([
-          () => render.should.be('{{ERROR}}'),
-          () => renderContext.errors.should.haveCount(1),
-          () =>
-              renderContext.errors.first.message.should.be('RenderErrorDummy'),
-          () => renderContext.errors.first.location.should.be(
-            TemplateLocation(6, 66),
-          ),
-        ]);
-      },
-    );
+    test('ExpressionBlockNode renders an errorPlaceHolder and has an error in the render context when expression throws an TemplateEngineException', () async {
+      final expressionBlock = ExpressionBlockNode(
+        ExpressionThatThrowsAnTemplateEngineException(),
+      );
+      var render = await expressionBlock.render(renderContext);
+      Should.satisfyAllConditions([
+        () => render.should.be('{{ERROR}}'),
+        () => renderContext.errors.should.haveCount(1),
+        () => renderContext.errors.first.message.should.be('RenderErrorDummy'),
+        () => renderContext.errors.first.location.should.be(
+          TemplateLocation(6, 66),
+        ),
+      ]);
+    });
 
     test('IfNode renders an errorPlaceHolder when condition throws', () async {
       final ifNode = IfNode(

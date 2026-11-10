@@ -87,8 +87,7 @@ final _boolean = DataTypeDefinition(
     syntax: SyntaxDocumentation(
       codeBlockFunction: (delimiter) =>
           '${delimiter.start}true${delimiter.end}  ${delimiter.start}false${delimiter.end}',
-      explanationFunction: (delimiter) =>
-          'A boolean is declared with the word true or false (case un-sensitive).',
+      explanationFunction: (delimiter) => 'A boolean is declared with the word true or false (case un-sensitive).',
     ),
     examples: [
       TestFileExample.fromProjectFilePath(
@@ -220,8 +219,7 @@ final _list = DataTypeDefinition(
     syntax: SyntaxDocumentation(
       codeBlockFunction: (delimiter) =>
           '${delimiter.start}List(1, 2, 3)${delimiter.end}',
-      explanationFunction: (delimiter) =>
-          'List() creates an empty list. Values can be supplied as constructor arguments.',
+      explanationFunction: (delimiter) => 'List() creates an empty list. Values can be supplied as constructor arguments.',
     ),
     examples: [
       TestFileExample.fromProjectFilePath(
@@ -315,8 +313,7 @@ final _set = DataTypeDefinition(
     syntax: SyntaxDocumentation(
       codeBlockFunction: (delimiter) =>
           '${delimiter.start}Set(1, 2, 3)${delimiter.end}',
-      explanationFunction: (delimiter) =>
-          'Set() creates an empty set. Values can be supplied as constructor arguments.',
+      explanationFunction: (delimiter) => 'Set() creates an empty set. Values can be supplied as constructor arguments.',
     ),
     examples: [
       TestFileExample.fromProjectFilePath(
@@ -407,8 +404,7 @@ final _map = DataTypeDefinition(
     syntax: SyntaxDocumentation(
       codeBlockFunction: (delimiter) =>
           '${delimiter.start}Map("name": "Nils", "age": 12)${delimiter.end}',
-      explanationFunction: (delimiter) =>
-          'Map() creates an empty map. Key-value pairs can be supplied using the syntax key: value.',
+      explanationFunction: (delimiter) => 'Map() creates an empty map. Key-value pairs can be supplied using the syntax key: value.',
     ),
     examples: [
       TestFileExample.fromProjectFilePath(

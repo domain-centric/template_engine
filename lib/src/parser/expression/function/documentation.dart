@@ -4,17 +4,19 @@ import 'package:recase/recase.dart';
 import 'package:template_engine/template_engine.dart';
 
 /// Functions that create documentation of the [TemplateEngine] configuration
-final standardDocumentationFunctions =
-    FunctionGroup('Documentation functions', [
-      codeBlockDocumentation,
-      dataTypeDocumentation,
-      constantDocumentation,
-      variableDocumentation,
-      operatorDocumentation,
-      functionDocumentation,
-      methodDocumentation,
-      exampleDocumentation,
-    ]);
+final standardDocumentationFunctions = FunctionGroup(
+  'Documentation functions',
+  [
+    codeBlockDocumentation,
+    dataTypeDocumentation,
+    constantDocumentation,
+    variableDocumentation,
+    operatorDocumentation,
+    functionDocumentation,
+    methodDocumentation,
+    exampleDocumentation,
+  ],
+);
 
 class TitleLevelParameter extends Parameter<int> {
   TitleLevelParameter()

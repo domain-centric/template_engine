@@ -433,8 +433,7 @@ final splitMethod = MethodDefinition<String, List<String>>(
     var string = context.owner;
     return Future.value(string.split(pattern));
   },
-  description:
-      'Returns a list of strings obtained by splitting the string at each occurrence of the pattern',
+  description: 'Returns a list of strings obtained by splitting the string at each occurrence of the pattern',
   examples: [
     ExpressionBlockExample(
       (delimiter) =>
@@ -539,8 +538,7 @@ final startsWithMethod = MethodDefinition<String, bool>(
     var string = context.owner;
     return Future.value(string.startsWith(pattern, index));
   },
-  description:
-      'Returns a boolean indicating if the string starts with the specified pattern',
+  description: 'Returns a boolean indicating if the string starts with the specified pattern',
   examples: [
     ExpressionBlockExample(
       (delimiter) =>
@@ -567,8 +565,7 @@ final endsWithMethod = MethodDefinition<String, bool>(
     var string = context.owner;
     return Future.value(string.endsWith(pattern));
   },
-  description:
-      'Returns a boolean indicating if the string ends with the specified pattern',
+  description: 'Returns a boolean indicating if the string ends with the specified pattern',
   examples: [
     ExpressionBlockExample(
       (delimiter) =>

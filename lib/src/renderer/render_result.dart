@@ -79,16 +79,16 @@ class RenderResults extends DelegatingList<RenderResult> {
         imported: false,
       ),
 
-    ...expand(
-      (renderResult) => renderResult.parsedImportedTemplates,
-    ).toSet().map(
-      (parseResult) => createAggregatedErrorMessage(
-        parseResult.document.template,
-        parseResult.errors,
-        [],
-        imported: true,
-      ),
-    ),
+    ...expand((renderResult) => renderResult.parsedImportedTemplates)
+        .toSet()
+        .map(
+          (parseResult) => createAggregatedErrorMessage(
+            parseResult.document.template,
+            parseResult.errors,
+            [],
+            imported: true,
+          ),
+        ),
   ].where((e) => e.isNotEmpty).join('\n');
 
   /// Creates results from individual render results and shared state.

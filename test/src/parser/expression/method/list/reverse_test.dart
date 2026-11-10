@@ -42,18 +42,15 @@ void main() {
     renderResult.text.should.be('[]');
   });
 
-  test(
-    "{{items.reverse()}}{{items}} should render: [4.15, banana, null, apple, 3]",
-    () async {
-      var engine = TemplateEngine();
-      var parseResult = await engine.parseText("{{items.reverse()}}{{items}}");
-      var renderResult = await engine.render(
-        parseResult,
-        variables: {
-          'items': <dynamic>[3, 'apple', null, 'banana', 4.15],
-        },
-      );
-      renderResult.text.should.be('[4.15, banana, null, apple, 3]');
-    },
-  );
+  test("{{items.reverse()}}{{items}} should render: [4.15, banana, null, apple, 3]", () async {
+    var engine = TemplateEngine();
+    var parseResult = await engine.parseText("{{items.reverse()}}{{items}}");
+    var renderResult = await engine.render(
+      parseResult,
+      variables: {
+        'items': <dynamic>[3, 'apple', null, 'banana', 4.15],
+      },
+    );
+    renderResult.text.should.be('[4.15, banana, null, apple, 3]');
+  });
 }

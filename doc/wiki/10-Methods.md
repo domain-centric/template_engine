@@ -538,6 +538,20 @@ should render: '[]'</td></tr>
 <tr><td>test example:</td><td colspan="4"><a href="https://github.com/domain-centric/template_engine/blob/main/test/src/parser/expression/method/list/clear_test.dart">clear_test.dart</a></td></tr>
 </table>
 
+### join Method
+<table>
+<tr><td>description:</td><td colspan="4">Returns the List items as a String, separated by the separator</td></tr>
+<tr><td>return type:</td><td colspan="4">String</td></tr>
+<tr><td>parameter:</td><td>separator</td><td>String</td><td>optional (default value: )</td><td>The separator to insert between the List items</td></tr>
+<tr><td>code block example:</td><td colspan="4">{{items.join()}}
+variables: {items: [apple, berry, cherry]}
+should render: 'appleberrycherry'</td></tr>
+<tr><td>code block example:</td><td colspan="4">{{items.join(", ")}}
+variables: {items: [apple, berry, cherry]}
+should render: 'apple, berry, cherry'</td></tr>
+<tr><td>test example:</td><td colspan="4"><a href="https://github.com/domain-centric/template_engine/blob/main/test/src/parser/expression/method/list/join_test.dart">join_test.dart</a></td></tr>
+</table>
+
 ## Set<dynamic> Methods
 ### length Method
 <table>
@@ -640,6 +654,20 @@ should render: '{1, 3}'</td></tr>
 variables: {items: {1, 2, 3}}
 should render: '{}'</td></tr>
 <tr><td>test example:</td><td colspan="4"><a href="https://github.com/domain-centric/template_engine/blob/main/test/src/parser/expression/method/set/clear_test.dart">clear_test.dart</a></td></tr>
+</table>
+
+### join Method
+<table>
+<tr><td>description:</td><td colspan="4">Returns the Set items as a String, separated by the separator</td></tr>
+<tr><td>return type:</td><td colspan="4">String</td></tr>
+<tr><td>parameter:</td><td>separator</td><td>String</td><td>optional (default value: )</td><td>The separator to insert between the Set items</td></tr>
+<tr><td>code block example:</td><td colspan="4">{{items.join()}}
+variables: {items: {apple, berry, cherry}}
+should render: 'appleberrycherry'</td></tr>
+<tr><td>code block example:</td><td colspan="4">{{items.join(", ")}}
+variables: {items: {apple, berry, cherry}}
+should render: 'apple, berry, cherry'</td></tr>
+<tr><td>test example:</td><td colspan="4"><a href="https://github.com/domain-centric/template_engine/blob/main/test/src/parser/expression/method/set/join_test.dart">join_test.dart</a></td></tr>
 </table>
 
 ## Map<dynamic, Dynamic> Methods
