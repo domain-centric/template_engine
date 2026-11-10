@@ -17,6 +17,7 @@ final standardListMethods = <MethodDefinition<List, dynamic>>[
   _insertMethod,
   _containsMethod,
   _clearMethod,
+  _joinMethod,
 ];
 
 final _lengthMethod = MethodDefinition<List, num>(
@@ -511,6 +512,41 @@ final _clearMethod = MethodDefinition<List, void>(
     ),
     TestFileExample.fromProjectFilePath(
       'test/src/parser/expression/method/list/clear_test.dart',
+    ),
+  ],
+);
+
+final _joinMethod = MethodDefinition<List, String>(
+  name: 'join',
+  parameters: [
+    Parameter<String>(
+      name: 'separator',
+      description: 'The separator to insert between the List items',
+      presence: PresenceOptionalWithDefaultValue(''),
+    ),
+  ],
+  method: (context) {
+    final separator = context.argumentValues['separator'] as String;
+    return Future.value(context.owner.join(separator));
+  },
+  description: 'Returns the List items as a String, separated by the separator',
+  examples: [
+    ExpressionBlockExample(
+      (delimiter) => '${delimiter.start}items.join()${delimiter.end}',
+      variables: {
+        'items': ['apple', 'berry', 'cherry'],
+      },
+      shouldRender: 'appleberrycherry',
+    ),
+    ExpressionBlockExample(
+      (delimiter) => '${delimiter.start}items.join(", ")${delimiter.end}',
+      variables: {
+        'items': ['apple', 'berry', 'cherry'],
+      },
+      shouldRender: 'apple, berry, cherry',
+    ),
+    TestFileExample.fromProjectFilePath(
+      'test/src/parser/expression/method/list/join_test.dart',
     ),
   ],
 );
