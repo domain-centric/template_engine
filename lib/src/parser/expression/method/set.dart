@@ -11,6 +11,7 @@ final standardSetMethods = <MethodDefinition<Set, dynamic>>[
   _addMethod,
   _removeMethod,
   _clearMethod,
+  _joinMethod,
 ];
 
 final _lengthMethod = MethodDefinition<Set, num>(
@@ -273,6 +274,41 @@ final _containsMethod = MethodDefinition<Set, bool>(
     ),
     TestFileExample.fromProjectFilePath(
       'test/src/parser/expression/method/set/contains_test.dart',
+    ),
+  ],
+);
+
+final _joinMethod = MethodDefinition<Set, String>(
+  name: 'join',
+  parameters: [
+    Parameter<String>(
+      name: 'separator',
+      description: 'The separator to insert between the Set items',
+      presence: PresenceOptionalWithDefaultValue(''),
+    ),
+  ],
+  method: (context) {
+    final separator = context.argumentValues['separator'] as String;
+    return Future.value(context.owner.join(separator));
+  },
+  description: 'Returns the Set items as a String, separated by the separator',
+  examples: [
+    ExpressionBlockExample(
+      (delimiter) => '${delimiter.start}items.join()${delimiter.end}',
+      variables: {
+        'items': {'apple', 'berry', 'cherry'},
+      },
+      shouldRender: 'appleberrycherry',
+    ),
+    ExpressionBlockExample(
+      (delimiter) => '${delimiter.start}items.join(", ")${delimiter.end}',
+      variables: {
+        'items': {'apple', 'berry', 'cherry'},
+      },
+      shouldRender: 'apple, berry, cherry',
+    ),
+    TestFileExample.fromProjectFilePath(
+      'test/src/parser/expression/method/set/join_test.dart',
     ),
   ],
 );
