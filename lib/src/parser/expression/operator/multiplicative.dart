@@ -25,6 +25,20 @@ final multiplyOperator = BinaryOperatorDefinition(
         ),
       ],
     ),
+    BinaryOperatorSignature<String, int, String>(
+      description: 'Repeats a string by a number',
+      function: (left, right) => left * right,
+      examples: [
+        ExpressionBlockExample(
+          (delimiter) => '${delimiter.start}"Hello"*3${delimiter.end}',
+          shouldRender: 'HelloHelloHello',
+        ),
+        TestFileExample.fromProjectFilePath(
+          'test/src/parser/expression/operator/multiplication/'
+          'string_multiply_test.dart',
+        ),
+      ],
+    ),
   ],
 );
 
