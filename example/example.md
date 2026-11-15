@@ -58,6 +58,7 @@
 * <a href="https://github.com/domain-centric/template_engine/blob/main/test/src/parser/expression/operator/exponentiation/num_power_test.dart">num_power_test.dart</a>
 ### Multiplicative operator
 * <a href="https://github.com/domain-centric/template_engine/blob/main/test/src/parser/expression/operator/multiplication/num_multiply_test.dart">num_multiply_test.dart</a>
+* <a href="https://github.com/domain-centric/template_engine/blob/main/test/src/parser/expression/operator/multiplication/string_multiply_test.dart">string_multiply_test.dart</a>
 * <a href="https://github.com/domain-centric/template_engine/blob/main/test/src/parser/expression/operator/multiplication/num_divide_test.dart">num_divide_test.dart</a>
 * <a href="https://github.com/domain-centric/template_engine/blob/main/test/src/parser/expression/operator/multiplication/num_modulo_test.dart">num_modulo_test.dart</a>
 ### Additive operator

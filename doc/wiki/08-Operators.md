@@ -51,6 +51,10 @@ You can change the order that operators are processed with parentheses, e.g.: (3
 <tr><td>description:</td><td>Multiplies 2 numbers</td></tr>
 <tr><td>code block example:</td><td>{{2*3}} should render: '6'</td></tr>
 <tr><td>test example:</td><td><a href="https://github.com/domain-centric/template_engine/blob/main/test/src/parser/expression/operator/multiplication/num_multiply_test.dart">num_multiply_test.dart</a></td></tr>
+<tr><td colspan="2"><p align="center">syntax: &lt;String&gt; * &lt;int&gt;<br>returns: &lt;String&gt;</p></td></tr>
+<tr><td>description:</td><td>Repeats a string by a number</td></tr>
+<tr><td>code block example:</td><td>{{"Hello"*3}} should render: 'HelloHelloHello'</td></tr>
+<tr><td>test example:</td><td><a href="https://github.com/domain-centric/template_engine/blob/main/test/src/parser/expression/operator/multiplication/string_multiply_test.dart">string_multiply_test.dart</a></td></tr>
 </table>
 
 ### / operator
