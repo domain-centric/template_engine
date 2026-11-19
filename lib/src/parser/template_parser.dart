@@ -161,7 +161,11 @@ class TemplateParser implements TemplateParserDelegate {
     required this.grammar,
     required this.source,
     required this.text,
-  }) : _blocks = _tokenize(text, grammar.codeBlockDelimiter);
+  }) : _blocks = _stripStandaloneControlLines(
+         _tokenize(text, grammar.codeBlockDelimiter),
+         text,
+         grammar,
+       );
 
   ParseResult parse() {
     final nodes = _parseUntil(const {});
@@ -409,6 +413,146 @@ class TemplateParser implements TemplateParserDelegate {
     return _parseUntil(terminators);
   }
 
+  static List<TemplateBlock> _stripStandaloneControlLines(
+    List<TemplateBlock> blocks,
+    String text,
+    Grammar grammar,
+  ) {
+    final suppressedRanges = <_TextRange>[];
+    for (final block in blocks.where((block) => block.isCode)) {
+      if (block.hasMissingEndDelimiter ||
+          !_isStandaloneControlBlock(block, grammar)) {
+        continue;
+      }
+
+      final tagStart =
+          block.startOffset - grammar.codeBlockDelimiter.start.length;
+      final tagEnd = block.endOffset + grammar.codeBlockDelimiter.end.length;
+      if (text.substring(tagStart, tagEnd).contains(RegExp(r'[\r\n]'))) {
+        continue;
+      }
+
+      final lineStart = _lineStart(text, tagStart);
+      final lineEnd = _lineEnd(text, tagEnd);
+      if (!_isIndentation(text, lineStart, tagStart) ||
+          !_isIndentation(text, tagEnd, lineEnd)) {
+        continue;
+      }
+
+      suppressedRanges.add(_TextRange(lineStart, tagStart));
+      suppressedRanges.add(
+        _TextRange(tagEnd, _lineEndIncludingBreak(text, lineEnd)),
+      );
+    }
+
+    if (suppressedRanges.isEmpty) {
+      return blocks;
+    }
+
+    suppressedRanges.sort((a, b) => a.start.compareTo(b.start));
+    final result = <TemplateBlock>[];
+    for (final block in blocks) {
+      if (block.isCode) {
+        result.add(block);
+        continue;
+      }
+
+      var cursor = block.startOffset;
+      for (final range in suppressedRanges) {
+        if (range.end <= cursor || range.start >= block.endOffset) {
+          continue;
+        }
+        final rangeStart = range.start < block.startOffset
+            ? block.startOffset
+            : range.start;
+        final rangeEnd = range.end > block.endOffset
+            ? block.endOffset
+            : range.end;
+        if (rangeStart > cursor) {
+          result.add(
+            TemplateBlock(
+              templateText: text,
+              isCode: false,
+              startOffset: cursor,
+              endOffset: rangeStart,
+            ),
+          );
+        }
+        if (rangeEnd > cursor) {
+          cursor = rangeEnd;
+        }
+      }
+      if (cursor < block.endOffset) {
+        result.add(
+          TemplateBlock(
+            templateText: text,
+            isCode: false,
+            startOffset: cursor,
+            endOffset: block.endOffset,
+          ),
+        );
+      }
+    }
+    return result;
+  }
+
+  static bool _isStandaloneControlBlock(TemplateBlock block, Grammar grammar) {
+    final tokens = CodeTokenStream(
+      grammar,
+      block.blockText,
+      block.startLocation,
+    );
+    if (grammar.findStatementDefinition(tokens.clone()) != null) {
+      return true;
+    }
+
+    final firstKeyword = tokens.peek().value.toLowerCase();
+    return grammar.statements.any(
+      (statement) => statement.standaloneLineKeywords.contains(firstKeyword),
+    );
+  }
+
+  static int _lineStart(String text, int offset) {
+    var lineStart = offset;
+    while (lineStart > 0 &&
+        text[lineStart - 1] != '\n' &&
+        text[lineStart - 1] != '\r') {
+      lineStart--;
+    }
+    return lineStart;
+  }
+
+  static int _lineEnd(String text, int offset) {
+    var lineEnd = offset;
+    while (lineEnd < text.length &&
+        text[lineEnd] != '\n' &&
+        text[lineEnd] != '\r') {
+      lineEnd++;
+    }
+    return lineEnd;
+  }
+
+  static int _lineEndIncludingBreak(String text, int lineEnd) {
+    if (lineEnd >= text.length) {
+      return lineEnd;
+    }
+    if (text[lineEnd] == '\r' &&
+        lineEnd + 1 < text.length &&
+        text[lineEnd + 1] == '\n') {
+      return lineEnd + 2;
+    }
+    return lineEnd + 1;
+  }
+
+  static bool _isIndentation(String text, int start, int end) {
+    for (var index = start; index < end; index++) {
+      if (text[index] != ' ' && text[index] != '\t') {
+        return false;
+      }
+    }
+    return true;
+  }
+
   static List<TemplateBlock> _tokenize(
     String text,
     CodeBlockDelimiter codeBlockDelimiter,
@@ -476,4 +620,11 @@ class TemplateParser implements TemplateParserDelegate {
 
   @override
   TemplateBlock get currentBlock => _blocks[_index];
+}
+
+class _TextRange {
+  final int start;
+  final int end;
+
+  const _TextRange(this.start, this.end);
 }

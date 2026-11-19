@@ -14,6 +14,18 @@ void main() {
       parseResult.errors.should.beEmpty();
     });
 
+    test('omits whitespace on a standalone comment line', () async {
+      final engine = TemplateEngine();
+      final parseResult = await engine.parseText(
+        'Before\r\n\t{{ // comment }}\r\nAfter',
+      );
+
+      final render = await engine.render(parseResult);
+
+      render.text.should.be('Before\r\nAfter');
+      parseResult.errors.should.beEmpty();
+    });
+
     test('ignores multiline comment content', () async {
       final engine = TemplateEngine();
       final parseResult = await engine.parseText(

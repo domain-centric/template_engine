@@ -28,6 +28,7 @@ final forStatement = StatementDefinition(
     ],
   ),
   reservedKeywords: {'for', 'next', 'to'},
+  standaloneLineKeywords: {'next'},
   matches: (tokens) {
     final first = tokens.peek();
     final second = tokens.peek(offset: 1);

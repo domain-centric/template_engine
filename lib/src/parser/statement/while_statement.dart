@@ -28,6 +28,7 @@ final whileStatement = StatementDefinition(
     ],
   ),
   reservedKeywords: {'while', 'do', 'endwhile'},
+  standaloneLineKeywords: {'endwhile'},
   matches: (tokens) {
     final first = tokens.peek();
     return first.type == TokenType.reservedKeyword &&

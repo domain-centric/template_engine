@@ -22,6 +22,53 @@ void main() {
       renderFalse.text.should.be('No');
       parseResult.errors.should.beEmpty();
     });
+
+    test('omits whitespace on standalone control-block lines', () async {
+      final engine = TemplateEngine();
+      final parseResult = await engine.parseText(
+        'Before\n'
+        '  {{ if active }}\n'
+        'Yes\n'
+        '  {{ else }}\n'
+        'No\n'
+        '  {{ endif }}\n'
+        'After',
+      );
+
+      final renderTrue = await engine.render(
+        parseResult,
+        variables: {'active': true},
+      );
+      final renderFalse = await engine.render(
+        parseResult,
+        variables: {'active': false},
+      );
+
+      Should.satisfyAllConditions([
+        () => renderTrue.text.should.be('Before\nYes\nAfter'),
+        () => renderFalse.text.should.be('Before\nNo\nAfter'),
+        () => parseResult.errors.should.beEmpty(),
+      ]);
+    });
+
+    test(
+      'preserves whitespace around inline statements and expressions',
+      () async {
+        final engine = TemplateEngine();
+        final parseResult = await engine.parseText(
+          'Prefix {{ if active }}yes{{ endif }} suffix\n'
+          '  {{ value }}\n',
+        );
+
+        final render = await engine.render(
+          parseResult,
+          variables: {'active': true, 'value': 'value'},
+        );
+
+        render.text.should.be('Prefix yes suffix\n  value\n');
+      },
+    );
+
     test('supports if without else', () async {
       final engine = TemplateEngine();
       final parseResult = await engine.parseText(

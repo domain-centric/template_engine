@@ -36,6 +36,7 @@ final ifStatement = StatementDefinition(
     ],
   ),
   reservedKeywords: {'if', 'elseif', 'else', 'endif'},
+  standaloneLineKeywords: {'elseif', 'else', 'endif'},
   matches: (tokens) {
     final first = tokens.peek();
     return first.type == TokenType.reservedKeyword &&

@@ -15,6 +15,9 @@ class StatementDefinition {
   /// All statement related keywords should be added here
   /// (e.g. if, else, endif, for, next, while etc)
   final Set<String> reservedKeywords;
+
+  /// Standalone branch or closing keywords that do not match this definition.
+  final Set<String> standaloneLineKeywords;
   final bool Function(CodeTokenStream tokens) matches;
   final AstNode Function(TemplateParserDelegate parser, CodeTokenStream tokens)
   parse;
@@ -22,6 +25,7 @@ class StatementDefinition {
 
   const StatementDefinition({
     required this.reservedKeywords,
+    this.standaloneLineKeywords = const {},
     required this.matches,
     required this.parse,
     required this.documentation,
@@ -53,6 +57,10 @@ String aggregatedCodeBlockDocumentation(Grammar grammar, int titleLevel) => [
   'It is recommended to use a start and end combination that is not used ',
   'elsewhere in your templates, e.g.: Do not use < > as code block start and end ',
   'if your template contains HTML or XML',
+  '',
+  'When a statement block is the only non-whitespace content on its line, '
+      'its indentation and line ending are omitted from rendered output. '
+      'Inline statement blocks and expression blocks preserve surrounding whitespace.',
 
   markdownTitle(titleLevel, 'Statements'),
   'A statement is a code block '

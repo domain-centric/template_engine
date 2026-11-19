@@ -29,6 +29,7 @@ final forEachStatement = StatementDefinition(
     ],
   ),
   reservedKeywords: {'for', 'each', 'in', 'next'},
+  standaloneLineKeywords: {'next'},
   matches: (tokens) {
     final first = tokens.peek();
     final second = tokens.peek(offset: 1);

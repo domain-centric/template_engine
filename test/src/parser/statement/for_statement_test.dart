@@ -17,6 +17,26 @@ void main() {
       ]);
     });
 
+    test(
+      'omits standalone loop-tag whitespace with CRLF line endings',
+      () async {
+        final engine = TemplateEngine();
+        final parseResult = await engine.parseText(
+          '\t{{ for i = 1 to 2 }}\r\n'
+          '{{ i }}\r\n'
+          '\t{{ next i }}\r\n'
+          'End',
+        );
+
+        final renderResult = await engine.render(parseResult);
+
+        Should.satisfyAllConditions([
+          () => renderResult.text.should.be('1\r\n2\r\nEnd'),
+          () => parseResult.errors.should.beEmpty(),
+        ]);
+      },
+    );
+
     test('loop variable not leaked after renderResult', () async {
       final engine = TemplateEngine();
       final parseResult = await engine.parseText(
