@@ -161,7 +161,7 @@ class TemplateParser implements TemplateParserDelegate {
     required this.grammar,
     required this.source,
     required this.text,
-  }) : _blocks = _stripStandaloneControlLines(
+  }) : _blocks = _stripStandaloneLines(
          _tokenize(text, grammar.codeBlockDelimiter),
          text,
          grammar,
@@ -413,7 +413,7 @@ class TemplateParser implements TemplateParserDelegate {
     return _parseUntil(terminators);
   }
 
-  static List<TemplateBlock> _stripStandaloneControlLines(
+  static List<TemplateBlock> _stripStandaloneLines(
     List<TemplateBlock> blocks,
     String text,
     Grammar grammar,
@@ -421,7 +421,7 @@ class TemplateParser implements TemplateParserDelegate {
     final suppressedRanges = <_TextRange>[];
     for (final block in blocks.where((block) => block.isCode)) {
       if (block.hasMissingEndDelimiter ||
-          !_isStandaloneControlBlock(block, grammar)) {
+          !_isWhitespaceSuppressingCodeBlock(block, grammar)) {
         continue;
       }
 
@@ -496,7 +496,10 @@ class TemplateParser implements TemplateParserDelegate {
     return result;
   }
 
-  static bool _isStandaloneControlBlock(TemplateBlock block, Grammar grammar) {
+  static bool _isWhitespaceSuppressingCodeBlock(
+    TemplateBlock block,
+    Grammar grammar,
+  ) {
     final tokens = CodeTokenStream(
       grammar,
       block.blockText,
@@ -507,9 +510,44 @@ class TemplateParser implements TemplateParserDelegate {
     }
 
     final firstKeyword = tokens.peek().value.toLowerCase();
-    return grammar.statements.any(
+    final isStandaloneTerminator = grammar.statements.any(
       (statement) => statement.standaloneLineKeywords.contains(firstKeyword),
     );
+    if (isStandaloneTerminator) {
+      return true;
+    }
+
+    return _isVoidExpressionBlock(tokens, grammar);
+  }
+
+  static bool _isVoidExpressionBlock(
+    CodeTokenStream tokens,
+    Grammar grammar,
+  ) {
+    final expressionTokens = tokens.clone();
+    final expressionErrors = <ParseError>[];
+    try {
+      final expression = ExpressionParser(
+        grammar,
+        expressionTokens,
+        expressionErrors,
+      ).parseExpression();
+      if (!expressionTokens.isAtEnd || expressionErrors.isNotEmpty) {
+        return false;
+      }
+
+      if (expression is FunctionCallExpression) {
+        return expression.functionDefinition.returnsVoid;
+      }
+      if (expression is MethodCallExpression) {
+        return expression.methodDefinitions.every(
+          (definition) => definition.returnsVoid,
+        );
+      }
+      return false;
+    } on ParseError {
+      return false;
+    }
   }
 
   static int _lineStart(String text, int offset) {

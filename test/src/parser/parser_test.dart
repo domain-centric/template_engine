@@ -37,6 +37,124 @@ void main() {
       (await renderFromContext(context)).text.should.be('Hello world!');
     });
 
+    test('omits standalone whitespace around void function calls', () async {
+      final grammar = Grammar.standard().withAdditionalFunctionGroups([
+        FunctionGroup('Actions', [
+          FunctionDefinition<void>(
+            name: 'perform',
+            parameters: const [],
+            function: (context) {
+              context.renderContext.variables['performed'] = true;
+              return Future<void>.value();
+            },
+            documentation: FunctionDefinitionDocumentation(
+              description: 'Performs an action.',
+              examples: const [],
+            ),
+          ),
+        ]),
+      ]);
+      final engine = TemplateEngine(grammar);
+      final parseResult = await engine.parseText(
+        'Before\r\n\t{{ perform() }}\r\nAfter',
+      );
+
+      final render = await engine.render(
+        parseResult,
+        variables: {'performed': false},
+      );
+
+      Should.satisfyAllConditions([
+        () => render.text.should.be('Before\r\nAfter'),
+        () => expect(render.variables['performed'], isTrue),
+        () => parseResult.errors.should.beEmpty(),
+      ]);
+    });
+
+    test('omits standalone whitespace around void method calls', () async {
+      final grammar = Grammar.standard().withAdditionalMethods([
+        MethodDefinition<List, void>(
+          name: 'clearItems',
+          parameters: const [],
+          method: (context) {
+            context.owner.clear();
+            return Future<void>.value();
+          },
+          description: 'Clears the list.',
+          examples: const [],
+        ),
+      ]);
+      final engine = TemplateEngine(grammar);
+      final items = [1, 2, 3];
+      final parseResult = await engine.parseText(
+        'Before\n  {{ items.clearItems() }}\nAfter',
+      );
+
+      final render = await engine.render(
+        parseResult,
+        variables: {'items': items},
+      );
+
+      Should.satisfyAllConditions([
+        () => render.text.should.be('Before\nAfter'),
+        () => items.should.beEmpty(),
+        () => parseResult.errors.should.beEmpty(),
+      ]);
+    });
+
+    test('preserves whitespace around inline void function calls', () async {
+      final grammar = Grammar.standard().withAdditionalFunctionGroups([
+        FunctionGroup('Actions', [
+          FunctionDefinition<void>(
+            name: 'perform',
+            parameters: const [],
+            function: (_) => Future<void>.value(),
+            documentation: FunctionDefinitionDocumentation(
+              description: 'Performs an action.',
+              examples: const [],
+            ),
+          ),
+        ]),
+      ]);
+      final engine = TemplateEngine(grammar);
+      final parseResult = await engine.parseText(
+        'Before {{ perform() }} after',
+      );
+
+      final render = await engine.render(parseResult);
+
+      render.text.should.be('Before  after');
+      parseResult.errors.should.beEmpty();
+    });
+
+    test(
+      'preserves standalone whitespace for nullable function results',
+      () async {
+        final grammar = Grammar.standard().withAdditionalFunctionGroups([
+          FunctionGroup('Queries', [
+            FunctionDefinition<String?>(
+              name: 'missingValue',
+              parameters: const [],
+              function: (_) => Future<String?>.value(),
+              documentation: FunctionDefinitionDocumentation(
+                description: 'Returns no value.',
+                examples: const [],
+              ),
+            ),
+          ]),
+        ]);
+        final engine = TemplateEngine(grammar);
+        final parseResult = await engine.parseText(
+          'Before\n\t{{ missingValue() }}\nAfter',
+        );
+
+        final render = await engine.render(parseResult);
+
+        render.text.should.be('Before\n\t\nAfter');
+        parseResult.errors.should.beEmpty();
+      },
+    );
+
     test('parses nested if/else/endif blocks', () async {
       final grammar = Grammar.standard();
       final template = TextTemplate(

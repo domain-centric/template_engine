@@ -57,6 +57,8 @@ class FunctionCallExpression implements Expression {
 class FunctionDefinition<RETURN_TYPE> extends DocumentationProvider {
   final String name;
   final List<Parameter> parameters;
+  final returnType = RETURN_TYPE;
+  bool get returnsVoid => returnType.toString() == 'void';
 
   @override
   final FunctionDefinitionDocumentation2<RETURN_TYPE> documentation;

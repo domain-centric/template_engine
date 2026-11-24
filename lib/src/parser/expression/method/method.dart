@@ -101,6 +101,7 @@ class MethodDefinition<OWNER_TYPE, RETURN_TYPE>
     implements DocumentationProvider, ExampleProvider {
   final ownerType = OWNER_TYPE;
   final returnType = RETURN_TYPE;
+  bool get returnsVoid => returnType.toString() == 'void';
   final String name;
   final List<Parameter> parameters;
   final String description;
