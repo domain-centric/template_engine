@@ -161,7 +161,7 @@ class TemplateParser implements TemplateParserDelegate {
     required this.grammar,
     required this.source,
     required this.text,
-  }) : _blocks = _stripStandaloneLines(
+  }) : _blocks = _omitWhiteSpaceSurroundingStatementBlocks(
          _tokenize(text, grammar.codeBlockDelimiter),
          text,
          grammar,
@@ -413,7 +413,7 @@ class TemplateParser implements TemplateParserDelegate {
     return _parseUntil(terminators);
   }
 
-  static List<TemplateBlock> _stripStandaloneLines(
+  static List<TemplateBlock> _omitWhiteSpaceSurroundingStatementBlocks(
     List<TemplateBlock> blocks,
     String text,
     Grammar grammar,
