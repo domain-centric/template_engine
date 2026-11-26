@@ -22,7 +22,7 @@ It is recommended to use a start and end combination that is not used
 elsewhere in your templates, e.g.: Do not use < > as code block start and end 
 if your template contains HTML or XML
 
-When a statement block is the only non-whitespace content on its line, its indentation and line ending are omitted from rendered output. Inline statement blocks and expression blocks preserve surrounding whitespace.
+When a statement block or an expression block that calls a void-returning function or method is the only non-whitespace content on its line, its indentation and line ending are omitted from rendered output. Inline statement blocks and expression blocks preserve surrounding whitespace.
 ## Statements
 A statement is a code block (or a combination of code blocks with text blocks between them) that performs an action. 
 Examples are: 
