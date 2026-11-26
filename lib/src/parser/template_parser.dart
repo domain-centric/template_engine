@@ -520,10 +520,7 @@ class TemplateParser implements TemplateParserDelegate {
     return _isVoidExpressionBlock(tokens, grammar);
   }
 
-  static bool _isVoidExpressionBlock(
-    CodeTokenStream tokens,
-    Grammar grammar,
-  ) {
+  static bool _isVoidExpressionBlock(CodeTokenStream tokens, Grammar grammar) {
     final expressionTokens = tokens.clone();
     final expressionErrors = <ParseError>[];
     try {
